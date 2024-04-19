@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         float z = Input.GetAxis("Vertical");
 
         //Vector3 es una estructura y no un objeto
-        axis = new Vector3(movementInput.x, 0, movementInput.z);
+        axis = new Vector3(x, 0, z);
 
     }
 
@@ -163,7 +163,6 @@ public class PlayerController : MonoBehaviour
         axis *= velocidadActual;
 
         ch.Move(axis * Time.deltaTime);
-
 
     }
 
