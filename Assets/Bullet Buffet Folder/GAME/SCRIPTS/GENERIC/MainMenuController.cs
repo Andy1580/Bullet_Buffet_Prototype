@@ -17,24 +17,24 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject bEnfrentamiento;
 
     //[SerializeField] private InputSystemUIInputModule inputModule;
-    [SerializeField] private EventSystem eventSystem;
+    //[SerializeField] private EventSystem eventSystem;
 
     private void Awake()
     {
         //inputModule = GetComponent<InputSystemUIInputModule>();
-        eventSystem = GetComponent<EventSystem>();
+        //eventSystem = GetComponent<EventSystem>();
     }
 
     private void Update()
     {
-        if (eventSystem != null)
-        {
-            eventSystem = GetComponent<EventSystem>();
-        }
-        else
-        {
-            Debug.LogWarning("Nose encontro el Event System");
-        }
+        //if (eventSystem != null)
+        //{
+        //    eventSystem = GetComponent<EventSystem>();
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("Nose encontro el Event System");
+        //}
     }
 
     private void Start()
@@ -43,7 +43,7 @@ public class MainMenuController : MonoBehaviour
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
 
-        eventSystem.firstSelectedGameObject = bModes;
+        //eventSystem.firstSelectedGameObject = bModes;
     }
 
     public void GoToModos()
@@ -52,7 +52,7 @@ public class MainMenuController : MonoBehaviour
         panelSetings.SetActive(false);
         panelInicio.SetActive(false);
 
-        eventSystem.firstSelectedGameObject = bEnfrentamiento;
+        //eventSystem.firstSelectedGameObject = bEnfrentamiento;
     }
 
     public void GoToInicio()
@@ -61,7 +61,7 @@ public class MainMenuController : MonoBehaviour
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
 
-        eventSystem.firstSelectedGameObject = bModes;
+        //eventSystem.firstSelectedGameObject = bModes;
     }
 
     public void GoToSetings()

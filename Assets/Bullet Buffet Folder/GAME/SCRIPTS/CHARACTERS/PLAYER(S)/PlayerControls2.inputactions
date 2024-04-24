@@ -24,15 +24,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Hability",
-                    "type": "Button",
-                    "id": "b6a37aa6-bdb2-46ea-af25-467e6f24a085",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Look",
                     "type": "PassThrough",
                     "id": "7106a696-af5d-4bb8-8bcf-056952a2de0d",
@@ -55,7 +46,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Up",
+                    "name": "up",
                     "id": "2694813e-fa40-46a2-9a2b-f01e5b8f29ac",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -66,7 +57,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Down",
+                    "name": "down",
                     "id": "3aad25fc-80d8-43ee-8d32-6d2d8ece9f40",
                     "path": "<Keyboard>/s",
                     "interactions": "",
@@ -77,7 +68,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Left",
+                    "name": "left",
                     "id": "3d9cf749-d773-4b66-a3ab-779481f25df8",
                     "path": "<Keyboard>/a",
                     "interactions": "",
@@ -88,7 +79,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Right",
+                    "name": "right",
                     "id": "d229d5d7-ec80-4090-8a4f-e971f6985295",
                     "path": "<Keyboard>/d",
                     "interactions": "",
@@ -103,7 +94,7 @@
                     "id": "cb06dc27-f0b3-4a53-a275-83f9529960e1",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
-                    "processors": "NormalizeVector2",
+                    "processors": "",
                     "groups": "Controller",
                     "action": "Movement",
                     "isComposite": false,
@@ -174,28 +165,6 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "7c2d9efc-e633-4fd9-ada0-74d156746a70",
-                    "path": "<Keyboard>/#(H)",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Hability",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "923bb37e-88d8-42e9-bf97-7f986ff0601c",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Hability",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -216,15 +185,6 @@
                     "name": "Shoot",
                     "type": "Button",
                     "id": "535d56b3-6eb2-4d7a-b035-0a9397a2db77",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Hability",
-                    "type": "Button",
-                    "id": "8e363ae8-dd7b-4c12-a44a-a98043c8641f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
@@ -372,28 +332,6 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "06533b4c-05ef-4ef8-b0a7-ac5d907dc6fe",
-                    "path": "<Keyboard>/#(H)",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Hability",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "44101fb0-861b-43eb-aa10-42fb3af7403d",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Hability",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },

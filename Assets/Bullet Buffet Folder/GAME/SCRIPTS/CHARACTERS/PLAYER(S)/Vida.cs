@@ -12,6 +12,8 @@ public class Vida : MonoBehaviour
     public Slider BarraSalud;
     public bool isInvulnerable = false;
 
+    
+
     private void Update()
     {
         BarraSalud.GetComponent<Slider>().value = salud;
@@ -19,12 +21,10 @@ public class Vida : MonoBehaviour
         if (salud <= 0)
         {
             Debug.Log("Muerto" + this.gameObject.name);
+            //Destroy(this.gameObject);
             //this.gameObject.SetActive(false);
         }
-        else
-        {
-            //this.gameObject.SetActive(true);
-        }
+        
     }
 
 }

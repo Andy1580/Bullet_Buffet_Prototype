@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DañoVida : MonoBehaviour
@@ -25,6 +26,13 @@ public class DañoVida : MonoBehaviour
                 vida.StartCoroutine(ActivateInvulnerability(vida));
                 //gameObject.SetActive(false);
             }
+        }
+
+        else if(other.CompareTag("Shield"))
+        {
+            Destroy(this.gameObject);
+            Debug.Log("Le di al escudo");
+            return;
         }
     }
 

@@ -1,32 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-
-public class PlayerController : MonoBehaviour
+public class PlayerController2 : MonoBehaviour
 {
-    private PlayerInput playerInput;
-
-    private Transform playerTransform;
-
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        //controller = gameObject.GetComponent<CharacterController>();
-        //playerInput = GetComponent<PlayerInput>();
-
-        //playerTransform = this.transform;
-
         //Start_Movimiento();
         //pC = GetComponent<CharacterController>();
 
         Start_v2();
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
         //LeerAxis();
         //Update_Movimiento();
+
         Update_Movimiento_2();
         //cont -= Time.deltaTime;
 
@@ -41,13 +35,13 @@ public class PlayerController : MonoBehaviour
     #region Look
 
     [SerializeField] private GameObject objetivo;
-    public bool lookObj;
 
+    public bool lookObj;
     void Update_Find_Objetivo()
     {
         if (objetivo == null)
         {
-            objetivo = GameObject.FindGameObjectWithTag("Player2");
+            objetivo = GameObject.FindGameObjectWithTag("Player1");
         }
     }
 
@@ -62,85 +56,6 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    //#region Movement
-    //[Header("Movement stats")]
-    //[SerializeField] private float playerSpeed = 2.0f;
-    //[SerializeField] private float gravityValue = -9.81f;
-
-
-    //private CharacterController controller;
-    //private Vector2 playerVelocity;
-    //private bool groundedPlayer;
-
-    //private Vector2 movementInput = Vector2.zero;
-
-    //public float velocidadRotacion = 5f; // Velocidad de rotación del jugador
-
-    //Quaternion q;
-
-    //public void OnMove(InputAction.CallbackContext context)
-    //{
-    //    movementInput = context.ReadValue<Vector2>();
-    //}
-
-    //void Update()
-    //{
-    //    //BulletShoot();
-
-    //    //CallbackContext contexto = playerInput.actions["Shoot"].ReadValue<CallbackContext>();
-
-
-
-    //    cont -= Time.deltaTime;
-
-    //    groundedPlayer = controller.isGrounded;
-    //    if (groundedPlayer && playerVelocity.y < 0)
-    //    {
-    //        playerVelocity.y = 0f;
-    //    }
-
-    //    Vector3 move = new Vector3(movementInput.x, 0, movementInput.y);
-    //    controller.Move(move * Time.deltaTime * playerSpeed);
-
-    //    if (move != Vector3.zero)
-    //    {
-    //        gameObject.transform.forward = move;
-    //    }
-
-    //    // Changes the height position of the player..
-    //    //if (Input.GetButtonDown("Jump") && groundedPlayer)
-    //    //{
-    //    //    playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-    //    //}
-
-    //    playerVelocity.y += gravityValue * Time.deltaTime;
-    //    controller.Move(playerVelocity * Time.deltaTime);
-
-    //    // Obtener la posición del mouse en pantalla
-    //    //Vector3 posicionMouse = Input.mousePosition;
-
-    //        //Mouse.current.position.ReadValue();
-
-    //    //posicionMouse = Camera.main.ScreenToWorldPoint(posicionMouse);
-
-
-    //    //Vector2 direccion = new Vector2(posicionMouse.x - transform.rotation.x, posicionMouse.y - transform.rotation.y);
-
-    //    //transform.right = direccion;
-
-    //    ///////////////////////////////////
-
-    //    Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - playerTransform.position;
-
-    //    float angle = Mathf.Atan2(direction.y,direction.x) * Mathf.Rad2Deg;
-
-    //    Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-
-    //    playerTransform.rotation = rotation;
-
-    //}
-    //#endregion
-
     //#region Movimiento Op 2
     //[SerializeField] private float velocidadNormal = 5f;
     //[SerializeField] private float velocidadCorrer = 10f;
@@ -151,13 +66,7 @@ public class PlayerController : MonoBehaviour
     //private bool corriendo;
     //private CharacterController pC;
 
-    //private float playerSpeed = 2.0f;
-    //private float jumpHeight = 1.0f;
-    //private float gravityValue = -9.81f;
-
     //private Vector3 movementInput = Vector3.zero;
-
-    //private Vector3 playerVelocity;
 
     //void Start_Movimiento()
     //{
@@ -167,8 +76,7 @@ public class PlayerController : MonoBehaviour
 
     //public void OnMove(InputAction.CallbackContext context)
     //{
-    //    //axis = context.ReadValue<Vector2>();
-    //    movementInput = context.ReadValue<Vector2>();
+    //    axis = context.ReadValue<Vector2>();
     //}
 
     //private void LeerAxis()
@@ -183,8 +91,6 @@ public class PlayerController : MonoBehaviour
 
     //}
 
-    //public float speed = 5f;
-    //Vector3 movement = Vector3.zero;
     //private void Update_Movimiento()
     //{
 
@@ -194,30 +100,14 @@ public class PlayerController : MonoBehaviour
     //    //        gameObject.transform.forward = move;
     //    //    }
 
-    //    //if (axis != Vector3.zero && axis.magnitude > velocidadActual)
-    //    //{
-    //    //    axis = axis.normalized;
-    //    //}
-
-    //    //axis *= velocidadActual;
-
-    //    //pC.Move(axis * Time.deltaTime);
-
-
-
-
-    //    Vector3 move = new Vector3(movementInput.x, 0, movementInput.z);
-    //    pC.Move(move * Time.deltaTime * playerSpeed);
-
-    //    if (move != Vector3.zero)
+    //    if (axis != Vector3.zero && axis.magnitude > velocidadActual)
     //    {
-    //        gameObject.transform.forward = move;
+    //        axis = axis.normalized;
     //    }
 
+    //    axis *= velocidadActual;
 
-    //    playerVelocity.y += gravityValue * Time.deltaTime;
-    //    pC.Move(playerVelocity * Time.deltaTime);
-
+    //    pC.Move(axis * Time.deltaTime);
 
     //}
 
@@ -384,7 +274,7 @@ public class PlayerController : MonoBehaviour
 
     //private InputControl shoot2;
 
-    //public delegate void Shoot(in Shoot input);
+    ////public delegate void Shoot(in Shoot input);
 
     //public void OnShoot(InputAction.CallbackContext context)
     //{
