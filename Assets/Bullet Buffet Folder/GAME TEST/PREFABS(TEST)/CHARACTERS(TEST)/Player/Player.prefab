@@ -99,12 +99,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3994690149519416355}
   - component: {fileID: 3730694466038743795}
-  - component: {fileID: 9116199825130788593}
   - component: {fileID: 8455293038612975699}
   - component: {fileID: 363125813633055686}
   - component: {fileID: 7614681567939381654}
   - component: {fileID: 8920060022266441376}
-  - component: {fileID: -2551854696490863194}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player1
@@ -147,29 +145,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662857b2ce4717a4c81a5ea55c21c83b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetivo: {fileID: 0}
-  lookObj: 0
   groundedPlayer: 0
   playerSpeed: 5
   gravityValue: -9.81
   movementInput: {x: 0, y: 0}
---- !u!114 &9116199825130788593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135681517800813417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af3a6c03ec436a14094d8bfcdcbbd6e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   bulletSpeed: 1000
   cooldown: 0.5
   bulletprefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
     type: 3}
   bulletSpawn: {fileID: 4364247342229704210}
+  salud: 100
+  BarraSalud: {fileID: 843278766153327616}
+  isInvulnerable: 0
 --- !u!114 &8455293038612975699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,8 +217,8 @@ MonoBehaviour:
     m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9116199825130788593}
-        m_TargetAssemblyTypeName: Shoot, Assembly-CSharp
+      - m_Target: {fileID: 3730694466038743795}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnShoot
         m_Mode: 0
         m_Arguments:
@@ -285,7 +272,7 @@ MonoBehaviour:
     m_ActionId: 8e363ae8-dd7b-4c12-a44a-a98043c8641f
     m_ActionName: Player2/Hability[/Keyboard/h,/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Controller
+  m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player1
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -338,21 +325,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-2551854696490863194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135681517800813417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2d66d3468f06444caa726ae3a9e138d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  salud: 100
-  BarraSalud: {fileID: 843278766153327616}
-  isInvulnerable: 0
 --- !u!1 &2987486892667032257
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,66 +1,46 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerInput playerInput;
-
-    private Transform playerTransform;
-
     private void Start()
     {
-        //controller = gameObject.GetComponent<CharacterController>();
-        //playerInput = GetComponent<PlayerInput>();
-
-        //playerTransform = this.transform;
-
-        //Start_Movimiento();
-        //pC = GetComponent<CharacterController>();
-
-        Start_v2();
+        Start_Movimiento();
     }
 
     private void Update()
     {
-        //LeerAxis();
-        //Update_Movimiento();
-        Update_Movimiento_2();
-        //cont -= Time.deltaTime;
-
-        Update_Find_Objetivo();
+        Update_Movimiento();
+        Update_Shoot();
+        Update_Vida();
     }
 
-    private void FixedUpdate()
-    {
-        FixUpdate_Look_Objetivo();
-    }
+    //#region Look
 
-    #region Look
+    //[SerializeField] private GameObject objetivo;
+    //public bool lookObj;
 
-    [SerializeField] private GameObject objetivo;
-    public bool lookObj;
+    //void Update_Find_Objetivo()
+    //{
+    //    if (objetivo == null)
+    //    {
+    //        objetivo = GameObject.FindGameObjectWithTag("Player2");
+    //    }
+    //}
 
-    void Update_Find_Objetivo()
-    {
-        if (objetivo == null)
-        {
-            objetivo = GameObject.FindGameObjectWithTag("Player2");
-        }
-    }
+    //void FixUpdate_Look_Objetivo()
+    //{
+    //    if (objetivo != null)
+    //    {
+    //        lookObj = true;
+    //        transform.LookAt(objetivo.transform.position);
+    //    }
+    //}
 
-    void FixUpdate_Look_Objetivo()
-    {
-        if (objetivo != null)
-        {
-            lookObj = true;
-            transform.LookAt(objetivo.transform.position);
-        }
-    }
-
-    #endregion
+    //#endregion
 
     //#region Movement
     //[Header("Movement stats")]
@@ -319,7 +299,7 @@ public class PlayerController : MonoBehaviour
     //}
     //#endregion
 
-    #region Mov Op 3
+    #region Movimiento
 
     [Header("Movement Stats")]
     [SerializeField] private bool groundedPlayer;
@@ -335,12 +315,29 @@ public class PlayerController : MonoBehaviour
         movementInput = context.ReadValue<Vector2>();
     }
 
-    private void Start_v2()
+    private void Start_Movimiento()
     {
         controller = gameObject.GetComponent<CharacterController>();
     }
 
-    void Update_Movimiento_2()
+    void Update_Movimiento()
+    {
+        Movimiento();
+        Gravedad();
+    }
+
+    void Movimiento()
+    {
+        Vector3 move = new Vector3(movementInput.x, 0, movementInput.y);
+        controller.Move(move * Time.deltaTime * playerSpeed);
+
+        if (move != Vector3.zero)
+        {
+            gameObject.transform.forward = move;
+        }
+    }
+
+    void Gravedad()
     {
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
@@ -348,69 +345,71 @@ public class PlayerController : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
-        Vector3 move = new Vector3(movementInput.x, 0, movementInput.y);
-        controller.Move(move * Time.deltaTime * playerSpeed);
-
-        if (move != Vector3.zero && objetivo != null)
-        {
-            gameObject.transform.position = move;
-        }
-        else if (move != Vector3.zero && objetivo == null)
-        {
-            gameObject.transform.forward = move;
-        }
-
-
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
     #endregion
 
-    //#region Handgun
+    #region Shoot
 
-    //[Header("Handgun stats")]
-    //[SerializeField] private float bulletSpeed;
-    //[SerializeField] private float cooldown;
+    [Header("Shoot stats")]
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float cooldown;
 
-    //[SerializeField] private Transform bulletprefab;
-    //[SerializeField] private Transform bulletSpawn;
+    [Header("Objects")]
+    [SerializeField] private Transform bulletprefab;
+    [SerializeField] private Transform bulletSpawn;
 
-    //private float cont = 0;
-
-    //private ControlInput input;
-
-    ////public InputAction shoot;
-
-    //private InputControl shoot2;
+    private float cont = 0;
 
     //public delegate void Shoot(in Shoot input);
 
-    //public void OnShoot(InputAction.CallbackContext context)
-    //{
-    //    //shoot2 = playerInput.actions["Fire"].triggered.
-    //    //input = context.
-    //    //isShooting = context.ReadValue<bool>();
-    //    //isShooting = context.action.triggered;
-    //    //BulletShoot() = context.ReadValue;
-    //    //Debug.Log("Pressed");
-    //    BulletShoot();
-    //}
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        BulletShoot();
+    }
 
-    //void BulletShoot()
-    //{
-    //    if (cont <= 0)
-    //    {
-    //        Transform clon = Instantiate(bulletprefab, bulletSpawn.position, bulletSpawn.rotation);
-    //        clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
-    //        Destroy(clon.gameObject, 3);
-    //        cont = cooldown;
-    //    }
+    void Update_Shoot()
+    {
+        cont -= Time.deltaTime;
+    }
 
-    //    //if (playerInput.actions["Shoot"].triggered && cont <= 0)
-    //    //{
-    //    //}
-    //}
+    void BulletShoot()
+    {
+        if (cont <= 0)
+        {
+            Transform clon = Instantiate(bulletprefab, bulletSpawn.position, bulletSpawn.rotation);
+            clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
+            Destroy(clon.gameObject, 3);
+            cont = cooldown;
+        }
 
-    //#endregion
+    }
+
+    #endregion
+
+    #region Vida
+
+    [Header("Life Stats")]
+    public int salud;
+    [SerializeField] private Slider BarraSalud;
+    public bool isInvulnerable = false;
+
+
+    void Update_Vida()
+    {
+        BarraSalud.GetComponent<Slider>().value = salud;
+
+        if (salud <= 0)
+        {
+            Debug.Log("Muerto" + this.gameObject.name);
+        }
+
+    }
+    #endregion
+
+    #region Dash
+
+    #endregion
 }
