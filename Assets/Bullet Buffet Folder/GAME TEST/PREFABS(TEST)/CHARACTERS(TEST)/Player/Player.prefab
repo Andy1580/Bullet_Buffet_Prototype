@@ -99,7 +99,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3994690149519416355}
   - component: {fileID: 3730694466038743795}
-  - component: {fileID: 8455293038612975699}
   - component: {fileID: 363125813633055686}
   - component: {fileID: 7614681567939381654}
   - component: {fileID: 8920060022266441376}
@@ -157,22 +156,6 @@ MonoBehaviour:
   salud: 100
   BarraSalud: {fileID: 843278766153327616}
   isInvulnerable: 0
---- !u!114 &8455293038612975699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135681517800813417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11e40c5373bb13945b4cf0f8ba94bab5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  dashSpeed: 10
-  dashDuration: 0.5
-  dashCooldown: 1
 --- !u!114 &363125813633055686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,8 +236,8 @@ MonoBehaviour:
     m_ActionName: Player2/Look[/XInputControllerWindows/leftTrigger,/XInputControllerWindows1/leftTrigger,/Mouse/position/x,/Pen/position/x,/Mouse/position/y,/Pen/position/y]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8455293038612975699}
-        m_TargetAssemblyTypeName: Dash, Assembly-CSharp
+      - m_Target: {fileID: 3730694466038743795}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnDash
         m_Mode: 0
         m_Arguments:

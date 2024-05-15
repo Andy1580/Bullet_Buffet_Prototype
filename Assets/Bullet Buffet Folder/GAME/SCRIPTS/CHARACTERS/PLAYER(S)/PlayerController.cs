@@ -411,5 +411,43 @@ public class PlayerController : MonoBehaviour
 
     #region Dash
 
+    [Header("Dash Stats")]
+    [SerializeField] private bool enDash;
+    [SerializeField] private float fuerzaDash;
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        Dash();
+    }
+
+    void Dash()
+    {
+
+        if (!enDash)
+        {
+            enDash = true;
+
+            Invoke("DesactivarDash", 0.25f);
+        }
+
+        if (!enDash)
+        {
+            Vector3 m = movementInput * playerSpeed;
+            movementInput.x = m.x;
+            movementInput.y = m.y;
+        }
+        else
+        {
+            Vector3 m = movementInput != Vector2.zero ? movementInput * fuerzaDash : transform.forward * fuerzaDash;
+            controller.Move(movementInput * fuerzaDash);
+        }
+
+    }
+
+    void DesactivarDash()
+    {
+        enDash = false;
+    }
+
     #endregion
 }
