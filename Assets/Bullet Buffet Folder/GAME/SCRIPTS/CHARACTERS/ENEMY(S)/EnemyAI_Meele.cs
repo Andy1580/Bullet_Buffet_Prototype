@@ -5,24 +5,23 @@ using UnityEngine.AI;
 public class EnemyAI_Meele : MonoBehaviour
 {
     [SerializeField] private Transform player; 
-    private float stoppingDistance = 2f; // Distancia a la que el enemigo se detiene del jugador
-    private float attackCooldown = 2f; // Tiempo entre cada ataque
-    private GameObject attackCollider; // Collider de ataque
+    private float stoppingDistance = 2f; 
+    private float attackCooldown = 2f; 
+    public GameObject attackCollider;
 
-    private NavMeshAgent navMeshAgent; // Referencia al NavMeshAgent
-    private bool isAttacking = false; // Indica si el enemigo está atacando
+    private NavMeshAgent navMeshAgent; 
+    private bool isAttacking = false; 
 
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        attackCollider.SetActive(false); // Desactivar collider de ataque al inicio
+        attackCollider.SetActive(false); 
     }
 
     private void Update()
     {
         if (!isAttacking)
-        {
-            // Si no estamos atacando, perseguir al jugador
+        {   
             ChasePlayer();
         }
     }
@@ -37,11 +36,9 @@ public class EnemyAI_Meele : MonoBehaviour
         {
             navMeshAgent.isStopped = true;
 
-            // Activar el collider de ataque cuando estamos cerca del jugador
             attackCollider.SetActive(true);
             isAttacking = true;
 
-            // Iniciar el temporizador de enfriamiento del ataque
             Invoke("ResetAttack", attackCooldown);
         }
         else
@@ -52,16 +49,14 @@ public class EnemyAI_Meele : MonoBehaviour
 
     private void ResetAttack()
     {
-        // Reiniciar el ataque después del tiempo de enfriamiento
         isAttacking = false;
-        attackCollider.SetActive(false); // Desactivar collider de ataque
+        attackCollider.SetActive(false); 
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player1"))
         {
-            // Si entra en el trigger del jugador, dejar de perseguirlo y atacarlo
             navMeshAgent.isStopped = true;
             isAttacking = true;
             attackCollider.SetActive(true);
@@ -72,9 +67,8 @@ public class EnemyAI_Meele : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player1"))
         {
-            // Cuando el jugador sale del trigger, volver a perseguirlo
             navMeshAgent.isStopped = false;
             isAttacking = false;
             attackCollider.SetActive(false);
