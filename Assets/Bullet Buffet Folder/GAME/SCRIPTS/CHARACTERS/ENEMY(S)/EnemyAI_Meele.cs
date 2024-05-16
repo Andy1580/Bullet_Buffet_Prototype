@@ -4,10 +4,10 @@ using UnityEngine.AI;
 
 public class EnemyAI_Meele : MonoBehaviour
 {
-    public Transform player; // Referencia al transform del jugador
-    public float stoppingDistance = 2f; // Distancia a la que el enemigo se detiene del jugador
-    public float attackCooldown = 2f; // Tiempo entre cada ataque
-    public GameObject attackCollider; // Collider de ataque
+    [SerializeField] private Transform player; 
+    private float stoppingDistance = 2f; // Distancia a la que el enemigo se detiene del jugador
+    private float attackCooldown = 2f; // Tiempo entre cada ataque
+    private GameObject attackCollider; // Collider de ataque
 
     private NavMeshAgent navMeshAgent; // Referencia al NavMeshAgent
     private bool isAttacking = false; // Indica si el enemigo está atacando

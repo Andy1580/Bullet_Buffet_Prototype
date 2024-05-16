@@ -263,7 +263,7 @@ public class PlayerController2 : MonoBehaviour
     //[SerializeField] private float bulletSpeed;
     //[SerializeField] private float cooldown;
 
-    //[SerializeField] private Transform bulletprefab;
+    //[SerializeField] private Transform bulletPrefab;
     //[SerializeField] private Transform bulletSpawn;
 
     //private float cont = 0;
@@ -291,7 +291,7 @@ public class PlayerController2 : MonoBehaviour
     //{
     //    if (cont <= 0)
     //    {
-    //        Transform clon = Instantiate(bulletprefab, bulletSpawn.position, bulletSpawn.rotation);
+    //        Transform clon = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
     //        clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
     //        Destroy(clon.gameObject, 3);
     //        cont = cooldown;

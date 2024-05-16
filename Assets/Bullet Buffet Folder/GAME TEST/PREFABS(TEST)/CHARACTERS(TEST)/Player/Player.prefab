@@ -145,17 +145,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundedPlayer: 0
-  playerSpeed: 5
+  playerSpeed: 8
   gravityValue: -9.81
-  movementInput: {x: 0, y: 0}
+  movementInput: {x: 0, y: 0, z: 0}
   bulletSpeed: 1000
   cooldown: 0.5
-  bulletprefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
-    type: 3}
+  bulletPrefab: {fileID: 0}
   bulletSpawn: {fileID: 4364247342229704210}
   salud: 100
   BarraSalud: {fileID: 843278766153327616}
   isInvulnerable: 0
+  enDash: 0
+  fuerzaDash: 200
 --- !u!114 &363125813633055686
 MonoBehaviour:
   m_ObjectHideFlags: 0

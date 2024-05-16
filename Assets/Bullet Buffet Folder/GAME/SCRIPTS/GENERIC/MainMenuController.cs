@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using TMPro;
-using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -14,36 +10,31 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject panelSetings;
 
     [SerializeField] private GameObject bModes;
-    [SerializeField] private GameObject bEnfrentamiento;
+    [SerializeField] private GameObject bHechizos;
 
-    //[SerializeField] private InputSystemUIInputModule inputModule;
-    //[SerializeField] private EventSystem eventSystem;
-
-    private void Awake()
-    {
-        //inputModule = GetComponent<InputSystemUIInputModule>();
-        //eventSystem = GetComponent<EventSystem>();
-    }
-
-    private void Update()
-    {
-        //if (eventSystem != null)
-        //{
-        //    eventSystem = GetComponent<EventSystem>();
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("Nose encontro el Event System");
-        //}
-    }
+    [SerializeField] private GameObject eventSystem;
+    private EventSystem eventS;
 
     private void Start()
     {
+
+        if (eventSystem == null)
+        {
+            Debug.LogWarning("Nose encontro el Event System");
+            eventSystem = GameObject.Find("EventSystem");
+        }
+        else
+        {
+            Debug.LogWarning("Se encontro el Event System");
+        }
+
+        eventS = eventSystem.GetComponent<EventSystem>();
+
         panelInicio.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
 
-        //eventSystem.firstSelectedGameObject = bModes;
+        eventS.firstSelectedGameObject = bModes;
     }
 
     public void GoToModos()
@@ -52,7 +43,7 @@ public class MainMenuController : MonoBehaviour
         panelSetings.SetActive(false);
         panelInicio.SetActive(false);
 
-        //eventSystem.firstSelectedGameObject = bEnfrentamiento;
+        eventS.firstSelectedGameObject = bHechizos;
     }
 
     public void GoToInicio()
@@ -61,7 +52,7 @@ public class MainMenuController : MonoBehaviour
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
 
-        //eventSystem.firstSelectedGameObject = bModes;
+        eventS.firstSelectedGameObject = bModes;
     }
 
     public void GoToSetings()
