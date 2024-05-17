@@ -4993,6 +4993,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 363125813633055686, guid: 3b4a67e3b3e770f46be212e9b18372aa,
+        type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Controller
+      objectReference: {fileID: 0}
     - target: {fileID: 774255358948169791, guid: 3b4a67e3b3e770f46be212e9b18372aa,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -5007,6 +5012,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3730694466038743795, guid: 3b4a67e3b3e770f46be212e9b18372aa,
+        type: 3}
+      propertyPath: fuerzaDash
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3994690149519416355, guid: 3b4a67e3b3e770f46be212e9b18372aa,
         type: 3}
@@ -8483,7 +8493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1944153641
 MonoBehaviour:
   m_ObjectHideFlags: 0

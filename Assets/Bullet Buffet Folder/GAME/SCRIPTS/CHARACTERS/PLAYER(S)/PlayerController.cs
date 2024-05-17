@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     private void Start_Movimiento()
     {
         controller = gameObject.GetComponent<CharacterController>();
-        axis = new Vector3(movementInput.x,0,movementInput.z);
+        axis = new Vector3(movementInput.x, 0, movementInput.y);
     }
 
     void Update_Movimiento()
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
     [Header("Dash Stats")]
     [SerializeField] private bool enDash;
     [SerializeField] private float fuerzaDash;
-    
+
     public void OnDash(InputAction.CallbackContext context)
     {
         Dash();
@@ -112,13 +112,20 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 m = movementInput * playerSpeed;
             axis.x = m.x;
-            axis.z = m.z;
+            axis.z = m.y;
         }
         else
         {
+            Debug.Log("Dash");
+
             Vector3 m = movementInput != Vector3.zero ? movementInput * fuerzaDash : transform.forward * fuerzaDash;
-            controller.Move(movementInput * fuerzaDash * Time.deltaTime);
+            axis.x = m.x;
+            axis.z = m.y;
+            controller.Move(axis * fuerzaDash * Time.deltaTime);
+
         }
+        
+       
 
     }
 
