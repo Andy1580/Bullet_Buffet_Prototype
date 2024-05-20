@@ -6,14 +6,6 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement Stats")]
-    [SerializeField] private bool groundedPlayer;
-    [SerializeField] private float playerSpeed = 2.0f;
-    [SerializeField] private float gravityValue = -9.81f;
-    [SerializeField] private Vector3 movementInput = Vector2.zero;
-    private Vector3 playerVelocity;
-    private CharacterController controller;
-    private Vector3 axis;
 
     [Header("Shoot Stats")]
     [SerializeField] private float bulletSpeed;
@@ -43,91 +35,79 @@ public class PlayerController : MonoBehaviour
         Update_Vida();
     }
 
-    #region Movimiento
+    #region INPUT
 
-    public void OnMove(InputAction.CallbackContext context)
+    public void Input_Axis1(InputAction.CallbackContext context)
     {
-        movementInput = context.ReadValue<Vector2>();
+        Vector2 v2 = context.ReadValue<Vector2>();
+        axis1 = new Vector3(v2.x, 0, v2.y);
     }
+
+    public void Input_Axis2(InputAction.CallbackContext context)
+    {
+        Vector2 v2 = context.ReadValue<Vector2>();
+        axis2 = new Vector3(v2.x, 0, v2.y);
+    }
+
+    public void Input_Dash(InputAction.CallbackContext context)
+    {
+        if (!enDash)
+        {
+            enDash = true;
+            Invoke("DesactivarDash", tiempoDash);
+        }
+
+    }
+
+    #endregion INPUT
+
+    #region Movimiento & Rotacion
+
+    [Header("Movement Stats")]
+    [SerializeField] private bool groundedPlayer;
+    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float smoothRotacion;
+    private CharacterController controller;
+    private Vector3 movement = Vector3.zero;
+    private Vector3 axis1 = Vector3.zero;
+    private Vector3 axis2 = Vector3.zero;
 
     private void Start_Movimiento()
     {
         controller = gameObject.GetComponent<CharacterController>();
-        axis = new Vector3(movementInput.x, 0, movementInput.y);
     }
 
     void Update_Movimiento()
     {
-        Movimiento();
-        Gravedad();
-    }
+        Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
+        movement.x = moveXZ.x;
+        movement.z = moveXZ.z;
 
-    void Movimiento()
-    {
-        Vector3 move = new Vector3(movementInput.x, 0, movementInput.y);
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
+        transform.LookAt(rotation);
 
-        if (move != Vector3.zero)
+        if (controller.isGrounded)
         {
-            gameObject.transform.position = move;
+            movement.y = 0f;
+            groundedPlayer = true;
         }
-    }
-
-    void Gravedad()
-    {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        else
         {
-            playerVelocity.y = 0f;
+            movement.y -= Time.deltaTime;
+            groundedPlayer = false;
         }
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        controller.Move(movement * Time.deltaTime);
     }
 
     #endregion
 
     #region Dash
 
-    [Header("Dash Stats")]
+    [Header("Input_Dash Stats")]
     [SerializeField] private bool enDash;
     [SerializeField] private float fuerzaDash;
-
-    public void OnDash(InputAction.CallbackContext context)
-    {
-        Dash();
-    }
-
-    void Dash()
-    {
-
-        if (!enDash)
-        {
-            enDash = true;
-
-            Invoke("DesactivarDash", 0.25f);
-        }
-
-        if (!enDash)
-        {
-            Vector3 m = movementInput * playerSpeed;
-            axis.x = m.x;
-            axis.z = m.y;
-        }
-        else
-        {
-            Debug.Log("Dash");
-
-            Vector3 m = movementInput != Vector3.zero ? movementInput * fuerzaDash : transform.forward * fuerzaDash;
-            axis.x = m.x;
-            axis.z = m.y;
-            controller.Move(axis * fuerzaDash * Time.deltaTime);
-
-        }
-        
-       
-
-    }
+    [SerializeField] private float tiempoDash = 0.25f;
 
     void DesactivarDash()
     {

@@ -56,7 +56,7 @@ public class PlayerController2 : MonoBehaviour
 
     #endregion
 
-    //#region Movimiento Op 2
+    //#region Input_Axis1 Op 2
     //[SerializeField] private float velocidadNormal = 5f;
     //[SerializeField] private float velocidadCorrer = 10f;
     //[SerializeField] private float potenciaSalto = 8f;
@@ -66,7 +66,7 @@ public class PlayerController2 : MonoBehaviour
     //private bool corriendo;
     //private CharacterController pC;
 
-    //private Vector3 movementInput = Vector3.zero;
+    //private Vector3 movement = Vector3.zero;
 
     //void Start_Movimiento()
     //{
