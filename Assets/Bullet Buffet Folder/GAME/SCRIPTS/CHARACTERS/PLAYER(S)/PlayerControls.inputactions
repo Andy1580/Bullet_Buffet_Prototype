@@ -209,204 +209,6 @@
             ]
         },
         {
-            "name": "Player2",
-            "id": "cd10f059-610c-4d2e-ba24-c8d6cd76b167",
-            "actions": [
-                {
-                    "name": "Movement",
-                    "type": "PassThrough",
-                    "id": "eb329c11-ebb1-4d41-bcbe-bf3344452675",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Shoot",
-                    "type": "Button",
-                    "id": "535d56b3-6eb2-4d7a-b035-0a9397a2db77",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Hability",
-                    "type": "Button",
-                    "id": "8e363ae8-dd7b-4c12-a44a-a98043c8641f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Look",
-                    "type": "PassThrough",
-                    "id": "c94f87f3-7179-4433-bc31-91e2917e89d2",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "WASD",
-                    "id": "33185855-95f8-47bc-89bf-b5adb20ddb49",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "40f71495-9c02-4d2f-9948-7cbd6c8883cd",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "f85dffdb-f051-4901-8414-550a22d314bc",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "4b7df5a8-c155-4569-a50e-4703f3af8a77",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "29c71026-dc66-4299-89f7-54e7b61575e9",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "0d133eae-79e4-4796-b0e2-0c5ed7f2ca9f",
-                    "path": "<Gamepad>/leftStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "58a9926c-ed6d-48cc-a024-784cf899b435",
-                    "path": "<Keyboard>/#(H)",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2ceab8e3-218a-4538-8b43-ce765484e38a",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "19b29151-92fc-451a-a095-fb51df0bce9e",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "617678ae-c64f-49e1-971c-60d9551944e8",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Negative",
-                    "id": "73c40007-71a0-4de4-98a2-e1cae2806d29",
-                    "path": "<Pointer>/position/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Positive",
-                    "id": "517f9d14-0840-4e08-aa37-d1bfb43161f4",
-                    "path": "<Pointer>/position/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "06533b4c-05ef-4ef8-b0a7-ac5d907dc6fe",
-                    "path": "<Keyboard>/#(H)",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Hability",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "44101fb0-861b-43eb-aa10-42fb3af7403d",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "Controller",
-                    "action": "Hability",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
             "name": "UI",
             "id": "13d6f809-09da-4601-ac3b-3a93f41f1609",
             "actions": [
@@ -453,6 +255,45 @@
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Pause Menu",
+            "id": "c00995d3-e576-45bb-a080-efc6471efb3e",
+            "actions": [
+                {
+                    "name": "Pausa",
+                    "type": "Button",
+                    "id": "2f9ac148-42a9-41a0-adb3-6ed70f6ed067",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "382a174c-3c7a-488c-832a-b7f4ff12b2f6",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Pausa",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0376619c-e254-40ba-a468-f12f67219052",
+                    "path": "<XInputController>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pausa",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -4,28 +4,23 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //SceneManager.sceneLoaded += OnSceneLoaded;
+
     public static GameManager Instance;
 
-    [SerializeField] private ChooseCharacterSystem cCS;
-
-    
-
-    public Transform _playerOne;
-    public Transform _playerTwo;
+    public GameObject _playerOne;
+    public GameObject _playerTwo;
 
 
     private void Awake()
     {
         MakeSingleton();
-
-        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
     }
-
 
     private void MakeSingleton()
     {
@@ -40,18 +35,5 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        CheckScene();
-    }
 
-    void CheckScene()
-    {
-        if (SceneManager.GetActiveScene().name == "ANDY")
-        {
-            var playerGM = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PlayerInputManager>();
-
-            //playerGM.joinBehavior = _playerTwo.BroadcastMessage(name, _playerTwo, SendMessageOptions options);
-        }
-    }
 }

@@ -98,13 +98,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3994690149519416355}
-  - component: {fileID: 5903638755811829900}
-  - component: {fileID: 4031905726056136500}
-  - component: {fileID: 5152035006153676865}
+  - component: {fileID: 384735359613391956}
   - component: {fileID: 363125813633055686}
   - component: {fileID: 7614681567939381654}
   - component: {fileID: 8920060022266441376}
-  - component: {fileID: -2551854696490863194}
   m_Layer: 0
   m_Name: Player 2 v2
   m_TagString: Player2
@@ -137,7 +134,7 @@ Transform:
   - {fileID: 3119264401097102394}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5903638755811829900
+--- !u!114 &384735359613391956
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,47 +143,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 2135681517800813417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 752f8ae255002264ba01a3f35acd02e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 662857b2ce4717a4c81a5ea55c21c83b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetivo: {fileID: 0}
-  lookObj: 0
   groundedPlayer: 0
   playerSpeed: 5
-  gravityValue: -9.81
-  movementInput: {x: 0, y: 0}
---- !u!114 &4031905726056136500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135681517800813417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af3a6c03ec436a14094d8bfcdcbbd6e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  smoothRotacion: 0.5
+  enDash: 0
+  canDash: 0
+  fuerzaDash: 50
+  cooldownDash: 5
+  tiempoDash: 0.2
   bulletSpeed: 1000
   cooldown: 0.5
-  bulletprefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
+  bulletPrefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
     type: 3}
   bulletSpawn: {fileID: 4364247342229704210}
---- !u!114 &5152035006153676865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135681517800813417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b3fc7cfd21744a4d8eaa5ce06807cc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shield: {fileID: 5834979795612658831}
-  lineRender: {fileID: 8546246473969939474}
-  coolDown: 5
+  salud: 100
+  BarraSalud: {fileID: 843278766153327616}
+  isInvulnerable: 0
+  canEscudo: 0
+  tiempoEscudo: 1
+  cooldownEscudo: 5
+  escudoPrefab: {fileID: 3242063237039633021, guid: 7d7e1256c1bac9648b912800c170c6c5,
+    type: 3}
 --- !u!114 &363125813633055686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,25 +195,9 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5903638755811829900}
-        m_TargetAssemblyTypeName: PlayerController2, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 03639a67-3cfd-4d89-8eb3-71e3a9ba6944
-    m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4031905726056136500}
-        m_TargetAssemblyTypeName: Shoot, Assembly-CSharp
-        m_MethodName: OnShoot
+      - m_Target: {fileID: 384735359613391956}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Disparo
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -247,29 +211,13 @@ MonoBehaviour:
     m_ActionName: Player/Shoot[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 7106a696-af5d-4bb8-8bcf-056952a2de0d
-    m_ActionName: Player/Look[/XInputControllerWindows/leftTrigger,/Mouse/position/x,/Pen/position/x,/Mouse/position/y,/Pen/position/y]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 2b8abe36-8a60-43af-b8d1-c1ac04d3c18e
     m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: eb329c11-ebb1-4d41-bcbe-bf3344452675
-    m_ActionName: Player2/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 535d56b3-6eb2-4d7a-b035-0a9397a2db77
-    m_ActionName: Player2/Shoot[/Keyboard/h,/XInputControllerWindows/rightTrigger,/XInputControllerWindows1/rightTrigger]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c94f87f3-7179-4433-bc31-91e2917e89d2
-    m_ActionName: Player2/Look[/XInputControllerWindows/leftTrigger,/XInputControllerWindows1/leftTrigger,/Mouse/position/x,/Pen/position/x,/Mouse/position/y,/Pen/position/y]
-  - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5152035006153676865}
-        m_TargetAssemblyTypeName: Shield, Assembly-CSharp
-        m_MethodName: OnShield
+      - m_Target: {fileID: 384735359613391956}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Dash
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -282,12 +230,60 @@ MonoBehaviour:
     m_ActionId: b6a37aa6-bdb2-46ea-af25-467e6f24a085
     m_ActionName: Player1/Hability[/Keyboard/h,/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
   - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 384735359613391956}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Escudo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2fb28b4e-fe9b-48f5-a504-22b9f7049d81
+    m_ActionName: Player/Shield[/Keyboard/2,/XInputControllerWindows/buttonEast,/XInputControllerWindows1/buttonEast]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 384735359613391956}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Axis1
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 041e2022-2513-4b2f-bb56-872c57b924c7
+    m_ActionName: Player/Axis1[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 384735359613391956}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Axis2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 831506e3-add7-4e84-9c2a-74c2c647ec5a
+    m_ActionName: Player/Axis2[/Mouse/delta,/XInputControllerWindows/rightStick,/XInputControllerWindows1/rightStick]
+  - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 8e363ae8-dd7b-4c12-a44a-a98043c8641f
-    m_ActionName: Player2/Hability[/Keyboard/h,/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
+    m_ActionId: 2f9ac148-42a9-41a0-adb3-6ed70f6ed067
+    m_ActionName: Pause Menu/Pausa[/Keyboard/escape,/XInputControllerWindows/start,/XInputControllerWindows1/start]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
-  m_DefaultActionMap: Player1
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!136 &7614681567939381654
@@ -339,21 +335,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-2551854696490863194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135681517800813417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2d66d3468f06444caa726ae3a9e138d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  salud: 100
-  BarraSalud: {fileID: 843278766153327616}
-  isInvulnerable: 0
 --- !u!1 &2987486892667032257
 GameObject:
   m_ObjectHideFlags: 0

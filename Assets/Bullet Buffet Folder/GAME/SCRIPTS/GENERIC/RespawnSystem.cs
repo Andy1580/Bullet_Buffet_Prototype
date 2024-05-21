@@ -4,9 +4,15 @@ public class RespawnSystem : MonoBehaviour
 {
     [SerializeField] private GameObject prefabPlayer1;
     [SerializeField] private GameObject prefabPlayer2;
+    [SerializeField] private GameObject prefabPlayer3;
+    [SerializeField] private GameObject prefabPlayer4;
 
     [SerializeField] private Transform respawnPoint1;
     [SerializeField] private Transform respawnPoint2;
+    [SerializeField] private Transform respawnPoint3;
+    [SerializeField] private Transform respawnPoint4;
+    [SerializeField] private Transform respawnPoint5;
+    [SerializeField] private Transform respawnPoint6;
 
     private void Start()
     {
