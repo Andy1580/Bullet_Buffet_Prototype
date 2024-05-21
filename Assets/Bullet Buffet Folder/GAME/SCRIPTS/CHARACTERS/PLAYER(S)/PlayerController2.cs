@@ -276,7 +276,7 @@ public class PlayerController2 : MonoBehaviour
 
     ////public delegate void Shoot(in Shoot input);
 
-    //public void OnShoot(InputAction.CallbackContext context)
+    //public void Disparo(InputAction.CallbackContext context)
     //{
     //    //shoot2 = playerInput.actions["Fire"].triggered.
     //    //input = context.

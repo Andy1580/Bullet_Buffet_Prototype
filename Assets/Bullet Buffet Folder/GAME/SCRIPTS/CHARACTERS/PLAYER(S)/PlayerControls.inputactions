@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Shield",
+                    "type": "Button",
+                    "id": "2fb28b4e-fe9b-48f5-a504-22b9f7049d81",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Axis1",
                     "type": "Value",
                     "id": "041e2022-2513-4b2f-bb56-872c57b924c7",
@@ -172,6 +181,28 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Axis2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ab03af8-b91c-4dee-af3d-ae014b01ad3c",
+                    "path": "<Keyboard>/2",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Shield",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "049233be-1dc6-4deb-9f67-2c91e9a60782",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Shield",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

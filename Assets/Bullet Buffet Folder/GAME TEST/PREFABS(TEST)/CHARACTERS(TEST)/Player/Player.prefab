@@ -145,9 +145,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundedPlayer: 0
-  playerSpeed: 8
-  gravityValue: -9.81
-  movementInput: {x: 0, y: 0, z: 0}
+  playerSpeed: 5
+  smoothRotacion: 0.5
+  enDash: 0
+  canDash: 0
+  fuerzaDash: 50
+  cooldownDash: 5
+  tiempoDash: 0.2
   bulletSpeed: 1000
   cooldown: 0.5
   bulletPrefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
@@ -156,8 +160,11 @@ MonoBehaviour:
   salud: 100
   BarraSalud: {fileID: 843278766153327616}
   isInvulnerable: 0
-  enDash: 0
-  fuerzaDash: 200
+  canEscudo: 0
+  tiempoEscudo: 1
+  cooldownEscudo: 5
+  escudoPrefab: {fileID: 3242063237039633021, guid: 7d7e1256c1bac9648b912800c170c6c5,
+    type: 3}
 --- !u!114 &363125813633055686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,23 +195,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3730694466038743795}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 03639a67-3cfd-4d89-8eb3-71e3a9ba6944
-    m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3730694466038743795}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnShoot
+        m_MethodName: Input_Disparo
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -216,10 +207,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 590e1949-53b3-413d-8aae-88deb64ae127
     m_ActionName: Player/Shoot[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7106a696-af5d-4bb8-8bcf-056952a2de0d
-    m_ActionName: Player/Look[/XInputControllerWindows/leftTrigger,/Mouse/position/x,/Pen/position/x,/Mouse/position/y,/Pen/position/y]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 2b8abe36-8a60-43af-b8d1-c1ac04d3c18e
@@ -240,7 +227,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3730694466038743795}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnDash
+        m_MethodName: Input_Dash
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -256,9 +243,57 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 8e363ae8-dd7b-4c12-a44a-a98043c8641f
     m_ActionName: Player2/Hability[/Keyboard/h,/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3730694466038743795}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Axis1
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 041e2022-2513-4b2f-bb56-872c57b924c7
+    m_ActionName: Player1/Axis1[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3730694466038743795}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Axis2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 831506e3-add7-4e84-9c2a-74c2c647ec5a
+    m_ActionName: Player1/Axis2[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3730694466038743795}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Escudo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2fb28b4e-fe9b-48f5-a504-22b9f7049d81
+    m_ActionName: Player/Dash1[/Keyboard/1,/XInputControllerWindows/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Keyboard
-  m_DefaultActionMap: Player1
+  m_DefaultControlScheme: Controller
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!136 &7614681567939381654
@@ -910,7 +945,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3119264401097102394
 Transform:
   m_ObjectHideFlags: 0

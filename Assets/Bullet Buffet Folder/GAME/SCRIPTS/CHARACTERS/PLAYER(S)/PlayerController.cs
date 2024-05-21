@@ -1,31 +1,17 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 
-
 public class PlayerController : MonoBehaviour
 {
-
-    [Header("Shoot Stats")]
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private float cooldown;
-    private float cont = 0;
-
-    [Header("Shoot Objects")]
-    [SerializeField] private Transform bulletPrefab;
-    [SerializeField] private Transform bulletSpawn;
-    //public delegate void Shoot(in Shoot input);
-
-    [Header("Life Stats")]
-    public int salud;
-    [SerializeField] private Slider BarraSalud;
-    public bool isInvulnerable = false;
-
 
     private void Start()
     {
         Start_Movimiento();
+        Start_Dash();
+        Start_Escudo();
     }
 
     private void Update()
@@ -33,6 +19,7 @@ public class PlayerController : MonoBehaviour
         Update_Movimiento();
         Update_Shoot();
         Update_Vida();
+        Update_Escudo();
     }
 
     #region INPUT
@@ -51,12 +38,31 @@ public class PlayerController : MonoBehaviour
 
     public void Input_Dash(InputAction.CallbackContext context)
     {
-        if (!enDash)
+        if (!enDash && canDash)
         {
             enDash = true;
+            canDash = false;
             Invoke("DesactivarDash", tiempoDash);
         }
 
+    }
+
+    public void Input_Escudo(InputAction.CallbackContext context)
+    {
+        if (canEscudo)
+        {
+            canEscudo = false;
+            Vector3 posicion = transform.position + transform.forward;
+            escudo = Instantiate(escudoPrefab, posicion, transform.rotation);
+            diferenciaEscudo = escudo.position - transform.position;
+
+            Invoke("DesactivarEscudo", tiempoEscudo);
+        }
+    }
+
+    public void Input_Disparo(InputAction.CallbackContext context)
+    {
+        BulletShoot();
     }
 
     #endregion INPUT
@@ -100,28 +106,46 @@ public class PlayerController : MonoBehaviour
         controller.Move(movement * Time.deltaTime);
     }
 
-    #endregion
+    #endregion Movimiento & Rotacion
 
     #region Dash
 
-    [Header("Input_Dash Stats")]
+    [Header("Dash Stats")]
     [SerializeField] private bool enDash;
+    [SerializeField] private bool canDash;
     [SerializeField] private float fuerzaDash;
+    [SerializeField] private float cooldownDash = 5;
     [SerializeField] private float tiempoDash = 0.25f;
+
+    void Start_Dash()
+    {
+        canDash = true;
+    }
 
     void DesactivarDash()
     {
-        enDash = false;
+        StartCoroutine(CooldawnDash());
     }
 
-    #endregion
-
-    #region Shoot
-
-    public void OnShoot(InputAction.CallbackContext context)
+    IEnumerator CooldawnDash()
     {
-        BulletShoot();
+        enDash = false;
+        yield return new WaitForSeconds(cooldownDash);
+        canDash = true;
     }
+
+    #endregion Dash
+
+    #region Disparo
+
+    [Header("Shoot Stats")]
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float cooldown;
+    private float cont = 0;
+
+    [Header("Shoot Objects")]
+    [SerializeField] private Transform bulletPrefab;
+    [SerializeField] private Transform bulletSpawn;
 
     void Update_Shoot()
     {
@@ -140,9 +164,14 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    #endregion
+    #endregion Disparo
 
     #region Vida
+
+    [Header("Life Stats")]
+    public int salud;
+    [SerializeField] private Slider BarraSalud;
+    public bool isInvulnerable = false;
 
     void Update_Vida()
     {
@@ -154,6 +183,40 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    #endregion
+    #endregion Vida
 
+    #region Escudo
+
+    [Header("Shield Stats")]
+    [SerializeField] private bool canEscudo;
+    [SerializeField] private float tiempoEscudo;
+    [SerializeField] private float cooldownEscudo;
+    private Transform escudo;
+    private Vector3 diferenciaEscudo;
+
+    [Header("Shield Objects")]
+    [SerializeField] private Transform escudoPrefab;
+
+    void Start_Escudo()
+    {
+        canEscudo = true;
+    }
+    
+    void Update_Escudo()
+    {
+        escudo.position = transform.position + diferenciaEscudo;
+    }
+
+    void DesactivarEscudo()
+    {
+        Destroy(escudoPrefab, 3);
+        StartCoroutine(CooldownEscudo());
+    }
+
+    IEnumerator CooldownEscudo()
+    {
+        yield return new WaitForSeconds(cooldownEscudo);
+        canEscudo = true;
+    }
+    #endregion Escudo
 }
