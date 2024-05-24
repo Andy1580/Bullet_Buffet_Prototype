@@ -15,6 +15,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Pausa",
+                    "type": "Button",
+                    "id": "4dd5a344-6044-42c9-93e8-ce0cdb733d40",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Dash",
                     "type": "Button",
                     "id": "b6a37aa6-bdb2-46ea-af25-467e6f24a085",
@@ -205,6 +214,28 @@
                     "action": "Shield",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "df8766da-6f89-424e-a90f-f70d33a0f0b9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Pausa",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "256a5bab-ff9e-47b8-a3ef-9d5291c48173",
+                    "path": "<XInputController>/buttonNorth",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Pausa",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -255,45 +286,6 @@
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
-                }
-            ]
-        },
-        {
-            "name": "Pause Menu",
-            "id": "c00995d3-e576-45bb-a080-efc6471efb3e",
-            "actions": [
-                {
-                    "name": "Pausa",
-                    "type": "Button",
-                    "id": "2f9ac148-42a9-41a0-adb3-6ed70f6ed067",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "382a174c-3c7a-488c-832a-b7f4ff12b2f6",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Pausa",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0376619c-e254-40ba-a468-f12f67219052",
-                    "path": "<XInputController>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pausa",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }

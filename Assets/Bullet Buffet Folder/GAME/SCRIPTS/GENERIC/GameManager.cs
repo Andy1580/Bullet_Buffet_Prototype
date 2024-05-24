@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     #region GAME MANAGER
     public static GameManager Instance;
 
+
     public bool oneVone;
     public bool twoVtwo;
     public bool modoHechizos;
@@ -26,9 +27,6 @@ public class GameManager : MonoBehaviour
         oneVone = false;
         twoVtwo = false;
         modoHechizos = false;
-
-        Start_Temporizador();
-
     }
 
     private void Update()
@@ -52,6 +50,7 @@ public class GameManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         ResetVariables();
+        Update_CheckScene();
     }
 
     void ResetVariables()
@@ -87,9 +86,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float totalTime = 120f; // Total del tiempo en segundos, 120 segundos es igual a 2 minutos
     [SerializeField] private TMP_Text timerText;
     private float remainingTime;
-    private bool isRunning;
+    private bool isRunning = false;
 
-    private void Start_Temporizador()
+    private void Update_CheckScene()
     {
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
@@ -99,13 +98,18 @@ public class GameManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "ANDYCLASH")
         {
-            canvasTemporizador.SetActive(true);
-            isRunning = true;
-            remainingTime = totalTime;
-            Start_TimerText();
-            StartCoroutine(Countdown());
+            Start_Temporizador();
         }
 
+    }
+
+    private void Start_Temporizador()
+    {
+        canvasTemporizador.SetActive(true);
+        isRunning = true;
+        remainingTime = totalTime;
+        Start_TimerText();
+        StartCoroutine(Countdown());
     }
 
     private void Update_Temporizador()

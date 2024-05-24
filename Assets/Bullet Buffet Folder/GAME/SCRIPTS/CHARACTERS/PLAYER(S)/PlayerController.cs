@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
         Start_Movimiento();
         Start_Dash();
         Start_Escudo();
-        Start_Pausa();
     }
 
     private void Update()
@@ -68,13 +67,16 @@ public class PlayerController : MonoBehaviour
 
     public void Input_Pausa(InputAction.CallbackContext context)
     {
-        if(tiempoDeJuego == 1f)
+        Debug.Log("Se pauso");
+        if(!inPausa)
         {
-            tiempoDeJuego = 0f;
+            inPausa = true;
+            Time.timeScale = 0;
         }
         else
         {
-            tiempoDeJuego = 1f;
+            inPausa = false;
+            Time.timeScale = 1;
         }
     }
 
@@ -217,7 +219,7 @@ public class PlayerController : MonoBehaviour
     
     void Update_Escudo()
     {
-        escudo.position = transform.position + diferenciaEscudo;
+        //escudo.position = transform.position + diferenciaEscudo;
     }
 
     void DesactivarEscudo()
@@ -234,11 +236,7 @@ public class PlayerController : MonoBehaviour
     #endregion Escudo
 
     #region PAUSA
-    private float tiempoDeJuego;
+    private bool inPausa = false;
 
-    private void Start_Pausa()
-    {
-        tiempoDeJuego = Time.timeScale;
-    }
     #endregion PAUSA
 }
