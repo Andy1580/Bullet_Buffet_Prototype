@@ -14,40 +14,44 @@ public class RespawnSystem : MonoBehaviour
     [SerializeField] private Transform respawnPoint5;
     [SerializeField] private Transform respawnPoint6;
 
+    [SerializeField] private bool gMEncontrado = false;
+
+    GameManager gM;
+
     private void Start()
     {
         //Instantiate(prefabPlayer1, respawnPoint1.transform.position, respawnPoint1.transform.rotation);
         //Instantiate(prefabPlayer2, respawnPoint2.transform.position, respawnPoint2.transform.rotation);
 
-        if (prefabPlayer1 == null)
+
+        if (gM == null && !gMEncontrado)
         {
-            prefabPlayer1 = GameObject.FindGameObjectWithTag("Player1");
+            gM = FindFirstObjectByType<GameManager>();
+        }
+        else if (gM != null && !gMEncontrado)
+        {
+            gMEncontrado = true;
         }
 
-        
+        if (gM.oneVone == true)
+        {
+            Instantiate(prefabPlayer1, respawnPoint1.localPosition, Quaternion.identity);
+            Instantiate(prefabPlayer2, respawnPoint2.localPosition, Quaternion.identity);
+        }
+        else if (gM.twoVtwo == true)
+        {
+            Instantiate(prefabPlayer1, respawnPoint3.localPosition, Quaternion.identity);
+            Instantiate(prefabPlayer2, respawnPoint4.localPosition, Quaternion.identity);
+            Instantiate(prefabPlayer3, respawnPoint5.localPosition, Quaternion.identity);
+            Instantiate(prefabPlayer4, respawnPoint6.localPosition, Quaternion.identity);
+        }
     }
-
 
     private void Update()
     {
-
-        if (prefabPlayer2 == null)
+        if(!gMEncontrado)
         {
-            prefabPlayer2 = GameObject.FindGameObjectWithTag("Player2");
-        }
-
-
-        if (prefabPlayer1.GetComponent<Vida>().salud <= 0)
-        {
-            //prefabPlayer1.GetComponent<Vida>().salud = 100;
-            prefabPlayer1.transform.position = respawnPoint1.transform.position;
-
-        }
-
-        if (prefabPlayer2.GetComponent<Vida>().salud <= 0)
-        {
-            //prefabPlayer2.GetComponent<Vida>().salud = 100;
-            prefabPlayer2.transform.position = respawnPoint2.transform.position;
+            gM = FindFirstObjectByType<GameManager>();
         }
     }
 }

@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
         Start_Movimiento();
         Start_Dash();
         Start_Escudo();
+        Start_Pausa();
     }
 
     private void Update()
@@ -63,6 +64,18 @@ public class PlayerController : MonoBehaviour
     public void Input_Disparo(InputAction.CallbackContext context)
     {
         BulletShoot();
+    }
+
+    public void Input_Pausa(InputAction.CallbackContext context)
+    {
+        if(tiempoDeJuego == 1f)
+        {
+            tiempoDeJuego = 0f;
+        }
+        else
+        {
+            tiempoDeJuego = 1f;
+        }
     }
 
     #endregion INPUT
@@ -219,4 +232,13 @@ public class PlayerController : MonoBehaviour
         canEscudo = true;
     }
     #endregion Escudo
+
+    #region PAUSA
+    private float tiempoDeJuego;
+
+    private void Start_Pausa()
+    {
+        tiempoDeJuego = Time.timeScale;
+    }
+    #endregion PAUSA
 }

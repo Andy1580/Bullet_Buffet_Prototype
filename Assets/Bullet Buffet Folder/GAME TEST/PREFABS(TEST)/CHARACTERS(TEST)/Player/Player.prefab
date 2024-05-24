@@ -212,18 +212,6 @@ MonoBehaviour:
     m_ActionId: 2b8abe36-8a60-43af-b8d1-c1ac04d3c18e
     m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: eb329c11-ebb1-4d41-bcbe-bf3344452675
-    m_ActionName: Player2/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 535d56b3-6eb2-4d7a-b035-0a9397a2db77
-    m_ActionName: Player2/Shoot[/Keyboard/h,/XInputControllerWindows/rightTrigger,/XInputControllerWindows1/rightTrigger]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c94f87f3-7179-4433-bc31-91e2917e89d2
-    m_ActionName: Player2/Look[/XInputControllerWindows/leftTrigger,/XInputControllerWindows1/leftTrigger,/Mouse/position/x,/Pen/position/x,/Mouse/position/y,/Pen/position/y]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3730694466038743795}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
@@ -239,10 +227,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: b6a37aa6-bdb2-46ea-af25-467e6f24a085
     m_ActionName: Player1/Hability[/Keyboard/h,/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8e363ae8-dd7b-4c12-a44a-a98043c8641f
-    m_ActionName: Player2/Hability[/Keyboard/h,/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3730694466038743795}
@@ -291,6 +275,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2fb28b4e-fe9b-48f5-a504-22b9f7049d81
     m_ActionName: Player/Dash1[/Keyboard/1,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3730694466038743795}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Input_Pausa
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2f9ac148-42a9-41a0-adb3-6ed70f6ed067
+    m_ActionName: Pause Menu/Pausa[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: Player
