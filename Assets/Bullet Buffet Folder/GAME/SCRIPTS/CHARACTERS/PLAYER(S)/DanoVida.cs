@@ -10,7 +10,7 @@ public class DañoVida : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player1") || other.CompareTag("Player2"))
+        if (other.CompareTag("Player1") || other.CompareTag("Player2") || other.CompareTag("Player3") || other.CompareTag("Player4"))
         {
             PlayerController pC = other.GetComponent<PlayerController>();
             if (pC != null && !pC.isInvulnerable)

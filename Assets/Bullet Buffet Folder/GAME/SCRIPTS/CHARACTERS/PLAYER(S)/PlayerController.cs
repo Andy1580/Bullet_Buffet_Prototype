@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
         Start_Movimiento();
         Start_Dash();
         Start_Escudo();
+        Start_Animator();
     }
 
     private void Update()
@@ -67,16 +68,9 @@ public class PlayerController : MonoBehaviour
 
     public void Input_Pausa(InputAction.CallbackContext context)
     {
-        Debug.Log("Se pauso");
-        if(!inPausa)
+        if (context.performed)
         {
-            inPausa = true;
-            Time.timeScale = 0;
-        }
-        else
-        {
-            inPausa = false;
-            Time.timeScale = 1;
+            GameManager.Pausa(this);
         }
     }
 
@@ -104,8 +98,27 @@ public class PlayerController : MonoBehaviour
         movement.x = moveXZ.x;
         movement.z = moveXZ.z;
 
+
         Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
         transform.LookAt(rotation);
+
+        if (moveXZ == Vector3.zero)
+        {
+            animator.SetBool("movimiento", false);
+        }
+        else if (moveXZ != Vector3.zero)
+        {
+            animator.SetBool("movimiento", true);
+        }
+
+        if (enDash)
+        {
+            animator.SetBool("dash", true);
+        }
+        else
+        {
+            animator.SetBool("dash", false);
+        }
 
         if (controller.isGrounded)
         {
@@ -195,6 +208,8 @@ public class PlayerController : MonoBehaviour
         if (salud <= 0)
         {
             Debug.Log("Muerto" + this.gameObject.name);
+            animator.SetTrigger("muerto");
+            GameManager.Marcador(this);
         }
 
     }
@@ -216,7 +231,7 @@ public class PlayerController : MonoBehaviour
     {
         canEscudo = true;
     }
-    
+
     void Update_Escudo()
     {
         //escudo.position = transform.position + diferenciaEscudo;
@@ -235,8 +250,13 @@ public class PlayerController : MonoBehaviour
     }
     #endregion Escudo
 
-    #region PAUSA
-    private bool inPausa = false;
+    #region ANIMATOR
+    private Animator animator;
 
-    #endregion PAUSA
+    void Start_Animator()
+    {
+        animator = GetComponent<Animator>();
+    }
+    #endregion ANIMATOR
+
 }

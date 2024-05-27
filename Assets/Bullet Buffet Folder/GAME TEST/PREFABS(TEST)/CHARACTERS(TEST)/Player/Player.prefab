@@ -276,23 +276,11 @@ MonoBehaviour:
     m_ActionId: 2fb28b4e-fe9b-48f5-a504-22b9f7049d81
     m_ActionName: Player/Dash1[/Keyboard/1,/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3730694466038743795}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Input_Pausa
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 2f9ac148-42a9-41a0-adb3-6ed70f6ed067
-    m_ActionName: Pause Menu/Pausa[/Keyboard/escape]
+      m_Calls: []
+    m_ActionId: 4dd5a344-6044-42c9-93e8-ce0cdb733d40
+    m_ActionName: Player/Pausa[/Keyboard/escape,/XInputControllerWindows/buttonNorth]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Controller
+  m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -1372,6 +1360,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Coke_mann
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e4ffe65c12684ba419099bccd2b2e53f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
