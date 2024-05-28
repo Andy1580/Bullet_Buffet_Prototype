@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     #region GAME MANAGER
     public static GameManager Instance;
 
-
     public bool oneVone;
     public bool twoVtwo;
     public bool modoHechizos;
@@ -120,6 +119,7 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1;
         }
+        print(Time.timeScale);
     }
     #endregion PAUSA
 

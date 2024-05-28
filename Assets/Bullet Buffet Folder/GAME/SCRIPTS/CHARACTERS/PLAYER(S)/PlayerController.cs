@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
+            print(name);
             GameManager.Pausa(this);
         }
     }
