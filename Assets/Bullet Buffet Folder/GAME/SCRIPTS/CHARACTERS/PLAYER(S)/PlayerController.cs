@@ -256,6 +256,7 @@ public class PlayerController : MonoBehaviour
     void Start_Animator()
     {
         animator = GetComponent<Animator>();
+        animator.SetTrigger("spawn");
     }
     #endregion ANIMATOR
 

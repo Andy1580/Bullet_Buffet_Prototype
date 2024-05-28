@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         ResetVariables();
         Update_CheckScene();
         Start_Spawn();
-        
+
         Update_Marcador();
     }
 
@@ -78,15 +78,16 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
-            canvasTiempoAgotado.SetActive(false);
-            canvasTemporizador.SetActive(false);
-            canvasMarcador.SetActive(false);
+            panelTiempoAgotado.SetActive(false);
+            panelTemporizador.SetActive(false);
+            panelMarcador.SetActive(false);
+            panelVictoria.SetActive(false);
         }
 
         if (SceneManager.GetActiveScene().name == "ANDYCLASH")
         {
             Start_Temporizador();
-            Start_Marcador();
+            panelMarcador.SetActive(true);
         }
 
     }
@@ -111,7 +112,7 @@ public class GameManager : MonoBehaviour
         //Se invierten entre ellos
         enPausa = !enPausa;
 
-        if(enPausa)
+        if (enPausa)
         {
             Time.timeScale = 0;
         }
@@ -123,65 +124,103 @@ public class GameManager : MonoBehaviour
     #endregion PAUSA
 
     #region MARCADOR
-    [SerializeField] private GameObject canvasMarcador;
-    [SerializeField] private GameObject canvasVictoria;
-    private static int puntosAGanarPlayer1 = 0;
-    private static int puntosAGanarPlayer2 = 0;
-    [SerializeField] private TMP_Text puntajePlayer1;
-    [SerializeField] private TMP_Text puntajePlayer2;
+    [SerializeField] private GameObject panelMarcador;
+    [SerializeField] private static GameObject panelEstaticoVictoria;
+    [SerializeField] private  GameObject panelVictoria;
+    private int puntosAGanarPlayer1 = 0;
+    private int puntosAGanarPlayer2 = 0;
+    //[SerializeField] private TMP_Text puntajePlayer1;
+    //[SerializeField] private TMP_Text puntajePlayer2;
+    //[SerializeField] private TMP_Text playerWinText;
 
     void Start_Marcador()
     {
-        canvasMarcador.SetActive(true);
-        canvasVictoria.SetActive(false);
+        panelEstaticoVictoria = panelVictoria;
+        panelVictoria.SetActive(false);
+        panelMarcador.SetActive(false);
+        //panelEstaticoVictoria.SetActive(false);
 
-        puntajePlayer1.text = puntosAGanarPlayer1.ToString();
+        //puntajePlayer1.text = puntosAGanarPlayer1.ToString();
+        //puntajePlayer2.text = puntosAGanarPlayer2.ToString();
     }
 
     public static void Marcador(PlayerController player)
     {
-        //Preguntar al profe por otra opcion porque no me deja usar el Invoke ó una Corutina
-        if(player.gameObject.tag == "Player1")
-        {
-            puntosAGanarPlayer1++;
-        }
+
+
+        panelEstaticoVictoria.SetActive(true);
+
+        ////Preguntar al profe por otra opcion porque no me deja usar el Invoke ó una Corutina
+        //if (player.gameObject.tag == "Player1")
+        //{
+        //    puntosAGanarPlayer2++;
+        //    CambioDeRonda1v1();
+        //}
+
+        //else if (player.gameObject.tag == "Player2")
+        //{
+        //    puntosAGanarPlayer1++;
+        //    CambioDeRonda1v1();
+        //}
     }
 
-    private void CambioDeRonda()
+    private static void CambioDeRonda1v1()
     {
-        prefabPlayer1.GetComponent<PlayerController>().enabled = false;
-        prefabPlayer2.GetComponent<PlayerController>().enabled = false;
-        
+        //prefabPlayer1.SetActive(false);
+        //prefabPlayer2.SetActive(false);
+        //prefabPlayer1.GetComponent<PlayerController>().enabled = false;
+        //prefabPlayer2.GetComponent<PlayerController>().enabled = false;
+
+
+
+        //prefabPlayer1.transform.position = respawnPoint1.localPosition;
+        //prefabPlayer2.transform.position = respawnPoint2.localPosition;
+
+
+
+        //prefabPlayer1.SetActive(true);
+        //prefabPlayer2.SetActive(true);
+        //prefabPlayer1.GetComponent<PlayerController>().enabled = true;
+        //prefabPlayer2.GetComponent<PlayerController>().enabled = true;
+
+
+
     }
 
     void Update_Marcador()
     {
-        if(puntosAGanarPlayer1 >= 3)
-        {
-            canvasVictoria.SetActive(true);
-        }
+        //if (puntosAGanarPlayer1 >= 3)
+        //{
+        //    panelEstaticoVictoria.SetActive(true);
+        //    playerWinText.text = prefabPlayer1.gameObject.name;
+        //}
+
+        //else if (puntosAGanarPlayer2 >= 3)
+        //{
+
+        //}
 
     }
     #endregion MARCADOR
 
     #region SPAWN
     [Header("Jugadores")]
-    [SerializeField] private static GameObject prefabPlayer1;
-    [SerializeField] private static GameObject prefabPlayer2;
-    [SerializeField] private static GameObject prefabPlayer3;
+    [SerializeField] private GameObject prefabPlayer1;
+    [SerializeField] private GameObject prefabPlayer2;
+    [SerializeField] private GameObject prefabPlayer3;
     [SerializeField] private GameObject prefabPlayer4;
 
     [Header("Spawn Points")]
-    [SerializeField] private static Transform respawnPoint1;
-    [SerializeField] private static Transform respawnPoint2;
-    [SerializeField] private static Transform respawnPoint3;
-    [SerializeField] private static Transform respawnPoint4;
-    [SerializeField] private static Transform respawnPoint5;
-    [SerializeField] private static Transform respawnPoint6;
+    [SerializeField] private Transform respawnPoint1;
+    [SerializeField] private Transform respawnPoint2;
+    [SerializeField] private Transform respawnPoint3;
+    [SerializeField] private Transform respawnPoint4;
+    [SerializeField] private Transform respawnPoint5;
+    [SerializeField] private Transform respawnPoint6;
 
     void Start_Spawn()
     {
-        if(SceneManager.GetActiveScene().name == "ANDYCLASH")
+        if (SceneManager.GetActiveScene().name == "ANDYCLASH")
         {
             Debug.Log("Si entro el start spawn");
             if (oneVone == true)
@@ -202,8 +241,8 @@ public class GameManager : MonoBehaviour
 
     #region TEMPORIZADOR
 
-    [SerializeField] private GameObject canvasTemporizador;
-    [SerializeField] private GameObject canvasTiempoAgotado;
+    [SerializeField] private GameObject panelTemporizador;
+    [SerializeField] private GameObject panelTiempoAgotado;
     [SerializeField] private float totalTime = 120f; // Total del tiempo en segundos, 120 segundos es igual a 2 minutos
     [SerializeField] private TMP_Text timerText;
     private float remainingTime;
@@ -211,7 +250,7 @@ public class GameManager : MonoBehaviour
 
     private void Start_Temporizador()
     {
-        canvasTemporizador.SetActive(true);
+        panelTemporizador.SetActive(true);
         isRunning = true;
         remainingTime = totalTime;
         Start_TimerText();
@@ -222,9 +261,9 @@ public class GameManager : MonoBehaviour
     {
         if (remainingTime <= 0)
         {
-            canvasTiempoAgotado.SetActive(true);
-            canvasTemporizador.SetActive(false);
-            canvasMarcador.SetActive(false);
+            panelTiempoAgotado.SetActive(true);
+            panelTemporizador.SetActive(false);
+            panelMarcador.SetActive(false);
         }
     }
 
