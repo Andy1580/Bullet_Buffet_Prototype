@@ -17,6 +17,11 @@ public class Temporizador : MonoBehaviour
         StartCoroutine(Countdown());
     }
 
+    private void FixUpdate_Temporizador()
+    {
+
+    }
+
     private IEnumerator Countdown()
     {
         while (remainingTime > 0)

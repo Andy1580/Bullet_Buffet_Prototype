@@ -1,17 +1,10 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    #region GAME MANAGER
-    public static GameManager Instance;
-
-    public bool oneVone;
-    public bool twoVtwo;
-    public bool modoHechizos;
-
     private void Awake()
     {
         MakeSingleton();
@@ -28,13 +21,18 @@ public class GameManager : MonoBehaviour
         modoHechizos = false;
 
         Start_Marcador();
-        Start_Spawn();
     }
 
     private void Update()
     {
-        Update_Temporizador();
+        Update_CheckScene();
         Update_Marcador();
+    }
+
+    private void FixedUpdate()
+    {
+        FixUpdate_Temporizador();
+        FixUpdate_CheckScene();
     }
 
     private void MakeSingleton()
@@ -50,12 +48,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region GAME MANAGER
+    public static GameManager Instance;
+
+    public bool oneVone;
+    public bool twoVtwo;
+    public bool modoHechizos;
+
+    //En este metodo se pone todo lo que quieras que pase al cargar una escena
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         ResetVariables();
-        Update_CheckScene();
-        Start_Spawn();
-
+        Initialize_Spawn();
+        FixUpdate_CheckScene();
         Update_Marcador();
     }
 
@@ -70,10 +75,24 @@ public class GameManager : MonoBehaviour
 
             //Temporizador
             remainingTime = totalTime;
+            inGame = false;
         }
     }
 
     private void Update_CheckScene()
+    {
+
+        if (SceneManager.GetActiveScene().name == "ANDYCLASH")
+        {
+            if(!inGame)
+            {
+                inGame = true;
+            }
+        }
+
+    }
+
+    private void FixUpdate_CheckScene()
     {
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
@@ -81,14 +100,14 @@ public class GameManager : MonoBehaviour
             panelTemporizador.SetActive(false);
             panelMarcador.SetActive(false);
             panelVictoria.SetActive(false);
+
         }
 
-        if (SceneManager.GetActiveScene().name == "ANDYCLASH")
+        if (SceneManager.GetActiveScene().name == "ANDYCLASH" && inGame)
         {
             Start_Temporizador();
             panelMarcador.SetActive(true);
         }
-
     }
 
     public void ResetGame()
@@ -105,6 +124,7 @@ public class GameManager : MonoBehaviour
 
     #region PAUSA
     private static bool enPausa;
+    public static bool EnPausa => enPausa;
 
     public static void Pausa(PlayerController player)
     {
@@ -119,14 +139,14 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1;
         }
-        print(Time.timeScale);
+
     }
     #endregion PAUSA
 
     #region MARCADOR
     [SerializeField] private GameObject panelMarcador;
     [SerializeField] private static GameObject panelEstaticoVictoria;
-    [SerializeField] private  GameObject panelVictoria;
+    [SerializeField] private GameObject panelVictoria;
     private int puntosAGanarPlayer1 = 0;
     private int puntosAGanarPlayer2 = 0;
     //[SerializeField] private TMP_Text puntajePlayer1;
@@ -204,12 +224,7 @@ public class GameManager : MonoBehaviour
     #endregion MARCADOR
 
     #region SPAWN
-    [Header("Jugadores")]
-    [SerializeField] private GameObject prefabPlayer1;
-    [SerializeField] private GameObject prefabPlayer2;
-    [SerializeField] private GameObject prefabPlayer3;
-    [SerializeField] private GameObject prefabPlayer4;
-
+   
     [Header("Spawn Points")]
     [SerializeField] private Transform respawnPoint1;
     [SerializeField] private Transform respawnPoint2;
@@ -218,11 +233,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform respawnPoint5;
     [SerializeField] private Transform respawnPoint6;
 
-    void Start_Spawn()
+    void Initialize_Spawn()
     {
         if (SceneManager.GetActiveScene().name == "ANDYCLASH")
         {
-            Debug.Log("Si entro el start spawn");
             if (oneVone == true)
             {
                 Instantiate(prefabPlayer1, respawnPoint1.localPosition, Quaternion.identity);
@@ -239,12 +253,15 @@ public class GameManager : MonoBehaviour
     }
     #endregion SPAWN
 
+    //Arreglar Temporizador
     #region TEMPORIZADOR
 
+    [Header("Temporizador")]
     [SerializeField] private GameObject panelTemporizador;
     [SerializeField] private GameObject panelTiempoAgotado;
     [SerializeField] private float totalTime = 120f; // Total del tiempo en segundos, 120 segundos es igual a 2 minutos
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private bool inGame = false;
     private float remainingTime;
     private bool isRunning = false;
 
@@ -254,26 +271,22 @@ public class GameManager : MonoBehaviour
         isRunning = true;
         remainingTime = totalTime;
         Start_TimerText();
-        StartCoroutine(Countdown());
+        FixUpdate_Temporizador();
+        Start_TimerText();
     }
 
-    private void Update_Temporizador()
+    private void FixUpdate_Temporizador()
     {
-        if (remainingTime <= 0)
-        {
-            panelTiempoAgotado.SetActive(true);
-            panelTemporizador.SetActive(false);
-            panelMarcador.SetActive(false);
-        }
-    }
+        //if (remainingTime <= 0)
+        //{
+        //    panelTiempoAgotado.SetActive(true);
+        //    panelTemporizador.SetActive(false);
+        //    panelMarcador.SetActive(false);
+        //}
 
-    private IEnumerator Countdown()
-    {
         while (remainingTime > 0)
         {
-            yield return new WaitForSeconds(1f);
-            remainingTime--;
-            Start_TimerText();
+            remainingTime -= Time.fixedDeltaTime;
         }
         isRunning = false;
         TimerEnded();
@@ -292,4 +305,12 @@ public class GameManager : MonoBehaviour
     }
     #endregion TEMPORIZADOR
 
+    #region JUGADORES
+    [Header("Jugadores")]
+    public GameObject prefabPlayer1;
+    public GameObject prefabPlayer2;
+    public GameObject prefabPlayer3;
+    public GameObject prefabPlayer4;
+
+    #endregion JUGADORES
 }

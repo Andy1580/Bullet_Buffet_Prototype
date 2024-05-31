@@ -57,11 +57,11 @@ public class MainMenuSystem : MonoBehaviour
     {
         if(gM.modoHechizos && gM.oneVone)
         {
-            Invoke("CargarModoHechizos", 0.25f);
+            Invoke("CargarLobby", 0.25f);
         }
         else if(gM.modoHechizos && gM.twoVtwo)
         {
-            Invoke("CargarModoHechizos", 0.25f);
+            Invoke("CargarLobby", 0.25f);
         }
     }
 
@@ -109,9 +109,9 @@ public class MainMenuSystem : MonoBehaviour
         gM.twoVtwo = true;
     }
 
-    private void CargarModoHechizos()
+    private void CargarLobby()
     {
         Debug.Log("Si se invoco el metodo para cargra escena");
-        SceneManager.LoadScene("ANDYCLASH");
+        SceneManager.LoadScene("ANDYLOBBY");
     }
 }

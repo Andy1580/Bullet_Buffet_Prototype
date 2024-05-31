@@ -103,6 +103,9 @@ public class PlayerController : MonoBehaviour
         Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
         transform.LookAt(rotation);
 
+        if (GameManager.EnPausa)
+            return;
+
         if (moveXZ == Vector3.zero)
         {
             animator.SetBool("movimiento", false);
