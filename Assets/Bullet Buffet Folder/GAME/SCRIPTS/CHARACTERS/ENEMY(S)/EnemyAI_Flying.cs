@@ -26,16 +26,16 @@ public class EnemyAI_Flying : MonoBehaviour
 
     private void ChasePlayer()
     {
-        // Calcular la dirección hacia el jugador
+        // Calcular la dirección hacia el pfJugador
         Vector3 direction = (player.position - transform.position).normalized;
 
         
         transform.LookAt(player);
 
-        // Mover el enemigo en la dirección del jugador
+        // Mover el enemigo en la dirección del pfJugador
         transform.Translate(direction * chaseSpeed * Time.deltaTime);
 
-        // Si el jugador está dentro del rango de ataque, detenerse y atacar
+        // Si el pfJugador está dentro del rango de ataque, detenerse y atacar
         if (Vector3.Distance(transform.position, player.position) <= attackRange)
         {
             

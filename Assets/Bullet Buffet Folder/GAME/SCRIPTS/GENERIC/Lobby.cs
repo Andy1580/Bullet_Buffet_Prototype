@@ -1,80 +1,80 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 
 public class Lobby : MonoBehaviour
 {
+    public static Lobby InstanceLobby;
 
-    [SerializeField] private bool gMEncontrado = false;
-    [SerializeField] private bool p1Listo = false;
-    [SerializeField] private bool p2Listo = false;
-    [SerializeField] private bool p3Listo = false;
-    [SerializeField] private bool p4Listo = false;
-    GameManager gM;
+    public GameObject playerUIPrefab;
+    public List<GameObject> playerUIs = new List<GameObject>();
 
-    [SerializeField] private GameObject personaje1;
-    [SerializeField] private GameObject personaje2;
-    [SerializeField] private GameObject personaje3;
-    [SerializeField] private GameObject personaje4;
+    private void Awake()
+    {
+        if(InstanceLobby != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            InstanceLobby = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
 
     private void Start()
     {
-        if (gM == null && !gMEncontrado)
+        InputSystem.onDeviceChange += CambioEnControl;
+    }
+
+    [SerializeField] private List<SlotJugador> slots;
+    private void CambioEnControl(InputDevice device, InputDeviceChange cambio)
+    {
+        //if(!(device is Gamepad || !(device is Keyboard)) || !(device is Mouse))
+        //    return;
+
+        if (!(device is Gamepad))
+            return;
+
+        if (cambio == InputDeviceChange.Added)
         {
-            gM = FindFirstObjectByType<GameManager>();
+            foreach (SlotJugador slot in slots)
+            {
+                if (slot.Control == null)
+                    slot.Control = device;
+                AddPlayer();
+                //GameManager.RegistrarJugadores();
+            }
         }
-        else if (gM != null && !gMEncontrado)
+
+        else if (cambio == InputDeviceChange.Removed)
         {
-            gMEncontrado = true;
+            foreach (SlotJugador slot in slots)
+            {
+                if (slot.Control == device)
+                    slot.Control = null;
+            }
         }
+
+
     }
 
-    private void Update()
+    private void AddPlayer()
     {
-        if (!gMEncontrado)
+        //var playerUI = Instantiate(playerUIPrefab, transform);
+        //var playerInput = playerUI.GetComponent<PlayerInput>();
+
+        //if (playerInput != null)
+        //{
+        //    InputUser.PerformPairingWithDevice(device, playerInput.user);
+        //}
+
+        //playerUIs.Add(playerUI);
+
+        foreach(SlotJugador slot in slots)
         {
-            gM = FindFirstObjectByType<GameManager>();
+            Instantiate(slot.pfJugador);
         }
-
-        if(gM.oneVone && gM.modoHechizos && p1Listo && p2Listo)
-        {
-            Invoke("CargarModoHechizos", 0.25f);
-        }
-        else if(gM.oneVone && gM.modoHechizos && p1Listo && p2Listo && p3Listo && p4Listo)
-        {
-            Invoke("CargarModoHechizos", 0.25f);
-        }
-    }
-
-    public void Personaje1()
-    {
-        gM.prefabPlayer1 = personaje1;
-        p1Listo = true;
-    }
-
-    public void Personaje2()
-    {
-        gM.prefabPlayer2 = personaje2;
-        p2Listo = true;
-    }
-
-    public void Personaje3()
-    {
-        gM.prefabPlayer1 = personaje1;
-        p1Listo = true;
-    }
-
-    public void Personaje4()
-    {
-        gM.prefabPlayer4 = personaje4;
-        p4Listo = true;
-    }
-
-    private void CargarModoHechizos()
-    {
-        Debug.Log("Si se invoco el metodo para cargra escena");
-        SceneManager.LoadScene("ANDYCLASH");
     }
 }

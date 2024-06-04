@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             print(name);
-            GameManager.Pausa(this);
+            //GameManager.Pausa(this);
         }
     }
 
@@ -88,6 +88,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 axis1 = Vector3.zero;
     private Vector3 axis2 = Vector3.zero;
 
+    internal bool BloquearMovimiento = false;
+
     private void Start_Movimiento()
     {
         controller = gameObject.GetComponent<CharacterController>();
@@ -95,6 +97,9 @@ public class PlayerController : MonoBehaviour
 
     void Update_Movimiento()
     {
+        if (BloquearMovimiento)
+            return;
+
         Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
         movement.x = moveXZ.x;
         movement.z = moveXZ.z;

@@ -28,10 +28,10 @@ public class EnemyAI_Meele : MonoBehaviour
 
     private void ChasePlayer()
     {
-        // Configurar la velocidad del NavMeshAgent para que se mueva hacia el jugador
+        // Configurar la velocidad del NavMeshAgent para que se mueva hacia el pfJugador
         navMeshAgent.SetDestination(player.position);
 
-        // Si la distancia al jugador es menor que la distancia de parada, detenerse
+        // Si la distancia al pfJugador es menor que la distancia de parada, detenerse
         if (Vector3.Distance(transform.position, player.position) <= stoppingDistance)
         {
             navMeshAgent.isStopped = true;
@@ -61,7 +61,7 @@ public class EnemyAI_Meele : MonoBehaviour
             isAttacking = true;
             attackCollider.SetActive(true);
             // No hay necesidad de iniciar el temporizador de enfriamiento aquí,
-            // ya que el ataque se desactivará cuando el jugador salga del trigger.
+            // ya que el ataque se desactivará cuando el pfJugador salga del trigger.
         }
     }
 

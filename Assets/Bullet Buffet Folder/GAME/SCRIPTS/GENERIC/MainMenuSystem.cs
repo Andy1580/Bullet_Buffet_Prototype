@@ -55,11 +55,11 @@ public class MainMenuSystem : MonoBehaviour
 
     private void Update_CheckBooleans()
     {
-        if(gM.modoHechizos && gM.oneVone)
+        if(GameManager.modoHechizos && GameManager.oneVone)
         {
             Invoke("CargarLobby", 0.25f);
         }
-        else if(gM.modoHechizos && gM.twoVtwo)
+        else if(GameManager.modoHechizos && GameManager.twoVtwo)
         {
             Invoke("CargarLobby", 0.25f);
         }
@@ -92,7 +92,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void ModoHechizos()
     {
-        gM.modoHechizos = true;
+        GameManager.modoHechizos = true;
         panelVersus.SetActive(true);
         panelSetings.SetActive(false);
         panelModos.SetActive(false);
@@ -101,12 +101,12 @@ public class MainMenuSystem : MonoBehaviour
 
     public void OneVOne()
     {
-        gM.oneVone = true;
+       GameManager.oneVone = true;
     }
 
     public void TwoVTwo()
     {
-        gM.twoVtwo = true;
+        GameManager.twoVtwo = true;
     }
 
     private void CargarLobby()

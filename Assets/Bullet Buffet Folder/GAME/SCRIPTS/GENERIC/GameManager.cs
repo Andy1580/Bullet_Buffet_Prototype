@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -51,15 +51,15 @@ public class GameManager : MonoBehaviour
     #region GAME MANAGER
     public static GameManager Instance;
 
-    public bool oneVone;
-    public bool twoVtwo;
-    public bool modoHechizos;
+    public static bool oneVone;
+    public static bool twoVtwo;
+    public static bool modoHechizos;
 
     //En este metodo se pone todo lo que quieras que pase al cargar una escena
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         ResetVariables();
-        Initialize_Spawn();
+        //Initialize_Spawn();
         FixUpdate_CheckScene();
         Update_Marcador();
     }
@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
             //Temporizador
             remainingTime = totalTime;
             inGame = false;
+            isRunning = false;
         }
     }
 
@@ -84,9 +85,14 @@ public class GameManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "ANDYCLASH")
         {
-            if(!inGame)
+            if (!inGame)
             {
                 inGame = true;
+            }
+
+            if (!isRunning)
+            {
+                isRunning = true;
             }
         }
 
@@ -105,7 +111,11 @@ public class GameManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "ANDYCLASH" && inGame)
         {
-            Start_Temporizador();
+            if (isRunning)
+            {
+                Start_Temporizador();
+            }
+
             panelMarcador.SetActive(true);
         }
     }
@@ -126,21 +136,32 @@ public class GameManager : MonoBehaviour
     private static bool enPausa;
     public static bool EnPausa => enPausa;
 
-    public static void Pausa(PlayerController player)
-    {
-        //Se invierten entre ellos
-        enPausa = !enPausa;
+    //public static void Pausa(PlayerController player)
+    //{
+    //    //Se invierten entre ellos
+    //    enPausa = !enPausa;
 
-        if (enPausa)
-        {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
+    //    if (enPausa)
+    //    {
+    //        Time.timeScale = 0;
 
-    }
+    //        foreach (PlayerController j in jugadores)
+    //        {
+    //            j.BloquearMovimiento = true;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Time.timeScale = 1;
+
+    //        foreach (PlayerController j in jugadores)
+    //        {
+    //            j.BloquearMovimiento= false;
+    //        }
+
+    //    }
+
+    //}
     #endregion PAUSA
 
     #region MARCADOR
@@ -193,8 +214,8 @@ public class GameManager : MonoBehaviour
 
 
 
-        //prefabPlayer1.transform.position = respawnPoint1.localPosition;
-        //prefabPlayer2.transform.position = respawnPoint2.localPosition;
+        //prefabPlayer1.transform.position = modo1v1spawn1.localPosition;
+        //prefabPlayer2.transform.position = modo1v1spawn2.localPosition;
 
 
 
@@ -224,36 +245,38 @@ public class GameManager : MonoBehaviour
     #endregion MARCADOR
 
     #region SPAWN
-   
-    [Header("Spawn Points")]
-    [SerializeField] private Transform respawnPoint1;
-    [SerializeField] private Transform respawnPoint2;
-    [SerializeField] private Transform respawnPoint3;
-    [SerializeField] private Transform respawnPoint4;
-    [SerializeField] private Transform respawnPoint5;
-    [SerializeField] private Transform respawnPoint6;
+    
 
-    void Initialize_Spawn()
-    {
-        if (SceneManager.GetActiveScene().name == "ANDYCLASH")
-        {
-            if (oneVone == true)
-            {
-                Instantiate(prefabPlayer1, respawnPoint1.localPosition, Quaternion.identity);
-                Instantiate(prefabPlayer2, respawnPoint2.localPosition, Quaternion.identity);
-            }
-            else if (twoVtwo == true)
-            {
-                Instantiate(prefabPlayer1, respawnPoint3.localPosition, Quaternion.identity);
-                Instantiate(prefabPlayer2, respawnPoint4.localPosition, Quaternion.identity);
-                Instantiate(prefabPlayer3, respawnPoint5.localPosition, Quaternion.identity);
-                Instantiate(prefabPlayer4, respawnPoint6.localPosition, Quaternion.identity);
-            }
-        }
-    }
+    [Header("Spawn Points")]
+    [SerializeField] private Transform modo1v1spawn1;
+    [SerializeField] private Transform modo1v1spawn2;
+    [SerializeField] private Transform modo2v2spawn1;
+    [SerializeField] private Transform modo2v2spawn2;
+    [SerializeField] private Transform modo2v2spawn3;
+    [SerializeField] private Transform modo2v2spawn4;
+
+    //private void Initialize_Spawn()
+    //{
+    //    if (SceneManager.GetActiveScene().name == "ANDYCLASH")
+    //    {
+    //        if (oneVone == true)
+    //        {
+
+
+    //            j1 = Instantiate(pfJugador, modo1v1spawn1.localPosition, Quaternion.identity);
+    //            PlayerController j2 = Instantiate(pfJugador, modo1v1spawn2.localPosition, Quaternion.identity);
+    //        }
+    //        else if (twoVtwo == true)
+    //        {
+    //            PlayerController j1 = Instantiate(pfJugador, modo2v2spawn1.localPosition, Quaternion.identity);
+    //            PlayerController j2 = Instantiate(pfJugador, modo2v2spawn2.localPosition, Quaternion.identity);
+    //            PlayerController j3 = Instantiate(pfJugador, modo2v2spawn3.localPosition, Quaternion.identity);
+    //            PlayerController j4 = Instantiate(pfJugador, modo2v2spawn4.localPosition, Quaternion.identity);
+    //        }
+    //    }
+    //}
     #endregion SPAWN
 
-    //Arreglar Temporizador
     #region TEMPORIZADOR
 
     [Header("Temporizador")]
@@ -268,28 +291,26 @@ public class GameManager : MonoBehaviour
     private void Start_Temporizador()
     {
         panelTemporizador.SetActive(true);
-        isRunning = true;
         remainingTime = totalTime;
-        Start_TimerText();
-        FixUpdate_Temporizador();
         Start_TimerText();
     }
 
     private void FixUpdate_Temporizador()
     {
-        //if (remainingTime <= 0)
-        //{
-        //    panelTiempoAgotado.SetActive(true);
-        //    panelTemporizador.SetActive(false);
-        //    panelMarcador.SetActive(false);
-        //}
-
-        while (remainingTime > 0)
+        if (remainingTime <= 0)
+        {
+            panelTiempoAgotado.SetActive(true);
+            panelTemporizador.SetActive(false);
+            panelMarcador.SetActive(false);
+            isRunning = false;
+            TimerEnded();
+        }
+        else
         {
             remainingTime -= Time.fixedDeltaTime;
         }
-        isRunning = false;
-        TimerEnded();
+
+
     }
 
     private void TimerEnded()
@@ -306,11 +327,19 @@ public class GameManager : MonoBehaviour
     #endregion TEMPORIZADOR
 
     #region JUGADORES
-    [Header("Jugadores")]
-    public GameObject prefabPlayer1;
-    public GameObject prefabPlayer2;
-    public GameObject prefabPlayer3;
-    public GameObject prefabPlayer4;
+    //public static PlayerController pfJugador;
+    //public static List<PlayerController> jugadores;
+
+    //void Start_Jugadores()
+    //{
+    //    jugadores = new List<PlayerController>();
+    //}
+
+    //public static void RegistrarJugadores(Lobby lobby)
+    //{
+    //    jugadores.Add(j1);
+    //}
+
 
     #endregion JUGADORES
 }

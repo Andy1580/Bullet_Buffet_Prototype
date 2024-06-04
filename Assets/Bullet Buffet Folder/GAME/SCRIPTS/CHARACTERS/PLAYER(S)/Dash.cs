@@ -59,7 +59,7 @@ public class Dash : MonoBehaviour
             canDash = false;
             isDashing = true;
 
-            pC.enabled = false; // Desactivar el control del jugador durante el Input_Dash
+            pC.enabled = false; // Desactivar el control del pfJugador durante el Input_Dash
 
             Vector3 dashDirection = transform.position.normalized; // Dirección del Input_Dash (hacia adelante)
             float startTime = Time.time;
@@ -72,7 +72,7 @@ public class Dash : MonoBehaviour
 
             isDashing = false;
             shoot.enabled = true;
-            pC.enabled = true; // Reactivar el control del jugador después del Input_Dash
+            pC.enabled = true; // Reactivar el control del pfJugador después del Input_Dash
 
             yield return new WaitForSeconds(dashCooldown);
             canDash = true; // Permitir otro Input_Dash después del tiempo de espera
