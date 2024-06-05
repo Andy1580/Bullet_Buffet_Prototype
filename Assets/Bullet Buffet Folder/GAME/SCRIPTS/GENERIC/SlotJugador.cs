@@ -1,16 +1,34 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class SlotJugador : MonoBehaviour
 {
-    private PlayerInput playerInput;
-    private InputDevice control;
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private Image img;
 
-    public GameObject pfJugador;
+    private Gamepad control;
 
-    public InputDevice Control
+
+    public Gamepad Control
     {
         get => control;
-        set => control = value;
+        set
+        {
+            control = value;
+            img.enabled = control != null;
+        }
+    }
+
+    private bool blanco = true;
+
+    public void CambiarColor(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+
+        blanco = !blanco;
+        img.color = blanco ? Color.white : Color.red;
     }
 }

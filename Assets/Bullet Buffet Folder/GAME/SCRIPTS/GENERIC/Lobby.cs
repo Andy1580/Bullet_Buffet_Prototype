@@ -1,14 +1,18 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Users;
+
 
 public class Lobby : MonoBehaviour
 {
     public static Lobby InstanceLobby;
 
-    public GameObject playerUIPrefab;
-    public List<GameObject> playerUIs = new List<GameObject>();
+    [SerializeField] private Transform PanelSlots;
+
+    private SlotJugador[] slots;
+
+    private Dictionary<Gamepad, SlotJugador> dicGamepads;
 
     private void Awake()
     {
@@ -21,60 +25,56 @@ public class Lobby : MonoBehaviour
             InstanceLobby = this;
             DontDestroyOnLoad(this.gameObject);
         }
-    }
 
-    private void Start()
-    {
+        dicGamepads = new Dictionary<Gamepad, SlotJugador>();
+        slots = PanelSlots.GetComponentsInChildren<SlotJugador>();
         InputSystem.onDeviceChange += CambioEnControl;
+        RevisarControlesConectados();
     }
 
-    [SerializeField] private List<SlotJugador> slots;
+    private void RevisarControlesConectados()
+    {
+        foreach(Gamepad control in Gamepad.all)
+        {
+            CambioEnControl(control, InputDeviceChange.Added);
+        }
+    }
+
     private void CambioEnControl(InputDevice device, InputDeviceChange cambio)
     {
-        //if(!(device is Gamepad || !(device is Keyboard)) || !(device is Mouse))
-        //    return;
 
         if (!(device is Gamepad))
             return;
+
+        Gamepad controlCambio = device as Gamepad;
 
         if (cambio == InputDeviceChange.Added)
         {
             foreach (SlotJugador slot in slots)
             {
                 if (slot.Control == null)
-                    slot.Control = device;
-                AddPlayer();
-                //GameManager.RegistrarJugadores();
+                {
+                    slot.Control = controlCambio;
+
+                    dicGamepads.Add(controlCambio, slot);
+
+                    break;
+                }
+
             }
+
         }
 
         else if (cambio == InputDeviceChange.Removed)
         {
-            foreach (SlotJugador slot in slots)
-            {
-                if (slot.Control == device)
-                    slot.Control = null;
-            }
+            if (!dicGamepads.ContainsKey(controlCambio))
+                return;
+
+            SlotJugador slotRemovido = dicGamepads[controlCambio];
+           
+            slotRemovido.Control = null;
         }
 
 
-    }
-
-    private void AddPlayer()
-    {
-        //var playerUI = Instantiate(playerUIPrefab, transform);
-        //var playerInput = playerUI.GetComponent<PlayerInput>();
-
-        //if (playerInput != null)
-        //{
-        //    InputUser.PerformPairingWithDevice(device, playerInput.user);
-        //}
-
-        //playerUIs.Add(playerUI);
-
-        foreach(SlotJugador slot in slots)
-        {
-            Instantiate(slot.pfJugador);
-        }
     }
 }

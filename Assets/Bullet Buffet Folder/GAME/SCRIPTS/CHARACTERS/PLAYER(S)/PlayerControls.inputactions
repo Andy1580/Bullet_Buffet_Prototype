@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Cambiar Color",
+                    "type": "Button",
+                    "id": "a36ce36e-8448-4a39-8ce8-0fed7b332b4d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Dash",
                     "type": "Button",
                     "id": "b6a37aa6-bdb2-46ea-af25-467e6f24a085",
@@ -234,6 +243,28 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Pausa",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d242d17e-387d-49d0-be21-4aa69c272744",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Cambiar Color",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82dc5afb-d474-4a48-a627-7a4879d73ca3",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Cambiar Color",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
