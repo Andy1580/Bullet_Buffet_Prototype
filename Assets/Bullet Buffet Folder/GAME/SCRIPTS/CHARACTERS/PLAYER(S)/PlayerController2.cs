@@ -169,7 +169,7 @@ public class PlayerController2 : MonoBehaviour
 
     //private Vector3 posicionMousePresionado;
 
-    //// Función para manejar el movimiento y la rotación del personaje
+    //// Función para manejar el desplazamiento y la rotación del personaje
     //void ActualizarRotacion()
     //{
     //    // Si se presiona el botón (o se hace click)

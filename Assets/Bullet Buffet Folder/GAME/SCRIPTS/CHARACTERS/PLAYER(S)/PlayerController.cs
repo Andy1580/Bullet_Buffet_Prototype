@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     {
         Start_Movimiento();
         Start_Dash();
-        Start_Escudo();
         Start_Animator();
     }
 
@@ -52,12 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         if (canEscudo)
         {
-            canEscudo = false;
-            Vector3 posicion = transform.position + transform.forward;
-            escudo = Instantiate(escudoPrefab, posicion, transform.rotation);
-            diferenciaEscudo = escudo.position - transform.position;
-
-            Invoke("DesactivarEscudo", tiempoEscudo);
+            ActivarEscudo();
         }
     }
 
@@ -71,7 +65,7 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             print(name);
-            //GameManager.Pausa(this);
+            GameManager.Pausa(this);
         }
     }
 
@@ -225,36 +219,40 @@ public class PlayerController : MonoBehaviour
     #endregion Vida
 
     #region Escudo
-
     [Header("Shield Stats")]
-    [SerializeField] private bool canEscudo;
+    
     [SerializeField] private float tiempoEscudo;
     [SerializeField] private float cooldownEscudo;
-    private Transform escudo;
+    [SerializeField] private Transform escudo;
     private Vector3 diferenciaEscudo;
-
-    [Header("Shield Objects")]
-    [SerializeField] private Transform escudoPrefab;
-
-    void Start_Escudo()
-    {
-        canEscudo = true;
-    }
+    private Quaternion rotacionEscudo;
+    private bool canEscudo = true;
 
     void Update_Escudo()
     {
-        //escudo.position = transform.position + diferenciaEscudo;
+        escudo.position = transform.position + diferenciaEscudo;
+        escudo.rotation = rotacionEscudo;
+    }
+
+    void ActivarEscudo()
+    {
+        canEscudo = false;
+        escudo.gameObject.SetActive(true);
+        rotacionEscudo = escudo.rotation;
+        escudo.position = transform.position + transform.forward;
+        diferenciaEscudo = escudo.position - transform.position;
+
+        Invoke("DesactivarEscudo", tiempoEscudo);
     }
 
     void DesactivarEscudo()
     {
-        Destroy(escudoPrefab, 3);
-        StartCoroutine(CooldownEscudo());
+        escudo.gameObject.SetActive(false);
+        Invoke("FinalizarCooldown",3);
     }
 
-    IEnumerator CooldownEscudo()
+    private void FinalizarCooldown()
     {
-        yield return new WaitForSeconds(cooldownEscudo);
         canEscudo = true;
     }
     #endregion Escudo
@@ -268,5 +266,9 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("spawn");
     }
     #endregion ANIMATOR
+
+    #region EQUIPOS
+    internal int equipo;
+    #endregion EQUIPOS
 
 }

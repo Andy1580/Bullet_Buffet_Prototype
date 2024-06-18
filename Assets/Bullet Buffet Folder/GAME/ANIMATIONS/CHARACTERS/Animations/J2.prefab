@@ -1662,10 +1662,9 @@ GameObject:
   - component: {fileID: 4393098479157357646}
   - component: {fileID: 2491509460441342260}
   - component: {fileID: 6849755962170074802}
-  - component: {fileID: 3862461045786744925}
   - component: {fileID: 5082573521174131877}
   m_Layer: 0
-  m_Name: Player_Test_2
+  m_Name: J2
   m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1718,11 +1717,9 @@ MonoBehaviour:
   salud: 100
   BarraSalud: {fileID: 4037267703843289884}
   isInvulnerable: 0
-  canEscudo: 0
   tiempoEscudo: 1
   cooldownEscudo: 5
-  escudoPrefab: {fileID: 3242063237039633021, guid: 7d7e1256c1bac9648b912800c170c6c5,
-    type: 3}
+  escudo: {fileID: 0}
 --- !u!114 &2491509460441342260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1875,29 +1872,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!136 &3862461045786744925
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6755968159187395043}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.9
-  m_Height: 3.4
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.6, z: 0}
 --- !u!143 &5082573521174131877
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1917,13 +1891,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 3.25
+  m_Radius: 0.71
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1.94, z: 0}
 --- !u!1 &6859015048755822360
 GameObject:
   m_ObjectHideFlags: 0

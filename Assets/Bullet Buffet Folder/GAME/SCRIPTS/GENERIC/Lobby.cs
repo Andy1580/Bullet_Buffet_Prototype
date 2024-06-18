@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -30,6 +31,11 @@ public class Lobby : MonoBehaviour
         slots = PanelSlots.GetComponentsInChildren<SlotJugador>();
         InputSystem.onDeviceChange += CambioEnControl;
         RevisarControlesConectados();
+    }
+
+    private void Start()
+    {
+        InicializarPartida();
     }
 
     private void RevisarControlesConectados()
@@ -77,4 +83,44 @@ public class Lobby : MonoBehaviour
 
 
     }
+
+    private void InicializarPartida()
+    {
+        Partida partida = new Partida();
+
+        int i = 0;
+
+        foreach(var par in dicGamepads)
+        {
+            partida.controlesId[i] = par.Key.deviceId;
+            partida.personaje[i] = par.Value.personaje;
+
+            i++;
+        }
+
+        //Se convierte el objeto partida a Json
+        string json = JsonUtility.ToJson(partida);
+        //Generamos ruta
+        string ruta = Path.Combine(Application.persistentDataPath, "Jugadores_Save Data");
+        print(ruta);
+        //Lo guardamos en el almacenamiento
+        File.WriteAllText(ruta, json);
+    }
+
+    [SerializeField] private string personaje1;
+    [SerializeField] private string personaje2;
+    [SerializeField] private string personaje3;
+    [SerializeField] private string personaje4;
+
+    //Preguntar al profe si es correcto de esta forma
+    public void Personaje1()
+    {
+        //personaje1 = SlotJugador.personaje;
+
+        foreach(var jugador in dicGamepads)
+        {
+            personaje1 = jugador.Value.personaje;
+        }
+    }
+
 }
