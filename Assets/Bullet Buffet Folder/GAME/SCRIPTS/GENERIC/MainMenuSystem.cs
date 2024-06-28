@@ -1,17 +1,15 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class MainMenuSystem : MonoBehaviour
 {
     [SerializeField] private GameObject panelInicio;
     [SerializeField] private GameObject panelModos;
-    [SerializeField] private GameObject panelVersus;
+    [SerializeField] private GameObject panelMapas;
     [SerializeField] private GameObject panelSetings;
     [SerializeField] private GameObject bModes;
     [SerializeField] private GameObject bHechizos;
-    
+
 
     [SerializeField] private GameObject eventSystem;
     //private EventSystem eventS;
@@ -20,12 +18,12 @@ public class MainMenuSystem : MonoBehaviour
 
     private void Start()
     {
-        if(gM == null)
+        if (gM == null)
         {
             gM = FindFirstObjectByType<GameManager>();
         }
 
-        
+
 
         //if (eventSystem == null)
         //{
@@ -42,7 +40,7 @@ public class MainMenuSystem : MonoBehaviour
         panelInicio.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
-        panelVersus.SetActive(false);
+        panelMapas.SetActive(false);
 
 
         //eventS.firstSelectedGameObject = bModes;
@@ -55,13 +53,16 @@ public class MainMenuSystem : MonoBehaviour
 
     private void Update_CheckBooleans()
     {
-        if(GameManager.modoHechizos && GameManager.oneVone)
+        if (SceneManager.GetActiveScene().name != "ANDYMENUTEST")
+            return;
+
+        if (GameManager.modoHS && GameManager.boolMapaStreet)
         {
-            Invoke("CargarLobby", 0.25f);
+            Invoke("CargarJuego", 0.25f);
         }
-        else if(GameManager.modoHechizos && GameManager.twoVtwo)
+        else if (GameManager.modoDS && GameManager.boolMapaStreet)
         {
-            Invoke("CargarLobby", 0.25f);
+            Invoke("CargarJuego", 0.25f);
         }
     }
 
@@ -79,6 +80,7 @@ public class MainMenuSystem : MonoBehaviour
         panelInicio.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
+        panelMapas.SetActive(false);
 
         //eventS.firstSelectedGameObject = bModes;
     }
@@ -90,28 +92,31 @@ public class MainMenuSystem : MonoBehaviour
         panelInicio.SetActive(false);
     }
 
-    public void ModoHechizos()
+    public void ModoHechizosSazonados()
     {
-        GameManager.modoHechizos = true;
-        panelVersus.SetActive(true);
+        GameManager.modoHS = true;
+        panelMapas.SetActive(true);
         panelSetings.SetActive(false);
         panelModos.SetActive(false);
         panelInicio.SetActive(false);
     }
 
-    public void OneVOne()
+    public void ModoDueloDeSalsas()
     {
-       GameManager.oneVone = true;
+        GameManager.modoDS = true;
+        panelMapas.SetActive(true);
+        panelSetings.SetActive(false);
+        panelModos.SetActive(false);
+        panelInicio.SetActive(false);
     }
 
-    public void TwoVTwo()
+    public void MapaStreet()
     {
-        GameManager.twoVtwo = true;
+        GameManager.boolMapaStreet = true;
     }
 
-    private void CargarLobby()
+    private void CargarJuego()
     {
-        Debug.Log("Si se invoco el metodo para cargra escena");
-        SceneManager.LoadScene("ANDYLOBBY");
+        SceneManager.LoadScene("ANDYINGAME");
     }
 }

@@ -203,24 +203,35 @@ public class PlayerController : MonoBehaviour
     public int salud;
     [SerializeField] private Slider BarraSalud;
     public bool isInvulnerable = false;
+    internal bool muerto = false;
 
     void Update_Vida()
     {
         BarraSalud.GetComponent<Slider>().value = salud;
 
-        if (salud <= 0)
+        if (salud <= 0 && !muerto)
         {
             Debug.Log("Muerto" + this.gameObject.name);
-            animator.SetTrigger("muerto");
-            GameManager.Marcador(this);
+            muerto = true;
+            DeadEvent();
         }
 
+    }
+
+    void DeadEvent()
+    {
+        if (muerto)
+        {
+            animator.SetTrigger("muerto");
+            GameManager.Instance.DeadPlayerEventMHS(this);
+            Debug.Log("Si murio " + this.gameObject.name);
+        }
     }
     #endregion Vida
 
     #region Escudo
     [Header("Shield Stats")]
-    
+
     [SerializeField] private float tiempoEscudo;
     [SerializeField] private float cooldownEscudo;
     [SerializeField] private Transform escudo;
@@ -238,9 +249,9 @@ public class PlayerController : MonoBehaviour
     {
         canEscudo = false;
         escudo.gameObject.SetActive(true);
-        rotacionEscudo = escudo.rotation;
-        escudo.position = transform.position + transform.forward;
-        diferenciaEscudo = escudo.position - transform.position;
+        diferenciaEscudo = transform.forward;
+        escudo.position = transform.position + diferenciaEscudo;
+        rotacionEscudo = transform.rotation;
 
         Invoke("DesactivarEscudo", tiempoEscudo);
     }
@@ -248,7 +259,7 @@ public class PlayerController : MonoBehaviour
     void DesactivarEscudo()
     {
         escudo.gameObject.SetActive(false);
-        Invoke("FinalizarCooldown",3);
+        Invoke("FinalizarCooldown", cooldownEscudo);
     }
 
     private void FinalizarCooldown()
@@ -260,9 +271,12 @@ public class PlayerController : MonoBehaviour
     #region ANIMATOR
     private Animator animator;
 
+    internal Animator anim;
+
     void Start_Animator()
     {
         animator = GetComponent<Animator>();
+        anim = animator.GetComponent<Animator>();
         animator.SetTrigger("spawn");
     }
     #endregion ANIMATOR
