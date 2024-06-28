@@ -5,22 +5,26 @@ using UnityEngine.SceneManagement;
 public class CuadroPintable : MonoBehaviour
 {
     private MeshRenderer meshRenderer;
-    private Material material;
+    public Material material;
     private Color colorInicial;
     public string currentOwner;
 
     private void Awake()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-    private void Start()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-        currentOwner = "None"; // Inicialmente, el cuadro no pertenece a nadie
 
+        meshRenderer = GetComponent<MeshRenderer>();
+        
         material = GetComponent<MeshRenderer>().material;
 
         colorInicial = material.color;
+        
+
+    }
+    private void Start()
+    {
+        //currentOwner = "None"; // Inicialmente, el cuadro no pertenece a nadie
+        //material.color = colorInicial;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
