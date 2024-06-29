@@ -74,9 +74,9 @@ public class PlayerController : MonoBehaviour
     #region Movimiento & Rotacion
 
     [Header("Movement Stats")]
-    [SerializeField] private bool groundedPlayer;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float smoothRotacion;
+    private bool groundedPlayer;
     private CharacterController controller;
     private Vector3 movement = Vector3.zero;
     private Vector3 axis1 = Vector3.zero;

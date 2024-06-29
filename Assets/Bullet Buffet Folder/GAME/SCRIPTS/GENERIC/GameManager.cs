@@ -316,7 +316,10 @@ public class GameManager : MonoBehaviour
                 playerWinText.text = p1.gameObject.name;
                 p1.enabled = false;
                 p2.enabled = false;
+                mago1Animator.SetTrigger("victoria");
+                mago2Animator.SetTrigger("derrota");
             }
+
             else if (puntosAGanarTeam2 >= 3 && isRunning)
             {
                 isRunning = false;
@@ -324,6 +327,8 @@ public class GameManager : MonoBehaviour
                 playerWinText.text = p2.gameObject.name;
                 p1.enabled = false;
                 p2.enabled = false;
+                mago2Animator.SetTrigger("victoria");
+                mago1Animator.SetTrigger("derrota");
             }
         }
         else return;
@@ -594,6 +599,8 @@ public class GameManager : MonoBehaviour
     [Header("Hechizo")]
     [SerializeField] private GameObject hechizoPrefab;
     [SerializeField] private float hechizoVelocidad = 10f;
+    [SerializeField] private Transform spawnHechizo1;
+    [SerializeField] private Transform spawnHechizo2;
 
     void InicializarMHS()
     {
@@ -601,22 +608,24 @@ public class GameManager : MonoBehaviour
         mago1Animator = mago1.GetComponent<Animator>();
         mago2Animator = mago2.GetComponent<Animator>();
         camaraPrincipalAnimator = camaraPrincipal.GetComponent<Animator>();
+        mago1Animator.SetBool("idle", true);
+        mago2Animator.SetBool("idle", true);
     }
 
     //Parte de los Magos
     void Mago1()
     {
         Debug.Log("Si se intancio el hechizo del mago 1");
-        GameObject hechizo = Instantiate(hechizoPrefab, mago1.transform.position, Quaternion.identity);
-        //mago1Animator.SetTrigger("Ataque");
+        GameObject hechizo = Instantiate(hechizoPrefab, spawnHechizo1.transform.position, Quaternion.identity);
+        mago1Animator.SetTrigger("ataque");
         StartCoroutine(MoverHechizo1(hechizo));
     }
 
     void Mago2()
     {
         Debug.Log("Si se intancio el hechizo del mago 2");
-        GameObject hechizo = Instantiate(hechizoPrefab, mago2.transform.position, Quaternion.identity);
-        //mago2Animator.SetTrigger("Ataque");
+        GameObject hechizo = Instantiate(hechizoPrefab, spawnHechizo2.transform.position, Quaternion.identity);
+        mago2Animator.SetTrigger("ataque");
         StartCoroutine(MoverHechizo2(hechizo));
     }
 
@@ -628,7 +637,7 @@ public class GameManager : MonoBehaviour
 
             if (Vector3.Distance(hechizo.transform.position, mago2.transform.position) < 0.1f)
             {
-                // mago2Animator.SetTrigger("RecibirDaño");
+                mago2Animator.SetTrigger("daño");
                 Destroy(hechizo);
                 yield break;
             }
@@ -645,7 +654,7 @@ public class GameManager : MonoBehaviour
 
             if (Vector3.Distance(hechizo.transform.position, mago1.transform.position) < 0.1f)
             {
-                //mago1Animator.SetTrigger("RecibirDaño");
+                mago1Animator.SetTrigger("daño");
                 Destroy(hechizo);
                 yield break;
             }
