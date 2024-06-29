@@ -3646,6 +3646,7 @@ GameObject:
   - component: {fileID: 3780576363013428825}
   - component: {fileID: 7274143936733250085}
   - component: {fileID: 2654987212940347074}
+  - component: {fileID: 7274143936733250086}
   m_Layer: 0
   m_Name: Barricada_2_Player2
   m_TagString: Untagged
@@ -7840,6 +7841,7 @@ GameObject:
   - component: {fileID: 3718827508341191356}
   - component: {fileID: 6301641933031730989}
   - component: {fileID: 1286406982228675717}
+  - component: {fileID: 6301641933031730990}
   m_Layer: 0
   m_Name: Barricada_1_Player1
   m_TagString: Untagged
@@ -9145,6 +9147,7 @@ GameObject:
   - component: {fileID: 5009138284032795157}
   - component: {fileID: 2757393964256850042}
   - component: {fileID: 553134205183338522}
+  - component: {fileID: 5009138284032795158}
   m_Layer: 0
   m_Name: Barricada_2_Player1
   m_TagString: Untagged
@@ -13170,6 +13173,7 @@ GameObject:
   - component: {fileID: 3014014222192818387}
   - component: {fileID: 512207243232407968}
   - component: {fileID: 8717889797748759189}
+  - component: {fileID: 8717889797748759190}
   m_Layer: 0
   m_Name: Barricada_4_Player2
   m_TagString: Untagged
@@ -13628,6 +13632,7 @@ GameObject:
   - component: {fileID: 4874926560268344898}
   - component: {fileID: 475252317863859933}
   - component: {fileID: 8528704343614012703}
+  - component: {fileID: 8528704343614012704}
   m_Layer: 0
   m_Name: Barricada_3_Player2
   m_TagString: Untagged
@@ -16489,6 +16494,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6043671799678397356}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5009138284032795158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059039378124538076}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.9697495, y: 3.6086946, z: 5.222543}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &5019520316222467166
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -18103,6 +18129,7 @@ GameObject:
   - component: {fileID: 3018089744416944168}
   - component: {fileID: 409751438804790040}
   - component: {fileID: 1484249783799042989}
+  - component: {fileID: 5846080254021146451}
   m_Layer: 0
   m_Name: Barricada_1_Player2
   m_TagString: Untagged
@@ -18110,6 +18137,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &5846080254021146451
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5846080254021146450}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.3484478, y: 3.6086946, z: 5.272087}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &5848461937631194542
 Transform:
   m_ObjectHideFlags: 0
@@ -18690,12 +18738,12 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3718827508341191356}
-  - {fileID: 3018089744416944168}
   - {fileID: 5009138284032795157}
-  - {fileID: 3780576363013428825}
   - {fileID: 466845280061926084}
-  - {fileID: 4874926560268344898}
   - {fileID: 7815492362989327390}
+  - {fileID: 3018089744416944168}
+  - {fileID: 3780576363013428825}
+  - {fileID: 4874926560268344898}
   - {fileID: 3014014222192818387}
   - {fileID: 7410277699435137763}
   m_Father: {fileID: 8693016024142850807}
@@ -19189,6 +19237,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676357301196590204}
   m_Mesh: {fileID: 6136176052782667104, guid: 2c02e3a9616868f469b8eaddaa5e549d, type: 3}
+--- !u!65 &6301641933031730990
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676357301196590204}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.785636, y: 3.6086946, z: 5.333233}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &6305461170989336958
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -21250,6 +21319,7 @@ GameObject:
   - component: {fileID: 466845280061926084}
   - component: {fileID: 6771885731605796940}
   - component: {fileID: 7218871088854693505}
+  - component: {fileID: 7218871088854693506}
   m_Layer: 0
   m_Name: Barricada_3_Player1
   m_TagString: Untagged
@@ -21496,6 +21566,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7218871088854693506
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110485890117325157}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.049835, y: 3.6086946, z: 5.241719}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &7220242658867744746
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -21638,6 +21729,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144564430994889597}
   m_Mesh: {fileID: -5930525276178468978, guid: 2c02e3a9616868f469b8eaddaa5e549d, type: 3}
+--- !u!65 &7274143936733250086
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144564430994889597}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.6451454, y: 3.6086946, z: 5.2901497}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &7287845142202776251
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -22368,6 +22480,7 @@ GameObject:
   - component: {fileID: 7815492362989327390}
   - component: {fileID: 1918136490262125285}
   - component: {fileID: 2981098549620279583}
+  - component: {fileID: 7815492362989327391}
   m_Layer: 0
   m_Name: Barricada_4_Player1
   m_TagString: Untagged
@@ -22950,6 +23063,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6043671799678397356}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7815492362989327391
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7537183693829354294}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.049835, y: 3.6086946, z: 5.24172}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &7815881790758303041
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -24703,6 +24837,7 @@ GameObject:
   - component: {fileID: 4963655520967834329}
   - component: {fileID: 1873494252956330767}
   - component: {fileID: 2485436532979290650}
+  - component: {fileID: 8494275177716411371}
   m_Layer: 0
   m_Name: Calle_1
   m_TagString: Untagged
@@ -24710,6 +24845,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &8494275177716411371
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8494275177716411370}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 124.41051, y: 1.0624523, z: 97.24849}
+  m_Center: {x: 0, y: -24.61296, z: 0}
 --- !u!4 &8498289338133173691
 Transform:
   m_ObjectHideFlags: 0
@@ -24849,6 +25005,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8528704343614012704
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820555456565594782}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.1978054, y: 3.6086946, z: 5.2979317}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &8529299468957674026
 Transform:
   m_ObjectHideFlags: 0
@@ -25385,6 +25562,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8717889797748759190
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3639102488245606569}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.1978035, y: 3.6086946, z: 5.2979355}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &8721570068662500081
 MeshFilter:
   m_ObjectHideFlags: 0
