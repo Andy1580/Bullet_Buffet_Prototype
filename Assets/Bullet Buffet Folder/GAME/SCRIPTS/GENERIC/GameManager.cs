@@ -125,6 +125,8 @@ public class GameManager : MonoBehaviour
             magosPrincipales.SetActive(false);
             panelMarcadorMHS.SetActive(false);
             camaraObjeto.SetActive(false);
+            puntosAGanarTeam1 = puntajeInicial;
+            puntosAGanarTeam2 = puntajeInicial;
 
             //Modo Duelo De Salsas
             pistaPintable.SetActive(false);
@@ -293,7 +295,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject panelMarcadorMHS;
     [SerializeField] private TMP_Text rondaText;
     [SerializeField] private int numeroDeRonda;
-    private int rondaInicial = 0;
+    private int rondaInicial = 1;
 
     void InicializarMarcadorMHS()
     {
@@ -482,7 +484,7 @@ public class GameManager : MonoBehaviour
     {
         camaraObjeto = camaraPrincipal.gameObject;
         camaraObjeto.SetActive(true);
-        originalCameraPosition = camaraPrincipal.transform.position;
+        //originalCameraPosition = camaraPrincipal.transform.position;
     }
     #endregion CAMARA
 
@@ -585,6 +587,7 @@ public class GameManager : MonoBehaviour
     [Header("Cámara Stats MH")]
     [SerializeField] private Transform posicionCinematica;
     [SerializeField] private float velocidadMovCamara = 2f;
+    private Animator camaraPrincipalAnimator;
 
     private Vector3 originalCameraPosition; // Posición original de la cámara
 
@@ -597,6 +600,7 @@ public class GameManager : MonoBehaviour
         panelMarcadorMHS.SetActive(true);
         mago1Animator = mago1.GetComponent<Animator>();
         mago2Animator = mago2.GetComponent<Animator>();
+        camaraPrincipalAnimator = camaraPrincipal.GetComponent<Animator>();
     }
 
     //Parte de los Magos
@@ -650,37 +654,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Parte de la Camara
-    public void PosicionCamaraCinematica()
-    {
-        StartCoroutine(MoverCamara(camaraPrincipal.transform, posicionCinematica.position));
-    }
+    ////Parte de la Camara
+    //public void PosicionCamaraCinematica()
+    //{
+    //    StartCoroutine(MoverCamara(camaraPrincipal.transform, posicionCinematica.position));
+    //}
 
-    IEnumerator MoverCamara(Transform camaraTransform, Vector3 targetPosition)
-    {
-        while (Vector3.Distance(camaraTransform.position, targetPosition) > 0.1f)
-        {
-            camaraTransform.position = Vector3.Lerp(camaraTransform.position, targetPosition, velocidadMovCamara * Time.deltaTime);
-            yield return null;
-        }
+    //IEnumerator MoverCamara(Transform camaraTransform, Vector3 targetPosition)
+    //{
+    //    while (Vector3.Distance(camaraTransform.position, targetPosition) > 0.1f)
+    //    {
+    //        camaraTransform.position = Vector3.Lerp(camaraTransform.position, targetPosition, velocidadMovCamara * Time.deltaTime);
+    //        yield return null;
+    //    }
 
-        // Asegurarse de que la posición final sea exacta.
-        camaraTransform.position = targetPosition;
+    //    // Asegurarse de que la posición final sea exacta.
+    //    camaraTransform.position = targetPosition;
 
-        // Regresar la cámara a su posición original
-        StartCoroutine(RetornarCamara(3.0f));
-    }
+    //    // Regresar la cámara a su posición original
+    //    StartCoroutine(RetornarCamara(3.0f));
+    //}
 
-    void PosicionCamaraPrincipal()
-    {
-        StartCoroutine(MoverCamara(camaraPrincipal.transform, originalCameraPosition));
-    }
+    //void PosicionCamaraPrincipal()
+    //{
+    //    StartCoroutine(MoverCamara(camaraPrincipal.transform, originalCameraPosition));
+    //}
 
-    IEnumerator RetornarCamara(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        PosicionCamaraPrincipal();
-    }
+    //IEnumerator RetornarCamara(float delay)
+    //{
+    //    yield return new WaitForSeconds(delay);
+    //    PosicionCamaraPrincipal();
+    //}
     #endregion MODO HECHIZOS SAZONADOS
 
     #region DEAD EVENT PLAYER MHS
@@ -698,7 +702,8 @@ public class GameManager : MonoBehaviour
                     p2.BloquearMovimiento = true;
                     puntosAGanarTeam2++;
                     puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
-                    Invoke("PosicionCamaraCinematica", 1.50f);
+                    //Invoke("PosicionCamaraCinematica", 1.50f);
+                    camaraPrincipalAnimator.SetTrigger("move");
                     Invoke("Mago2", 3.0f);
                     Invoke("CambioDeRondaMHS", 6.0f);
                 }
@@ -709,7 +714,8 @@ public class GameManager : MonoBehaviour
                     p2.BloquearMovimiento = true;
                     puntosAGanarTeam1++;
                     puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
-                    Invoke("PosicionCamaraCinematica", 1.50f);
+                    //Invoke("PosicionCamaraCinematica", 1.50f);
+                    camaraPrincipalAnimator.SetTrigger("move");
                     Invoke("Mago1", 3.0f);
                     Invoke("CambioDeRondaMHS", 6.0f);
                 }
