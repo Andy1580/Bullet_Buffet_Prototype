@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
     #endregion GAME MANAGER
 
     #region CARGAR ESCENA
+
     //En este metodo se pone todo lo que quieras que pase al cargar una escena
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -75,6 +76,8 @@ public class GameManager : MonoBehaviour
             InicializarTemporizador();
             InicializarMapas();
             InicializarPuntaje();
+            InicializarMuerteJugadores();
+            Invoke("InicializarEnemySpawn", 5);
 
             if (modoHS)
             {
@@ -133,7 +136,18 @@ public class GameManager : MonoBehaviour
             panelMarcadorMDS.SetActive(false);
             camaraObjeto.SetActive(false);
 
+            //Spawn de Enemigos
+            for (int i = enemigosInstanciados.Count - 1; i >= 0; i--)
+            {
+                GameObject enemy = enemigosInstanciados[i];
 
+                if (enemy != null)
+                {
+                    Destroy(enemy);
+                    enemigosInstanciados.RemoveAt(i);
+                }
+
+            }
         }
     }
     #endregion CARGAR ESCENA
@@ -355,7 +369,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text ganadorTiempoAgotadoText;
 
-    private float remainingTime;
+    public static float remainingTime;
     private bool isRunning = false;
 
     private void InicializarTemporizador()
@@ -384,7 +398,7 @@ public class GameManager : MonoBehaviour
 
                 if (modoHS)
                 {
-                    if (p1.salud < p2.salud)
+                    if (p1.Vida < p2.Vida)
                     {
                         puntosAGanarTeam2++;
                         CambioDeRondaMHS();
@@ -433,7 +447,7 @@ public class GameManager : MonoBehaviour
     #endregion PERSONAJES
 
     #region JUGADORES
-    private static List<PlayerController> jugadores;
+    public static List<PlayerController> jugadores;
 
     [Header("Spawn Points")]
     [SerializeField] private Transform modo1v1spawn1;
@@ -697,6 +711,16 @@ public class GameManager : MonoBehaviour
     #endregion MODO HECHIZOS SAZONADOS
 
     #region DEAD EVENT PLAYER MHS
+
+    CharacterController chP1;
+    CharacterController chP2;
+
+    void InicializarMuerteJugadores()
+    {
+        chP1 = p1.GetComponent<CharacterController>();
+        chP2 = p2.GetComponent<CharacterController>();
+    }
+
     //Esto se manda a llamar cada vez que un jugador muere
     public void DeadPlayerEventMHS(PlayerController player)
     {
@@ -709,6 +733,7 @@ public class GameManager : MonoBehaviour
                     isRunning = false;
                     p1.BloquearMovimiento = true;
                     p2.BloquearMovimiento = true;
+                    chP1.enabled = false;
                     puntosAGanarTeam2++;
                     puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                     //Invoke("PosicionCamaraCinematica", 1.50f);
@@ -721,6 +746,7 @@ public class GameManager : MonoBehaviour
                     isRunning = false;
                     p1.BloquearMovimiento = true;
                     p2.BloquearMovimiento = true;
+                    chP2.enabled = false;
                     puntosAGanarTeam1++;
                     puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                     //Invoke("PosicionCamaraCinematica", 1.50f);
@@ -779,10 +805,12 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ReactivacionMHS(float time)
     {
-        p1.salud = 100;
-        p2.salud = 100;
+        p1.Vida = 100;
+        p2.Vida = 100;
         p1.enabled = true;
         p2.enabled = true;
+        chP1.enabled = true;
+        chP2.enabled = true;
         p1.isInvulnerable = false; p2.isInvulnerable = false;
         p1.gameObject.SetActive(true);
         p2.gameObject.SetActive(true);
@@ -793,7 +821,7 @@ public class GameManager : MonoBehaviour
         p2.BloquearMovimiento = false;
         isRunning = true;
         remainingTime = totalTime;
-        p1.muerto = false; p2.muerto = false;
+        //p1.muerto = false; p2.muerto = false;
         yield return new WaitForSeconds(3.50f);
     }
 
@@ -801,7 +829,7 @@ public class GameManager : MonoBehaviour
     {
         if (player.gameObject.name == "J1(Clone)")
         {
-            p1.muerto = true;
+            //p1.muerto = true;
             p1.BloquearMovimiento = true;
 
             StartCoroutine(ReactivacionMDS(player, 8.0f));
@@ -809,7 +837,7 @@ public class GameManager : MonoBehaviour
         else if (player.gameObject.name == "J2(Clone)")
         {
 
-            p2.muerto = true;
+            //p2.muerto = true;
             p2.BloquearMovimiento = true;
 
             StartCoroutine(ReactivacionMDS(player, 8.0f));
@@ -824,13 +852,13 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(6.0f);
             p1.gameObject.SetActive(false);
             p1.transform.position = modo1v1spawn1.transform.position;
-            p1.salud = 100;
+            p1.Vida = 100;
             p1.enabled = true;
             p1.isInvulnerable = false;
             p1.gameObject.SetActive(true);
             p1.anim.SetTrigger("spawn");
             p1.BloquearMovimiento = false;
-            p1.muerto = false;
+            //p1.muerto = false;
             yield return new WaitForSeconds(time);
         }
         else if (player.gameObject.name == "J2(Clone)")
@@ -839,13 +867,13 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(6.0f);
             p2.gameObject.SetActive(false);
             p2.transform.position = modo1v1spawn2.transform.position;
-            p2.salud = 100;
+            p2.Vida = 100;
             p2.enabled = true;
             p2.isInvulnerable = false;
             p2.gameObject.SetActive(true);
             p2.anim.SetTrigger("spawn");
             p2.BloquearMovimiento = false;
-            p2.muerto = false;
+            //p2.muerto = false;
             yield return new WaitForSeconds(time);
         }
 
@@ -853,5 +881,108 @@ public class GameManager : MonoBehaviour
     }
     #endregion DEAD EVENT PLAYER MHS
 
+    #region SPAWN DE ENEMIGOS
+    [Header("Spawn Enemy Core")]
+    [SerializeField] private GameObject[] prefabsEnemigos;
+    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private int enemigosMaximosActivos = 4;
+    [SerializeField] private float minSpawnTime = 3f; // Tiempo mínimo entre spawns
+    [SerializeField] private float maxSpawnTime = 5f; // Tiempo máximo entre spawns
 
+    private List<GameObject> enemigosInstanciados = new List<GameObject>();
+
+    void InicializarEnemySpawn()
+    {
+        Debug.Log("Si se inicializo el spawn de Enemigos");
+        for (int i = 0; i < enemigosMaximosActivos; i++)
+        {
+            SpawnEnemy();
+        }
+
+        InvokeRepeating(nameof(SpawnEnemyContinuously), Random.Range(minSpawnTime, maxSpawnTime), Random.Range(minSpawnTime, maxSpawnTime));
+    }
+
+    private void SpawnEnemy()
+    {
+        if (enemigosInstanciados.Count >= enemigosMaximosActivos) return; // No spawnear más si se ha alcanzado el límite
+
+        // Seleccionamos un enemigo aleatoriamente y lo agregamos al objeto
+        GameObject enemyPrefab = prefabsEnemigos[Random.Range(0, prefabsEnemigos.Length)];
+
+        // Seleccionamos un punto de spawn aleatorio que no esté ocupado
+        Transform spawnPoint = GetRandomSpawnPoint();
+        if (spawnPoint == null) return; // Si no hay puntos de spawn disponibles, no hacer nada
+
+        // Instanciar el enemigo
+        GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+        enemigosInstanciados.Add(spawnedEnemy);
+    }
+
+    private Transform GetRandomSpawnPoint()
+    {
+        List<Transform> availablePoints = new List<Transform>(spawnPoints);
+
+        // Eliminamos puntos de spawn ocupados
+        foreach (GameObject enemy in enemigosInstanciados)
+        {
+            availablePoints.Remove(enemy.transform);
+        }
+
+        if (availablePoints.Count == 0) return null; // No hay puntos de spawn disponibles
+
+        return availablePoints[Random.Range(0, availablePoints.Count)];
+    }
+
+    private void SpawnEnemyContinuously()
+    {
+        CheckAndRemoveDeadEnemies();
+
+        if (enemigosInstanciados.Count < enemigosMaximosActivos)
+        {
+            // Generar un nuevo enemigo en un punto de spawn aleatorio
+            int spawnPointIndex = Random.Range(0, spawnPoints.Length);
+            Transform spawnPoint = spawnPoints[spawnPointIndex];
+
+            // Seleccionar un enemigo aleatorio del array
+            GameObject enemyPrefab = prefabsEnemigos[Random.Range(0, prefabsEnemigos.Length)];
+
+            // Instanciar el enemigo
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+            enemigosInstanciados.Add(newEnemy);
+        }
+
+        // Planificar la siguiente llamada a este método
+        Invoke("SpawnEnemyContinuously", Random.Range(minSpawnTime, maxSpawnTime));
+    }
+
+    private void CheckAndRemoveDeadEnemies()
+    {
+        for (int i = enemigosInstanciados.Count - 1; i >= 0; i--)
+        {
+            GameObject enemy = enemigosInstanciados[i];
+
+            if (enemy == null)
+            {
+                enemigosInstanciados.RemoveAt(i);
+                continue;
+            }
+
+            EnemyAI_Meele meeleAI = enemy.GetComponent<EnemyAI_Meele>();
+            EnemyAI_Flying flyingAI = enemy.GetComponent<EnemyAI_Flying>();
+
+
+            if ((meeleAI != null && meeleAI.vida <= 0) || (flyingAI != null && flyingAI.vida <= 0))
+            {
+                Destroy(enemy);
+                enemigosInstanciados.RemoveAt(i);
+            }
+        }
+    }
+
+    private IEnumerator SpawnEnemyWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SpawnEnemy();
+    }
+    #endregion SPAWN DE ENEMIGOS
 }

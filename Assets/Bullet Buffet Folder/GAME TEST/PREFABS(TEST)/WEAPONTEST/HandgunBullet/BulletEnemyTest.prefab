@@ -13,10 +13,9 @@ GameObject:
   - component: {fileID: 634441706767085432}
   - component: {fileID: 8925466094002592070}
   - component: {fileID: 8320626535968310635}
-  - component: {fileID: 8339470496363574980}
-  - component: {fileID: 505084622543840319}
+  - component: {fileID: 1914418794399242324}
   m_Layer: 0
-  m_Name: Bullet2
+  m_Name: BulletEnemyTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2c92a34b0c0199541aea9ee9738ac8ed, type: 2}
+  - {fileID: 2100000, guid: e66be41f6ca92f947b10654840613d8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -135,19 +134,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8339470496363574980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7586789593353999198}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58a789e54312bd54eba436ed30261760, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &505084622543840319
+--- !u!114 &1914418794399242324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,8 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7586789593353999198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb697c84a465844196bce13e83e3f2c, type: 3}
+  m_Script: {fileID: 11500000, guid: bb7d3e74e74a18a45ba90f1da98899f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
-  invulnerabilityDuration: 1.5
+  damage: 10

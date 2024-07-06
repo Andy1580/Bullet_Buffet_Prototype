@@ -12,13 +12,13 @@ public class PlayerController : MonoBehaviour
         Start_Movimiento();
         Start_Dash();
         Start_Animator();
+        Start_Vida();
     }
 
     private void Update()
     {
         Update_Movimiento();
         Update_Shoot();
-        Update_Vida();
         Update_Escudo();
     }
 
@@ -200,31 +200,43 @@ public class PlayerController : MonoBehaviour
     #region Vida
 
     [Header("Life Stats")]
-    public int salud;
+    [SerializeField] private int maxSalud = 300;
     [SerializeField] private Slider BarraSalud;
-    public bool isInvulnerable = false;
-    internal bool muerto = false;
+    private static int salud;
+    internal bool isInvulnerable = false;
+    //internal bool muerto = false;
 
-    void Update_Vida()
+    void Start_Vida()
     {
+        salud = maxSalud;
         BarraSalud.GetComponent<Slider>().value = salud;
-
-        if (salud <= 0 && !muerto)
-        {
-            Debug.Log("Muerto" + this.gameObject.name);
-            muerto = true;
-            DeadEvent();
-        }
-
     }
 
     void DeadEvent()
     {
-        if (muerto)
+        animator.SetTrigger("muerto");
+        GameManager.Instance.DeadPlayerEventMHS(this);
+        Debug.Log("Murio: " + this.gameObject.name);
+    }
+
+    public int Vida
+    {
+        get => salud;
+        set
         {
-            animator.SetTrigger("muerto");
-            GameManager.Instance.DeadPlayerEventMHS(this);
-            Debug.Log("Si murio " + this.gameObject.name);
+            if (value <= 0)
+            {
+                salud = 0;
+                DeadEvent();
+            }
+            else if(value >= maxSalud)
+            {
+                salud = maxSalud;
+            }
+            else
+            {
+                salud = value;
+            }
         }
     }
     #endregion Vida

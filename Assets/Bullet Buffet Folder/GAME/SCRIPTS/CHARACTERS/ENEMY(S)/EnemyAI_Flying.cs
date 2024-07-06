@@ -1,66 +1,127 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyAI_Flying : MonoBehaviour
 {
-    public Transform player; 
-    public float chaseSpeed = 5f; 
-    public float attackRange = 10f; 
-    public float attackCooldown = 2f; 
-    public GameObject projectilePrefab; 
-    public Transform firePoint; 
-    public float projectileSpeed = 10f; 
-    public float projectileLifetime = 3f; 
+    [SerializeField] private float velocidadPersecucion = 5f;
+    [SerializeField] private float rangoAtaque = 10f;
+    [SerializeField] private float ataqueEnfriamiento = 2f;
+    [SerializeField] private GameObject balaPrefab;
+    [SerializeField] private Transform balaSpawn;
+    [SerializeField] private float velocidadBala = 10f;
+    [SerializeField] private float vidaBala = 3f;
+    [SerializeField] private float distanciaMinima = 5f;
+    [SerializeField] internal int vida = 200;
 
-    private bool isAttacking = false; 
+    private NavMeshAgent agente;
+    private PlayerController jugadorObjetivo;
+    private bool atacando = false;
 
-    private void Update()
+    void Start()
     {
-        
-        if (!isAttacking)
+        agente = GetComponent<NavMeshAgent>();
+        agente.stoppingDistance = distanciaMinima;
+        BuscarJugadorCercano();
+    }
+
+    void Update()
+    {
+        if (jugadorObjetivo != null)
         {
-            ChasePlayer();
+            if (!atacando)
+            {
+                PerseguirJugador(jugadorObjetivo);
+            }
+            ChecarVidaJugador();
+        }
+
+        else
+        {
+            agente.isStopped = false;
+            agente.SetDestination(jugadorObjetivo.transform.position);
         }
     }
 
-    private void ChasePlayer()
+    private void FixedUpdate()
     {
-        // Calcular la dirección hacia el pfJugador
-        Vector3 direction = (player.position - transform.position).normalized;
-
-        
-        transform.LookAt(player);
-
-        // Mover el enemigo en la dirección del pfJugador
-        transform.Translate(direction * chaseSpeed * Time.deltaTime);
-
-        // Si el pfJugador está dentro del rango de ataque, detenerse y atacar
-        if (Vector3.Distance(transform.position, player.position) <= attackRange)
+        if (GameManager.remainingTime <= 0)
         {
-            
-            isAttacking = true;
+            agente.isStopped = true;
+            atacando = false;
+            Destroy(gameObject);
+        }
 
-           
-            Invoke("Attack", attackCooldown);
+        if (SceneManager.GetActiveScene().name == "ANDYINGAME")
+        {
+            if (jugadorObjetivo.Vida <= 0)
+            {
+                jugadorObjetivo = null;
+                agente.isStopped = true;
+                Invoke("BuscarJugadorCercano", 5f);
+            }
         }
     }
 
-    private void Attack()
+    private void BuscarJugadorCercano()
     {
-        
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        List<PlayerController> players = GameManager.jugadores;
+        float closestDistance = Mathf.Infinity;
+        PlayerController closestPlayer = null;
 
-        
-        Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
+        foreach (PlayerController player in players)
+        {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayer = player;
+            }
+        }
 
-        
-        projectileRigidbody.AddForce(firePoint.forward * projectileSpeed, ForceMode.VelocityChange);
+        jugadorObjetivo = closestPlayer;
+    }
 
-        
-        Destroy(projectile, projectileLifetime);
+    private void PerseguirJugador(PlayerController player)
+    {
+        if (Vector3.Distance(transform.position, player.transform.position) <= distanciaMinima)
+        {
+            agente.isStopped = true;
+            atacando = true;
 
-        
-        isAttacking = false;
+
+            transform.LookAt(player.transform.localPosition);
+
+
+            Invoke("Atacar", ataqueEnfriamiento);
+        }
+        else
+        {
+            agente.isStopped = false;
+            agente.SetDestination(player.transform.position);
+        }
+    }
+
+    private void Atacar()
+    {
+        transform.LookAt(jugadorObjetivo.transform.position);
+
+        Instantiate(balaPrefab, balaSpawn.position, balaSpawn.rotation);
+
+        atacando = false;
+    }
+
+    private void ChecarVidaJugador()
+    {
+        if (jugadorObjetivo.Vida <= 0)
+        {
+            BuscarJugadorCercano();
+        }
+    }
+
+    public void RecibirDaño(int daño)
+    {
+        vida -= daño;
     }
 }

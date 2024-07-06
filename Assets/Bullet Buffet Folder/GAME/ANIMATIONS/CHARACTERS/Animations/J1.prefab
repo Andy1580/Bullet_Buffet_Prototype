@@ -1935,7 +1935,7 @@ GameObject:
   - component: {fileID: 2955035043352047383}
   m_Layer: 0
   m_Name: J1
-  m_TagString: Player1
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1972,7 +1972,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662857b2ce4717a4c81a5ea55c21c83b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundedPlayer: 0
   playerSpeed: 5
   smoothRotacion: 0.5
   enDash: 0
@@ -1985,9 +1984,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
     type: 3}
   bulletSpawn: {fileID: 7768006098767679259}
-  salud: 100
+  salud: 300
   BarraSalud: {fileID: 5602918433743696430}
-  isInvulnerable: 0
   tiempoEscudo: 5
   cooldownEscudo: 5
   escudo: {fileID: 7029042770311191465}

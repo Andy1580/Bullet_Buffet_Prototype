@@ -24,12 +24,12 @@ public class ModeKaiju : MonoBehaviour
             playerPrefab2 = GameObject.FindGameObjectWithTag("Player2");
         }
 
-        if (playerPrefab1.GetComponent<PlayerController>().salud <= 0)
+        if (playerPrefab1.GetComponent<PlayerController>().Vida <= 0)
         {
             MoveToObjectPosition(targetObject1.position);
         }
 
-        if (playerPrefab2.GetComponent<PlayerController>().salud <= 0)
+        if (playerPrefab2.GetComponent<PlayerController>().Vida <= 0)
         {
             MoveToObjectPosition(targetObject2.position);
         }
