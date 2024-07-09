@@ -26,12 +26,12 @@ public class DañoVida : MonoBehaviour
 
             if (eM != null)
             {
-                eM.RecibirDaño(damage);
+                eM.VidaEnemigo -= damage;
                 Destroy(this.gameObject);
             }
             else if (eF != null)
             {
-                eF.RecibirDaño(damage);
+                eF.VidaEnemigo -= damage;
                 Destroy(this.gameObject);
             }
         }

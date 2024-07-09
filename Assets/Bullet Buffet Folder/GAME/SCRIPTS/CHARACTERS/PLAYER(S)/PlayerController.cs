@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
         Start_Dash();
         Start_Animator();
         Start_Vida();
+        InicializarPowerUps();
+        InicializarSSD();
     }
 
     private void Update()
@@ -69,12 +71,66 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Input_PowerUp(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("Se ejecuto el Power Up");
+
+            if (actualHability == "Super Shoot")
+            {
+                boolSS = true;
+                timeToShoot++;
+                BloquearMovimiento = true;
+
+                if (timeToShoot > 3 && boolSS)
+                {
+                    SuperShoot();
+                }
+            }
+
+
+            if (actualHability == "Explosive Bullet")
+            {
+                boolEB = true;
+                timeToShoot++;
+                BloquearMovimiento = true;
+
+                if (timeToShoot > 3 && boolEB)
+                {
+                    ExplosiveBullet();
+                }
+            }
+
+
+            if (actualHability == "Invulnerability")
+            {
+                if (!isInvulnerable)
+                {
+                    ActivarInvulnerabilidad();
+                }
+
+            }
+
+
+            if (actualHability == "Super Speed")
+            {
+                if(!inSuperSpeed)
+                {
+                    inSuperSpeed = true;
+                    SuperSpeed();
+                }
+            }
+
+        }
+    }
+
     #endregion INPUT
 
     #region Movimiento & Rotacion
 
     [Header("Movement Stats")]
-    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] internal float playerSpeed = 5f;
     [SerializeField] private float smoothRotacion;
     private bool groundedPlayer;
     private CharacterController controller;
@@ -91,6 +147,9 @@ public class PlayerController : MonoBehaviour
 
     void Update_Movimiento()
     {
+        Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
+        transform.LookAt(rotation);
+
         if (BloquearMovimiento)
             return;
 
@@ -99,8 +158,6 @@ public class PlayerController : MonoBehaviour
         movement.z = moveXZ.z;
 
 
-        Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
-        transform.LookAt(rotation);
 
         if (GameManager.EnPausa)
             return;
@@ -201,15 +258,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("Life Stats")]
     [SerializeField] private int maxSalud = 300;
-    [SerializeField] private Slider BarraSalud;
-    private static int salud;
-    internal bool isInvulnerable = false;
+    [SerializeField] private Image BarraSalud;
+    internal int salud;
     //internal bool muerto = false;
 
     void Start_Vida()
     {
         salud = maxSalud;
-        BarraSalud.GetComponent<Slider>().value = salud;
+        BarraSalud.fillAmount = salud;
     }
 
     void DeadEvent()
@@ -227,16 +283,21 @@ public class PlayerController : MonoBehaviour
             if (value <= 0)
             {
                 salud = 0;
+                BarraSalud.fillAmount = (float)salud / maxSalud;
                 DeadEvent();
             }
-            else if(value >= maxSalud)
+            else if (value >= maxSalud)
             {
                 salud = maxSalud;
+                BarraSalud.fillAmount = (float)salud / maxSalud;
             }
             else
             {
                 salud = value;
+                BarraSalud.fillAmount = (float)salud / maxSalud;
             }
+
+            BarraSalud.fillAmount = (float)salud / maxSalud;
         }
     }
     #endregion Vida
@@ -296,5 +357,128 @@ public class PlayerController : MonoBehaviour
     #region EQUIPOS
     internal int equipo;
     #endregion EQUIPOS
+
+    #region POWER UP
+    [Header("Power Up Core")]
+    [SerializeField] private string actualHability = "None";
+    [SerializeField] private int timeToShoot;
+    internal string hability;
+
+    void InicializarPowerUps()
+    {
+        timeToShoot = 0;
+    }
+
+    public void SetHability(string newHability)
+    {
+        hability = newHability;
+        actualHability = hability;
+    }
+
+    #region SUPER SHOOT
+    [Header("Super Shoot")]
+    [SerializeField] private GameObject bulletSSPrefab;
+    [SerializeField] private Transform[] shootPoints;
+    [SerializeField] private bool boolSS = false;
+    public float spreadSpeed = 10f;
+
+    void SuperShoot()
+    {
+        foreach (Transform shootPoint in shootPoints)
+        {
+            GameObject bulletInstance = Instantiate(bulletSSPrefab, shootPoint.position, shootPoint.rotation);
+            SuperShoot bulletScript = bulletInstance.GetComponent<SuperShoot>();
+            bulletScript.spreadSpeed = spreadSpeed;
+        }
+
+        Invoke("DesactivarSS", 0.25f);
+    }
+
+    private void DesactivarSS()
+    {
+        Debug.Log("Si se desactivo Super Shoot");
+        hability = null;
+        actualHability = hability;
+        BloquearMovimiento = false;
+        timeToShoot = 0;
+        boolSS = false;
+    }
+    #endregion SUPER SHOOT
+
+    #region EXPLOSIVE BULLET
+    [Header("Explosive Bullet")]
+    [SerializeField] private GameObject balaExplosiva;
+    [SerializeField] private Transform spawnBalaExplosiva;
+    [SerializeField] private bool boolEB = false;
+
+    void ExplosiveBullet()
+    {
+        Debug.Log("Se instancio la bala explosiva");
+        GameObject bala = Instantiate(balaExplosiva, spawnBalaExplosiva.position, spawnBalaExplosiva.rotation);
+
+        Invoke("DesactivarES", 0.25f);
+    }
+
+    private void DesactivarES()
+    {
+        Debug.Log("Si se desactivo Explosive Shoot");
+        hability = "None";
+        BloquearMovimiento = false;
+        timeToShoot = 0;
+    }
+    #endregion EXPLOSIVE BULLET
+
+    #region INVULNERABILIDAD
+    [Header("Invulnerabilidad")]
+    [SerializeField] private float isInvunerableTime = 5f;
+    [SerializeField] internal bool isInvulnerable = false;
+    //[SerializeField] private bool invulnerable;
+
+    private void ActivarInvulnerabilidad()
+    {
+        isInvulnerable = true;
+        Debug.Log("Se activo la invulnerabilidad");
+        Invoke("DesactivarInvulnerabilidad", isInvunerableTime);
+    }
+
+    private void DesactivarInvulnerabilidad()
+    {
+        Debug.Log("Si se desactivo Invulnerabilidad");
+        hability = null;
+        actualHability = hability;
+        isInvulnerable = false;
+    }
+    #endregion INVULNERABILIDAD
+
+    #region SUPER SPEED
+    [Header("Super Speed")]
+    [SerializeField] private float superSpeed;
+    [SerializeField] private float superSpeedTime = 5f;
+    public bool inSuperSpeed = false;
+
+    void InicializarSSD()
+    {
+        superSpeed = playerSpeed;
+    }
+    
+    private void SuperSpeed()
+    {
+        playerSpeed = 100f;
+        superSpeed = playerSpeed;
+        StartCoroutine("DesactivarSSD", superSpeedTime);
+    }
+
+    private void DesactivarSSD()
+    {
+        Debug.Log("Si se desactivo Super Speed");
+        hability = null;
+        actualHability = hability;
+        playerSpeed = 5f;
+        superSpeed = playerSpeed;
+        inSuperSpeed = false;
+    }
+    #endregion SUPER SPEED
+
+    #endregion POWER UP
 
 }

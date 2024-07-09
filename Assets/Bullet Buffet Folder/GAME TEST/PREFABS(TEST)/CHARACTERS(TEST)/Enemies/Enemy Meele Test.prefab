@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8874833486255456409}
   - component: {fileID: 7303275172790739106}
-  - component: {fileID: 2448043835038537850}
+  - component: {fileID: 6170820855745261736}
   m_Layer: 0
   m_Name: AttackCollider
   m_TagString: Untagged
@@ -54,7 +54,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.9, y: 1.9, z: 1.9}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2448043835038537850
+--- !u!114 &6170820855745261736
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,7 +63,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3522949025935392762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb7d3e74e74a18a45ba90f1da98899f2, type: 3}
+  m_Script: {fileID: 11500000, guid: afe2849aa9a5d2e45ac36a41f999a1fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
@@ -174,7 +174,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.12, y: 1.601785, z: 1.12}
+  m_Size: {x: 1.5, y: 1.601785, z: 1.5}
   m_Center: {x: 0, y: 0.30089363, z: 0}
 --- !u!54 &8866610029836725889
 Rigidbody:
@@ -215,10 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20a15dc4bf7fe3f4dafc5974344b6567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanciaMinima: 5
-  ataqueEnfriamiento: 1.5
-  rangoAtaque: 1.5
-  vida: 200
+  distanciaMinima: 4
+  maxVida: 200
   attackCollider: {fileID: 3522949025935392762}
 --- !u!195 &3415403561548966183
 NavMeshAgent:

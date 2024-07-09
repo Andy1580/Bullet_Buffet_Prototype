@@ -1714,8 +1714,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
     type: 3}
   bulletSpawn: {fileID: 3784219778557275761}
-  salud: 300
-  BarraSalud: {fileID: 4037267703843289884}
+  maxSalud: 300
+  BarraSalud: {fileID: 2247372025231813890}
   tiempoEscudo: 1
   cooldownEscudo: 5
   escudo: {fileID: 805872220678921986}
@@ -1845,6 +1845,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2b8abe36-8a60-43af-b8d1-c1ac04d3c18e
     m_ActionName: UI/Navigate
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a36ce36e-8448-4a39-8ce8-0fed7b332b4d
+    m_ActionName: Player/Cambiar Color[/Keyboard/escape,/XInputControllerWindows/buttonNorth,/XInputControllerWindows1/buttonNorth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b1d473ac-0192-42f2-91ed-82364fdaa326
+    m_ActionName: Player/Boton Seleccionar[/Keyboard/escape,/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6149a0e8-61f3-4fa7-ba02-7931634cadd3
+    m_ActionName: Player/AxisUi[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: Player

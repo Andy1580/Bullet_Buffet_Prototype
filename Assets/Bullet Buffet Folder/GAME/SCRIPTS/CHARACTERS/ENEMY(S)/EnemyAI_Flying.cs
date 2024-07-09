@@ -1,72 +1,68 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 public class EnemyAI_Flying : MonoBehaviour
 {
-    [SerializeField] private float velocidadPersecucion = 5f;
-    [SerializeField] private float rangoAtaque = 10f;
-    [SerializeField] private float ataqueEnfriamiento = 2f;
+
     [SerializeField] private GameObject balaPrefab;
     [SerializeField] private Transform balaSpawn;
-    [SerializeField] private float velocidadBala = 10f;
-    [SerializeField] private float vidaBala = 3f;
     [SerializeField] private float distanciaMinima = 5f;
-    [SerializeField] internal int vida = 200;
+    [SerializeField] private int maxVida = 200;
+    [SerializeField] internal int vida;
 
+    List<PlayerController> players;
     private NavMeshAgent agente;
     private PlayerController jugadorObjetivo;
-    private bool atacando = false;
 
     void Start()
     {
         agente = GetComponent<NavMeshAgent>();
         agente.stoppingDistance = distanciaMinima;
+        vida = maxVida;
         BuscarJugadorCercano();
     }
 
     void Update()
     {
-        if (jugadorObjetivo != null)
-        {
-            if (!atacando)
-            {
-                PerseguirJugador(jugadorObjetivo);
-            }
-            ChecarVidaJugador();
-        }
+        //if (jugadorObjetivo != null)
+        //{
+        //    if (!atacando)
+        //    {
+        //        StartCoroutine(PerseguirJugador());
+        //        PerseguirJugador(jugadorObjetivo);
+        //    }
+        //    ChecarVidaJugador();
+        //}
 
-        else
-        {
-            agente.isStopped = false;
-            agente.SetDestination(jugadorObjetivo.transform.position);
-        }
+        //else
+        //{
+        //    agente.isStopped = false;
+        //    agente.SetDestination(jugadorObjetivo.transform.position);
+        //}
     }
 
     private void FixedUpdate()
     {
-        if (GameManager.remainingTime <= 0)
-        {
-            agente.isStopped = true;
-            atacando = false;
-            Destroy(gameObject);
-        }
+        transform.LookAt(jugadorObjetivo.transform);
 
-        if (SceneManager.GetActiveScene().name == "ANDYINGAME")
+        //if (GameManager.remainingTime <= 0)
+        //{
+        //    agente.isStopped = true;
+        //    atacando = false;
+        //    Destroy(gameObject);
+        //}
+
+        if (jugadorObjetivo.Vida <= 0)
         {
-            if (jugadorObjetivo.Vida <= 0)
-            {
-                jugadorObjetivo = null;
-                agente.isStopped = true;
-                Invoke("BuscarJugadorCercano", 5f);
-            }
+            JugadorMuerto();
         }
     }
 
     private void BuscarJugadorCercano()
     {
-        List<PlayerController> players = GameManager.jugadores;
+        players = GameManager.jugadores;
         float closestDistance = Mathf.Infinity;
         PlayerController closestPlayer = null;
 
@@ -81,47 +77,116 @@ public class EnemyAI_Flying : MonoBehaviour
         }
 
         jugadorObjetivo = closestPlayer;
+        StartCoroutine(PerseguirJugador());
+        StartCoroutine(AtacarJugador());
     }
 
-    private void PerseguirJugador(PlayerController player)
+    //private void PerseguirJugador(PlayerController player)
+    //{
+    //    if (Vector3.Distance(transform.position, player.transform.position) <= distanciaMinima)
+    //    {
+    //        agente.isStopped = true;
+    //        atacando = true;
+
+
+    //        transform.LookAt(player.transform.localPosition);
+
+
+    //        Invoke("Atacar", ataqueEnfriamiento);
+    //    }
+    //    else
+    //    {
+    //        agente.isStopped = false;
+    //        agente.SetDestination(player.transform.position);
+    //    }
+    //}
+
+    //private void Atacar()
+    //{
+    //    transform.LookAt(jugadorObjetivo.transform.position);
+
+    //    Instantiate(balaPrefab, balaSpawn.position, balaSpawn.rotation);
+
+    //    atacando = false;
+    //}
+
+    //private void ChecarVidaJugador()
+    //{
+    //    if (players.Count <= 1)
+    //    {
+    //        BuscarJugadorCercano();
+    //    }
+    //}
+
+    private void JugadorMuerto()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) <= distanciaMinima)
+        if (players.Count <= 1)
         {
-            agente.isStopped = true;
-            atacando = true;
-
-
-            transform.LookAt(player.transform.localPosition);
-
-
-            Invoke("Atacar", ataqueEnfriamiento);
+            StopAllCoroutines();
+            return;
         }
-        else
+
+        if (players[0].Vida > 0)
         {
-            agente.isStopped = false;
-            agente.SetDestination(player.transform.position);
+            jugadorObjetivo = players[0];
+        }
+
+        if (players[1].Vida > 0)
+        {
+            jugadorObjetivo = players[1];
         }
     }
 
-    private void Atacar()
+    public int VidaEnemigo
     {
-        transform.LookAt(jugadorObjetivo.transform.position);
+        get => vida;
+        set
+        {
+            if (value <= 0)
+            {
+                vida = 0;
+                DeadEvent();
+            }
+            else if (value >= maxVida)
+            {
+                vida = maxVida;
+            }
+            else
+            {
+                vida = value;
+            }
+        }
+    }
 
+    void DeadEvent()
+    {
+        Destroy(gameObject);
+    }
+
+    IEnumerator PerseguirJugador()
+    {
+    Inicio:
+        agente.SetDestination(jugadorObjetivo.transform.position);
+        yield return new WaitForSeconds(1);
+        goto Inicio;
+    }
+
+    IEnumerator AtacarJugador()
+    {
+    Inicio:
+
+        float distancia = Vector3.Distance(transform.position, jugadorObjetivo.transform.position);
+
+        if (distancia <= distanciaMinima)
+        {
+            Ataque();
+        }
+        yield return new WaitForSeconds(2f);
+        goto Inicio;
+    }
+
+    void Ataque()
+    {
         Instantiate(balaPrefab, balaSpawn.position, balaSpawn.rotation);
-
-        atacando = false;
-    }
-
-    private void ChecarVidaJugador()
-    {
-        if (jugadorObjetivo.Vida <= 0)
-        {
-            BuscarJugadorCercano();
-        }
-    }
-
-    public void RecibirDaño(int daño)
-    {
-        vida -= daño;
     }
 }
