@@ -10,7 +10,7 @@ public class EnemyAI_Meele : MonoBehaviour
     [SerializeField] private float distanciaMinima = 2f;
     [SerializeField] private int maxVida = 200;
     [SerializeField] public GameObject attackCollider;
-    internal int vida;
+    [SerializeField] internal int vida;
 
     List<PlayerController> players;
     private NavMeshAgent agente;

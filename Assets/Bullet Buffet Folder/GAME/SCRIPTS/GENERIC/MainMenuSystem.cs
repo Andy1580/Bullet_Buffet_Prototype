@@ -7,11 +7,11 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private GameObject panelModos;
     [SerializeField] private GameObject panelMapas;
     [SerializeField] private GameObject panelSetings;
-    [SerializeField] private GameObject bModes;
-    [SerializeField] private GameObject bHechizos;
+    [SerializeField] private GameObject panelSchemeControl;
+    [SerializeField] private GameObject panelConfimarSalir;
 
 
-    [SerializeField] private GameObject eventSystem;
+    //[SerializeField] private GameObject eventSystem;
     //private EventSystem eventS;
 
     GameManager gM;
@@ -41,6 +41,8 @@ public class MainMenuSystem : MonoBehaviour
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
         panelMapas.SetActive(false);
+        panelSchemeControl.SetActive(false);
+        panelConfimarSalir.SetActive(false);
 
 
         //eventS.firstSelectedGameObject = bModes;
@@ -71,6 +73,9 @@ public class MainMenuSystem : MonoBehaviour
         panelModos.SetActive(true);
         panelSetings.SetActive(false);
         panelInicio.SetActive(false);
+        panelConfimarSalir.SetActive(false);
+        panelSchemeControl.SetActive(false);
+        panelMapas.SetActive(false);
 
         //eventS.firstSelectedGameObject = bHechizos;
     }
@@ -80,6 +85,8 @@ public class MainMenuSystem : MonoBehaviour
         panelInicio.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
+        panelConfimarSalir.SetActive(false);
+        panelSchemeControl.SetActive(false);
         panelMapas.SetActive(false);
 
         //eventS.firstSelectedGameObject = bModes;
@@ -90,24 +97,41 @@ public class MainMenuSystem : MonoBehaviour
         panelSetings.SetActive(true);
         panelModos.SetActive(false);
         panelInicio.SetActive(false);
+        panelConfimarSalir.SetActive(false);
+        panelSchemeControl.SetActive(false);
+        panelMapas.SetActive(false);
+    }
+
+    public void GoToSchemeControl()
+    {
+        panelSchemeControl.SetActive(true);
+        panelModos.SetActive(false);
+        panelSetings.SetActive(false);
+        panelInicio.SetActive(false);
+        panelConfimarSalir.SetActive(false);
+        panelMapas.SetActive(false);
     }
 
     public void ModoHechizosSazonados()
     {
         GameManager.modoHS = true;
         panelMapas.SetActive(true);
-        panelSetings.SetActive(false);
         panelModos.SetActive(false);
+        panelSetings.SetActive(false);
         panelInicio.SetActive(false);
+        panelConfimarSalir.SetActive(false);
+        panelSchemeControl.SetActive(false);
     }
 
     public void ModoDueloDeSalsas()
     {
         GameManager.modoDS = true;
         panelMapas.SetActive(true);
-        panelSetings.SetActive(false);
         panelModos.SetActive(false);
+        panelSetings.SetActive(false);
         panelInicio.SetActive(false);
+        panelConfimarSalir.SetActive(false);
+        panelSchemeControl.SetActive(false);
     }
 
     public void MapaStreet()
@@ -118,5 +142,20 @@ public class MainMenuSystem : MonoBehaviour
     private void CargarJuego()
     {
         SceneManager.LoadScene("ANDYINGAME");
+    }
+
+    public void ConfirmacionSalir()
+    {
+        panelConfimarSalir.SetActive(true);
+        panelModos.SetActive(false);
+        panelSetings.SetActive(false);
+        panelInicio.SetActive(false);
+        panelSchemeControl.SetActive(false);
+        panelMapas.SetActive(false);
+    }
+
+    public void Salir()
+    {
+        Application.Quit();
     }
 }

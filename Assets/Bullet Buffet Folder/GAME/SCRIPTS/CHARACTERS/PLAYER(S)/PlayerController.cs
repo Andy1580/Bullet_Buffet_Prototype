@@ -283,18 +283,15 @@ public class PlayerController : MonoBehaviour
             if (value <= 0)
             {
                 salud = 0;
-                BarraSalud.fillAmount = (float)salud / maxSalud;
                 DeadEvent();
             }
             else if (value >= maxSalud)
             {
                 salud = maxSalud;
-                BarraSalud.fillAmount = (float)salud / maxSalud;
             }
             else
             {
                 salud = value;
-                BarraSalud.fillAmount = (float)salud / maxSalud;
             }
 
             BarraSalud.fillAmount = (float)salud / maxSalud;
@@ -367,6 +364,7 @@ public class PlayerController : MonoBehaviour
     void InicializarPowerUps()
     {
         timeToShoot = 0;
+        actualHability = hability;
     }
 
     public void SetHability(string newHability)
@@ -423,6 +421,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Si se desactivo Explosive Shoot");
         hability = "None";
+        actualHability = hability;
         BloquearMovimiento = false;
         timeToShoot = 0;
     }
@@ -463,9 +462,9 @@ public class PlayerController : MonoBehaviour
     
     private void SuperSpeed()
     {
-        playerSpeed = 100f;
+        playerSpeed = 10f;
         superSpeed = playerSpeed;
-        StartCoroutine("DesactivarSSD", superSpeedTime);
+        Invoke("DesactivarSSD", superSpeedTime);
     }
 
     private void DesactivarSSD()

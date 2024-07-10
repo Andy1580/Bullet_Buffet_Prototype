@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
             InicializarMapas();
             InicializarPuntaje();
             InicializarMuerteJugadores();
+            InicializarPausa();
             Invoke("InicializarEnemySpawn", 5);
 
             if (modoHS)
@@ -135,6 +136,13 @@ public class GameManager : MonoBehaviour
             pistaPintable.SetActive(false);
             panelMarcadorMDS.SetActive(false);
             camaraObjeto.SetActive(false);
+
+            //Pausa
+            panelPausa.SetActive(false);
+            panelControles.SetActive(false);
+            panelConfiguracion.SetActive(false);
+            panelConfirmacionSalida.SetActive(false);
+
 
             //Spawn de Enemigos
             for (int i = enemigosInstanciados.Count - 1; i >= 0; i--)
@@ -245,8 +253,25 @@ public class GameManager : MonoBehaviour
     #endregion MAPAS
 
     #region PAUSA
+    [Header("Pausa Core")]
+
+    [Header("Panel Pausa")]
+    [SerializeField] private GameObject panelPausa;
+    [SerializeField] private GameObject panelControles;
+    [SerializeField] private GameObject panelConfiguracion;
+    [SerializeField] private GameObject panelConfirmacionSalida;
+    [SerializeField] private static GameObject panelStaticPausa;
+
     private static bool enPausa;
     public static bool EnPausa => enPausa;
+
+    void InicializarPausa()
+    {
+        panelStaticPausa = panelPausa;
+        panelControles.SetActive(false);
+        panelConfiguracion.SetActive(false);
+        panelConfirmacionSalida.SetActive(false);
+    }
 
     public static void Pausa(PlayerController player)
     {
@@ -256,6 +281,7 @@ public class GameManager : MonoBehaviour
         if (enPausa)
         {
             Time.timeScale = 0;
+            panelStaticPausa.SetActive(true);
 
             foreach (PlayerController j in jugadores)
             {
@@ -265,6 +291,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Time.timeScale = 1;
+            panelStaticPausa.SetActive(false);
 
             foreach (PlayerController j in jugadores)
             {
@@ -273,6 +300,48 @@ public class GameManager : MonoBehaviour
 
         }
 
+    }
+
+    public void Resumir()
+    {
+        panelPausa.SetActive(false);
+        panelControles.SetActive(false);
+        panelConfiguracion.SetActive(false);
+        panelConfirmacionSalida.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void Controles()
+    {
+        panelControles.SetActive(true);
+        panelConfiguracion.SetActive(false);
+        panelConfirmacionSalida.SetActive(false);
+    }
+
+    public void Configuracion()
+    {
+        panelConfiguracion.SetActive(true);
+        panelControles.SetActive(false);
+        panelConfirmacionSalida.SetActive(false);
+    }
+
+    public void ConfirmarSalida()
+    {
+        panelConfirmacionSalida.SetActive(true);
+        panelControles.SetActive(false);
+        panelConfiguracion.SetActive(false);
+    }
+
+    public void Salir()
+    {
+        Application.Quit();
+    }
+
+    public void Back()
+    {
+        panelControles.SetActive(false);
+        panelConfiguracion.SetActive(false);
+        panelConfirmacionSalida.SetActive(false);
     }
     #endregion PAUSA
 
@@ -893,6 +962,9 @@ public class GameManager : MonoBehaviour
 
     void InicializarEnemySpawn()
     {
+        if (SceneManager.GetActiveScene().name != "ANDYINGAME")
+            return;
+
         Debug.Log("Si se inicializo el spawn de Enemigos");
         for (int i = 0; i < enemigosMaximosActivos; i++)
         {

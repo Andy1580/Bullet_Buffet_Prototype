@@ -9,18 +9,27 @@ public class ExplosiveBullet : MonoBehaviour
     public float destructionDelay = 2f; // Tiempo antes de la destrucción después de la expansión
     private SphereCollider sphereCollider;
     private bool isExpanding = false;
-    public float velicidadBala = 50f;
+    public float velicidadBala = 8f;
     public int dañoExplosion = 100;
 
     void Start()
     {
         sphereCollider = GetComponent<SphereCollider>();
+        isExpanding = false;
         StopAllCoroutines();
+    }
+
+    private void Update()
+    {
+        if (!isExpanding)
+        {
+            transform.position += transform.forward * (velicidadBala * Time.deltaTime);
+        }
     }
 
     private void FixedUpdate()
     {
-        transform.position += transform.forward * (velicidadBala * Time.fixedDeltaTime);
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,7 +43,7 @@ public class ExplosiveBullet : MonoBehaviour
                 StartCoroutine(ExpandAndDestroy());
             }
         }
-        else if(other.CompareTag("Enemy"))
+        else if (other.CompareTag("Enemy"))
         {
             EnemyAI_Flying eF = other.GetComponent<EnemyAI_Flying>();
             EnemyAI_Meele eM = other.GetComponent<EnemyAI_Meele>();
@@ -50,7 +59,7 @@ public class ExplosiveBullet : MonoBehaviour
                 eF.VidaEnemigo -= dañoExplosion;
                 StartCoroutine(ExpandAndDestroy());
             }
-            
+
         }
     }
 
@@ -76,9 +85,4 @@ public class ExplosiveBullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, sphereCollider.radius);
-    }
 }
