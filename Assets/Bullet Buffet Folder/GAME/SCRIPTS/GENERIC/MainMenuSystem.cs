@@ -96,7 +96,7 @@ public class MainMenuSystem : MonoBehaviour
     {
         panelSetings.SetActive(true);
         panelModos.SetActive(false);
-        panelInicio.SetActive(false);
+        //panelInicio.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelMapas.SetActive(false);
@@ -107,7 +107,7 @@ public class MainMenuSystem : MonoBehaviour
         panelSchemeControl.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
-        panelInicio.SetActive(false);
+        //panelInicio.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelMapas.SetActive(false);
     }

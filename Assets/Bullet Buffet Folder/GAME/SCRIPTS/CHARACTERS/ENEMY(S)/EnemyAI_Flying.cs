@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyAI_Flying : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class EnemyAI_Flying : MonoBehaviour
     [SerializeField] private float distanciaMinima = 5f;
     [SerializeField] private int maxVida = 200;
     [SerializeField] internal int vida;
+    [SerializeField] private MeshRenderer renderer;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -21,6 +23,8 @@ public class EnemyAI_Flying : MonoBehaviour
         agente = GetComponent<NavMeshAgent>();
         agente.stoppingDistance = distanciaMinima;
         vida = maxVida;
+
+        renderer = GetComponentInChildren<MeshRenderer>();
         BuscarJugadorCercano();
     }
 
@@ -142,6 +146,11 @@ public class EnemyAI_Flying : MonoBehaviour
         get => vida;
         set
         {
+            if (value < vida)
+            {
+                StartCoroutine(DañoEmisivo());
+            }
+
             if (value <= 0)
             {
                 vida = 0;
@@ -156,6 +165,14 @@ public class EnemyAI_Flying : MonoBehaviour
                 vida = value;
             }
         }
+    }
+
+    private IEnumerator DañoEmisivo()
+    {
+        Debug.Log("Entro al DañoEmisivo");
+        renderer.material.SetColor("_EmissionColor", Color.white * 2);
+        yield return new WaitForSeconds(0.1f);
+        renderer.material.SetColor("_EmissionColor", Color.black);
     }
 
     void DeadEvent()

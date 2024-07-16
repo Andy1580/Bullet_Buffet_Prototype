@@ -45,7 +45,7 @@ public class CuadroPintable : MonoBehaviour
     //y checamos si ya esta asignado a algun lista, sino esta lo asignamos
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player1") || other.CompareTag("Player2"))
+        if (other.CompareTag("Player"))
         {
             //Obtebemos su nombre y veificamos que no se haya asignado al "curentOwner"
             string playerName = other.gameObject.name;

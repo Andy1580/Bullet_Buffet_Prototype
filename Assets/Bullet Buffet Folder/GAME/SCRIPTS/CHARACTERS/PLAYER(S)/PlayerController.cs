@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -115,7 +116,7 @@ public class PlayerController : MonoBehaviour
 
             if (actualHability == "Super Speed")
             {
-                if(!inSuperSpeed)
+                if (!inSuperSpeed)
                 {
                     inSuperSpeed = true;
                     SuperSpeed();
@@ -259,6 +260,7 @@ public class PlayerController : MonoBehaviour
     [Header("Life Stats")]
     [SerializeField] private int maxSalud = 300;
     [SerializeField] private Image BarraSalud;
+    [SerializeField] private SkinnedMeshRenderer renderer;
     internal int salud;
     //internal bool muerto = false;
 
@@ -266,6 +268,8 @@ public class PlayerController : MonoBehaviour
     {
         salud = maxSalud;
         BarraSalud.fillAmount = salud;
+
+        renderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     void DeadEvent()
@@ -280,6 +284,11 @@ public class PlayerController : MonoBehaviour
         get => salud;
         set
         {
+            if (value < salud)
+            {
+                StartCoroutine(DañoEmisivo());
+            }
+
             if (value <= 0)
             {
                 salud = 0;
@@ -296,6 +305,13 @@ public class PlayerController : MonoBehaviour
 
             BarraSalud.fillAmount = (float)salud / maxSalud;
         }
+    }
+
+    private IEnumerator DañoEmisivo()
+    {
+        renderer.material.SetColor("_EmissionColor", Color.white * 2);
+        yield return new WaitForSeconds(0.1f);
+        renderer.material.SetColor("_EmissionColor", Color.black);
     }
     #endregion Vida
 
@@ -359,18 +375,59 @@ public class PlayerController : MonoBehaviour
     [Header("Power Up Core")]
     [SerializeField] private string actualHability = "None";
     [SerializeField] private int timeToShoot;
+    [SerializeField] private GameObject[] spritesPowerUp;
     internal string hability;
+
+    public Dictionary<string, GameObject> spritesPowerUpDictionary = new Dictionary<string, GameObject>();
 
     void InicializarPowerUps()
     {
         timeToShoot = 0;
         actualHability = hability;
+
+        foreach (GameObject go in spritesPowerUp)
+        {
+            spritesPowerUpDictionary.Add(go.name, go);
+        }
+
+        foreach (GameObject go in spritesPowerUp)
+        {
+            go.SetActive(false);
+        }
     }
 
     public void SetHability(string newHability)
     {
         hability = newHability;
         actualHability = hability;
+
+        if (actualHability != null)
+        {
+            PrenderSprite();
+        }
+    }
+
+    void PrenderSprite()
+    {
+        if (!string.IsNullOrEmpty(actualHability) && spritesPowerUpDictionary.ContainsKey(actualHability))
+        {
+            spritesPowerUpDictionary[actualHability].SetActive(true);
+        }
+    }
+
+    void DesactivarSprite()
+    {
+        if (string.IsNullOrEmpty(actualHability))
+        {
+            foreach (var key in spritesPowerUpDictionary)
+            {
+                key.Value.SetActive(false);
+            }
+        }
+        else if (spritesPowerUpDictionary.ContainsKey(actualHability))
+        {
+            spritesPowerUpDictionary[actualHability].SetActive(false);
+        }
     }
 
     #region SUPER SHOOT
@@ -397,6 +454,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Si se desactivo Super Shoot");
         hability = null;
         actualHability = hability;
+        DesactivarSprite();
         BloquearMovimiento = false;
         timeToShoot = 0;
         boolSS = false;
@@ -420,8 +478,9 @@ public class PlayerController : MonoBehaviour
     private void DesactivarES()
     {
         Debug.Log("Si se desactivo Explosive Shoot");
-        hability = "None";
+        hability = null;
         actualHability = hability;
+        DesactivarSprite();
         BloquearMovimiento = false;
         timeToShoot = 0;
     }
@@ -445,6 +504,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Si se desactivo Invulnerabilidad");
         hability = null;
         actualHability = hability;
+        DesactivarSprite();
         isInvulnerable = false;
     }
     #endregion INVULNERABILIDAD
@@ -459,7 +519,7 @@ public class PlayerController : MonoBehaviour
     {
         superSpeed = playerSpeed;
     }
-    
+
     private void SuperSpeed()
     {
         playerSpeed = 10f;
@@ -472,6 +532,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Si se desactivo Super Speed");
         hability = null;
         actualHability = hability;
+        DesactivarSprite();
         playerSpeed = 5f;
         superSpeed = playerSpeed;
         inSuperSpeed = false;

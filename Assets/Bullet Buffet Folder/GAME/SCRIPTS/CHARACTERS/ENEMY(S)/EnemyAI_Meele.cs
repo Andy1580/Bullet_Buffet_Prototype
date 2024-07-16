@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyAI_Meele : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class EnemyAI_Meele : MonoBehaviour
     [SerializeField] private int maxVida = 200;
     [SerializeField] public GameObject attackCollider;
     [SerializeField] internal int vida;
+    [SerializeField] private MeshRenderer renderer;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -22,6 +24,8 @@ public class EnemyAI_Meele : MonoBehaviour
         agente.stoppingDistance = distanciaMinima;
         vida = maxVida;
         attackCollider.SetActive(false);
+
+        renderer = GetComponent<MeshRenderer>();
         BuscarJugadorCercano();
     }
 
@@ -128,6 +132,11 @@ public class EnemyAI_Meele : MonoBehaviour
         get => vida;
         set
         {
+            if (value < vida)
+            {
+                StartCoroutine(DañoEmisivo());
+            }
+
             if (value <= 0)
             {
                 vida = 0;
@@ -142,6 +151,13 @@ public class EnemyAI_Meele : MonoBehaviour
                 vida = value;
             }
         }
+    }
+
+    private IEnumerator DañoEmisivo()
+    {
+        renderer.material.SetColor("_EmissionColor", Color.white * 2);
+        yield return new WaitForSeconds(0.1f);
+        renderer.material.SetColor("_EmissionColor", Color.black);
     }
 
     private void JugadorMuerto()
