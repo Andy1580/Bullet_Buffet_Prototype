@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class SlotJugador : MonoBehaviour
 {
@@ -12,11 +13,19 @@ public class SlotJugador : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Image img;
     [SerializeField] private TMP_Text nombreTexto;
+    private string selectedCharacter;
     public string personaje;
     private CharacterController controlador;
     private Gamepad control;
 
-
+    private void Awake()
+    {
+        if (img != null)
+        {
+            img = Image;
+            img.enabled = false;
+        }
+    }
 
     private void Start()
     {
@@ -37,13 +46,13 @@ public class SlotJugador : MonoBehaviour
         ChecarBoton();
     }
 
-    public Gamepad Control
+    public Image Image
     {
-        get => control;
+        get => Image;
         set
         {
-            control = value;
-            img.enabled = control != null;
+            Image = value;
+            img.enabled = Image != null;
         }
     }
     #endregion CORE SLOT
@@ -56,6 +65,28 @@ public class SlotJugador : MonoBehaviour
     public void Input_MovimientoImg(InputAction.CallbackContext context)
     {
         axis = context.ReadValue<Vector2>();
+    }
+
+    void RaycastCharacter()
+    {
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.CompareTag("Character"))
+            {
+                selectedCharacter = result.gameObject.name;
+                Debug.Log("Selected Character: " + selectedCharacter);
+                // Handle character selection logic
+                break;
+            }
+        }
     }
     #endregion MOVIMIENTO
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
         {
             enDash = true;
             canDash = false;
+            dashImg.SetActive(false);
             Invoke("DesactivarDash", tiempoDash);
         }
 
@@ -205,10 +207,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fuerzaDash;
     [SerializeField] private float cooldownDash = 5;
     [SerializeField] private float tiempoDash = 0.25f;
+    [SerializeField] private GameObject dashImg;
+    [SerializeField] private int contador = 5;
+    [SerializeField] private TMP_Text contadorText;
 
     void Start_Dash()
     {
         canDash = true;
+        dashImg.SetActive(true);
+
+        contadorText.text = contador.ToString();
     }
 
     void DesactivarDash()
@@ -218,8 +226,17 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator CooldawnDash()
     {
-        enDash = false;
+        while (contador >= 0)
+        {
+            contador--;
+            contadorText.text = contador.ToString();
+            enDash = false;
+            yield return new WaitForSeconds(1);
+        }
+
         yield return new WaitForSeconds(cooldownDash);
+        dashImg.SetActive(true);
+        contador = 5;
         canDash = true;
     }
 

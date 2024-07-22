@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //Aqui agregar la informacion que recibe el Game Manager del Lobby Manager en JSON, la informacion debe de decirle al Game Manager qué control(jugador) escogio qué personaje
+
     #region GAME MANAGER
     public static GameManager Instance;
 
