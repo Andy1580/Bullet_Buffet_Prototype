@@ -9,10 +9,15 @@ public class LobbyManager : MonoBehaviour
     private PlayerInput[] inputs;
     private Dictionary<Gamepad, PlayerInput> dicControles = new Dictionary<Gamepad, PlayerInput>();
 
+    private List<int> equipo = new List<int>();
+
+    [SerializeField] private GameObject panelSelectTeam;
+    [SerializeField] private GameObject panelSelectCh;
+
     private void Awake()
     {
         self = this;
-        
+
         inputs = GetComponentsInChildren<PlayerInput>();
         Awake_DesactivarControles();
 
@@ -22,10 +27,15 @@ public class LobbyManager : MonoBehaviour
         InputSystem.onDeviceChange += CambiosEnControl;
     }
 
+    private void Start()
+    {
+        panelSelectTeam.SetActive(true);
+        panelSelectCh.SetActive(false);
+    }
 
     void Awake_DesactivarControles()
     {
-        foreach(PlayerInput input in inputs)
+        foreach (PlayerInput input in inputs)
             input.gameObject.SetActive(false);
     }
 
@@ -33,7 +43,7 @@ public class LobbyManager : MonoBehaviour
     {
         var gamepads = Gamepad.all;
 
-        for(int i = 0; i < gamepads.Count; i++)
+        for (int i = 0; i < gamepads.Count; i++)
         {
             inputs[i].gameObject.SetActive(true);
             dicControles[gamepads[i]] = inputs[i];
@@ -54,7 +64,7 @@ public class LobbyManager : MonoBehaviour
         if (cambio == InputDeviceChange.Added)
         {
             //Buscamos en los Player Inputs o Controles
-            foreach(PlayerInput input in inputs)
+            foreach (PlayerInput input in inputs)
             {
                 //En el que este deshabilitado, tenga el espacio libre y no tenga un gamepad asignado
                 if (!input.gameObject.activeSelf)
@@ -77,6 +87,25 @@ public class LobbyManager : MonoBehaviour
 
             //Se quita del diccionario
             dicControles.Remove(gamepad);
+        }
+    }
+
+    public void SeleccionarEquipo(Gamepad gamepad, int equipoSeleccionado)
+    {
+        if (dicControles.Count! > 2)
+            return;
+
+        if (dicControles.ContainsKey(gamepad))
+        {
+            PlayerInput playerInput = dicControles[gamepad];
+
+            // Actualiza la información del equipo en la lista correspondiente
+            equipo.Add(equipoSeleccionado);
+
+            panelSelectTeam.SetActive(false);
+            panelSelectCh.SetActive(true);
+
+            Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
         }
     }
 
