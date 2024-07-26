@@ -169,7 +169,6 @@ public class EnemyAI_Flying : MonoBehaviour
 
     private IEnumerator DañoEmisivo()
     {
-        Debug.Log("Entro al DañoEmisivo");
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
         yield return new WaitForSeconds(0.1f);
         renderer.material.SetColor("_EmissionColor", Color.black);

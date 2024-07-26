@@ -399,9 +399,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Axis",
+                    "name": "Axis_Control",
                     "type": "Value",
                     "id": "533bedef-0f64-45ee-84b5-d9e1815a5657",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Axis_Puntero",
+                    "type": "Value",
+                    "id": "156f8f3a-aac9-462a-b85b-7a3cd0582690",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -449,7 +458,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Axis",
+                    "action": "Axis_Control",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -460,7 +469,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Axis",
+                    "action": "Axis_Control",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -471,7 +480,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Axis",
+                    "action": "Axis_Control",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -482,7 +491,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Axis",
+                    "action": "Axis_Control",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -493,7 +502,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Axis",
+                    "action": "Axis_Control",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -504,7 +513,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",
-                    "action": "Axis",
+                    "action": "Axis_Control",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -516,6 +525,72 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Seleccionar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "WASD",
+                    "id": "c07f0a01-5001-40ff-854e-cbc0ee482d43",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Axis_Puntero",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "e05a48b7-7250-4f8f-9c36-0d293b4d193d",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Axis_Puntero",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "f00f7bc7-61a9-4c9b-a738-2d16f0aa9161",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Axis_Puntero",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "d0ff2af1-e1a4-444a-b1cf-93f23c3ddd15",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Axis_Puntero",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e8c5cb5e-ab75-41f7-9bb7-3e7c52acbb6d",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Axis_Puntero",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "894dd086-f128-45de-8371-672ab711e8de",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Axis_Puntero",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

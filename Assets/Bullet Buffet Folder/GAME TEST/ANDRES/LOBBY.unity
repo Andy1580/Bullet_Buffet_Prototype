@@ -705,12 +705,12 @@ GameObject:
   - component: {fileID: 388470391}
   - component: {fileID: 388470390}
   m_Layer: 5
-  m_Name: Puntero
+  m_Name: PunteroJ1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &388470389
 RectTransform:
   m_ObjectHideFlags: 0
@@ -723,11 +723,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2308032495107085057}
+  m_Father: {fileID: 3693959532788294938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 182.99998, y: -183}
+  m_AnchoredPosition: {x: 182.99998, y: 153}
   m_SizeDelta: {x: 142, y: 111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &388470390
@@ -920,7 +920,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &462063505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1435,12 +1435,12 @@ GameObject:
   - component: {fileID: 788939527}
   - component: {fileID: 788939526}
   m_Layer: 5
-  m_Name: Puntero
+  m_Name: PunteroJ2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &788939525
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1453,11 +1453,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4223675070567860860}
+  m_Father: {fileID: 3693959532788294938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 182.99998, y: -121}
+  m_AnchoredPosition: {x: 182.99998, y: -15}
   m_SizeDelta: {x: 142, y: 111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &788939526
@@ -2022,12 +2022,12 @@ GameObject:
   - component: {fileID: 1615673671}
   - component: {fileID: 1615673670}
   m_Layer: 5
-  m_Name: Puntero
+  m_Name: PunteroJ4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1615673669
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2040,11 +2040,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1281692760699257842}
+  m_Father: {fileID: 3693959532788294938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 183, y: -1}
+  m_AnchoredPosition: {x: 183, y: -356}
   m_SizeDelta: {x: 142, y: 111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1615673670
@@ -2350,12 +2350,12 @@ GameObject:
   - component: {fileID: 2070748980}
   - component: {fileID: 2070748979}
   m_Layer: 5
-  m_Name: Puntero
+  m_Name: PunteroJ3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2070748978
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2368,11 +2368,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1709160232488349338}
+  m_Father: {fileID: 3693959532788294938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 182.99998, y: -68}
+  m_AnchoredPosition: {x: 182.99998, y: -184}
   m_SizeDelta: {x: 142, y: 111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2070748979
@@ -2708,10 +2708,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_Animator: {fileID: 7925614803392189115}
   loby: {fileID: 7348534377930447496}
-  ready: {fileID: 0}
   equipo: 0
+  selectedCharacter: 
+  puntero: {fileID: 788939525}
+  selectTm: 0
   selectCh: 0
-  velocidadPuntero: 2
+  velocidadPuntero: 500
+  limon: {x: 0, y: 0}
+  aguacate: {x: 0, y: 0}
+  "canvasTama\xF1o": {x: 0, y: 0}
 --- !u!224 &325288765623750655
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2797,10 +2802,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_Animator: {fileID: 7093516016451905338}
   loby: {fileID: 7348534377930447496}
-  ready: {fileID: 0}
   equipo: 0
+  selectedCharacter: 
+  puntero: {fileID: 388470389}
+  selectTm: 0
   selectCh: 0
-  velocidadPuntero: 2
+  velocidadPuntero: 500
+  limon: {x: 0, y: 0}
+  aguacate: {x: 0, y: 0}
+  "canvasTama\xF1o": {x: 0, y: 0}
 --- !u!1 &655701821678421401
 GameObject:
   m_ObjectHideFlags: 0
@@ -2885,11 +2895,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Animator: {fileID: 7950123899795110017}
-  loby: {fileID: 0}
-  ready: {fileID: 0}
+  loby: {fileID: 7348534377930447496}
   equipo: 0
+  selectedCharacter: 
+  puntero: {fileID: 2070748978}
+  selectTm: 0
   selectCh: 0
-  velocidadPuntero: 2
+  velocidadPuntero: 500
+  limon: {x: 0, y: 0}
+  aguacate: {x: 0, y: 0}
+  "canvasTama\xF1o": {x: 0, y: 0}
 --- !u!1 &942936794911684659
 GameObject:
   m_ObjectHideFlags: 0
@@ -2977,26 +2992,29 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 28.999971}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 138, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!4 &1281692760699257842
-Transform:
+--- !u!224 &1281692760699257842
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4857334963235007601}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -355, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1243159040275392935}
-  - {fileID: 1615673669}
   m_Father: {fileID: 3693959532788294938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -322}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1324657291233831472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3130,9 +3148,10 @@ GameObject:
   - component: {fileID: 1622568150265816006}
   - component: {fileID: 6756246965673357822}
   - component: {fileID: 3055834719372289227}
-  m_Layer: 5
+  - component: {fileID: 6756246965673357823}
+  m_Layer: 9
   m_Name: Jugar
-  m_TagString: Untagged
+  m_TagString: BotonJugar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3172,23 +3191,26 @@ Transform:
   - {fileID: 8848111882228759689}
   m_Father: {fileID: 4463932578065784150}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1709160232488349338
-Transform:
+--- !u!224 &1709160232488349338
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5860213462951557822}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -116, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8565061070976235375}
-  - {fileID: 2070748978}
   m_Father: {fileID: 3693959532788294938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -152}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1834612257540400845
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3208,9 +3230,10 @@ GameObject:
   - component: {fileID: 4069497632599517299}
   - component: {fileID: 5421998301386236736}
   - component: {fileID: 4273026347561179287}
-  m_Layer: 5
-  m_Name: J4
-  m_TagString: Untagged
+  - component: {fileID: 5421998301386236737}
+  m_Layer: 9
+  m_Name: CRIM
+  m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3377,6 +3400,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 6baa5386-13ec-4217-b2e3-a87ad4ed8273
     m_ActionName: UI/Seleccionar
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
+    m_ActionName: UI/Axis_Puntero[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: UI
@@ -3408,23 +3435,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2308032495107085057
-Transform:
+--- !u!224 &2308032495107085057
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23709430021397098}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 336, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8436014601571737557}
-  - {fileID: 388470389}
   m_Father: {fileID: 3693959532788294938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 180}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2518850559116153614
 GameObject:
   m_ObjectHideFlags: 0
@@ -3662,6 +3692,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6baa5386-13ec-4217-b2e3-a87ad4ed8273
     m_ActionName: UI/Seleccionar
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 530528254048209864}
+        m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
+        m_MethodName: Input_PunteroMovimiento
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
+    m_ActionName: UI/Axis_Control1[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: UI
@@ -3710,7 +3756,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6756246965673357822}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7348534377930447496}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: RecopilarInformacion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &3153786740899236312
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3748,9 +3806,10 @@ GameObject:
   - component: {fileID: 3790809036226208299}
   - component: {fileID: 2190798013174667257}
   - component: {fileID: 5182860052812842753}
-  m_Layer: 5
-  m_Name: J1
-  m_TagString: Untagged
+  - component: {fileID: 5182860052812842754}
+  m_Layer: 9
+  m_Name: SKYIE
+  m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3825,11 +3884,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Animator: {fileID: 6716213066887936175}
-  loby: {fileID: 0}
-  ready: {fileID: 0}
+  loby: {fileID: 7348534377930447496}
   equipo: 0
+  selectedCharacter: 
+  puntero: {fileID: 1615673669}
+  selectTm: 0
   selectCh: 0
-  velocidadPuntero: 2
+  velocidadPuntero: 500
+  limon: {x: 0, y: 0}
+  aguacate: {x: 0, y: 0}
+  "canvasTama\xF1o": {x: 0, y: 0}
 --- !u!114 &3432566574087216085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3860,13 +3924,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563722576815007317}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8261484264627404966}
-  m_Father: {fileID: 6534084381208481086}
+  m_Father: {fileID: 8014397933471331968}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3975,6 +4039,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 388470389}
+  - {fileID: 788939525}
+  - {fileID: 2070748978}
+  - {fileID: 1615673669}
   - {fileID: 2308032495107085057}
   - {fileID: 4223675070567860860}
   - {fileID: 1709160232488349338}
@@ -4273,23 +4341,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1655199736858350319}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4223675070567860860
-Transform:
+--- !u!224 &4223675070567860860
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 94725807337958778}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 106, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4489330374897863591}
-  - {fileID: 788939525}
   m_Father: {fileID: 3693959532788294938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 15}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4262678844753147594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4377,13 +4448,59 @@ GameObject:
   - component: {fileID: 841025218773252538}
   - component: {fileID: 1468704236701881025}
   - component: {fileID: 4262678844753147594}
-  m_Layer: 5
-  m_Name: J2
-  m_TagString: Untagged
+  - component: {fileID: 4458778029225619892}
+  m_Layer: 9
+  m_Name: NOVA
+  m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!61 &4458778029225619892
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4458778029225619891}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.2098694, y: -43.64821}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 355.0523, y: 494.53568}
+  m_EdgeRadius: 0
 --- !u!4 &4463932578065784150
 Transform:
   m_ObjectHideFlags: 0
@@ -4416,7 +4533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -97.00003}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 138, y: 141}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &4546764199402444712
@@ -4607,6 +4724,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!61 &5182860052812842754
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3299165727669638962}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.50746155, y: -51.28041}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 354.4271, y: 488.2986}
+  m_EdgeRadius: 0
 --- !u!1 &5363720594881412158
 GameObject:
   m_ObjectHideFlags: 0
@@ -4651,6 +4813,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881350423590998624}
   m_CullTransparentMesh: 1
+--- !u!61 &5421998301386236737
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881350423590998624}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.000061035156, y: -34.386368}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 343.26453, y: 476.012}
+  m_EdgeRadius: 0
 --- !u!1 &5512485342145598698
 GameObject:
   m_ObjectHideFlags: 0
@@ -4662,9 +4869,10 @@ GameObject:
   - component: {fileID: 3330338493642555881}
   - component: {fileID: 7701761749795316316}
   - component: {fileID: 4738534497064579251}
-  m_Layer: 5
-  m_Name: J3
-  m_TagString: Untagged
+  - component: {fileID: 7701761749795316317}
+  m_Layer: 9
+  m_Name: KAI
+  m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4894,7 +5102,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8014397933471331968}
-  - {fileID: 3580768307023712296}
   - {fileID: 5702013424034312366}
   m_Father: {fileID: 4066242012797877217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4954,6 +5161,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!61 &6756246965673357823
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1563722576815007317}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -3.3205566, y: 2.8364868}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 432.2544, y: 141.36975}
+  m_EdgeRadius: 0
 --- !u!224 &6801084539974614934
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5130,6 +5382,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 6baa5386-13ec-4217-b2e3-a87ad4ed8273
     m_ActionName: UI/Seleccionar
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
+    m_ActionName: UI/Axis_Puntero[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: UI
@@ -5147,6 +5403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8342d74f3c59bf489838b175ecb2767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 2597898029268427230}
   panelSelectTeam: {fileID: 3161955634881449304}
   panelSelectCh: {fileID: 8064304817077852917}
 --- !u!1 &7450989736704797161
@@ -5234,6 +5491,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5512485342145598698}
   m_CullTransparentMesh: 1
+--- !u!61 &7701761749795316317
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5512485342145598698}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -1.1405945, y: -39.847748}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 357.46136, y: 486.93475}
+  m_EdgeRadius: 0
 --- !u!95 &7925614803392189115
 Animator:
   serializedVersion: 5
@@ -5311,6 +5613,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3580768307023712296}
   - {fileID: 1397582927074159224}
   - {fileID: 4069497632599517299}
   - {fileID: 3330338493642555881}
@@ -5443,7 +5746,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -168}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 138, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &8565061070976235375
@@ -5462,7 +5765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -40.00003}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 138, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8580079348116205953
@@ -5608,6 +5911,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6baa5386-13ec-4217-b2e3-a87ad4ed8273
     m_ActionName: UI/Seleccionar
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 291221393110019027}
+        m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
+        m_MethodName: Input_PunteroMovimiento
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
+    m_ActionName: UI/Axis_Puntero[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: UI

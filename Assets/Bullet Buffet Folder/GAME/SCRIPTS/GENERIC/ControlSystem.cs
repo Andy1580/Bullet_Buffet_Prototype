@@ -1,42 +1,25 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
 
 public class ControlSystem : MonoBehaviour
 {
     [SerializeField] private Animator c_Animator;
     [SerializeField] private LobbyManager loby;
-    [SerializeField] private Image ready;
     public int equipo = 0;
-    private string selectedCharacter;
+    public string selectedCharacter;
 
-    Transform objetoPadre;
-    Transform primerHijo;
-    Transform segundoHijo;
+    [SerializeField] private RectTransform puntero;
 
-    private Image control;
-    private Image puntero;
-
+    public bool selectTm;
     public bool selectCh;
 
     private void Start()
     {
+        selectTm = true;
         selectCh = false;
 
-        objetoPadre = c_Animator.transform;
-
-        primerHijo = objetoPadre.GetChild(0);
-        segundoHijo = objetoPadre.GetChild(1);
-
-        control = primerHijo.GetComponent<Image>();
-        puntero = segundoHijo.GetComponent<Image>();
-
-        ready.gameObject.SetActive(false);
-
-        
+        puntero.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -49,7 +32,7 @@ public class ControlSystem : MonoBehaviour
     {
         Vector2 v2 = context.ReadValue<Vector2>();
 
-        if(!selectCh)
+        if (selectTm)
         {
             if (v2.x < -0.5f) //Izq
             {
@@ -64,77 +47,77 @@ public class ControlSystem : MonoBehaviour
 
             }
         }
-        
     }
 
     public void Input_PunteroMovimiento(InputAction.CallbackContext context)
     {
         if (!selectCh) return;
-        axis = context.ReadValue<Vector2>();
+        Vector2 v2 = context.ReadValue<Vector2>();
+        axis = new Vector3(v2.x, v2.y, 0);
     }
 
     public void Input_AceptarEquipo(InputAction.CallbackContext context)
     {
-        //Aqui agregar la logica para aceptar el equipo que escogieron para posteriormente pasar a escoger el personaje.
-
-        //En el espacio if(selectCh), debe mandar la informacion al Lobby Manager para que prenda el panel de seleccion de personaje y apague el de seleccion de equipo,
-        //posterior debe indicarle en este mismo script que el control(Image) debe apagarse para prender el puntero(Image).
-
-        //Cuando se escoja un personaje, puede haber un metodo aparte que se encargue de mandar la informacion al Lobby Manager de cual jugador escogio este personaje,
-        //tambien puedes agregar la informacion de que equipo son para mandarle toda esa info junta.
-
         if (context.performed)
         {
-            if (!selectCh && equipo != 0)
+            if (selectTm && equipo != 0)
             {
+                selectTm = false;
                 selectCh = true;
                 Gamepad currentGamepad = context.control.device as Gamepad;
                 loby.SeleccionarEquipo(currentGamepad, equipo);
+                puntero.gameObject.SetActive(true);
+                c_Animator.gameObject.SetActive(false);
+            }
+
+            if (selectCh && selectedCharacter != null)
+            {
+                Vector2 origen = puntero.position;
+                float radio = 5;
+                LayerMask capa = LayerMask.GetMask("Character");
+
+                Collider2D col = Physics2D.OverlapCircle(origen, radio, capa);
+
+                if (!col) return;
+
+                if (col.CompareTag("BotonJugar"))
+                {
+                    var boton = col.GetComponent<Button>();
+
+                    if (boton != null)
+                    {
+                        boton.onClick.Invoke();
+                    }
+                }
+                else
+                {
+                    selectedCharacter = col.gameObject.name;
+                    Gamepad currentGamepad = context.control.device as Gamepad;
+                    loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
+                    Debug.Log("Escojio el personaje: " + selectedCharacter);
+                }
             }
         }
-
     }
     #endregion INPUT
 
     #region PUNTERO
 
     [Header("Puntero Stats")]
-    [SerializeField] private float velocidadPuntero = 2.0f;
+    [SerializeField] private float velocidadPuntero;
     private Vector3 axis = Vector2.zero;
 
-    void Start_Puntero()
-    {
+    public Vector2 limon;
+    public Vector2 aguacate;
 
-    }
-
+    public Vector2 canvasTamaño;
     void Update_Puntero()
     {
-        //Si puedes agregale limite de pantalla para que el puntero no sobrepase ese limite.
-
-        puntero.rectTransform.localPosition += axis * (Time.deltaTime * velocidadPuntero);
-
-        
-    }
-
-    void RaycastCharacter()
-    {
-        PointerEventData pointerData = new PointerEventData(EventSystem.current)
-        {
-            position = puntero.rectTransform.anchoredPosition,
-        };
-
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerData, results);
-
-        foreach (RaycastResult result in results)
-        {
-            if (result.gameObject.CompareTag("Character"))
-            {
-                selectedCharacter = result.gameObject.name;
-                Debug.Log("Selected Character: " + selectedCharacter);
-                break;
-            }
-        }
+        if (puntero.localPosition.x > -928f)//Falto terminar...
+            puntero.localPosition += axis * (Time.deltaTime * velocidadPuntero);
+        limon = puntero.localPosition;
+        aguacate = puntero.anchoredPosition;
+        canvasTamaño = LobbyManager.Canvas.GetComponent<RectTransform>().sizeDelta;
     }
 
     #endregion PUNTERO

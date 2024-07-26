@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
         {
             enDash = true;
             canDash = false;
-            dashImg.SetActive(false);
+            dashImg.gameObject.SetActive(false);
             Invoke("DesactivarDash", tiempoDash);
         }
 
@@ -78,7 +78,6 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("Se ejecuto el Power Up");
 
             if (actualHability == "Super Shoot")
             {
@@ -207,16 +206,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fuerzaDash;
     [SerializeField] private float cooldownDash = 5;
     [SerializeField] private float tiempoDash = 0.25f;
-    [SerializeField] private GameObject dashImg;
-    [SerializeField] private int contador = 5;
-    [SerializeField] private TMP_Text contadorText;
+    [SerializeField] private Image dashImg;
+    [SerializeField] private int contadorDash = 5;
+    [SerializeField] private TMP_Text contadorDashText;
 
     void Start_Dash()
     {
         canDash = true;
-        dashImg.SetActive(true);
+        dashImg.gameObject.SetActive(true);
 
-        contadorText.text = contador.ToString();
+        contadorDashText.text = contadorDash.ToString();
     }
 
     void DesactivarDash()
@@ -226,17 +225,17 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator CooldawnDash()
     {
-        while (contador >= 0)
+        while (contadorDash >= 0)
         {
-            contador--;
-            contadorText.text = contador.ToString();
+            contadorDash--;
+            contadorDashText.text = contadorDash.ToString();
             enDash = false;
             yield return new WaitForSeconds(1);
         }
 
         yield return new WaitForSeconds(cooldownDash);
-        dashImg.SetActive(true);
-        contador = 5;
+        dashImg.gameObject.SetActive(true);
+        contadorDash = 5;
         canDash = true;
     }
 
@@ -335,9 +334,12 @@ public class PlayerController : MonoBehaviour
     #region Escudo
     [Header("Shield Stats")]
 
-    [SerializeField] private float tiempoEscudo;
-    [SerializeField] private float cooldownEscudo;
+    [SerializeField] private float tiempoEscudo = 0.45f;
+    [SerializeField] private float cooldownEscudo = 5;
     [SerializeField] private Transform escudo;
+    [SerializeField] private Image escudoImg;
+    [SerializeField] private int contadorEscudo = 5;
+    [SerializeField] private TMP_Text contadorEscudoText;
     private Vector3 diferenciaEscudo;
     private Quaternion rotacionEscudo;
     private bool canEscudo = true;
@@ -350,6 +352,7 @@ public class PlayerController : MonoBehaviour
 
     void ActivarEscudo()
     {
+        escudoImg.gameObject.SetActive(false);
         canEscudo = false;
         escudo.gameObject.SetActive(true);
         diferenciaEscudo = transform.forward;
@@ -362,13 +365,25 @@ public class PlayerController : MonoBehaviour
     void DesactivarEscudo()
     {
         escudo.gameObject.SetActive(false);
-        Invoke("FinalizarCooldown", cooldownEscudo);
+        StartCoroutine(CooldawnEscudo());
     }
 
-    private void FinalizarCooldown()
+    IEnumerator CooldawnEscudo()
     {
+        while (contadorEscudo >= 0)
+        {
+            contadorEscudo--;
+            contadorEscudoText.text = contadorDash.ToString();
+            yield return new WaitForSeconds(1);
+        }
+
+        yield return new WaitForSeconds(cooldownEscudo);
+        escudoImg.gameObject.SetActive(true);
+        contadorEscudo = 5;
         canEscudo = true;
     }
+
+
     #endregion Escudo
 
     #region ANIMATOR
@@ -387,6 +402,66 @@ public class PlayerController : MonoBehaviour
     #region EQUIPOS
     internal int equipo;
     #endregion EQUIPOS
+
+    #region HABILIDADES
+
+    #region SUPER SHOOT
+    [Header("Super Shoot")]
+    [SerializeField] private GameObject bulletSSPrefab;
+    [SerializeField] private Transform[] shootPoints;
+    [SerializeField] private bool boolSS = false;
+    public float spreadSpeed = 10f;
+
+    void SuperShoot()
+    {
+        foreach (Transform shootPoint in shootPoints)
+        {
+            GameObject bulletInstance = Instantiate(bulletSSPrefab, shootPoint.position, shootPoint.rotation);
+            SuperShoot bulletScript = bulletInstance.GetComponent<SuperShoot>();
+            bulletScript.spreadSpeed = spreadSpeed;
+        }
+
+        Invoke("DesactivarSS", 0.25f);
+    }
+
+    private void DesactivarSS()
+    {
+        Debug.Log("Si se desactivo Super Shoot");
+        hability = null;
+        actualHability = hability;
+        DesactivarSprite();
+        BloquearMovimiento = false;
+        timeToShoot = 0;
+        boolSS = false;
+    }
+    #endregion SUPER SHOOT
+
+    #region EXPLOSIVE BULLET
+    [Header("Explosive Bullet")]
+    [SerializeField] private GameObject balaExplosiva;
+    [SerializeField] private Transform spawnBalaExplosiva;
+    [SerializeField] private bool boolEB = false;
+
+    void ExplosiveBullet()
+    {
+        Debug.Log("Se instancio la bala explosiva");
+        GameObject bala = Instantiate(balaExplosiva, spawnBalaExplosiva.position, spawnBalaExplosiva.rotation);
+
+        Invoke("DesactivarES", 0.25f);
+    }
+
+    private void DesactivarES()
+    {
+        Debug.Log("Si se desactivo Explosive Shoot");
+        hability = null;
+        actualHability = hability;
+        DesactivarSprite();
+        BloquearMovimiento = false;
+        timeToShoot = 0;
+    }
+    #endregion EXPLOSIVE BULLET
+
+    #endregion HABILIDADES
 
     #region POWER UP
     [Header("Power Up Core")]
@@ -447,61 +522,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    #region SUPER SHOOT
-    [Header("Super Shoot")]
-    [SerializeField] private GameObject bulletSSPrefab;
-    [SerializeField] private Transform[] shootPoints;
-    [SerializeField] private bool boolSS = false;
-    public float spreadSpeed = 10f;
 
-    void SuperShoot()
-    {
-        foreach (Transform shootPoint in shootPoints)
-        {
-            GameObject bulletInstance = Instantiate(bulletSSPrefab, shootPoint.position, shootPoint.rotation);
-            SuperShoot bulletScript = bulletInstance.GetComponent<SuperShoot>();
-            bulletScript.spreadSpeed = spreadSpeed;
-        }
-
-        Invoke("DesactivarSS", 0.25f);
-    }
-
-    private void DesactivarSS()
-    {
-        Debug.Log("Si se desactivo Super Shoot");
-        hability = null;
-        actualHability = hability;
-        DesactivarSprite();
-        BloquearMovimiento = false;
-        timeToShoot = 0;
-        boolSS = false;
-    }
-    #endregion SUPER SHOOT
-
-    #region EXPLOSIVE BULLET
-    [Header("Explosive Bullet")]
-    [SerializeField] private GameObject balaExplosiva;
-    [SerializeField] private Transform spawnBalaExplosiva;
-    [SerializeField] private bool boolEB = false;
-
-    void ExplosiveBullet()
-    {
-        Debug.Log("Se instancio la bala explosiva");
-        GameObject bala = Instantiate(balaExplosiva, spawnBalaExplosiva.position, spawnBalaExplosiva.rotation);
-
-        Invoke("DesactivarES", 0.25f);
-    }
-
-    private void DesactivarES()
-    {
-        Debug.Log("Si se desactivo Explosive Shoot");
-        hability = null;
-        actualHability = hability;
-        DesactivarSprite();
-        BloquearMovimiento = false;
-        timeToShoot = 0;
-    }
-    #endregion EXPLOSIVE BULLET
 
     #region INVULNERABILIDAD
     [Header("Invulnerabilidad")]

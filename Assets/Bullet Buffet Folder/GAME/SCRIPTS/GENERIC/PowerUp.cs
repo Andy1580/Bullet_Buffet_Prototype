@@ -18,7 +18,6 @@ public class PowerUp : MonoBehaviour
             if (player != null && player.hability == null)
             {
                 player.SetHability(gameObject.name);
-                Debug.Log("Se agrego el PowerUp con nombre: " + gameObject.name);
                 Destroy(this.gameObject);
             }
             else

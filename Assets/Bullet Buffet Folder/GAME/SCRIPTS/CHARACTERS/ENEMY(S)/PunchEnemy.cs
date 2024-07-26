@@ -17,5 +17,9 @@ public class PunchEnemy : MonoBehaviour
                 //Debug.Log("vida restante: " + pC.Vida.ToString());
             }
         }
+        else if(other.CompareTag("Shield"))
+        {
+            return;
+        }
     }
 }

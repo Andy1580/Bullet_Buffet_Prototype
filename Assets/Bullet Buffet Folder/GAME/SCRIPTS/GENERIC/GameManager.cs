@@ -7,7 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    //Aqui agregar la informacion que recibe el Game Manager del Lobby Manager en JSON, la informacion debe de decirle al Game Manager qué control(jugador) escogio qué personaje
+    public void RecibirInformacionLobby(string json)
+    {
+        InfoLobby infoLobby = JsonUtility.FromJson<InfoLobby>(json);
+        
+        foreach (var infoEquipo in infoLobby.equipos)
+        {
+            Debug.Log($"Gamepad {infoEquipo.Key} está en el equipo {infoEquipo.Value}");
+        }
+
+        foreach (var infoPersonaje in infoLobby.personajes)
+        {
+            Debug.Log($"Gamepad {infoPersonaje.Key} seleccionó el personaje {infoPersonaje.Value}");
+        }
+    }
 
     #region GAME MANAGER
     public static GameManager Instance;
@@ -147,17 +160,7 @@ public class GameManager : MonoBehaviour
 
 
             //Spawn de Enemigos
-            for (int i = enemigosInstanciados.Count - 1; i >= 0; i--)
-            {
-                GameObject enemy = enemigosInstanciados[i];
-
-                if (enemy != null)
-                {
-                    Destroy(enemy);
-                    enemigosInstanciados.RemoveAt(i);
-                }
-
-            }
+            DestruirEnemigosActivos();
         }
     }
     #endregion CARGAR ESCENA
@@ -353,6 +356,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text playerWinText;
     [SerializeField] private int puntosAGanarTeam1;
     [SerializeField] private int puntosAGanarTeam2;
+    [SerializeField] public int puntosParaGanar;
     private int puntajeInicial = 0;
 
     [Header("Puntaje MHS")]
@@ -797,7 +801,7 @@ public class GameManager : MonoBehaviour
     {
         if (modoHS)
         {
-            if (puntosAGanarTeam1 != 3 || puntosAGanarTeam2 != 3)
+            if (puntosAGanarTeam1 != puntosParaGanar || puntosAGanarTeam2 != puntosParaGanar)
             {
                 if (player.gameObject.name == "J1(Clone)" && isRunning)
                 {
@@ -809,6 +813,7 @@ public class GameManager : MonoBehaviour
                     puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                     //Invoke("PosicionCamaraCinematica", 1.50f);
                     camaraPrincipalAnimator.SetTrigger("move");
+                    Invoke("DestruirEnemigosActivos", 0.25f);
                     Invoke("Mago2", 3.0f);
                     Invoke("CambioDeRondaMHS", 6.0f);
                 }
@@ -822,6 +827,7 @@ public class GameManager : MonoBehaviour
                     puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                     //Invoke("PosicionCamaraCinematica", 1.50f);
                     camaraPrincipalAnimator.SetTrigger("move");
+                    Invoke("DestruirEnemigosActivos", 0.25f);
                     Invoke("Mago1", 3.0f);
                     Invoke("CambioDeRondaMHS", 6.0f);
                 }
@@ -894,6 +900,7 @@ public class GameManager : MonoBehaviour
         remainingTime = totalTime;
         //p1.muerto = false; p2.muerto = false;
         yield return new WaitForSeconds(3.50f);
+        InicializarEnemySpawn();
     }
 
     void RespawnearJugadorMDS(PlayerController player)
@@ -925,7 +932,6 @@ public class GameManager : MonoBehaviour
             p1.transform.position = modo1v1spawn1.transform.position;
             p1.Vida = 100;
             p1.enabled = true;
-            p1.isInvulnerable = false;
             p1.gameObject.SetActive(true);
             p1.anim.SetTrigger("spawn");
             p1.BloquearMovimiento = false;
@@ -967,7 +973,6 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "ANDYINGAME")
             return;
 
-        Debug.Log("Si se inicializo el spawn de Enemigos");
         for (int i = 0; i < enemigosMaximosActivos; i++)
         {
             SpawnEnemy();
@@ -990,6 +995,19 @@ public class GameManager : MonoBehaviour
         // Instanciar el enemigo
         GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
         enemigosInstanciados.Add(spawnedEnemy);
+    }
+
+    void DestruirEnemigosActivos()
+    {
+        for (int i = enemigosInstanciados.Count - 1; i >= 0; i--)
+        {
+            GameObject enemy = enemigosInstanciados[i];
+            if (enemy != null && enemy.activeSelf)
+            {
+                Destroy(enemy);
+                enemigosInstanciados.RemoveAt(i);
+            }
+        }
     }
 
     private Transform GetRandomSpawnPoint()

@@ -25,6 +25,10 @@ public class BulletEnemy : MonoBehaviour
                 Destroy(this.gameObject, vidaBala);
             }
         }
+        else if(other.CompareTag("Shield"))
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
 

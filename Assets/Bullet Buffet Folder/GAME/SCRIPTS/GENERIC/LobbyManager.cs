@@ -9,7 +9,11 @@ public class LobbyManager : MonoBehaviour
     private PlayerInput[] inputs;
     private Dictionary<Gamepad, PlayerInput> dicControles = new Dictionary<Gamepad, PlayerInput>();
 
-    private List<int> equipo = new List<int>();
+    [SerializeField] private Canvas canvas;
+    public static Canvas Canvas => self.canvas;
+
+    private Dictionary<int, int> equipo = new Dictionary<int, int>(); // gamepadId -> equipo
+    private Dictionary<int, string> personaje = new Dictionary<int, string>(); // gamepadId -> personaje
 
     [SerializeField] private GameObject panelSelectTeam;
     [SerializeField] private GameObject panelSelectCh;
@@ -20,9 +24,6 @@ public class LobbyManager : MonoBehaviour
 
         inputs = GetComponentsInChildren<PlayerInput>();
         Awake_DesactivarControles();
-
-
-
         Awake_AsignarControles();
         InputSystem.onDeviceChange += CambiosEnControl;
     }
@@ -50,63 +51,75 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    //Cada vez que haya un cambio de control
     private void CambiosEnControl(InputDevice device, InputDeviceChange cambio)
     {
-        //Si no es un gamepad, no continua con el proceso
         if (!(device is Gamepad))
             return;
 
-        //Polimorfismo: De InputDevice a Gamepad
         Gamepad gamepad = device as Gamepad;
 
-        //Control Conectado
         if (cambio == InputDeviceChange.Added)
         {
-            //Buscamos en los Player Inputs o Controles
             foreach (PlayerInput input in inputs)
             {
-                //En el que este deshabilitado, tenga el espacio libre y no tenga un gamepad asignado
                 if (!input.gameObject.activeSelf)
                 {
-                    //Se activa el control
                     input.gameObject.SetActive(true);
-
-                    //Se agrega al diccionario
                     dicControles[gamepad] = input;
                     break;
                 }
             }
         }
-
-        //Control Desconectado
         else if (cambio == InputDeviceChange.Removed)
         {
-            //Se desactiva el control
             dicControles[gamepad].gameObject.SetActive(false);
-
-            //Se quita del diccionario
             dicControles.Remove(gamepad);
         }
     }
 
     public void SeleccionarEquipo(Gamepad gamepad, int equipoSeleccionado)
     {
-        if (dicControles.Count! > 2)
-            return;
-
         if (dicControles.ContainsKey(gamepad))
         {
-            PlayerInput playerInput = dicControles[gamepad];
-
-            // Actualiza la información del equipo en la lista correspondiente
-            equipo.Add(equipoSeleccionado);
-
-            panelSelectTeam.SetActive(false);
-            panelSelectCh.SetActive(true);
-
+            int gamepadId = gamepad.deviceId;
+            this.equipo[gamepadId] = equipoSeleccionado;
+            ActivarPanelSeleccionarPersonajes();
             Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
         }
     }
 
+    public void SeleccionarPersonaje(Gamepad gamepad, string personajeSeleccionado)
+    {
+        if (dicControles.ContainsKey(gamepad))
+        {
+            int gamepadId = gamepad.deviceId;
+            this.personaje[gamepadId] = personajeSeleccionado;
+            Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el personaje {personajeSeleccionado}");
+        }
+    }
+
+    private void ActivarPanelSeleccionarPersonajes()
+    {
+        if (dicControles.Count >= 2 && equipo.Count > 1)
+        {
+            panelSelectTeam.SetActive(false);
+            panelSelectCh.SetActive(true);
+        }
+    }
+
+    public void RecopilarInformacion()
+    {
+        if (dicControles.Count < 2 || equipo.Count < 2 || personaje.Count < 2)
+            return;
+
+
+        InfoLobby infoLobby = new InfoLobby();
+        infoLobby.equipos = this.equipo;
+        infoLobby.personajes = this.personaje;
+
+        string json = JsonUtility.ToJson(infoLobby);
+        Debug.Log("Se mando la informacion al Game Manager: " + json);
+
+        GameManager.Instance.RecibirInformacionLobby(json);
+    }
 }
