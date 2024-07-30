@@ -69,9 +69,10 @@ public class PlayerController : MonoBehaviour
     {
         if (!enDash && canDash)
         {
+            animator.SetTrigger("dash");
             enDash = true;
             canDash = false;
-            Invoke("DesactivarDash", tiempoDash);
+            StartCoroutine(DesactivarDash());
         }
 
     }
@@ -206,15 +207,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("movimiento", true);
         }
 
-        if (enDash)
-        {
-            animator.SetBool("dash", true);
-        }
-        else
-        {
-            animator.SetBool("dash", false);
-        }
-
+       
         if (controller.isGrounded)
         {
             movement.y = 0f;
@@ -333,33 +326,29 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fuerzaDash;
     [SerializeField] private float cooldownDash = 5;
     [SerializeField] private float tiempoDash = 0.25f;
-    [SerializeField] private int contadorDash = 5;
+    [SerializeField] private float contadorDash = 5;
     [SerializeField] private TMP_Text contadorDashText;
 
     void Start_Dash()
     {
         canDash = true;
-        GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
+        //GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
     }
 
-    void DesactivarDash()
+    IEnumerator DesactivarDash()
     {
-        StartCoroutine(CooldawnDash());
-    }
-
-    IEnumerator CooldawnDash()
-    {
-        while (contadorDash >= 0)
+        Debug.Log("Dashiando");
+        while (contadorDash > 0)
         {
-            contadorDash--;
-            contadorDashText.text = contadorDash.ToString();
-            enDash = false;
             yield return new WaitForSeconds(1);
+            //contadorDashText.text = contadorDash.ToString();          
+            enDash = false;
+            contadorDash--;
         }
-
-        yield return new WaitForSeconds(cooldownDash);
-        GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
+        //contadorDashText.text = contadorDash.ToString();
+        //GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
         canDash = true;
+        contadorDash = 5;
     }
 
     #endregion Dash

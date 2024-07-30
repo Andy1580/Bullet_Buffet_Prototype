@@ -43,7 +43,7 @@ public class PlayerHUD : MonoBehaviour
         abilityBar.fillAmount = progress;
     }
 
-    public void UpdateDashStatus(bool isActive, int count)
+    public void UpdateDashStatus(bool isActive, float count)
     {
         dashIcon.enabled = isActive;
         dashCounter.text = count.ToString();

@@ -3383,8 +3383,8 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 939898655510162321}
-        m_TargetAssemblyTypeName: SelectTeam, Assembly-CSharp
-        m_MethodName: Input_Axis
+        m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
+        m_MethodName: Input_ControlMovimiento
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3397,11 +3397,35 @@ MonoBehaviour:
     m_ActionId: 533bedef-0f64-45ee-84b5-d9e1815a5657
     m_ActionName: UI/Axis
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 939898655510162321}
+        m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
+        m_MethodName: Input_AceptarEquipo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6baa5386-13ec-4217-b2e3-a87ad4ed8273
     m_ActionName: UI/Seleccionar
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 939898655510162321}
+        m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
+        m_MethodName: Input_PunteroMovimiento
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
     m_ActionName: UI/Axis_Puntero[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
   m_NeverAutoSwitchControlSchemes: 1
@@ -5365,8 +5389,8 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3384139604735686111}
-        m_TargetAssemblyTypeName: SelectTeam, Assembly-CSharp
-        m_MethodName: Input_Axis
+        m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
+        m_MethodName: Input_ControlMovimiento
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5379,11 +5403,35 @@ MonoBehaviour:
     m_ActionId: 533bedef-0f64-45ee-84b5-d9e1815a5657
     m_ActionName: UI/Axis
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3384139604735686111}
+        m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
+        m_MethodName: Input_AceptarEquipo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6baa5386-13ec-4217-b2e3-a87ad4ed8273
     m_ActionName: UI/Seleccionar
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3384139604735686111}
+        m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
+        m_MethodName: Input_PunteroMovimiento
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
     m_ActionName: UI/Axis_Puntero[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
   m_NeverAutoSwitchControlSchemes: 1

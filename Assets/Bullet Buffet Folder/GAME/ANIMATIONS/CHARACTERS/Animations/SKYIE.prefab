@@ -1935,26 +1935,13 @@ MonoBehaviour:
   jugadorText: {fileID: 1355047554452626970}
   hudSlot: {fileID: 0}
   equipo: 0
-  gamepadIndex: 0
   playerSpeed: 5
   smoothRotacion: 0.5
-  enDash: 0
-  canDash: 0
-  fuerzaDash: 50
-  cooldownDash: 5
-  tiempoDash: 0.2
-  contadorDash: 5
   bulletSpeed: 1000
   cooldown: 0.5
   bulletPrefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
     type: 3}
   bulletSpawn: {fileID: 7768006098767679259}
-  maxSalud: 100
-  renderer: {fileID: 6283969022184128244}
-  tiempoEscudo: 5
-  cooldownEscudo: 5
-  escudo: {fileID: 7029042770311191465}
-  contadorEscudo: 5
   bulletSSPrefab: {fileID: 3523335605187150095, guid: 136fa0ecea539b7479906456392c5a71,
     type: 3}
   shootPoints:
@@ -1968,6 +1955,20 @@ MonoBehaviour:
     type: 3}
   spawnBalaExplosiva: {fileID: 7768006098767679259}
   boolEB: 0
+  enDash: 0
+  canDash: 0
+  fuerzaDash: 30
+  cooldownDash: 5
+  tiempoDash: 0.2
+  contadorDash: 5
+  contadorDashText: {fileID: 0}
+  maxSalud: 100
+  renderer: {fileID: 6283969022184128244}
+  tiempoEscudo: 5
+  cooldownEscudo: 5
+  escudo: {fileID: 7029042770311191465}
+  contadorEscudo: 5
+  contadorEscudoText: {fileID: 0}
   actualHability: None
   spritesPowerUp:
   - {fileID: 0}

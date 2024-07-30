@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateDashStatus(PlayerController player, bool isActive, int count)
+    public void UpdateDashStatus(PlayerController player, bool isActive, float count)
     {
         PlayerHUD hud = GetHUDForPlayer(player);
         if (hud != null)
