@@ -66,7 +66,7 @@ public class EnemyAI_Flying : MonoBehaviour
 
     private void BuscarJugadorCercano()
     {
-        players = GameManager.jugadores;
+        players = GameManager.activePlayers;
         float closestDistance = Mathf.Infinity;
         PlayerController closestPlayer = null;
 

@@ -7,20 +7,284 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region LOBBY
+
+    #region BUSCAR JUGADORES
+
+    private PlayerController FindPlayerController(int gamepadId)
+    {
+        Gamepad gamepad;
+
+        if (LobbyManager.self.idToGamepad.TryGetValue(gamepadId, out gamepad))
+        {
+            foreach (var player in FindObjectsOfType<PlayerController>())
+            {
+                //if (player._gamepad == gamepad)
+                //{
+                //    return player;
+                //}
+            }
+        }
+        return null;
+    }
+    #endregion BUSCAR JUGADORES
+
+    #region RECIBIR INFORMACION
+
     public void RecibirInformacionLobby(string json)
     {
         InfoLobby infoLobby = JsonUtility.FromJson<InfoLobby>(json);
-        
-        foreach (var infoEquipo in infoLobby.equipos)
+        infoLobbyPlayers = infoLobby.playerInfos;
+        SetupHUDs(infoLobbyPlayers);
+        //ActivarHUD();
+    }
+
+    #endregion RECIBIR INFORMACION
+
+
+    #region LIGAR INFORMACION AL HUD
+
+    [Header("Panels")]
+    [SerializeField] private GameObject panelDosJugadores;
+    [SerializeField] private GameObject panelCuatroJugadores;
+
+    private const float MaxHealth = 100f;
+
+    private List<PlayerHUD> playerHUDs = new List<PlayerHUD>();
+    private List<InfoLobby.PlayerInfo> infoLobbyPlayers;
+
+    public GameObject[] hudSlots;
+
+    void InicializarHUD()
+    {
+        panelDosJugadores.SetActive(false);
+        panelCuatroJugadores.SetActive(false);
+    }
+
+    //void ActivarHUD()
+    //{
+    //    if(infoLobbyPlayers.Count == 2)
+    //    {
+    //        panelDosJugadores.SetActive(true);
+    //    }
+    //    else if (infoLobbyPlayers.Count == 4)
+    //    {
+    //        panelCuatroJugadores.SetActive(true);
+    //    }
+    //}
+
+    //public void SetupPlayer(PlayerController player)
+    //{
+    //    InfoLobby.PlayerInfo playerInfo = infoLobbyPlayers.Find(p => p.gamepadId == player.gamepadIndex.deviceId);
+    //    player.equipo = playerInfo.equipo;
+    //    player.hudSlot = AssignHUDSlot(player);
+    //}
+
+    //public void RegisterPlayerHUD(PlayerController player, PlayerHUD playerHUD)
+    //{
+    //    playerHUDMapping[player] = playerHUD;
+    //}
+
+    //public PlayerHUD GetPlayerHUD(PlayerController player)
+    //{
+    //    return playerHUDMapping.TryGetValue(player, out PlayerHUD playerHUD) ? playerHUD : null;
+    //}
+
+    //public GameObject AssignHUDSlot(PlayerController player)
+    //{
+    //    if (infoLobbyPlayers.Count == 2)
+    //    {
+    //        panelDosJugadores.SetActive(true);
+    //        panelCuatroJugadores.SetActive(false);
+    //        return panelDosJugadores.transform.GetChild(player.gamepadIndex.deviceId).gameObject;
+    //    }
+    //    else if (infoLobbyPlayers.Count == 4)
+    //    {
+    //        panelDosJugadores.SetActive(false);
+    //        panelCuatroJugadores.SetActive(true);
+    //        return panelCuatroJugadores.transform.GetChild(player.gamepadIndex.deviceId).gameObject;
+    //    }
+
+    //    return null;
+    //}
+
+    public void SetupHUDs(List<InfoLobby.PlayerInfo> playerInfos)
+    {
+        if (playerInfos.Count == 2)
         {
-            Debug.Log($"Gamepad {infoEquipo.Key} está en el equipo {infoEquipo.Value}");
+            panelDosJugadores.SetActive(true);
+            SetupTwoPlayersHUD(playerInfos);
+        }
+        else if (playerInfos.Count == 4)
+        {
+            panelCuatroJugadores.SetActive(true);
+            SetupFourPlayersHUD(playerInfos);
         }
 
-        foreach (var infoPersonaje in infoLobby.personajes)
+        foreach (var playerInfo in playerInfos)
         {
-            Debug.Log($"Gamepad {infoPersonaje.Key} seleccionó el personaje {infoPersonaje.Value}");
+            Debug.Log("Entro al foreach, info del playerInfo: " + playerInfo);
+            PlayerController playerController = FindPlayerController(playerInfo.gamepadId);
+            if (playerController != null)
+            {
+                Debug.Log("Se encontro player metodo SetupHuds");
+                PlayerHUD playerHUD = GetHUDForPlayer(playerController);
+
+                if (playerHUD != null)
+                {
+                    playerHUD.SetupHUD(playerInfo);
+                    playerHUDMapping[playerController] = playerHUD; // Mapear el PlayerController al HUD
+
+                    // Asignar valores de salud iniciales
+                    float initialHealth = MaxHealth;
+                    playerHUD.UpdateHealth(initialHealth, MaxHealth);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"No se encontró el PlayerController para el gamepadId {playerInfo.gamepadId}");
+            }
         }
     }
+
+    private void SetupTwoPlayersHUD(List<InfoLobby.PlayerInfo> playerInfos)
+    {
+        // Referenciar HUDs de los paneles de dos jugadores
+        PlayerHUD hud1 = panelDosJugadores.transform.GetChild(0).GetComponent<PlayerHUD>();
+        PlayerHUD hud2 = panelDosJugadores.transform.GetChild(1).GetComponent<PlayerHUD>();
+
+        // Asignar información a los HUDs
+        playerHUDs.Add(hud1);
+        playerHUDs.Add(hud2);
+
+        AssignHUDs(playerInfos);
+    }
+
+    private void SetupFourPlayersHUD(List<InfoLobby.PlayerInfo> playerInfos)
+    {
+        // Referenciar HUDs de los paneles de cuatro jugadores
+        for (int i = 0; i < 4; i++)
+        {
+            PlayerHUD hud = panelCuatroJugadores.transform.GetChild(i).GetComponentInChildren<PlayerHUD>();
+
+            //PlayerHUD hud = panelCuatroJugadores.transform.GetComponentsInChildren<PlayerHUD>(i);
+            playerHUDs.Add(hud);
+        }
+
+        // Asignar información a los HUDs
+        AssignHUDs(playerInfos);
+    }
+
+    private void AssignHUDs(List<InfoLobby.PlayerInfo> playerInfos)
+    {
+        int team1Index = 0;
+        int team2Index = playerHUDs.Count / 2; // 2 for 1v1, 2 for 2v2
+
+        foreach (var playerInfo in playerInfos)
+        {
+            PlayerHUD hud;
+            if (playerInfo.equipo == 1)
+            {
+                hud = playerHUDs[team1Index++];
+            }
+            else
+            {
+                hud = playerHUDs[team2Index++];
+            }
+
+            hud.SetupHUD(playerInfo);
+        }
+    }
+    #endregion LIGAR INFORMACION AL HUD
+
+    #region MODIFICAR HUD
+    // Diccionario para mapear PlayerController a PlayerHUD
+    private Dictionary<PlayerController, PlayerHUD> playerHUDMapping = new Dictionary<PlayerController, PlayerHUD>();
+
+
+    public void UpdatePlayerHealth(PlayerController player, int health, int maxHealth)
+    {
+        PlayerHUD hud = GetHUDForPlayer(player);
+        if (hud != null)
+        {
+            hud.UpdateHealth((float)health, (float)maxHealth); // Pasar ambos parámetros como float
+        }
+    }
+
+    public void UpdatePlayerAbility(PlayerController player, float progress)
+    {
+        PlayerHUD hud = GetHUDForPlayer(player);
+        if (hud != null)
+        {
+            hud.UpdateHability(progress);
+
+            if (progress >= 0.97f)
+            {
+                hud.EnableSuperShootIcon();
+            }
+            else
+            {
+                hud.DisableSuperShootIcon();
+            }
+
+            if (progress >= 0.47f)
+            {
+                hud.EnableExplosiveBulletIcon();
+            }
+            else
+            {
+                hud.DisableExplosiveBulletIcon();
+            }
+        }
+    }
+
+    public void UpdatePlayerPowerUp(PlayerController player, string powerUp)
+    {
+        PlayerHUD playerHUD = GetHUDForPlayer(player);
+        if (playerHUD != null)
+        {
+            if (string.IsNullOrEmpty(powerUp))
+            {
+                playerHUD.DisablePowerUpIcons();
+            }
+            else
+            {
+                playerHUD.EnablePowerUpIcon(powerUp);
+            }
+        }
+    }
+
+    public void UpdateDashStatus(PlayerController player, bool isActive, int count)
+    {
+        PlayerHUD hud = GetHUDForPlayer(player);
+        if (hud != null)
+        {
+            hud.UpdateDashStatus(isActive, count);
+        }
+    }
+
+    public void UpdateShieldStatus(PlayerController player, bool isActive, int count)
+    {
+        PlayerHUD hud = GetHUDForPlayer(player);
+        if (hud != null)
+        {
+            hud.UpdateShieldStatus(isActive, count);
+        }
+    }
+
+    private PlayerHUD GetHUDForPlayer(PlayerController player)
+    {
+        // Implementar lógica para obtener el HUD correspondiente basado en el PlayerController
+        if (playerHUDMapping.TryGetValue(player, out PlayerHUD hud))
+        {
+            Debug.Log("Se obtuvo el hud para el player");
+            return hud;
+        }
+        return null;
+    }
+    #endregion MODIFICAR HUD
+
+    #endregion LOBBY
 
     #region GAME MANAGER
     public static GameManager Instance;
@@ -31,14 +295,13 @@ public class GameManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        TestCarga();
     }
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
 
-        //TestCarga();
+
         InicializarJugadores();
         EscenaDeJuego();
         ResetiarVariables();
@@ -81,18 +344,15 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "ANDYINGAME")
         {
-            //Se crea una nueva partida de la clase partida y se le agrega el JugadoInfo correspondiente
-            PartidaTest partida = new PartidaTest();
-            partida.AgregarJugadorAlEquipo1(jugador1);
-            partida.AgregarJugadorAlEquipo2(jugador2);
 
 
-            IniciarPartida(partida);
+            IniciarPartida();
             InicializarTemporizador();
             InicializarMapas();
             InicializarPuntaje();
             InicializarMuerteJugadores();
             InicializarPausa();
+            InicializarCamara();
             Invoke("InicializarEnemySpawn", 5);
 
             if (modoHS)
@@ -100,7 +360,6 @@ public class GameManager : MonoBehaviour
                 //Aqui ira todo lo que necesita el MHS
                 InicializarMHS();
                 InicializarMarcadorMHS();
-                InicializarCamara();
                 magosPrincipales.SetActive(true);
             }
             else if (modoDS)
@@ -108,7 +367,6 @@ public class GameManager : MonoBehaviour
                 //Aqui ira todo lo que necesita el MDS
                 InicializarMDS();
                 InicializarMarcadorMDS();
-                InicializarCamara();
                 pistaPintable.SetActive(true);
             }
         }
@@ -122,6 +380,8 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
+            Debug.Log("Se Resetiaron las variables");
+
             //Booleanos Partida
             modoHS = false;
             modoDS = false;
@@ -161,7 +421,11 @@ public class GameManager : MonoBehaviour
 
             //Spawn de Enemigos
             DestruirEnemigosActivos();
+
+            //Cerrar el HUD
+            InicializarHUD();
         }
+        else return;
     }
     #endregion CARGAR ESCENA
 
@@ -172,70 +436,52 @@ public class GameManager : MonoBehaviour
     public static bool modoHS;
     public static bool modoDS;
 
-    private JugadorInfo jugador1;
-    private JugadorInfo jugador2;
-    private JugadorInfo jugador3;
-    private JugadorInfo jugador4;
+    public static List<PlayerController> activePlayers = new List<PlayerController>();
 
-    public PartidaTest partida;
-
-    public void TestCarga()
-    {
-        var gamepads = Gamepad.all;
-
-        if (gamepads.Count < 2)
-        {
-            Debug.LogError("Se necesitan al menos 2 gamepads conectados.");
-            return;
-        }
-
-        //Aqui creamos un nuevo JugadorInfo para cada control conectado
-        jugador1 = new JugadorInfo(gamepads[0].deviceId, "J1");
-        jugador2 = new JugadorInfo(gamepads[1].deviceId, "J2");
-
-
-    }
-
-
-    public void IniciarPartida(PartidaTest partida)
+    public void IniciarPartida()
     {
         if (SceneManager.GetActiveScene().name != "ANDYINGAME")
             return;
 
-        this.partida = partida;
+        Debug.Log("Se inicio el metodo: IniciarPartida");
 
-        if (equipo1 == null)
-            equipo1 = new List<PlayerController>();
-        if (equipo2 == null)
-            equipo2 = new List<PlayerController>();
+        if (infoLobbyPlayers == null)
+            InicializarJugadores();
 
-        jugadores = new List<PlayerController>();
-
-        if (partida.Equipo1.Count == 1)
+        if (infoLobbyPlayers.Count == 2)
         {
-            p1 = SpawnJugador(partida.Equipo1[0], modo1v1spawn1);
+            var p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam1, infoLobbyPlayers[0].gamepadId);
             p1.equipo = 1;
-            equipo1.Add(p1);
-            jugadores.Add(p1);
-            p2 = SpawnJugador(partida.Equipo2[0], modo1v1spawn2);
-            equipo2.Add(p2);
+            activePlayers.Add(p1);
+
+            var p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam2, infoLobbyPlayers[1].gamepadId);
             p2.equipo = 2;
-            jugadores.Add(p2);
+            activePlayers.Add(p2);
         }
-        else
+        else if (infoLobbyPlayers.Count == 4)
         {
-            p1 = SpawnJugador(partida.Equipo1[0], modo2v2spawn1);
-            p2 = SpawnJugador(partida.Equipo1[1], modo2v2spawn2);
-            p3 = SpawnJugador(partida.Equipo2[0], modo2v2spawn3);
-            p4 = SpawnJugador(partida.Equipo2[1], modo2v2spawn4);
+            var p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo2v2spawnTeam1_1, infoLobbyPlayers[0].gamepadId);
+            p1.equipo = 1;
+            activePlayers.Add(p1);
 
-            equipo1.Add(p1);
-            equipo1.Add(p2);
-            equipo2.Add(p3);
-            equipo2.Add(p4);
+            var p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo2v2spawnTeam1_2, infoLobbyPlayers[1].gamepadId);
+            p2.equipo = 1;
+            activePlayers.Add(p2);
 
+            var p3 = SpawnJugador(infoLobbyPlayers[2].personaje, modo2v2spawnTeam2_1, infoLobbyPlayers[2].gamepadId);
+            p3.equipo = 2;
+            activePlayers.Add(p3);
+
+            var p4 = SpawnJugador(infoLobbyPlayers[3].personaje, modo2v2spawnTeam2_2, infoLobbyPlayers[3].gamepadId);
+            p4.equipo = 2;
+            activePlayers.Add(p4);
         }
 
+    }
+
+    private void InicializarJugadores()
+    {
+        infoLobbyPlayers = new List<InfoLobby.PlayerInfo>();
     }
 
     public void MainMenu()
@@ -288,7 +534,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             panelStaticPausa.SetActive(true);
 
-            foreach (PlayerController j in jugadores)
+            foreach (PlayerController j in activePlayers)
             {
                 j.BloquearMovimiento = true;
             }
@@ -298,7 +544,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             panelStaticPausa.SetActive(false);
 
-            foreach (PlayerController j in jugadores)
+            foreach (PlayerController j in activePlayers)
             {
                 j.BloquearMovimiento = false;
             }
@@ -356,7 +602,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text playerWinText;
     [SerializeField] private int puntosAGanarTeam1;
     [SerializeField] private int puntosAGanarTeam2;
-    [SerializeField] public int puntosParaGanar;
+    [SerializeField] public int puntosParaGanar = 3; //Solo para testeo puse el 3 pero esto se modificara segun el numero de rondas que escojan los jugadores
     private int puntajeInicial = 0;
 
     [Header("Puntaje MHS")]
@@ -515,58 +761,49 @@ public class GameManager : MonoBehaviour
 
     #region PERSONAJES
     [Header("Personajes")]
-    [SerializeField] private PlayerController pfPersonaje1;
-    [SerializeField] private PlayerController pfPersonaje2;
-    [SerializeField] private PlayerController pfPersonaje3;
-    [SerializeField] private PlayerController pfPersonaje4;
+    [SerializeField] private PlayerController pfCRIM;
+    [SerializeField] private PlayerController pfKAI;
+    [SerializeField] private PlayerController pfNOVA;
+    [SerializeField] private PlayerController pfSKYIE;
     #endregion PERSONAJES
 
     #region JUGADORES
-    public static List<PlayerController> jugadores;
+
 
     [Header("Spawn Points")]
-    [SerializeField] private Transform modo1v1spawn1;
-    [SerializeField] private Transform modo1v1spawn2;
-    [SerializeField] private Transform modo2v2spawn1;
-    [SerializeField] private Transform modo2v2spawn2;
-    [SerializeField] private Transform modo2v2spawn3;
-    [SerializeField] private Transform modo2v2spawn4;
-
-    private static List<PlayerController> equipo1;
-    private static List<PlayerController> equipo2;
+    [SerializeField] private Transform modo1v1spawnTeam1;
+    [SerializeField] private Transform modo1v1spawnTeam2;
+    [SerializeField] private Transform modo2v2spawnTeam1_1;
+    [SerializeField] private Transform modo2v2spawnTeam1_2;
+    [SerializeField] private Transform modo2v2spawnTeam2_1;
+    [SerializeField] private Transform modo2v2spawnTeam2_2;
 
     private static PlayerController p1, p2, p3, p4;
 
-    void InicializarJugadores()
+    private PlayerController SpawnJugador(string personaje, Transform spawnPoint, int gamepadId)
     {
-        equipo1 = new List<PlayerController>();
-        equipo2 = new List<PlayerController>();
-    }
+        PlayerController prefabPersonaje = null;
 
-    private PlayerController SpawnJugador(JugadorInfo jugadorInfo, Transform spawnPoint)
-    {
-        PlayerController personaje = null;
-
-        switch (jugadorInfo.Personaje)
+        switch (personaje)
         {
-            case "J1": personaje = pfPersonaje1; break;
-            case "J2": personaje = pfPersonaje2; break;
-            case "J3": personaje = pfPersonaje3; break;
-            case "J4": personaje = pfPersonaje4; break;
+            case "CRIM": prefabPersonaje = pfCRIM; break;
+            case "KAI": prefabPersonaje = pfKAI; break;
+            case "NOVA": prefabPersonaje = pfNOVA; break;
+            case "SKYIE": prefabPersonaje = pfSKYIE; break;
             default:
-                Debug.LogError("Personaje no reconocido: " + jugadorInfo.Personaje);
+                Debug.LogError("Personaje no reconocido: " + personaje);
                 break;
         }
 
-        if (personaje != null)
+        if (prefabPersonaje != null)
         {
-            return Instantiate(personaje, spawnPoint.position, spawnPoint.rotation);
+            PlayerController playerController = Instantiate(prefabPersonaje, spawnPoint.position, spawnPoint.rotation);
+            playerController.gamepadIndex = LobbyManager.self.GetGamepadById(gamepadId); // Asignar el Gamepad
+            return playerController;
         }
 
         return null;
     }
-
-
     #endregion JUGADORES
 
     #region CAMARA
@@ -787,49 +1024,44 @@ public class GameManager : MonoBehaviour
 
     #region DEAD EVENT PLAYER MHS
 
-    CharacterController chP1;
-    CharacterController chP2;
+    //CharacterController chP1;
+    //CharacterController chP2;
 
     void InicializarMuerteJugadores()
     {
-        chP1 = p1.GetComponent<CharacterController>();
-        chP2 = p2.GetComponent<CharacterController>();
+        //chP1 = p1.GetComponent<CharacterController>();
+        //chP2 = p2.GetComponent<CharacterController>();
     }
 
-    //Esto se manda a llamar cada vez que un jugador muere
     public void DeadPlayerEventMHS(PlayerController player)
     {
         if (modoHS)
         {
             if (puntosAGanarTeam1 != puntosParaGanar || puntosAGanarTeam2 != puntosParaGanar)
             {
-                if (player.gameObject.name == "J1(Clone)" && isRunning)
+                if (player.equipo == 1 && isRunning)
                 {
                     isRunning = false;
-                    p1.BloquearMovimiento = true;
-                    p2.BloquearMovimiento = true;
-                    chP1.enabled = false;
+                    BloquearMovimientoJugadores();
+                    //chP1.enabled = false;
                     puntosAGanarTeam2++;
                     puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
-                    //Invoke("PosicionCamaraCinematica", 1.50f);
                     camaraPrincipalAnimator.SetTrigger("move");
                     Invoke("DestruirEnemigosActivos", 0.25f);
                     Invoke("Mago2", 3.0f);
-                    Invoke("CambioDeRondaMHS", 6.0f);
+                    Invoke("CambioDeRondaMHS", 4.0f);
                 }
-                else if (player.gameObject.name == "J2(Clone)" && isRunning)
+                else if (player.equipo == 2 && isRunning)
                 {
                     isRunning = false;
-                    p1.BloquearMovimiento = true;
-                    p2.BloquearMovimiento = true;
-                    chP2.enabled = false;
+                    BloquearMovimientoJugadores();
+                    //chP2.enabled = false;
                     puntosAGanarTeam1++;
                     puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
-                    //Invoke("PosicionCamaraCinematica", 1.50f);
                     camaraPrincipalAnimator.SetTrigger("move");
                     Invoke("DestruirEnemigosActivos", 0.25f);
                     Invoke("Mago1", 3.0f);
-                    Invoke("CambioDeRondaMHS", 6.0f);
+                    Invoke("CambioDeRondaMHS", 4.0f);
                 }
             }
             else
@@ -838,17 +1070,14 @@ public class GameManager : MonoBehaviour
             }
 
         }
-
         else if (modoDS)
         {
-            if (player.gameObject.name == "J1(Clone)")
+            if (player.equipo == 1)
             {
-                p1.BloquearMovimiento = true;
                 RespawnearJugadorMDS(player);
             }
-            else if (player.gameObject.name == "J2(Clone)")
+            else if (player.equipo == 2)
             {
-                p2.BloquearMovimiento = true;
                 RespawnearJugadorMDS(player);
             }
         }
@@ -862,99 +1091,72 @@ public class GameManager : MonoBehaviour
 
     private void CambioDeRondaMHS()
     {
-        //Ajustamos el numero de ronda
+        // Ajustamos el número de ronda
         numeroDeRonda++;
         rondaText.text = numeroDeRonda.ToString();
 
-        //Desactivamos los pefabs de los jugadores
+        // Desactivamos los prefabs de los jugadores
         p1.gameObject.SetActive(false);
         p2.gameObject.SetActive(false);
 
-        //Los movemos a sus posiciones iniciales
-        p1.transform.position = modo1v1spawn1.transform.position;
-        p2.transform.position = modo1v1spawn2.transform.position;
+        // Los movemos a sus posiciones iniciales
+        p1.transform.position = modo1v1spawnTeam1.position;
+        p2.transform.position = modo1v1spawnTeam2.position;
 
-
-        //Los reactivamos
+        // Los reactivamos
         StartCoroutine(ReactivacionMHS(3.0f));
-
     }
+
 
     IEnumerator ReactivacionMHS(float time)
     {
-        p1.Vida = 100;
-        p2.Vida = 100;
-        p1.enabled = true;
-        p2.enabled = true;
-        chP1.enabled = true;
-        chP2.enabled = true;
-        p1.isInvulnerable = false; p2.isInvulnerable = false;
-        p1.gameObject.SetActive(true);
-        p2.gameObject.SetActive(true);
-        p1.anim.SetTrigger("spawn");
-        p2.anim.SetTrigger("spawn");
+        ResetearJugador(p1);
+        ResetearJugador(p2);
         yield return new WaitForSeconds(time);
         p1.BloquearMovimiento = false;
         p2.BloquearMovimiento = false;
         isRunning = true;
         remainingTime = totalTime;
-        //p1.muerto = false; p2.muerto = false;
         yield return new WaitForSeconds(3.50f);
         InicializarEnemySpawn();
     }
 
-    void RespawnearJugadorMDS(PlayerController player)
+    private void RespawnearJugadorMDS(PlayerController player)
     {
-        if (player.gameObject.name == "J1(Clone)")
+        if (player.equipo == 1)
         {
-            //p1.muerto = true;
-            p1.BloquearMovimiento = true;
-
-            StartCoroutine(ReactivacionMDS(player, 8.0f));
+            StartCoroutine(ReactivacionMDS(player, 8.0f, modo1v1spawnTeam1));
         }
-        else if (player.gameObject.name == "J2(Clone)")
+        else if (player.equipo == 2)
         {
-
-            //p2.muerto = true;
-            p2.BloquearMovimiento = true;
-
-            StartCoroutine(ReactivacionMDS(player, 8.0f));
+            StartCoroutine(ReactivacionMDS(player, 8.0f, modo1v1spawnTeam2));
         }
     }
 
-    IEnumerator ReactivacionMDS(PlayerController player, float time)
+    IEnumerator ReactivacionMDS(PlayerController player, float time, Transform spawnPoint)
     {
-        if (player.gameObject.name == "J1(Clone)")
-        {
-            yield return null;
-            yield return new WaitForSeconds(6.0f);
-            p1.gameObject.SetActive(false);
-            p1.transform.position = modo1v1spawn1.transform.position;
-            p1.Vida = 100;
-            p1.enabled = true;
-            p1.gameObject.SetActive(true);
-            p1.anim.SetTrigger("spawn");
-            p1.BloquearMovimiento = false;
-            //p1.muerto = false;
-            yield return new WaitForSeconds(time);
-        }
-        else if (player.gameObject.name == "J2(Clone)")
-        {
-            yield return null;
-            yield return new WaitForSeconds(6.0f);
-            p2.gameObject.SetActive(false);
-            p2.transform.position = modo1v1spawn2.transform.position;
-            p2.Vida = 100;
-            p2.enabled = true;
-            p2.isInvulnerable = false;
-            p2.gameObject.SetActive(true);
-            p2.anim.SetTrigger("spawn");
-            p2.BloquearMovimiento = false;
-            //p2.muerto = false;
-            yield return new WaitForSeconds(time);
-        }
+        yield return null;
+        yield return new WaitForSeconds(6.0f);
+        player.gameObject.SetActive(false);
+        player.transform.position = spawnPoint.position;
+        ResetearJugador(player);
+        player.gameObject.SetActive(true);
+        yield return new WaitForSeconds(time);
+    }
 
+    private void BloquearMovimientoJugadores()
+    {
+        p1.BloquearMovimiento = true;
+        p2.BloquearMovimiento = true;
+    }
 
+    private void ResetearJugador(PlayerController player)
+    {
+        player.Vida = 100;
+        player.enabled = true;
+        player.GetComponent<CharacterController>().enabled = true;
+        player.isInvulnerable = false;
+        player.anim.SetTrigger("spawn");
     }
     #endregion DEAD EVENT PLAYER MHS
 

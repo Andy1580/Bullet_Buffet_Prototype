@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-
 public class PlayerController : MonoBehaviour
 {
 
@@ -13,17 +12,43 @@ public class PlayerController : MonoBehaviour
     {
         Start_Movimiento();
         Start_Dash();
+        Start_Escudo();
         Start_Animator();
         Start_Vida();
         InicializarPowerUps();
         InicializarSSD();
+        Start_Habilidad();
+
+        //// Obtener información del GameManager
+        //GameManager.Instance.SetupPlayer(this);
+
+        //// Configurar HUD en el GameManager
+        //hudSlot = GameManager.Instance.AssignHUDSlot(this);
+        //playerHUD = hudSlot.GetComponent<PlayerHUD>();
+
+        // Configurar equipo
+        SetupEquipo();
     }
 
     private void Update()
     {
         Update_Movimiento();
         Update_Shoot();
-        Update_Escudo();
+    }
+
+    private void SetupEquipo()
+    {
+        jugadorText.text = "J" + gamepadIndex.ToString();
+        if (equipo == 1)
+        {
+            equipoRojo.gameObject.SetActive(true);
+            equipoAzul.gameObject.SetActive(false);
+        }
+        else if (equipo == 2)
+        {
+            equipoRojo.gameObject.SetActive(false);
+            equipoAzul.gameObject.SetActive(true);
+        }
     }
 
     #region INPUT
@@ -46,7 +71,6 @@ public class PlayerController : MonoBehaviour
         {
             enDash = true;
             canDash = false;
-            dashImg.gameObject.SetActive(false);
             Invoke("DesactivarDash", tiempoDash);
         }
 
@@ -78,33 +102,6 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-
-            if (actualHability == "Super Shoot")
-            {
-                boolSS = true;
-                timeToShoot++;
-                BloquearMovimiento = true;
-
-                if (timeToShoot > 3 && boolSS)
-                {
-                    SuperShoot();
-                }
-            }
-
-
-            if (actualHability == "Explosive Bullet")
-            {
-                boolEB = true;
-                timeToShoot++;
-                BloquearMovimiento = true;
-
-                if (timeToShoot > 3 && boolEB)
-                {
-                    ExplosiveBullet();
-                }
-            }
-
-
             if (actualHability == "Invulnerability")
             {
                 if (!isInvulnerable)
@@ -127,7 +124,43 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Input_Hability(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            //Si no funciona correctamente, agregar el timetoshoot y booleanos necesarios
+            if (habilidadProgreso >= 0.97f)
+            {
+                SuperShoot();
+                habilidadProgreso = 0;
+            }
+            else if (habilidadProgreso >= 0.47f)
+            {
+                ExplosiveBullet();
+                habilidadProgreso = 0;
+            }
+
+            playerHUD.UpdateHability(habilidadProgreso);
+        }
+    }
+
     #endregion INPUT
+
+    #region UI References
+    [SerializeField] private Image equipoRojo;
+    [SerializeField] private Image equipoAzul;
+    [SerializeField] private TMP_Text jugadorText;
+    public GameObject hudSlot;
+    private PlayerHUD playerHUD;
+    #endregion UI References
+
+    #region EQUIPOS
+    [SerializeField] internal int equipo;
+    #endregion EQUIPOS
+
+    #region GAMEPAD
+    [SerializeField] internal Gamepad gamepadIndex;
+    #endregion GAMEPAD
 
     #region Movimiento & Rotacion
 
@@ -198,49 +231,6 @@ public class PlayerController : MonoBehaviour
 
     #endregion Movimiento & Rotacion
 
-    #region Dash
-
-    [Header("Dash Stats")]
-    [SerializeField] private bool enDash;
-    [SerializeField] private bool canDash;
-    [SerializeField] private float fuerzaDash;
-    [SerializeField] private float cooldownDash = 5;
-    [SerializeField] private float tiempoDash = 0.25f;
-    [SerializeField] private Image dashImg;
-    [SerializeField] private int contadorDash = 5;
-    [SerializeField] private TMP_Text contadorDashText;
-
-    void Start_Dash()
-    {
-        canDash = true;
-        dashImg.gameObject.SetActive(true);
-
-        contadorDashText.text = contadorDash.ToString();
-    }
-
-    void DesactivarDash()
-    {
-        StartCoroutine(CooldawnDash());
-    }
-
-    IEnumerator CooldawnDash()
-    {
-        while (contadorDash >= 0)
-        {
-            contadorDash--;
-            contadorDashText.text = contadorDash.ToString();
-            enDash = false;
-            yield return new WaitForSeconds(1);
-        }
-
-        yield return new WaitForSeconds(cooldownDash);
-        dashImg.gameObject.SetActive(true);
-        contadorDash = 5;
-        canDash = true;
-    }
-
-    #endregion Dash
-
     #region Disparo
 
     [Header("Shoot Stats")]
@@ -271,11 +261,113 @@ public class PlayerController : MonoBehaviour
 
     #endregion Disparo
 
+    #region ANIMATOR
+    private Animator animator;
+
+    internal Animator anim;
+
+    void Start_Animator()
+    {
+        animator = GetComponent<Animator>();
+        anim = animator.GetComponent<Animator>();
+        animator.SetTrigger("spawn");
+    }
+    #endregion ANIMATOR
+
+    #region FUNCIONAMIENTO HABILIDADES
+
+    #region SUPER SHOOT
+    [Header("Super Shoot")]
+    [SerializeField] private GameObject bulletSSPrefab;
+    [SerializeField] private Transform[] shootPoints;
+    [SerializeField] private bool boolSS = false;
+    public float spreadSpeed = 10f;
+
+    void SuperShoot()
+    {
+        foreach (Transform shootPoint in shootPoints)
+        {
+            GameObject bulletInstance = Instantiate(bulletSSPrefab, shootPoint.position, shootPoint.rotation);
+            SuperShoot bulletScript = bulletInstance.GetComponent<SuperShoot>();
+            bulletScript.spreadSpeed = spreadSpeed;
+        }
+
+    }
+    #endregion SUPER SHOOT
+
+    #region EXPLOSIVE BULLET
+    [Header("Explosive Bullet")]
+    [SerializeField] private GameObject balaExplosiva;
+    [SerializeField] private Transform spawnBalaExplosiva;
+    [SerializeField] private bool boolEB = false;
+
+    void ExplosiveBullet()
+    {
+        Debug.Log("Se instancio la bala explosiva");
+        GameObject bala = Instantiate(balaExplosiva, spawnBalaExplosiva.position, spawnBalaExplosiva.rotation);
+
+        Invoke("DesactivarES", 0.25f);
+    }
+
+    private void DesactivarES()
+    {
+        Debug.Log("Si se desactivo Explosive Shoot");
+        hability = null;
+        actualHability = hability;
+        BloquearMovimiento = false;
+
+    }
+    #endregion EXPLOSIVE BULLET
+
+    #endregion FUNCIONAMIENTO HABILIDADES
+
+    #region GAMEPAD
+    [SerializeField] internal Gamepad _gamepad;
+    #endregion GAMEPAD
+
+    #region Dash
+
+    [Header("Dash Stats")]
+    [SerializeField] private bool enDash;
+    [SerializeField] private bool canDash;
+    [SerializeField] private float fuerzaDash;
+    [SerializeField] private float cooldownDash = 5;
+    [SerializeField] private float tiempoDash = 0.25f;
+    [SerializeField] private int contadorDash = 5;
+    [SerializeField] private TMP_Text contadorDashText;
+
+    void Start_Dash()
+    {
+        canDash = true;
+        GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
+    }
+
+    void DesactivarDash()
+    {
+        StartCoroutine(CooldawnDash());
+    }
+
+    IEnumerator CooldawnDash()
+    {
+        while (contadorDash >= 0)
+        {
+            contadorDash--;
+            contadorDashText.text = contadorDash.ToString();
+            enDash = false;
+            yield return new WaitForSeconds(1);
+        }
+
+        yield return new WaitForSeconds(cooldownDash);
+        GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
+        canDash = true;
+    }
+
+    #endregion Dash
+
     #region Vida
 
     [Header("Life Stats")]
     [SerializeField] private int maxSalud = 300;
-    [SerializeField] private Image BarraSalud;
     [SerializeField] private SkinnedMeshRenderer renderer;
     internal int salud;
     //internal bool muerto = false;
@@ -283,7 +375,7 @@ public class PlayerController : MonoBehaviour
     void Start_Vida()
     {
         salud = maxSalud;
-        BarraSalud.fillAmount = salud;
+        GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
 
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
@@ -319,7 +411,7 @@ public class PlayerController : MonoBehaviour
                 salud = value;
             }
 
-            BarraSalud.fillAmount = (float)salud / maxSalud;
+            GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
         }
     }
 
@@ -332,27 +424,24 @@ public class PlayerController : MonoBehaviour
     #endregion Vida
 
     #region Escudo
-    [Header("Shield Stats")]
 
+    [Header("Shield Stats")]
     [SerializeField] private float tiempoEscudo = 0.45f;
     [SerializeField] private float cooldownEscudo = 5;
     [SerializeField] private Transform escudo;
-    [SerializeField] private Image escudoImg;
     [SerializeField] private int contadorEscudo = 5;
     [SerializeField] private TMP_Text contadorEscudoText;
     private Vector3 diferenciaEscudo;
     private Quaternion rotacionEscudo;
     private bool canEscudo = true;
 
-    void Update_Escudo()
+    void Start_Escudo()
     {
-        escudo.position = transform.position + diferenciaEscudo;
-        escudo.rotation = rotacionEscudo;
+        GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
     }
 
     void ActivarEscudo()
     {
-        escudoImg.gameObject.SetActive(false);
         canEscudo = false;
         escudo.gameObject.SetActive(true);
         diferenciaEscudo = transform.forward;
@@ -373,100 +462,51 @@ public class PlayerController : MonoBehaviour
         while (contadorEscudo >= 0)
         {
             contadorEscudo--;
-            contadorEscudoText.text = contadorDash.ToString();
+            contadorEscudoText.text = contadorEscudo.ToString();
             yield return new WaitForSeconds(1);
         }
 
         yield return new WaitForSeconds(cooldownEscudo);
-        escudoImg.gameObject.SetActive(true);
-        contadorEscudo = 5;
+        GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         canEscudo = true;
     }
 
-
     #endregion Escudo
 
-    #region ANIMATOR
-    private Animator animator;
+    #region Habilidad
 
-    internal Animator anim;
+    [Header("Ability Stats")]
+    private float habilidadProgreso;
 
-    void Start_Animator()
+    void Start_Habilidad()
     {
-        animator = GetComponent<Animator>();
-        anim = animator.GetComponent<Animator>();
-        animator.SetTrigger("spawn");
+        habilidadProgreso = 0;
+        StartCoroutine(CargarHabilidad());
     }
-    #endregion ANIMATOR
 
-    #region EQUIPOS
-    internal int equipo;
-    #endregion EQUIPOS
-
-    #region HABILIDADES
-
-    #region SUPER SHOOT
-    [Header("Super Shoot")]
-    [SerializeField] private GameObject bulletSSPrefab;
-    [SerializeField] private Transform[] shootPoints;
-    [SerializeField] private bool boolSS = false;
-    public float spreadSpeed = 10f;
-
-    void SuperShoot()
+    private IEnumerator CargarHabilidad()
     {
-        foreach (Transform shootPoint in shootPoints)
+        while (true)
         {
-            GameObject bulletInstance = Instantiate(bulletSSPrefab, shootPoint.position, shootPoint.rotation);
-            SuperShoot bulletScript = bulletInstance.GetComponent<SuperShoot>();
-            bulletScript.spreadSpeed = spreadSpeed;
+            habilidadProgreso += Time.deltaTime / 10f; // Ajusta el tiempo de carga según sea necesario
+            GameManager.Instance.UpdatePlayerAbility(this, habilidadProgreso);
+
+            if (habilidadProgreso >= 1)
+            {
+                habilidadProgreso = 1;
+                // Habilidad está completamente cargada
+            }
+            yield return null;
         }
-
-        Invoke("DesactivarSS", 0.25f);
     }
 
-    private void DesactivarSS()
-    {
-        Debug.Log("Si se desactivo Super Shoot");
-        hability = null;
-        actualHability = hability;
-        DesactivarSprite();
-        BloquearMovimiento = false;
-        timeToShoot = 0;
-        boolSS = false;
-    }
-    #endregion SUPER SHOOT
 
-    #region EXPLOSIVE BULLET
-    [Header("Explosive Bullet")]
-    [SerializeField] private GameObject balaExplosiva;
-    [SerializeField] private Transform spawnBalaExplosiva;
-    [SerializeField] private bool boolEB = false;
-
-    void ExplosiveBullet()
-    {
-        Debug.Log("Se instancio la bala explosiva");
-        GameObject bala = Instantiate(balaExplosiva, spawnBalaExplosiva.position, spawnBalaExplosiva.rotation);
-
-        Invoke("DesactivarES", 0.25f);
-    }
-
-    private void DesactivarES()
-    {
-        Debug.Log("Si se desactivo Explosive Shoot");
-        hability = null;
-        actualHability = hability;
-        DesactivarSprite();
-        BloquearMovimiento = false;
-        timeToShoot = 0;
-    }
-    #endregion EXPLOSIVE BULLET
-
-    #endregion HABILIDADES
+    #endregion Habilidad
 
     #region POWER UP
     [Header("Power Up Core")]
     [SerializeField] private string actualHability = "None";
-    [SerializeField] private int timeToShoot;
+
     [SerializeField] private GameObject[] spritesPowerUp;
     internal string hability;
 
@@ -474,7 +514,7 @@ public class PlayerController : MonoBehaviour
 
     void InicializarPowerUps()
     {
-        timeToShoot = 0;
+
         actualHability = hability;
 
         foreach (GameObject go in spritesPowerUp)
@@ -493,35 +533,13 @@ public class PlayerController : MonoBehaviour
         hability = newHability;
         actualHability = hability;
 
-        if (actualHability != null)
-        {
-            PrenderSprite();
-        }
-    }
-
-    void PrenderSprite()
-    {
-        if (!string.IsNullOrEmpty(actualHability) && spritesPowerUpDictionary.ContainsKey(actualHability))
-        {
-            spritesPowerUpDictionary[actualHability].SetActive(true);
-        }
+        GameManager.Instance.UpdatePlayerPowerUp(this, actualHability);
     }
 
     void DesactivarSprite()
     {
-        if (string.IsNullOrEmpty(actualHability))
-        {
-            foreach (var key in spritesPowerUpDictionary)
-            {
-                key.Value.SetActive(false);
-            }
-        }
-        else if (spritesPowerUpDictionary.ContainsKey(actualHability))
-        {
-            spritesPowerUpDictionary[actualHability].SetActive(false);
-        }
+        GameManager.Instance.UpdatePlayerPowerUp(this, null);
     }
-
 
 
     #region INVULNERABILIDAD
@@ -542,8 +560,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Si se desactivo Invulnerabilidad");
         hability = null;
         actualHability = hability;
-        DesactivarSprite();
         isInvulnerable = false;
+        DesactivarSprite();
     }
     #endregion INVULNERABILIDAD
 
@@ -567,13 +585,12 @@ public class PlayerController : MonoBehaviour
 
     private void DesactivarSSD()
     {
-        Debug.Log("Si se desactivo Super Speed");
         hability = null;
         actualHability = hability;
-        DesactivarSprite();
         playerSpeed = 5f;
         superSpeed = playerSpeed;
         inSuperSpeed = false;
+        DesactivarSprite();
     }
     #endregion SUPER SPEED
 

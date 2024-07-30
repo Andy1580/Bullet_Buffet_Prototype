@@ -97,7 +97,28 @@ public class ControlSystem : MonoBehaviour
                     Debug.Log("Escojio el personaje: " + selectedCharacter);
                 }
             }
+
+
         }
+    }
+
+    public void Input_RechazarEquipo(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Gamepad currentGamepad = context.control.device as Gamepad;
+            loby.Input_Rechazar(currentGamepad);
+            selectTm = true;
+            selectCh = false;
+            puntero.gameObject.SetActive(false);
+            c_Animator.gameObject.SetActive(true);
+            loby.ActivarPanelSeleccionarEquipo();
+        }
+    }
+
+    private bool TodosEquiposSeleccionados()
+    {
+        return loby.equipo.Count >= 2 && loby.equipo.Count == loby.dicControles.Count;
     }
     #endregion INPUT
 

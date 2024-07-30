@@ -141,7 +141,7 @@ public class MainMenuSystem : MonoBehaviour
 
     private void CargarJuego()
     {
-        SceneManager.LoadScene("ANDYINGAME");
+        SceneManager.LoadScene("LOBBY");
     }
 
     public void ConfirmacionSalir()

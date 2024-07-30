@@ -1,22 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
+[System.Serializable]
 public class LobbyManager : MonoBehaviour
 {
-    private static LobbyManager self;
+    public static LobbyManager self;
 
     private PlayerInput[] inputs;
-    private Dictionary<Gamepad, PlayerInput> dicControles = new Dictionary<Gamepad, PlayerInput>();
+    [HideInInspector] public Dictionary<Gamepad, PlayerInput> dicControles = new Dictionary<Gamepad, PlayerInput>();
 
     [SerializeField] private Canvas canvas;
     public static Canvas Canvas => self.canvas;
 
-    private Dictionary<int, int> equipo = new Dictionary<int, int>(); // gamepadId -> equipo
-    private Dictionary<int, string> personaje = new Dictionary<int, string>(); // gamepadId -> personaje
+    [HideInInspector] public Dictionary<int, int> equipo = new Dictionary<int, int>(); // gamepadId -> equipo
+    [HideInInspector] public Dictionary<int, string> personaje = new Dictionary<int, string>(); // gamepadId -> personaje
 
     [SerializeField] private GameObject panelSelectTeam;
     [SerializeField] private GameObject panelSelectCh;
+
+    // Nuevas variables para imágenes
+    //[SerializeField] private Image[] teamImages;
+    //[SerializeField] private Image[] characterImages;
 
     private void Awake()
     {
@@ -32,6 +39,19 @@ public class LobbyManager : MonoBehaviour
     {
         panelSelectTeam.SetActive(true);
         panelSelectCh.SetActive(false);
+    }
+
+    private void MakeSingleton()
+    {
+        if (self != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            self = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 
     void Awake_DesactivarControles()
@@ -66,6 +86,7 @@ public class LobbyManager : MonoBehaviour
                 {
                     input.gameObject.SetActive(true);
                     dicControles[gamepad] = input;
+                    RegistrarGamepad(gamepad);
                     break;
                 }
             }
@@ -100,26 +121,94 @@ public class LobbyManager : MonoBehaviour
 
     private void ActivarPanelSeleccionarPersonajes()
     {
-        if (dicControles.Count >= 2 && equipo.Count > 1)
+        if (dicControles.Count >= 2 && equipo.Count >= 2)
         {
             panelSelectTeam.SetActive(false);
             panelSelectCh.SetActive(true);
         }
     }
 
+    public void ActivarPanelSeleccionarEquipo()
+    {
+        panelSelectTeam.SetActive(true);
+        panelSelectCh.SetActive(false);
+    }
+
+    [HideInInspector] public Dictionary<int, Gamepad> idToGamepad = new Dictionary<int, Gamepad>();
+
+    public void RegistrarGamepad(Gamepad gamepad)
+    {
+        int gamepadId = gamepad.deviceId;
+        if (!idToGamepad.ContainsKey(gamepadId))
+        {
+            idToGamepad[gamepadId] = gamepad;
+            Debug.Log($"Gamepad registrado: {gamepadId}");
+        }
+    }
+
+    public Gamepad GetGamepadById(int gamepadId)
+    {
+        if (idToGamepad.ContainsKey(gamepadId))
+        {
+            return idToGamepad[gamepadId];
+        }
+
+        Debug.LogWarning($"No se encontró el Gamepad con id {gamepadId}");
+        return null;
+    }
+
     public void RecopilarInformacion()
     {
-        if (dicControles.Count < 2 || equipo.Count < 2 || personaje.Count < 2)
-            return;
+        Debug.Log("Iniciando recopilación de información...");
 
+        if (dicControles.Count < 2 || equipo.Count < 2 || personaje.Count < 2)
+        {
+            Debug.LogWarning("No hay suficientes datos para iniciar la partida.");
+            return;
+        }
 
         InfoLobby infoLobby = new InfoLobby();
-        infoLobby.equipos = this.equipo;
-        infoLobby.personajes = this.personaje;
+
+        foreach (var control in dicControles)
+        {
+            Gamepad gamepad = control.Key;
+            int gamepadId = gamepad.deviceId;
+
+            if (equipo.ContainsKey(gamepadId) && personaje.ContainsKey(gamepadId))
+            {
+                Debug.Log($"Agregando información del jugador {gamepadId} con equipo {equipo[gamepadId]} y personaje {personaje[gamepadId]}");
+                infoLobby.AddPlayerInfo(gamepadId, equipo[gamepadId], personaje[gamepadId]);
+            }
+            else
+            {
+                Debug.LogWarning($"Falta información para el gamepad {gamepadId}");
+            }
+        }
 
         string json = JsonUtility.ToJson(infoLobby);
-        Debug.Log("Se mando la informacion al Game Manager: " + json);
+        Debug.Log("JSON generado: " + json);
 
         GameManager.Instance.RecibirInformacionLobby(json);
+
+        SceneManager.LoadScene("ANDYINGAME");
+    }
+
+    public void Input_Rechazar(Gamepad gamepad)
+    {
+        if (dicControles.ContainsKey(gamepad))
+        {
+            int gamepadId = gamepad.deviceId;
+            if (equipo.ContainsKey(gamepadId))
+            {
+                equipo.Remove(gamepadId);
+                //teamImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del equipo
+            }
+            if (personaje.ContainsKey(gamepadId))
+            {
+                personaje.Remove(gamepadId);
+                //characterImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del personaje
+            }
+            Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
+        }
     }
 }
