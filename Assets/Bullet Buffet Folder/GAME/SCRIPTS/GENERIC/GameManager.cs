@@ -376,7 +376,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ResetiarVariables()
+    public void ResetiarVariables()
     {
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
@@ -385,7 +385,7 @@ public class GameManager : MonoBehaviour
             //Booleanos Partida
             modoHS = false;
             modoDS = false;
-            boolMapaStreet = false;
+            boolMapaStreetMHS = false;
 
             //Temporizador
             totalTime = 120;
@@ -393,6 +393,9 @@ public class GameManager : MonoBehaviour
             isRunning = false;
             panelTiempoAgotado.SetActive(false);
             panelTemporizador.SetActive(false);
+
+            //Puntaje
+            //puntosParaGanar = 1;
 
             //Paneles de condicion de Victoria
             panelVictoria.SetActive(false);
@@ -418,8 +421,12 @@ public class GameManager : MonoBehaviour
             panelConfiguracion.SetActive(false);
             panelConfirmacionSalida.SetActive(false);
 
+            //Jugadores
+            activePlayers = new List<PlayerController>();
 
             //Spawn de Enemigos
+            deadEnemy = false;
+            enemigosInstanciados = new List<GameObject>();
             DestruirEnemigosActivos();
 
             //Cerrar el HUD
@@ -432,7 +439,9 @@ public class GameManager : MonoBehaviour
     #region PARTIDA
     public bool _modoHS = modoHS;
     public bool _modoDS = modoDS;
-    public static bool boolMapaStreet;
+    public static bool boolMapaStreetMHS;
+    public static bool boolMapaDungeonMHS;
+    public static bool boolMapaRestaurantMHS;
     public static bool modoHS;
     public static bool modoDS;
 
@@ -450,30 +459,36 @@ public class GameManager : MonoBehaviour
 
         if (infoLobbyPlayers.Count == 2)
         {
-            var p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam1, infoLobbyPlayers[0].gamepadId);
-            p1.equipo = 1;
+            p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam1, infoLobbyPlayers[0].gamepadId);
+            p1.equipo = infoLobbyPlayers[0].equipo;
+            p1.BloquearMovimiento = false;
             activePlayers.Add(p1);
 
-            var p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam2, infoLobbyPlayers[1].gamepadId);
-            p2.equipo = 2;
+            p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam2, infoLobbyPlayers[1].gamepadId);
+            p2.equipo = infoLobbyPlayers[1].equipo;
+            p2.BloquearMovimiento = false;
             activePlayers.Add(p2);
         }
         else if (infoLobbyPlayers.Count == 4)
         {
-            var p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo2v2spawnTeam1_1, infoLobbyPlayers[0].gamepadId);
-            p1.equipo = 1;
+            p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo2v2spawnTeam1_1, infoLobbyPlayers[0].gamepadId);
+            p1.equipo = infoLobbyPlayers[0].equipo;
+            p1.BloquearMovimiento = false;
             activePlayers.Add(p1);
 
-            var p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo2v2spawnTeam1_2, infoLobbyPlayers[1].gamepadId);
-            p2.equipo = 1;
+            p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo2v2spawnTeam1_2, infoLobbyPlayers[1].gamepadId);
+            p2.equipo = infoLobbyPlayers[1].equipo;
+            p2.BloquearMovimiento = false;
             activePlayers.Add(p2);
 
-            var p3 = SpawnJugador(infoLobbyPlayers[2].personaje, modo2v2spawnTeam2_1, infoLobbyPlayers[2].gamepadId);
-            p3.equipo = 2;
+            p3 = SpawnJugador(infoLobbyPlayers[2].personaje, modo2v2spawnTeam2_1, infoLobbyPlayers[2].gamepadId);
+            p3.equipo = infoLobbyPlayers[2].equipo;
+            p3.BloquearMovimiento = false;
             activePlayers.Add(p3);
 
-            var p4 = SpawnJugador(infoLobbyPlayers[3].personaje, modo2v2spawnTeam2_2, infoLobbyPlayers[3].gamepadId);
-            p4.equipo = 2;
+            p4 = SpawnJugador(infoLobbyPlayers[3].personaje, modo2v2spawnTeam2_2, infoLobbyPlayers[3].gamepadId);
+            p4.equipo = infoLobbyPlayers[3].equipo;
+            p4.BloquearMovimiento = false;
             activePlayers.Add(p4);
         }
 
@@ -484,8 +499,11 @@ public class GameManager : MonoBehaviour
         infoLobbyPlayers = new List<InfoLobby.PlayerInfo>();
     }
 
-    public void MainMenu()
+    public void GoToMenuVictory()
     {
+        Time.timeScale = 1;
+        deadEnemy = false;
+        DestruirEnemigosActivos();
         SceneManager.LoadScene("ANDYMENUTEST");
     }
     #endregion PARTIDA
@@ -496,7 +514,7 @@ public class GameManager : MonoBehaviour
 
     void InicializarMapas()
     {
-        if (boolMapaStreet)
+        if (boolMapaStreetMHS)
         {
             mapaStreet.SetActive(true);
         }
@@ -647,23 +665,29 @@ public class GameManager : MonoBehaviour
             if (puntosAGanarTeam1 >= 3 && isRunning)
             {
                 isRunning = false;
+                deadEnemy = true;
+                DestruirEnemigosActivos();
                 panelVictoria.SetActive(true);
-                playerWinText.text = p1.gameObject.name;
+                playerWinText.text = "Team 1";
                 p1.enabled = false;
                 p2.enabled = false;
                 mago1Animator.SetTrigger("victoria");
                 mago2Animator.SetTrigger("derrota");
+                Time.timeScale = 0;
             }
 
             else if (puntosAGanarTeam2 >= 3 && isRunning)
             {
                 isRunning = false;
+                deadEnemy = true;
+                DestruirEnemigosActivos();
                 panelVictoria.SetActive(true);
-                playerWinText.text = p2.gameObject.name;
+                playerWinText.text = "Team 2";
                 p1.enabled = false;
                 p2.enabled = false;
                 mago2Animator.SetTrigger("victoria");
                 mago1Animator.SetTrigger("derrota");
+                Time.timeScale = 0;
             }
         }
         else return;
@@ -686,7 +710,7 @@ public class GameManager : MonoBehaviour
     [Header("Temporizador")]
     [SerializeField] private GameObject panelTemporizador;
     [SerializeField] private GameObject panelTiempoAgotado;
-    [SerializeField] private float totalTime = 120f; // Total del tiempo en segundos, 120 segundos es igual a 2 minutos
+    [SerializeField] public float totalTime = 120f; // Total del tiempo en segundos, 120 segundos es igual a 2 minutos
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text ganadorTiempoAgotadoText;
 
@@ -769,7 +793,6 @@ public class GameManager : MonoBehaviour
 
     #region JUGADORES
 
-
     [Header("Spawn Points")]
     [SerializeField] private Transform modo1v1spawnTeam1;
     [SerializeField] private Transform modo1v1spawnTeam2;
@@ -825,41 +848,39 @@ public class GameManager : MonoBehaviour
     [Header("Pista")]
     [SerializeField] private GameObject pistaPintable;
     [SerializeField] private List<CuadroPintable> cuadrosPintables;
-    private List<CuadroPintable> cuadrosJ1;
-    private List<CuadroPintable> cuadrosJ2;
+    private List<CuadroPintable> cuadrosTeam1;
+    private List<CuadroPintable> cuadrosTeam2;
 
     void InicializarMDS()
     {
         camaraObjeto = camaraPrincipal.gameObject;
         camaraObjeto.SetActive(true);
         panelMarcadorMDS.SetActive(true);
-        cuadrosJ1 = new List<CuadroPintable>();
-        cuadrosJ2 = new List<CuadroPintable>();
+        cuadrosTeam1 = new List<CuadroPintable>();
+        cuadrosTeam2 = new List<CuadroPintable>();
     }
 
     public void RegistrarCuadroPintado(CuadroPintable cuadro)
     {
         //Verificamos que nombre nos llamo el cuadro
-        if (cuadro.currentOwner == "J1(Clone)")
+        if (cuadro.currentTeam == 1)
         {
             //Si no se encuentra en la lista el cuadro mandado, lo agregamos
-            if (!cuadrosJ1.Contains(cuadro))
+            if (!cuadrosTeam1.Contains(cuadro))
             {
-                Debug.Log("Cuadro registrado a J1");
                 puntosAGanarTeam1++;
                 puntajeTeam1MDS.text = puntosAGanarTeam1.ToString();
-                cuadrosJ1.Add(cuadro);
+                cuadrosTeam1.Add(cuadro);
             }
 
         }
-        else if (cuadro.currentOwner == "J2(Clone)")
+        else if (cuadro.currentTeam == 2)
         {
-            if (!cuadrosJ2.Contains(cuadro))
+            if (!cuadrosTeam2.Contains(cuadro))
             {
-                Debug.Log("Cuadro registrado a J2");
                 puntosAGanarTeam2++;
                 puntajeTeam2MDS.text = puntosAGanarTeam2.ToString();
-                cuadrosJ2.Add(cuadro);
+                cuadrosTeam2.Add(cuadro);
             }
 
         }
@@ -870,37 +891,37 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void RemoverCuadroPintado(CuadroPintable cuadro, string owner)
+    public void RemoverCuadroPintado(CuadroPintable cuadro, int ownerTeam)
     {
-        if (owner == "J1(Clone)" && cuadrosJ1.Contains(cuadro))
+        if (ownerTeam == 1 && cuadrosTeam1.Contains(cuadro))
         {
             puntosAGanarTeam1--;
             puntajeTeam1MDS.text = puntosAGanarTeam1.ToString();
-            cuadrosJ1.Remove(cuadro);
+            cuadrosTeam1.Remove(cuadro);
         }
-        else if (owner == "J2(Clone)" && cuadrosJ2.Contains(cuadro))
+        else if (ownerTeam == 2 && cuadrosTeam2.Contains(cuadro))
         {
             puntosAGanarTeam2--;
             puntajeTeam2MDS.text = puntosAGanarTeam2.ToString();
-            cuadrosJ2.Remove(cuadro);
+            cuadrosTeam2.Remove(cuadro);
         }
     }
 
     //Metodo para verifica que lista tiene mas cuadros pintados cuanso acabe el tiempo
     private void TiempoAgotadoMDS()
     {
-        int j1Count = cuadrosJ1.Count;
-        int j2Count = cuadrosJ2.Count;
+        int team1Count = cuadrosTeam1.Count;
+        int team2Count = cuadrosTeam2.Count;
 
-        if (j1Count > j2Count)
+        if (team1Count > team2Count)
         {
             panelVictoria.SetActive(true);
-            playerWinText.text = p1.gameObject.name;
+            playerWinText.text = "Team: 1";
         }
-        else if (j2Count > j1Count)
+        else if (team2Count > team1Count)
         {
             panelVictoria.SetActive(true);
-            playerWinText.text = p2.gameObject.name;
+            playerWinText.text = "Team: 2";
         }
     }
     #endregion MODO DUELO DE SALSAS
@@ -1037,32 +1058,57 @@ public class GameManager : MonoBehaviour
     {
         if (modoHS)
         {
-            if (puntosAGanarTeam1 != puntosParaGanar || puntosAGanarTeam2 != puntosParaGanar)
+            Debug.Log("Si entro al metodo de muerte");
+
+            if (puntosAGanarTeam1 != puntosParaGanar && puntosAGanarTeam2 != puntosParaGanar)
             {
-                if (player.equipo == 1 && isRunning)
+                if (infoLobbyPlayers.Count == 2)
                 {
-                    isRunning = false;
-                    BloquearMovimientoJugadores();
-                    //chP1.enabled = false;
-                    puntosAGanarTeam2++;
-                    puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
-                    camaraPrincipalAnimator.SetTrigger("move");
-                    Invoke("DestruirEnemigosActivos", 0.25f);
-                    Invoke("Mago2", 3.0f);
-                    Invoke("CambioDeRondaMHS", 4.0f);
+                    if (player.equipo == 1 && isRunning)
+                    {
+                        isRunning = false;
+                        deadEnemy = true;
+                        puntosAGanarTeam2++;
+                        puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
+                        camaraPrincipalAnimator.SetTrigger("move");
+                        p1.BloquearMovimiento = true;
+                        p2.BloquearMovimiento = true;
+                        Invoke("DestruirEnemigosActivos", 0.25f);
+                        Invoke("Mago2", 3.0f);
+                        Invoke("CambioDeRondaMHS", 4.0f);
+                    }
+                    else if (player.equipo == 2 && isRunning)
+                    {
+                        isRunning = false;
+                        deadEnemy = true;
+                        puntosAGanarTeam1++;
+                        puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
+                        camaraPrincipalAnimator.SetTrigger("move");
+                        p1.BloquearMovimiento = true;
+                        p2.BloquearMovimiento = true;
+                        Invoke("DestruirEnemigosActivos", 0.25f);
+                        Invoke("Mago1", 3.0f);
+                        Invoke("CambioDeRondaMHS", 4.0f);
+                    }
                 }
-                else if (player.equipo == 2 && isRunning)
+                else
                 {
-                    isRunning = false;
-                    BloquearMovimientoJugadores();
-                    //chP2.enabled = false;
-                    puntosAGanarTeam1++;
-                    puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
-                    camaraPrincipalAnimator.SetTrigger("move");
-                    Invoke("DestruirEnemigosActivos", 0.25f);
-                    Invoke("Mago1", 3.0f);
-                    Invoke("CambioDeRondaMHS", 4.0f);
+                    if (player.equipo == 1 || player.equipo == 2 && isRunning)
+                    {
+                        isRunning = false;
+                        puntosAGanarTeam2++;
+                        puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
+                        camaraPrincipalAnimator.SetTrigger("move");
+                        p1.BloquearMovimiento = true;
+                        p2.BloquearMovimiento = true;
+                        p3.BloquearMovimiento = true;
+                        p4.BloquearMovimiento = true;
+                        Invoke("DestruirEnemigosActivos", 0.25f);
+                        Invoke("Mago2", 3.0f);
+                        Invoke("CambioDeRondaMHS", 4.0f);
+                    }
                 }
+
             }
             else
             {
@@ -1072,14 +1118,36 @@ public class GameManager : MonoBehaviour
         }
         else if (modoDS)
         {
-            if (player.equipo == 1)
+            if (infoLobbyPlayers.Count == 2)
             {
-                RespawnearJugadorMDS(player);
+                if (player.equipo == 1)
+                {
+                    player.BloquearMovimiento = true;
+                    StartCoroutine(RespawnearJugadorMDS(player, 7));
+                    player.enabled = false;
+                }
+                else if (player.equipo == 2)
+                {
+                    player.BloquearMovimiento = true;
+                    StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
+                }
             }
-            else if (player.equipo == 2)
+            else if (infoLobbyPlayers.Count == 4)
             {
-                RespawnearJugadorMDS(player);
+                if (player.equipo == 1)
+                {
+                    player.BloquearMovimiento = true;
+                    player.enabled = false;
+                    StartCoroutine(RespawnearJugadorMDS(player, 7));
+                }
+                else if (player.equipo == 2)
+                {
+                    player.BloquearMovimiento = true;
+                    player.enabled = false;
+                    StartCoroutine(RespawnearJugadorMDS(player, 7));
+                }
             }
+
         }
         else
         {
@@ -1095,66 +1163,249 @@ public class GameManager : MonoBehaviour
         numeroDeRonda++;
         rondaText.text = numeroDeRonda.ToString();
 
-        // Desactivamos los prefabs de los jugadores
-        p1.gameObject.SetActive(false);
-        p2.gameObject.SetActive(false);
+        if (infoLobbyPlayers.Count == 2)
+        {
+            // Desactivamos los prefabs de los jugadores
+            p1.gameObject.SetActive(false);
+            p2.gameObject.SetActive(false);
 
-        // Los movemos a sus posiciones iniciales
-        p1.transform.position = modo1v1spawnTeam1.position;
-        p2.transform.position = modo1v1spawnTeam2.position;
+            // Los movemos a sus posiciones iniciales
+            p1.transform.position = modo1v1spawnTeam1.position;
+            p2.transform.position = modo1v1spawnTeam2.position;
+        }
+        else
+        {
+            // Desactivamos los prefabs de los jugadores
+            p1.gameObject.SetActive(false);
+            p2.gameObject.SetActive(false);
+            p3.gameObject.SetActive(false);
+            p4.gameObject.SetActive(false);
+
+            // Los movemos a sus posiciones iniciales
+            p1.transform.position = modo2v2spawnTeam1_1.position;
+            p2.transform.position = modo2v2spawnTeam1_2.position;
+            p3.transform.position = modo2v2spawnTeam2_1.position;
+            p4.transform.position = modo2v2spawnTeam2_2.position;
+        }
+
 
         // Los reactivamos
         StartCoroutine(ReactivacionMHS(3.0f));
     }
 
+    private IEnumerator RespawnearJugadorMDS(PlayerController player, float time)
+    {
+        Debug.Log("Se respauneo el jugador");
+        yield return new WaitForSeconds(time);
+        player.gameObject.SetActive(false);
+        yield return new WaitForSeconds(time);
+        player.enabled = false;
+        yield return new WaitForSeconds(1.5f);
+        if (infoLobbyPlayers.Count == 2)
+        {
+            if (player.equipo == 1)
+            {
+                if (player == p1)
+                {
+                    p1.gameObject.SetActive(true);
+                    p1.Vida = 100;
+                    p1.enabled = true;
+                    p1.BloquearMovimiento = false;
+                    p1.anim.SetTrigger("spawn");
+                    p1.transform.position = modo1v1spawnTeam1.position;
+                }
+                else
+                {
+                    p1.gameObject.SetActive(true);
+                    p1.Vida = 100;
+                    p1.enabled = true;
+                    p1.BloquearMovimiento = false;
+                    p1.anim.SetTrigger("spawn");
+                    p1.transform.position = modo1v1spawnTeam2.position;
+                }
+            }
+            else if (player.equipo == 2)
+            {
+                if (player == p2)
+                {
+                    p2.gameObject.SetActive(true);
+                    p2.salud = 100;
+                    p2.enabled = true;
+                    p2.BloquearMovimiento = false;
+                    p2.anim.SetTrigger("spawn");
+                    p2.transform.position = modo1v1spawnTeam2.position;
+                }
+                else
+                {
+                    p2.gameObject.SetActive(true);
+                    p2.salud = 100;
+                    p2.enabled = true;
+                    p2.BloquearMovimiento = false;
+                    p2.anim.SetTrigger("spawn");
+                    p2.transform.position = modo1v1spawnTeam1.position;
+                }
+            }
+        }
+        else if (infoLobbyPlayers.Count == 4)
+        {
+            if (p1.equipo == 1 && p2.equipo == 1)
+            {
+                if (player.equipo == p1.equipo)
+                {
+                    if (p1.equipo == 1)
+                    {
+                        p1.gameObject.SetActive(true);
+                        p1.enabled = true;
+                        p1.Vida = 100;
+                        p1.anim.SetTrigger("spawn");
+                        p1.transform.position = modo2v2spawnTeam1_1.position;
+                    }
+                    else
+                    {
+                        p1.gameObject.SetActive(true);
+                        p1.enabled = true;
+                        p1.Vida = 100;
+                        p1.anim.SetTrigger("spawn");
+                        p1.transform.position = modo2v2spawnTeam2_1.position;
+                    }
+                }
+
+                else if (player.equipo == p2.equipo)
+                {
+                    if (p2.equipo == 1)
+                    {
+                        p2.gameObject.SetActive(true);
+                        p2.enabled = true;
+                        p2.Vida = 100;
+                        p2.anim.SetTrigger("spawn");
+                        p2.transform.position = modo2v2spawnTeam1_2.position;
+                    }
+                    else if (p2.equipo == 2)
+                    {
+                        p2.gameObject.SetActive(true);
+                        p2.enabled = true;
+                        p2.Vida = 100;
+                        p2.anim.SetTrigger("spawn");
+                        p2.transform.position = modo2v2spawnTeam2_1.position;
+                    }
+
+                }
+            }
+
+            if (p3.equipo == 2 && p4.equipo == 2)
+            {
+                if (player.equipo == p3.equipo)
+                {
+                    if (p3.equipo == 1)
+                    {
+                        p3.gameObject.SetActive(true);
+                        p3.enabled = true;
+                        p3.Vida = 100;
+                        p3.anim.SetTrigger("spawn");
+                        p3.transform.position = modo2v2spawnTeam1_1.position;
+                    }
+                    else if (p3.equipo == 2)
+                    {
+                        p3.gameObject.SetActive(true);
+                        p3.enabled = true;
+                        p3.Vida = 100;
+                        p3.anim.SetTrigger("spawn");
+                        p3.transform.position = modo2v2spawnTeam2_1.position;
+                    }
+                }
+
+                else if (player.equipo == p4.equipo)
+                {
+                    if (p4.equipo == 1)
+                    {
+                        p4.gameObject.SetActive(true);
+                        p4.enabled = true;
+                        p4.Vida = 100;
+                        p4.anim.SetTrigger("spawn");
+                        p4.transform.position = modo2v2spawnTeam1_2.position;
+                    }
+                    else if (p4.equipo == 2)
+                    {
+                        p4.gameObject.SetActive(true);
+                        p4.enabled = true;
+                        p4.Vida = 100;
+                        p4.anim.SetTrigger("spawn");
+                        p4.transform.position = modo2v2spawnTeam2_2.position;
+                    }
+                }
+            }
+
+        }
+
+        yield return new WaitForSeconds(6.0f);
+    }
 
     IEnumerator ReactivacionMHS(float time)
     {
-        ResetearJugador(p1);
-        ResetearJugador(p2);
-        yield return new WaitForSeconds(time);
-        p1.BloquearMovimiento = false;
-        p2.BloquearMovimiento = false;
+        if (infoLobbyPlayers.Count == 2)
+        {
+            p1.gameObject.SetActive(true);
+            p2.gameObject.SetActive(true);
+            p1.enabled = true;
+            p2.enabled = true;
+            p1.anim.SetTrigger("spawn");
+            p2.anim.SetTrigger("spawn");
+            p1.Vida = 100;
+            p2.Vida = 100;
+            yield return new WaitForSeconds(time);
+            p1.BloquearMovimiento = false;
+            p2.BloquearMovimiento = false;
+        }
+        else
+        {
+            p1.gameObject.SetActive(true);
+            p2.gameObject.SetActive(true);
+            p3.gameObject.SetActive(true);
+            p4.gameObject.SetActive(true);
+            yield return new WaitForSeconds(time);
+            p1.BloquearMovimiento = false;
+            p2.BloquearMovimiento = false;
+            p3.BloquearMovimiento = false;
+            p4.BloquearMovimiento = false;
+        }
+
         isRunning = true;
+        deadEnemy = false;
         remainingTime = totalTime;
         yield return new WaitForSeconds(3.50f);
         InicializarEnemySpawn();
     }
 
-    private void RespawnearJugadorMDS(PlayerController player)
-    {
-        if (player.equipo == 1)
-        {
-            StartCoroutine(ReactivacionMDS(player, 8.0f, modo1v1spawnTeam1));
-        }
-        else if (player.equipo == 2)
-        {
-            StartCoroutine(ReactivacionMDS(player, 8.0f, modo1v1spawnTeam2));
-        }
-    }
 
-    IEnumerator ReactivacionMDS(PlayerController player, float time, Transform spawnPoint)
-    {
-        yield return null;
-        yield return new WaitForSeconds(6.0f);
-        player.gameObject.SetActive(false);
-        player.transform.position = spawnPoint.position;
-        ResetearJugador(player);
-        player.gameObject.SetActive(true);
-        yield return new WaitForSeconds(time);
-    }
+
+    //IEnumerator ReactivacionMDS(float time)
+    //{
+    //    if(infoLobbyPlayers.Count == 2)
+    //    {
+
+    //    }
+    //    yield return null;
+    //    yield return new WaitForSeconds(6.0f);
+    //    player.gameObject.SetActive(false);
+    //    player.transform.position = spawnPoint.position;
+    //    ResetearJugador(player);
+    //    player.gameObject.SetActive(true);
+    //    yield return new WaitForSeconds(time);
+    //}
 
     private void BloquearMovimientoJugadores()
     {
+        Debug.Log("Se bloquearon los movimientos de los jugadores");
         p1.BloquearMovimiento = true;
         p2.BloquearMovimiento = true;
+        p3.BloquearMovimiento = true;
+        p4.BloquearMovimiento = true;
     }
 
     private void ResetearJugador(PlayerController player)
     {
         player.Vida = 100;
         player.enabled = true;
-        player.GetComponent<CharacterController>().enabled = true;
         player.isInvulnerable = false;
         player.anim.SetTrigger("spawn");
     }
@@ -1167,20 +1418,32 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int enemigosMaximosActivos = 4;
     [SerializeField] private float minSpawnTime = 3f; // Tiempo mínimo entre spawns
     [SerializeField] private float maxSpawnTime = 5f; // Tiempo máximo entre spawns
+    [SerializeField] private bool deadEnemy = false;
 
     private List<GameObject> enemigosInstanciados = new List<GameObject>();
 
     void InicializarEnemySpawn()
     {
-        if (SceneManager.GetActiveScene().name != "ANDYINGAME")
-            return;
-
-        for (int i = 0; i < enemigosMaximosActivos; i++)
+        if (SceneManager.GetActiveScene().name == "ANDYINGAME" && !deadEnemy)
         {
-            SpawnEnemy();
+            Debug.Log("Se inicio el Spawn de Enemigos");
+            print(deadEnemy);
+
+            if (isRunning)
+            {
+                for (int i = 0; i < enemigosMaximosActivos; i++)
+                {
+                    SpawnEnemy();
+                }
+
+                InvokeRepeating(nameof(SpawnEnemyContinuously), Random.Range(minSpawnTime, maxSpawnTime), Random.Range(minSpawnTime, maxSpawnTime));
+            }
+        }
+        else
+        {
+            return;
         }
 
-        InvokeRepeating(nameof(SpawnEnemyContinuously), Random.Range(minSpawnTime, maxSpawnTime), Random.Range(minSpawnTime, maxSpawnTime));
     }
 
     private void SpawnEnemy()
@@ -1207,6 +1470,7 @@ public class GameManager : MonoBehaviour
             if (enemy != null && enemy.activeSelf)
             {
                 Destroy(enemy);
+                Debug.Log("Enemigo destruido");
                 enemigosInstanciados.RemoveAt(i);
             }
         }
@@ -1229,6 +1493,9 @@ public class GameManager : MonoBehaviour
 
     private void SpawnEnemyContinuously()
     {
+        if (SceneManager.GetActiveScene().name != "ANDYINGAME")
+            return;
+
         CheckAndRemoveDeadEnemies();
 
         if (enemigosInstanciados.Count < enemigosMaximosActivos)

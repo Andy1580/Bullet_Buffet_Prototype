@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyAI_Flying : MonoBehaviour
 {
@@ -25,7 +24,11 @@ public class EnemyAI_Flying : MonoBehaviour
         vida = maxVida;
 
         renderer = GetComponentInChildren<MeshRenderer>();
-        BuscarJugadorCercano();
+        if (jugadorObjetivo == null)
+        {
+            BuscarJugadorCercano();
+
+        }
     }
 
     void Update()
@@ -49,7 +52,14 @@ public class EnemyAI_Flying : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.LookAt(jugadorObjetivo.transform);
+        if (jugadorObjetivo != null)
+        {
+            transform.LookAt(jugadorObjetivo.transform);
+        }
+        else
+        {
+            BuscarJugadorCercano();
+        }
 
         //if (GameManager.remainingTime <= 0)
         //{

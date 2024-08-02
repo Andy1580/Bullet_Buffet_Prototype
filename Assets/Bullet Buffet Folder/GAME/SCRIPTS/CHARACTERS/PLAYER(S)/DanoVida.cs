@@ -13,8 +13,13 @@ public class DañoVida : MonoBehaviour
             PlayerController pC = other.GetComponent<PlayerController>();
             if (pC != null && !pC.isInvulnerable)
             {
-                pC.Vida -= damage;
-                Destroy(this.gameObject);
+                if (pC.Vida != 0)
+                {
+                    pC.Vida -= damage;
+                    Destroy(this.gameObject);
+
+                }
+                else return;
                 //pC.StartCoroutine(ActivateInvulnerability(pC));
             }
         }
@@ -27,13 +32,11 @@ public class DañoVida : MonoBehaviour
             if (eM != null)
             {
                 eM.VidaEnemigo -= damage;
-                Debug.Log("Le hize daño al eM");
                 Destroy(this.gameObject);
             }
             else if (eF != null)
             {
                 eF.VidaEnemigo -= damage;
-                Debug.Log("Le hize daño al eF");
                 Destroy(this.gameObject);
             }
         }

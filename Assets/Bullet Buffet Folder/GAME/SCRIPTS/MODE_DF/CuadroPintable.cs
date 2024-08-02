@@ -7,7 +7,7 @@ public class CuadroPintable : MonoBehaviour
     private MeshRenderer meshRenderer;
     public Material material;
     private Color colorInicial;
-    public string currentOwner;
+    public int currentTeam;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class CuadroPintable : MonoBehaviour
     }
     private void Start()
     {
-        //currentOwner = "None"; // Inicialmente, el cuadro no pertenece a nadie
+        //currentTeam = "None"; // Inicialmente, el cuadro no pertenece a nadie
         //material.color = colorInicial;
     }
 
@@ -36,7 +36,7 @@ public class CuadroPintable : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
-            currentOwner = "None";
+            currentTeam = 0;
             material.color = colorInicial;
         }
     }
@@ -48,40 +48,39 @@ public class CuadroPintable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //Obtebemos su nombre y veificamos que no se haya asignado al "curentOwner"
-            string playerName = other.gameObject.name;
-            if (playerName == "J1(Clone)" && currentOwner != "J1(Clone)")
+            PlayerController playerTeam = other.GetComponent<PlayerController>();
+
+            if (playerTeam.equipo == 1 && currentTeam != 1)
             {
-                if (currentOwner == "J2(Clone)")
+                if (currentTeam == 2)
                 {
-                    GameManager.Instance.RemoverCuadroPintado(this, "J2(Clone)");
+                    GameManager.Instance.RemoverCuadroPintado(this, currentTeam);
                 }
-                CambiarPropietario(playerName);
+                CambiarPropietario(playerTeam.equipo);
             }
-            else if (playerName == "J2(Clone)" && currentOwner != "J2(Clone)")
+            else if (playerTeam.equipo == 2 && currentTeam != 2)
             {
-                if (currentOwner == "J1(Clone)")
+                if (currentTeam == 1)
                 {
-                    GameManager.Instance.RemoverCuadroPintado(this, "J1(Clone)");
+                    GameManager.Instance.RemoverCuadroPintado(this, currentTeam);
                 }
-                CambiarPropietario(playerName);
+                CambiarPropietario(playerTeam.equipo);
             }
         }
     }
 
     //Una vez verificado lo anterior pasamos a pintar el cuadro usando el meshRenderer para cambiarle el color de la textur
     //asignada al color especifico de cada jugador y posterior a eso registrar el cuadro correspondiente al jugador
-    private void CambiarPropietario(string newOwner)
+    private void CambiarPropietario(int newOwner)
     {
-        currentOwner = newOwner;
-        if (newOwner == "J1(Clone)")
+        currentTeam = newOwner;
+        if (newOwner == 1)
         {
-            Debug.Log("Si se pinto cuadro de J1");
-            meshRenderer.material.color = Color.blue;
-        }
-        else if (newOwner == "J2(Clone)")
-        {
-            Debug.Log("Si se pinto cuadro de J2");
             meshRenderer.material.color = Color.red;
+        }
+        else if (newOwner == 2)
+        {
+            meshRenderer.material.color = Color.blue;
         }
         else
         {

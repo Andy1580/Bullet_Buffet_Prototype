@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
         //playerHUD = hudSlot.GetComponent<PlayerHUD>();
 
         // Configurar equipo
-        SetupEquipo();
+        //SetupEquipo();
     }
 
     private void Update()
@@ -36,20 +36,20 @@ public class PlayerController : MonoBehaviour
         Update_Shoot();
     }
 
-    private void SetupEquipo()
-    {
-        jugadorText.text = "J" + gamepadIndex.ToString();
-        if (equipo == 1)
-        {
-            equipoRojo.gameObject.SetActive(true);
-            equipoAzul.gameObject.SetActive(false);
-        }
-        else if (equipo == 2)
-        {
-            equipoRojo.gameObject.SetActive(false);
-            equipoAzul.gameObject.SetActive(true);
-        }
-    }
+    //private void SetupEquipo()
+    //{
+    //    jugadorText.text = "J" + gamepadIndex.ToString();
+    //    if (equipo == 1)
+    //    {
+    //        equipoRojo.gameObject.SetActive(true);
+    //        equipoAzul.gameObject.SetActive(false);
+    //    }
+    //    else if (equipo == 2)
+    //    {
+    //        equipoRojo.gameObject.SetActive(false);
+    //        equipoAzul.gameObject.SetActive(true);
+    //    }
+    //}
 
     #region INPUT
 
@@ -193,6 +193,8 @@ public class PlayerController : MonoBehaviour
         movement.x = moveXZ.x;
         movement.z = moveXZ.z;
 
+        //animator.SetFloat("x", movement.x);
+        //animator.SetFloat("z", movement.z);
 
 
         if (GameManager.EnPausa)
@@ -367,13 +369,14 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
 
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        renderer.material.SetColor("_EmissionColor", Color.black);
     }
 
     void DeadEvent()
     {
         animator.SetTrigger("muerto");
         GameManager.Instance.DeadPlayerEventMHS(this);
-        Debug.Log("Murio: " + this.gameObject.name);
     }
 
     public int Vida
