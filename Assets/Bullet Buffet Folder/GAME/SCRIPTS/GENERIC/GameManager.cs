@@ -401,7 +401,7 @@ public class GameManager : MonoBehaviour
             panelVictoria.SetActive(false);
 
             //Mapas
-            mapaStreet.SetActive(false);
+            mapaStreetMHS.SetActive(false);
 
             //Modo Hechizos Sazonados
             magosPrincipales.SetActive(false);
@@ -510,13 +510,23 @@ public class GameManager : MonoBehaviour
 
     #region MAPAS
     [Header("Mapas")]
-    [SerializeField] private GameObject mapaStreet;
+    [SerializeField] private GameObject mapaStreetMHS;
+    [SerializeField] private GameObject mapaRestaurantMHS;
+    [SerializeField] private GameObject mapaDungeonMHS;
 
     void InicializarMapas()
     {
         if (boolMapaStreetMHS)
         {
-            mapaStreet.SetActive(true);
+            mapaStreetMHS.SetActive(true);
+        }
+        else if(boolMapaDungeonMHS)
+        {
+            mapaDungeonMHS.SetActive(true);
+        }
+        else if(boolMapaRestaurantMHS)
+        {
+            mapaRestaurantMHS.SetActive(true);
         }
     }
     #endregion MAPAS
