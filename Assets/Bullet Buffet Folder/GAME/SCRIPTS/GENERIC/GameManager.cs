@@ -386,6 +386,8 @@ public class GameManager : MonoBehaviour
             modoHS = false;
             modoDS = false;
             boolMapaStreetMHS = false;
+            boolMapaDungeonMHS = false;
+            boolMapaRestaurantMHS = false;
 
             //Temporizador
             totalTime = 120;
@@ -448,6 +450,7 @@ public class GameManager : MonoBehaviour
     public static bool modoDS;
 
     public static List<PlayerController> activePlayers = new List<PlayerController>();
+
 
     public void IniciarPartida()
     {
@@ -589,7 +592,9 @@ public class GameManager : MonoBehaviour
         panelControles.SetActive(false);
         panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
-        Time.timeScale = 1;
+
+
+        Pausa(null);
     }
 
     public void Controles()
