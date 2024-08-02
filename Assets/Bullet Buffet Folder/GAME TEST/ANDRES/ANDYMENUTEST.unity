@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.17762937, g: 0.22238736, b: 0.30457586, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10907,7 +10907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1673482910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13719,11 +13719,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 136453022125007553, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 179397336937334429, guid: 86d3465a98c9511469858da6d49c0499,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -13734,25 +13729,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1673482914}
-    - target: {fileID: 1773205105280767333, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: maxSpawnTime
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773205105280767333, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: minSpawnTime
-      value: 12
-      objectReference: {fileID: 0}
     - target: {fileID: 1814054822380419315, guid: 86d3465a98c9511469858da6d49c0499,
         type: 3}
       propertyPath: m_Name
       value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1814054822380419315, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2392629374168539816, guid: 86d3465a98c9511469858da6d49c0499,
         type: 3}
@@ -13814,41 +13794,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1673482914}
-    - target: {fileID: 6583410705845631028, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: GoToMenuVictory
-      objectReference: {fileID: 0}
-    - target: {fileID: 6707128079941094937, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7027571986344197600, guid: 86d3465a98c9511469858da6d49c0499,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1673482914}
-    - target: {fileID: 8895146782182253810, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8895146782182253810, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8895146782182253810, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8895146782182253810, guid: 86d3465a98c9511469858da6d49c0499,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

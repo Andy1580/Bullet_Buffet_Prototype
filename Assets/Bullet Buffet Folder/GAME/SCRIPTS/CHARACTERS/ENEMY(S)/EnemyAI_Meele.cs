@@ -12,7 +12,7 @@ public class EnemyAI_Meele : MonoBehaviour
     [SerializeField] private int maxVida = 200;
     [SerializeField] public GameObject attackCollider;
     [SerializeField] internal int vida;
-    [SerializeField] private MeshRenderer renderer;
+    [SerializeField] private SkinnedMeshRenderer renderer;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -25,7 +25,7 @@ public class EnemyAI_Meele : MonoBehaviour
         vida = maxVida;
         attackCollider.SetActive(false);
 
-        renderer = GetComponent<MeshRenderer>();
+        renderer = GetComponent<SkinnedMeshRenderer>();
         BuscarJugadorCercano();
     }
 
@@ -140,7 +140,8 @@ public class EnemyAI_Meele : MonoBehaviour
             if (value <= 0)
             {
                 vida = 0;
-                DeadEvent();
+                StopAllCoroutines();
+                Invoke("DeadEvent", 3.5f);
             }
             else if (value >= maxVida)
             {
