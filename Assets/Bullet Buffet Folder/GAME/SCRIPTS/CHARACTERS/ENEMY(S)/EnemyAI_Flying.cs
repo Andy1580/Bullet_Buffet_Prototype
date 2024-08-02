@@ -207,6 +207,7 @@ public class EnemyAI_Flying : MonoBehaviour
 
         if (distancia <= distanciaMinima)
         {
+            transform.LookAt(jugadorObjetivo.transform.position);
             animator.SetTrigger("ataque");
             Invoke("Ataque", 0.30f);
         }
@@ -216,6 +217,7 @@ public class EnemyAI_Flying : MonoBehaviour
 
     void Ataque()
     {
-        Instantiate(balaPrefab, balaSpawn.position, balaSpawn.rotation);
+        GameObject clone = Instantiate(balaPrefab, balaSpawn.position, balaSpawn.rotation);
+        Destroy(clone, 8.0f);
     }
 }

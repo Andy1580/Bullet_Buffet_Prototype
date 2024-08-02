@@ -24,9 +24,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PoweUp",
+                    "name": "Habilidad",
                     "type": "Button",
                     "id": "a36ce36e-8448-4a39-8ce8-0fed7b332b4d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PowerUp",
+                    "type": "Button",
+                    "id": "81e90b8a-3799-435d-aa62-c26edc785104",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
@@ -271,7 +280,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "PoweUp",
+                    "action": "Habilidad",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -282,7 +291,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Controller",
-                    "action": "PoweUp",
+                    "action": "Habilidad",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -371,6 +380,28 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Boton Seleccionar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "669a8db8-ee36-4973-86df-60c6d9da4d88",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "PowerUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef67083e-baf1-45e0-a976-eb4dcb5e0e92",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "PowerUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

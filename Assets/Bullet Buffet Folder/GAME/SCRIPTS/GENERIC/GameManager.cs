@@ -402,6 +402,8 @@ public class GameManager : MonoBehaviour
 
             //Mapas
             mapaStreetMHS.SetActive(false);
+            mapaRestaurantMHS.SetActive(false);
+            mapaDungeonMHS.SetActive(false);
 
             //Modo Hechizos Sazonados
             magosPrincipales.SetActive(false);
@@ -681,8 +683,6 @@ public class GameManager : MonoBehaviour
                 playerWinText.text = "Team 1";
                 p1.enabled = false;
                 p2.enabled = false;
-                mago1Animator.SetTrigger("victoria");
-                mago2Animator.SetTrigger("derrota");
                 Time.timeScale = 0;
             }
 
@@ -695,8 +695,6 @@ public class GameManager : MonoBehaviour
                 playerWinText.text = "Team 2";
                 p1.enabled = false;
                 p2.enabled = false;
-                mago2Animator.SetTrigger("victoria");
-                mago1Animator.SetTrigger("derrota");
                 Time.timeScale = 0;
             }
         }
@@ -943,8 +941,6 @@ public class GameManager : MonoBehaviour
     [Header("Magos")]
     [SerializeField] private GameObject mago1;
     [SerializeField] private GameObject mago2;
-    private Animator mago1Animator;
-    private Animator mago2Animator;
 
     [Header("Cámara Stats MH")]
     [SerializeField] private Transform posicionCinematica;
@@ -962,11 +958,7 @@ public class GameManager : MonoBehaviour
     void InicializarMHS()
     {
         panelMarcadorMHS.SetActive(true);
-        mago1Animator = mago1.GetComponent<Animator>();
-        mago2Animator = mago2.GetComponent<Animator>();
         camaraPrincipalAnimator = camaraPrincipal.GetComponent<Animator>();
-        mago1Animator.SetBool("idle", true);
-        mago2Animator.SetBool("idle", true);
     }
 
     //Parte de los Magos
@@ -974,7 +966,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Si se intancio el hechizo del mago 1");
         GameObject hechizo = Instantiate(hechizoPrefab, spawnHechizo1.transform.position, Quaternion.identity);
-        mago1Animator.SetTrigger("ataque");
         StartCoroutine(MoverHechizo1(hechizo));
     }
 
@@ -982,7 +973,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Si se intancio el hechizo del mago 2");
         GameObject hechizo = Instantiate(hechizoPrefab, spawnHechizo2.transform.position, Quaternion.identity);
-        mago2Animator.SetTrigger("ataque");
         StartCoroutine(MoverHechizo2(hechizo));
     }
 
@@ -994,7 +984,6 @@ public class GameManager : MonoBehaviour
 
             if (Vector3.Distance(hechizo.transform.position, mago2.transform.position) < 0.1f)
             {
-                mago2Animator.SetTrigger("daño");
                 Destroy(hechizo);
                 yield break;
             }
@@ -1011,7 +1000,6 @@ public class GameManager : MonoBehaviour
 
             if (Vector3.Distance(hechizo.transform.position, mago1.transform.position) < 0.1f)
             {
-                mago1Animator.SetTrigger("daño");
                 Destroy(hechizo);
                 yield break;
             }

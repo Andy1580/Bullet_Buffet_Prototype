@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyAI_Meele : MonoBehaviour
 {
@@ -25,7 +22,11 @@ public class EnemyAI_Meele : MonoBehaviour
         vida = maxVida;
         attackCollider.SetActive(false);
 
-        renderer = GetComponent<SkinnedMeshRenderer>();
+        if (renderer == null)
+        {
+            renderer = GetComponent<SkinnedMeshRenderer>();
+
+        }
         BuscarJugadorCercano();
     }
 
