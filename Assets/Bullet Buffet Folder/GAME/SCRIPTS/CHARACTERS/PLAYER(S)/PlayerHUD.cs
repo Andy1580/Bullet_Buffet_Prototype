@@ -15,79 +15,96 @@ public class PlayerHUD : MonoBehaviour
     public Image characterIcon;
     public TMP_Text dashCounter;
     public TMP_Text shieldCounter;
+    public string name;
     
-    public void SetupHUD(InfoLobby.PlayerInfo playerInfo)
-    {
-        // Configurar la información del HUD según el playerInfo
-        healthBar.fillAmount = 1;
-        abilityBar.fillAmount = 1;
-        dashIcon.enabled = true;
-        shieldIcon.enabled = true;
-        invulnerabilityIcon.enabled = false;
-        speedIcon.enabled = false;
-        coneShotIcon.enabled = true;
-        explosiveShotIcon.enabled = true;
-        characterIcon.sprite = GetCharacterSprite(playerInfo.personaje);
+    //public void SetupHUD(InfoLobby.PlayerInfo playerInfo)
+    //{
+    //    // Configurar la información del HUD según el playerInfo
+    //    healthBar.fillAmount = 1;
+    //    abilityBar.fillAmount = 1;
+    //    dashIcon.enabled = true;
+    //    shieldIcon.enabled = true;
+    //    invulnerabilityIcon.enabled = false;
+    //    speedIcon.enabled = false;
+    //    coneShotIcon.enabled = true;
+    //    explosiveShotIcon.enabled = true;
+    //    characterIcon.sprite = GetCharacterSprite(playerInfo.personaje);
 
-        dashCounter.text = "5";  // Inicializar el contador de dash
-        shieldCounter.text = "5";  // Inicializar el contador de escudo
+    //    dashCounter.text = "5";  // Inicializar el contador de dash
+    //    shieldCounter.text = "5";  // Inicializar el contador de escudo
+    //}
+
+
+
+    private void FixedUpdate()
+    {
+        characterIcon.sprite = GetCharacterSprite(name);
     }
 
-    public void UpdateHealth(float currentHealth, float maxHealth)
+    public float BarraDeVida
     {
-        healthBar.fillAmount = currentHealth / maxHealth;
+        set => healthBar.fillAmount = value;
     }
 
-    public void UpdateHability(float progress)
+    public float BarraDeHabilidad
     {
-        abilityBar.fillAmount = progress;
+        set => abilityBar.fillAmount = value;
     }
 
-    public void UpdateDashStatus(bool isActive, float count)
+    public string Name
     {
-        dashIcon.enabled = isActive;
-        dashCounter.text = count.ToString();
+        set => name = value;
     }
 
-    public void UpdateDashCounter(int dashCount)
+    public bool DashIcon
     {
-        dashCounter.text = dashCount.ToString();
+        set => dashIcon.enabled = value;
     }
+    //public void UpdateDashStatus(bool isActive, float count)
+    //{
+    //    dashIcon.enabled = isActive;
+    //    dashCounter.text = count.ToString();
+    //}
 
-    public void UpdateShieldStatus(bool isActive, int count)
-    {
-        shieldIcon.enabled = isActive;
-        shieldCounter.text = count.ToString();
-    }
+    //public void UpdateDashCounter(int dashCount)
+    //{
+    //    dashCounter.text = dashCount.ToString();
+    //}
 
-    public void UpdateShieldCounter(int shieldCount)
-    {
-        shieldCounter.text = shieldCount.ToString();
-    }
+    //public void UpdateShieldStatus(bool isActive, int count)
+    //{
+    //    shieldIcon.enabled = isActive;
+    //    shieldCounter.text = count.ToString();
+    //}
 
-    public void EnableSuperShootIcon()
-    {
-        // Lógica para habilitar el icono de Super Shoot
-        coneShotIcon.enabled = true;
-    }
+    //public void UpdateShieldCounter(int shieldCount)
+    //{
+    //    shieldCounter.text = shieldCount.ToString();
+    //}
 
-    public void DisableSuperShootIcon()
-    {
-        // Lógica para habilitar el icono de Super Shoot
-        coneShotIcon.enabled = false;
-    }
+    //public void EnableSuperShootIcon()
+    //{
+    //    // Lógica para habilitar el icono de Super Shoot
+    //    coneShotIcon.enabled = true;
+    //}
 
-    public void EnableExplosiveBulletIcon()
-    {
-        // Lógica para habilitar el icono de Explosive Bullet
-        explosiveShotIcon.enabled = true;
-    }
+    //public void DisableSuperShootIcon()
+    //{
+    //    // Lógica para habilitar el icono de Super Shoot
+    //    coneShotIcon.enabled = false;
+    //}
 
-    public void DisableExplosiveBulletIcon()
-    {
-        // Lógica para habilitar el icono de Super Shoot
-        explosiveShotIcon.enabled = false;
-    }
+    //public void EnableExplosiveBulletIcon()
+    //{
+    //    // Lógica para habilitar el icono de Explosive Bullet
+    //    explosiveShotIcon.enabled = true;
+    //}
+
+    //public void DisableExplosiveBulletIcon()
+    //{
+    //    // Lógica para habilitar el icono de Super Shoot
+    //    explosiveShotIcon.enabled = false;
+    //}
 
     public void EnablePowerUpIcon(string powerUp)
     {
@@ -117,13 +134,13 @@ public class PlayerHUD : MonoBehaviour
         switch (characterName)
         {
             case "CRIM":
-                return Resources.Load<Sprite>("Sprites/CRIM");
+                return Resources.Load<Sprite>("CRIM");
             case "KAI":
-                return Resources.Load<Sprite>("Sprites/KAI");
+                return Resources.Load<Sprite>("KAI");
             case "NOVA":
-                return Resources.Load<Sprite>("Sprites/NOVA");
+                return Resources.Load<Sprite>("NOVA");
             case "SKYIE":
-                return Resources.Load<Sprite>("Sprites/SKYIE");
+                return Resources.Load<Sprite>("SKYIE");
             default:
                 return null;
         }

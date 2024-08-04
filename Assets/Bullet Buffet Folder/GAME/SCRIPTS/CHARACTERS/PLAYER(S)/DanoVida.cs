@@ -32,11 +32,13 @@ public class DañoVida : MonoBehaviour
             if (eM != null)
             {
                 eM.VidaEnemigo -= damage;
+                eM.animator.SetTrigger("daño");
                 Destroy(this.gameObject);
             }
             else if (eF != null)
             {
                 eF.VidaEnemigo -= damage;
+                eF.animator.SetTrigger("daño");
                 Destroy(this.gameObject);
             }
         }

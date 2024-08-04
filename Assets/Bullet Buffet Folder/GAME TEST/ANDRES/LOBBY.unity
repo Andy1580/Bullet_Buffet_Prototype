@@ -723,7 +723,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3693959532788294938}
+  m_Father: {fileID: 4066242012797877217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1195,8 +1195,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1453,7 +1453,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3693959532788294938}
+  m_Father: {fileID: 4066242012797877217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2115,7 +2115,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3693959532788294938}
+  m_Father: {fileID: 4066242012797877217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2443,7 +2443,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3693959532788294938}
+  m_Father: {fileID: 4066242012797877217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2786,6 +2786,8 @@ MonoBehaviour:
   equipo: 0
   selectedCharacter: 
   puntero: {fileID: 788939525}
+  slot: {fileID: 4546764199402444712}
+  spritePersonaje: {fileID: 114969782}
   selectTm: 0
   selectCh: 0
   velocidadPuntero: 500
@@ -2880,6 +2882,8 @@ MonoBehaviour:
   equipo: 0
   selectedCharacter: 
   puntero: {fileID: 388470389}
+  slot: {fileID: 4656273834555856448}
+  spritePersonaje: {fileID: 656019686}
   selectTm: 0
   selectCh: 0
   velocidadPuntero: 500
@@ -2974,6 +2978,8 @@ MonoBehaviour:
   equipo: 0
   selectedCharacter: 
   puntero: {fileID: 2070748978}
+  slot: {fileID: 141742083973065675}
+  spritePersonaje: {fileID: 930220806}
   selectTm: 0
   selectCh: 0
   velocidadPuntero: 500
@@ -3503,6 +3509,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
     m_ActionName: UI/Axis_Puntero[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 81e90b8a-3799-435d-aa62-c26edc785104
+    m_ActionName: Player/PowerUp[/Keyboard/escape,/XInputControllerWindows/leftStick/down,/XInputControllerWindows1/leftStick/down]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: UI
@@ -3807,6 +3817,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
     m_ActionName: UI/Axis_Control1[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 81e90b8a-3799-435d-aa62-c26edc785104
+    m_ActionName: Player/PowerUp[/Keyboard/escape,/XInputControllerWindows/leftStick/down,/XInputControllerWindows1/leftStick/down]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: UI
@@ -3987,6 +4001,8 @@ MonoBehaviour:
   equipo: 0
   selectedCharacter: 
   puntero: {fileID: 1615673669}
+  slot: {fileID: 325288765623750655}
+  spritePersonaje: {fileID: 2083474206}
   selectTm: 0
   selectCh: 0
   velocidadPuntero: 500
@@ -4138,10 +4154,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 388470389}
-  - {fileID: 788939525}
-  - {fileID: 2070748978}
-  - {fileID: 1615673669}
   - {fileID: 2308032495107085057}
   - {fileID: 4223675070567860860}
   - {fileID: 1709160232488349338}
@@ -4397,6 +4409,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6534084381208481086}
+  - {fileID: 388470389}
+  - {fileID: 788939525}
+  - {fileID: 2070748978}
+  - {fileID: 1615673669}
   - {fileID: 3775200504490889265}
   - {fileID: 3693959532788294938}
   m_Father: {fileID: 0}
@@ -5510,6 +5526,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
     m_ActionName: UI/Axis_Puntero[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick,/XInputControllerWindows1/leftStick]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 81e90b8a-3799-435d-aa62-c26edc785104
+    m_ActionName: Player/PowerUp[/Keyboard/escape,/XInputControllerWindows/leftStick/down,/XInputControllerWindows1/leftStick/down]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: UI
@@ -6051,6 +6071,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 156f8f3a-aac9-462a-b85b-7a3cd0582690
     m_ActionName: UI/Axis_Puntero[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 81e90b8a-3799-435d-aa62-c26edc785104
+    m_ActionName: Player/PowerUp[/Keyboard/escape,/XInputControllerWindows/leftStick/down,/XInputControllerWindows1/leftStick/down]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: UI

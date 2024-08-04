@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,21 +16,18 @@ public class PlayerController : MonoBehaviour
         InicializarSSD();
         Start_Habilidad();
 
-        //// Obtener información del GameManager
-        //GameManager.Instance.SetupPlayer(this);
-
-        //// Configurar HUD en el GameManager
-        //hudSlot = GameManager.Instance.AssignHUDSlot(this);
-        //playerHUD = hudSlot.GetComponent<PlayerHUD>();
-
-        // Configurar equipo
-        //SetupEquipo();
+        playerHUD.Name = this.gameObject.name;
     }
 
     private void Update()
     {
         Update_Movimiento();
         Update_Shoot();
+    }
+
+    private void FixedUpdate()
+    {
+        FixedUpdate_Habilidad();
     }
 
     //private void SetupEquipo()
@@ -72,6 +66,7 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("dash");
             enDash = true;
             canDash = false;
+            playerHUD.dashIcon.enabled = false;
             StartCoroutine(DesactivarDash());
         }
 
@@ -141,19 +136,21 @@ public class PlayerController : MonoBehaviour
                 habilidadProgreso = 0;
             }
 
-            playerHUD.UpdateHability(habilidadProgreso);
+            //playerHUD.UpdateHability(habilidadProgreso);
         }
     }
 
     #endregion INPUT
 
-    #region UI References
-    [SerializeField] private Image equipoRojo;
-    [SerializeField] private Image equipoAzul;
-    [SerializeField] private TMP_Text jugadorText;
-    public GameObject hudSlot;
+    #region SLOT JUGADOR
+
     private PlayerHUD playerHUD;
-    #endregion UI References
+
+    public void AsignarSlot(PlayerHUD playerHUD)
+    {
+        this.playerHUD = playerHUD;
+    }
+    #endregion SLOT JUGADOR
 
     #region EQUIPOS
     [SerializeField] internal int equipo;
@@ -209,7 +206,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("movimiento", true);
         }
 
-       
+
         if (controller.isGrounded)
         {
             movement.y = 0f;
@@ -329,28 +326,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldownDash = 5;
     [SerializeField] private float tiempoDash = 0.25f;
     [SerializeField] private float contadorDash = 5;
-    [SerializeField] private TMP_Text contadorDashText;
 
     void Start_Dash()
     {
         canDash = true;
+        playerHUD.dashIcon.enabled = true;
+        contadorDash = 5;
+        playerHUD.dashCounter.text = contadorDash.ToString();
         //GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
     }
 
     IEnumerator DesactivarDash()
     {
-        Debug.Log("Dashiando");
         while (contadorDash > 0)
         {
             yield return new WaitForSeconds(1);
             //contadorDashText.text = contadorDash.ToString();          
             enDash = false;
             contadorDash--;
+            playerHUD.dashCounter.text = contadorDash.ToString();
         }
         //contadorDashText.text = contadorDash.ToString();
         //GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
         canDash = true;
         contadorDash = 5;
+        playerHUD.dashCounter.text = contadorDash.ToString();
+        playerHUD.dashIcon.enabled = true;
     }
 
     #endregion Dash
@@ -358,7 +359,7 @@ public class PlayerController : MonoBehaviour
     #region Vida
 
     [Header("Life Stats")]
-    [SerializeField] private int maxSalud = 300;
+    [SerializeField] private int maxSalud = 100;
     [SerializeField] private SkinnedMeshRenderer renderer;
     internal int salud;
     //internal bool muerto = false;
@@ -366,7 +367,8 @@ public class PlayerController : MonoBehaviour
     void Start_Vida()
     {
         salud = maxSalud;
-        GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
+        playerHUD.BarraDeVida = (float)salud / maxSalud;
+        //GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
 
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -392,6 +394,7 @@ public class PlayerController : MonoBehaviour
             if (value <= 0)
             {
                 salud = 0;
+                playerHUD.BarraDeVida = salud;
                 DeadEvent();
             }
             else if (value >= maxSalud)
@@ -403,7 +406,8 @@ public class PlayerController : MonoBehaviour
                 salud = value;
             }
 
-            GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
+            //GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
+            playerHUD.BarraDeVida = (float)salud / maxSalud;
         }
     }
 
@@ -422,20 +426,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldownEscudo = 5;
     [SerializeField] private Transform escudo;
     [SerializeField] private int contadorEscudo = 5;
-    [SerializeField] private TMP_Text contadorEscudoText;
     private Vector3 diferenciaEscudo;
     private Quaternion rotacionEscudo;
     private bool canEscudo = true;
 
     void Start_Escudo()
     {
-        GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
+        //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
+        playerHUD.shieldIcon.enabled = true;
     }
 
     void ActivarEscudo()
     {
         canEscudo = false;
         escudo.gameObject.SetActive(true);
+        playerHUD.shieldIcon.enabled = false;
         diferenciaEscudo = transform.forward;
         escudo.position = transform.position + diferenciaEscudo;
         rotacionEscudo = transform.rotation;
@@ -454,13 +459,14 @@ public class PlayerController : MonoBehaviour
         while (contadorEscudo >= 0)
         {
             contadorEscudo--;
-            contadorEscudoText.text = contadorEscudo.ToString();
+            playerHUD.shieldCounter.text = contadorEscudo.ToString();
             yield return new WaitForSeconds(1);
         }
 
         yield return new WaitForSeconds(cooldownEscudo);
-        GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
+        //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         canEscudo = true;
+        playerHUD.shieldIcon.enabled = true;
     }
 
     #endregion Escudo
@@ -468,24 +474,50 @@ public class PlayerController : MonoBehaviour
     #region Habilidad
 
     [Header("Ability Stats")]
+    [SerializeField] private float cargaHabilidad = 10f;
     private float habilidadProgreso;
+    
 
     void Start_Habilidad()
     {
         habilidadProgreso = 0;
+        playerHUD.BarraDeHabilidad = habilidadProgreso;
         StartCoroutine(CargarHabilidad());
+    }
+
+    void FixedUpdate_Habilidad()
+    {
+        if (habilidadProgreso >= 0.97f)
+        {
+            playerHUD.coneShotIcon.enabled = true;
+        }
+        else
+        {
+            playerHUD.coneShotIcon.enabled = false;
+        }
+        
+        if (habilidadProgreso >= 0.47f)
+        {
+            playerHUD.explosiveShotIcon.enabled = true;
+        }
+        else
+        {
+            playerHUD.explosiveShotIcon.enabled = false;
+        }
     }
 
     private IEnumerator CargarHabilidad()
     {
         while (true)
         {
-            habilidadProgreso += Time.deltaTime / 10f; // Ajusta el tiempo de carga según sea necesario
-            GameManager.Instance.UpdatePlayerAbility(this, habilidadProgreso);
+            habilidadProgreso += Time.deltaTime / cargaHabilidad; // Ajusta el tiempo de carga según sea necesario
+            playerHUD.BarraDeHabilidad = habilidadProgreso;
+            //GameManager.Instance.UpdatePlayerAbility(this, habilidadProgreso);
 
             if (habilidadProgreso >= 1)
             {
                 habilidadProgreso = 1;
+                playerHUD.BarraDeHabilidad = habilidadProgreso;
                 // Habilidad está completamente cargada
             }
             yield return null;
@@ -498,26 +530,11 @@ public class PlayerController : MonoBehaviour
     #region POWER UP
     [Header("Power Up Core")]
     [SerializeField] private string actualHability = "None";
-
-    [SerializeField] private GameObject[] spritesPowerUp;
     internal string hability;
-
-    public Dictionary<string, GameObject> spritesPowerUpDictionary = new Dictionary<string, GameObject>();
 
     void InicializarPowerUps()
     {
-
         actualHability = hability;
-
-        foreach (GameObject go in spritesPowerUp)
-        {
-            spritesPowerUpDictionary.Add(go.name, go);
-        }
-
-        foreach (GameObject go in spritesPowerUp)
-        {
-            go.SetActive(false);
-        }
     }
 
     public void SetHability(string newHability)
@@ -525,12 +542,15 @@ public class PlayerController : MonoBehaviour
         hability = newHability;
         actualHability = hability;
 
-        GameManager.Instance.UpdatePlayerPowerUp(this, actualHability);
+        //GameManager.Instance.UpdatePlayerPowerUp(this, actualHability);
+        playerHUD.EnablePowerUpIcon(actualHability);
     }
 
     void DesactivarSprite()
     {
-        GameManager.Instance.UpdatePlayerPowerUp(this, null);
+        //GameManager.Instance.UpdatePlayerPowerUp(this, null);
+        playerHUD.DisablePowerUpIcons();
+
     }
 
 

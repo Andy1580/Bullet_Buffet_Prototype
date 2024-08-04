@@ -12,7 +12,7 @@ public class EnemyAI_Flying : MonoBehaviour
     [SerializeField] private int maxVida = 200;
     [SerializeField] internal int vida;
     [SerializeField] private SkinnedMeshRenderer renderer;
-    [SerializeField] private Animator animator;
+    [SerializeField] public Animator animator;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -208,8 +208,12 @@ public class EnemyAI_Flying : MonoBehaviour
         if (distancia <= distanciaMinima)
         {
             transform.LookAt(jugadorObjetivo.transform.position);
-            animator.SetTrigger("ataque");
+            animator.SetBool("ataque", true);
             Invoke("Ataque", 0.30f);
+        }
+        else
+        {
+            animator.SetBool("ataque", false);
         }
         yield return new WaitForSeconds(2f);
         goto Inicio;

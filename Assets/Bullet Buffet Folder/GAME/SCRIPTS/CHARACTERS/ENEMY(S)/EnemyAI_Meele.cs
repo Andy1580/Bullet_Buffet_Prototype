@@ -10,6 +10,7 @@ public class EnemyAI_Meele : MonoBehaviour
     [SerializeField] public GameObject attackCollider;
     [SerializeField] internal int vida;
     [SerializeField] private SkinnedMeshRenderer renderer;
+    [SerializeField] public Animator animator;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -21,7 +22,7 @@ public class EnemyAI_Meele : MonoBehaviour
         agente.stoppingDistance = distanciaMinima;
         vida = maxVida;
         attackCollider.SetActive(false);
-
+        animator = GetComponent<Animator>();
         if (renderer == null)
         {
             renderer = GetComponent<SkinnedMeshRenderer>();
@@ -142,7 +143,7 @@ public class EnemyAI_Meele : MonoBehaviour
             {
                 vida = 0;
                 StopAllCoroutines();
-                Invoke("DeadEvent", 3.5f);
+                DeadEvent();
             }
             else if (value >= maxVida)
             {
@@ -157,6 +158,7 @@ public class EnemyAI_Meele : MonoBehaviour
 
     private IEnumerator DañoEmisivo()
     {
+        animator.SetTrigger("daño");
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
         yield return new WaitForSeconds(0.1f);
         renderer.material.SetColor("_EmissionColor", Color.black);
@@ -190,6 +192,7 @@ public class EnemyAI_Meele : MonoBehaviour
     {
     Inicio:
         agente.SetDestination(jugadorObjetivo.transform.position);
+        animator.SetBool("perseguir", true);
         yield return new WaitForSeconds(1);
         goto Inicio;
     }
@@ -204,7 +207,15 @@ public class EnemyAI_Meele : MonoBehaviour
 
         if (distancia <= distanciaMinima)
         {
+            animator.SetBool("ataque", true);
+            animator.SetBool("perseguir", false);
             Ataque();
+        }
+        else
+        {
+            animator.SetBool("ataque", false);
+            animator.SetBool("perseguir", true);
+            attackCollider.SetActive(false);
         }
         yield return new WaitForSeconds(2f);
         goto Inicio;

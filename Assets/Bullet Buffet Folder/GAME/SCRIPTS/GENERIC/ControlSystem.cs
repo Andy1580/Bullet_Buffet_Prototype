@@ -10,6 +10,8 @@ public class ControlSystem : MonoBehaviour
     public string selectedCharacter;
 
     [SerializeField] private RectTransform puntero;
+    [SerializeField] private RectTransform slot;
+    [SerializeField] private Image spritePersonaje;
 
     public bool selectTm;
     public bool selectCh;
@@ -20,11 +22,20 @@ public class ControlSystem : MonoBehaviour
         selectCh = false;
 
         puntero.gameObject.SetActive(false);
+        puntero.gameObject.transform.position = slot.position;
+
+        
+
     }
 
     private void Update()
     {
         Update_Puntero();
+    }
+
+    private void FixedUpdate()
+    {
+        spritePersonaje.sprite = CheckSprite(selectedCharacter);
     }
 
     #region INPUT
@@ -92,6 +103,7 @@ public class ControlSystem : MonoBehaviour
                 else
                 {
                     selectedCharacter = col.gameObject.name;
+                    CheckSprite(selectedCharacter);
                     Gamepad currentGamepad = context.control.device as Gamepad;
                     loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
                     Debug.Log("Escojio el personaje: " + selectedCharacter);
@@ -113,6 +125,25 @@ public class ControlSystem : MonoBehaviour
             puntero.gameObject.SetActive(false);
             c_Animator.gameObject.SetActive(true);
             loby.ActivarPanelSeleccionarEquipo();
+        }
+    }
+
+    private Sprite CheckSprite(string personaje)
+    {
+        
+
+        switch (personaje)
+        {
+            case "CRIM":
+                return Resources.Load<Sprite>("CRIM");
+            case "KAI":
+                return Resources.Load<Sprite>("KAI");
+            case "NOVA":
+                return Resources.Load<Sprite>("NOVA");
+            case "SKYIE":
+                return Resources.Load<Sprite>("SKYIE");
+            default:
+                return null;
         }
     }
 
