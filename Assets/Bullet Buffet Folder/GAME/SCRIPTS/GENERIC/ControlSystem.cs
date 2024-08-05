@@ -12,6 +12,8 @@ public class ControlSystem : MonoBehaviour
     [SerializeField] private RectTransform puntero;
     [SerializeField] private RectTransform slot;
     [SerializeField] private Image spritePersonaje;
+    [SerializeField] private Image controlImg;
+    private bool equipoBloqueado = false;
 
     public bool selectTm;
     public bool selectCh;
@@ -24,8 +26,7 @@ public class ControlSystem : MonoBehaviour
         puntero.gameObject.SetActive(false);
         puntero.gameObject.transform.position = slot.position;
 
-        
-
+        controlImg.color = new Color(1, 1, 1, 0.6f);
     }
 
     private void Update()
@@ -78,7 +79,7 @@ public class ControlSystem : MonoBehaviour
                 Gamepad currentGamepad = context.control.device as Gamepad;
                 loby.SeleccionarEquipo(currentGamepad, equipo);
                 puntero.gameObject.SetActive(true);
-                c_Animator.gameObject.SetActive(false);
+                controlImg.color = Color.white;
             }
 
             if (selectCh && selectedCharacter != null)
@@ -123,7 +124,8 @@ public class ControlSystem : MonoBehaviour
             selectTm = true;
             selectCh = false;
             puntero.gameObject.SetActive(false);
-            c_Animator.gameObject.SetActive(true);
+            c_Animator.SetInteger("Posicion", 0);
+            controlImg.color = new Color(1, 1, 1, 0.6f);
             loby.ActivarPanelSeleccionarEquipo();
         }
     }

@@ -4,9 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuSystem : MonoBehaviour
 {
+    [Header("Main Menu Core")]
     [SerializeField] private GameObject panelInicio;
     [SerializeField] private GameObject panelModos;
-    [SerializeField] private GameObject panelMapas;
+    [SerializeField] private GameObject panelMapasMHS;
+    [SerializeField] private GameObject panelMapasMDS;
     [SerializeField] private GameObject panelSetings;
     [SerializeField] private GameObject panelSchemeControl;
     [SerializeField] private GameObject panelConfimarSalir;
@@ -56,7 +58,8 @@ public class MainMenuSystem : MonoBehaviour
         panelInicio.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
-        panelMapas.SetActive(false);
+        panelMapasMHS.SetActive(false);
+        panelMapasMDS.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelConfimarSalir.SetActive(false);
         botonRonda1a2.SetActive(true);
@@ -94,7 +97,7 @@ public class MainMenuSystem : MonoBehaviour
         panelInicio.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
-        panelMapas.SetActive(false);
+        panelMapasMHS.SetActive(false);
 
         //eventS.firstSelectedGameObject = bHechizos;
     }
@@ -106,7 +109,7 @@ public class MainMenuSystem : MonoBehaviour
         panelSetings.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
-        panelMapas.SetActive(false);
+        panelMapasMHS.SetActive(false);
 
         botonRonda1a2.SetActive(true);
         botonRonda2a1.SetActive(true);
@@ -126,7 +129,7 @@ public class MainMenuSystem : MonoBehaviour
         //panelInicio.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
-        panelMapas.SetActive(false);
+        panelMapasMHS.SetActive(false);
     }
 
     public void GoToSchemeControl()
@@ -136,13 +139,14 @@ public class MainMenuSystem : MonoBehaviour
         panelSetings.SetActive(false);
         //panelInicio.SetActive(false);
         panelConfimarSalir.SetActive(false);
-        panelMapas.SetActive(false);
+        panelMapasMHS.SetActive(false);
     }
 
     public void ModoHechizosSazonados()
     {
         GameManager.modoHS = true;
-        panelMapas.SetActive(true);
+        GameManager.modoDS = false;
+        panelMapasMHS.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
         panelInicio.SetActive(false);
@@ -153,7 +157,8 @@ public class MainMenuSystem : MonoBehaviour
     public void ModoDueloDeSalsas()
     {
         GameManager.modoDS = true;
-        panelMapas.SetActive(true);
+        GameManager.modoHS = false;
+        panelMapasMDS.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
         panelInicio.SetActive(false);
@@ -164,16 +169,22 @@ public class MainMenuSystem : MonoBehaviour
     public void MapaStreetMHS()
     {
         GameManager.boolMapaStreetMHS = true;
+        GameManager.boolMapaDungeonMHS = false;
+        GameManager.boolMapaRestaurantMHS = false;
     }
 
     public void MapaDungeonMHS()
     {
         GameManager.boolMapaDungeonMHS = true;
+        GameManager.boolMapaStreetMHS = false;
+        GameManager.boolMapaRestaurantMHS = false;
     }
 
     public void MapaRestaurantMHS()
     {
         GameManager.boolMapaRestaurantMHS = true;
+        GameManager.boolMapaStreetMHS = false;
+        GameManager.boolMapaDungeonMHS = false;
     }
 
     public void CambiarNumeroDeRonda1a2()
@@ -229,40 +240,52 @@ public class MainMenuSystem : MonoBehaviour
 
     #region CAMBIOS DE TIEMPO MHS
 
+    public void CambiarTiempo1a2()
+    {
+        GameManager.Instance.totalTime = 120f;
+        tiempoActualText.text = "2:00";
+    }
+
     public void CambiarTiempo2a3()
     {
         GameManager.Instance.totalTime = 180f;
-        //tiempoActualText = GameManager.Instance.totalTime.;
+        tiempoActualText.text = "3:00";
     }
 
     public void CambiarTiempo3a4()
     {
         GameManager.Instance.totalTime = 240f;
-        //tiempoActualText = GameManager.Instance.totalTime.;
+        tiempoActualText.text = "4:00";
     }
 
     public void CambiarTiempo4a5()
     {
         GameManager.Instance.totalTime = 300f;
-        //tiempoActualText = GameManager.Instance.totalTime.;
+        tiempoActualText.text = "5:00";
     }
 
     public void CambiarTiempo5a4()
     {
         GameManager.Instance.totalTime = 240f;
-        //tiempoActualText = GameManager.Instance.totalTime.;
+        tiempoActualText.text = "4:00";
     }
 
     public void CambiarTiempo4a3()
     {
         GameManager.Instance.totalTime = 180f;
-        //tiempoActualText = GameManager.Instance.totalTime.;
+        tiempoActualText.text = "3:00";
     }
 
     public void CambiarTiempo3a2()
     {
         GameManager.Instance.totalTime = 120f;
-        //tiempoActualText = GameManager.Instance.totalTime.;
+        tiempoActualText.text = "2:00";
+    }
+
+    public void CambiarTiempo2a1()
+    {
+        GameManager.Instance.totalTime = 60f;
+        tiempoActualText.text = "1:00";
     }
 
     #endregion CAMBIOS DE TIEMPO MHS
@@ -279,7 +302,7 @@ public class MainMenuSystem : MonoBehaviour
         panelSetings.SetActive(false);
         panelInicio.SetActive(false);
         panelSchemeControl.SetActive(false);
-        panelMapas.SetActive(false);
+        panelMapasMHS.SetActive(false);
     }
 
     public void Salir()

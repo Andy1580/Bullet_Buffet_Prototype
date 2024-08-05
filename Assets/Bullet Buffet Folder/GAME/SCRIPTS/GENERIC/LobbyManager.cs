@@ -20,6 +20,11 @@ public class LobbyManager : MonoBehaviour
 
     [SerializeField] private GameObject panelSelectTeam;
     [SerializeField] private GameObject panelSelectCh;
+    [SerializeField] private GameObject botonJugar;
+
+    public static bool escogiendoEquipo = true;
+
+    public static int[] equipoControles = new[] { 0, 0 };
 
     // Nuevas variables para imágenes
     //[SerializeField] private Image[] teamImages;
@@ -39,6 +44,7 @@ public class LobbyManager : MonoBehaviour
     {
         panelSelectTeam.SetActive(true);
         panelSelectCh.SetActive(false);
+        botonJugar.SetActive(false);
     }
 
     private void MakeSingleton()
@@ -100,13 +106,35 @@ public class LobbyManager : MonoBehaviour
 
     public void SeleccionarEquipo(Gamepad gamepad, int equipoSeleccionado)
     {
-        if (dicControles.ContainsKey(gamepad))
+        if(Gamepad.all.Count == 2)
         {
-            int gamepadId = gamepad.deviceId;
-            this.equipo[gamepadId] = equipoSeleccionado;
-            ActivarPanelSeleccionarPersonajes();
-            Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
+            if (dicControles.ContainsKey(gamepad))
+            {
+                int gamepadId = gamepad.deviceId;
+                this.equipo[gamepadId] = equipoSeleccionado;
+                Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
+            }
+
+            if(dicControles.Count == 2)
+            {
+                ActivarPanelSeleccionarPersonajes();
+            }
         }
+        else if(Gamepad.all.Count == 4)
+        {
+            if (dicControles.ContainsKey(gamepad))
+            {
+                int gamepadId = gamepad.deviceId;
+                this.equipo[gamepadId] = equipoSeleccionado;
+                Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
+            }
+
+            if (dicControles.Count == 4)
+            {
+                ActivarPanelSeleccionarPersonajes();
+            }
+        }
+       
     }
 
     public void SeleccionarPersonaje(Gamepad gamepad, string personajeSeleccionado)
@@ -116,6 +144,29 @@ public class LobbyManager : MonoBehaviour
             int gamepadId = gamepad.deviceId;
             this.personaje[gamepadId] = personajeSeleccionado;
             Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el personaje {personajeSeleccionado}");
+        }
+
+        if(Gamepad.all.Count == 2)
+        {
+            if(personaje.Count == 2)
+            {
+                botonJugar.SetActive(true);
+            }
+            else
+            {
+                botonJugar.SetActive(false);
+            }
+        }
+        else if(Gamepad.all.Count == 4)
+        {
+            if(personaje.Count == 4)
+            {
+                botonJugar.SetActive(true);
+            }
+            else
+            {
+                botonJugar.SetActive(false);
+            }
         }
     }
 

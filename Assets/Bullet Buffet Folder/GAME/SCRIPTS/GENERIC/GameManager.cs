@@ -388,7 +388,7 @@ public class GameManager : MonoBehaviour
             boolMapaRestaurantMHS = false;
 
             //Temporizador
-            totalTime = 120;
+            totalTime = 60;
             remainingTime = totalTime;
             isRunning = false;
             panelTiempoAgotado.SetActive(false);
@@ -465,12 +465,14 @@ public class GameManager : MonoBehaviour
             p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam1, infoLobbyPlayers[0].gamepadId);
             p1.equipo = infoLobbyPlayers[0].equipo;
             p1.AsignarSlot(slotsHUD[0]);
+            p1.playerHUD.Name = infoLobbyPlayers[0].personaje;
             p1.BloquearMovimiento = false;
             activePlayers.Add(p1);
 
             p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam2, infoLobbyPlayers[1].gamepadId);
             p2.equipo = infoLobbyPlayers[1].equipo;
             p2.AsignarSlot(slotsHUD[1]);
+            p2.playerHUD.Name = infoLobbyPlayers[1].personaje;
             p2.BloquearMovimiento = false;
             activePlayers.Add(p2);
         }
@@ -479,24 +481,28 @@ public class GameManager : MonoBehaviour
             p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo2v2spawnTeam1_1, infoLobbyPlayers[0].gamepadId);
             p1.equipo = infoLobbyPlayers[0].equipo;
             p1.AsignarSlot(slotsHUD[0]);
+            p1.playerHUD.Name = infoLobbyPlayers[0].personaje;
             p1.BloquearMovimiento = false;
             activePlayers.Add(p1);
 
             p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo2v2spawnTeam1_2, infoLobbyPlayers[1].gamepadId);
             p2.equipo = infoLobbyPlayers[1].equipo;
             p2.AsignarSlot(slotsHUD[1]);
+            p2.playerHUD.Name = infoLobbyPlayers[1].personaje;
             p2.BloquearMovimiento = false;
             activePlayers.Add(p2);
 
             p3 = SpawnJugador(infoLobbyPlayers[2].personaje, modo2v2spawnTeam2_1, infoLobbyPlayers[2].gamepadId);
             p3.equipo = infoLobbyPlayers[2].equipo;
             p3.AsignarSlot(slotsHUD[2]);
+            p3.playerHUD.Name = infoLobbyPlayers[2].personaje;
             p3.BloquearMovimiento = false;
             activePlayers.Add(p3);
 
             p4 = SpawnJugador(infoLobbyPlayers[3].personaje, modo2v2spawnTeam2_2, infoLobbyPlayers[3].gamepadId);
             p4.equipo = infoLobbyPlayers[3].equipo;
             p4.AsignarSlot(slotsHUD[3]);
+            p4.playerHUD.Name = infoLobbyPlayers[3].personaje;
             p4.BloquearMovimiento = false;
             activePlayers.Add(p4);
         }
@@ -529,11 +535,11 @@ public class GameManager : MonoBehaviour
         {
             mapaStreetMHS.SetActive(true);
         }
-        else if(boolMapaDungeonMHS)
+        else if (boolMapaDungeonMHS)
         {
             mapaDungeonMHS.SetActive(true);
         }
-        else if(boolMapaRestaurantMHS)
+        else if (boolMapaRestaurantMHS)
         {
             mapaRestaurantMHS.SetActive(true);
         }
@@ -556,6 +562,7 @@ public class GameManager : MonoBehaviour
     void InicializarPausa()
     {
         panelStaticPausa = panelPausa;
+        panelPausa.SetActive(false);
         panelControles.SetActive(false);
         panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
@@ -597,7 +604,6 @@ public class GameManager : MonoBehaviour
         panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
 
-
         Pausa(null);
     }
 
@@ -624,6 +630,7 @@ public class GameManager : MonoBehaviour
 
     public void Salir()
     {
+        Debug.Log("QUIT");
         Application.Quit();
     }
 
@@ -683,29 +690,64 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "ANDYINGAME" && modoHS)
         {
-            if (puntosAGanarTeam1 >= 3 && isRunning)
+            if(infoLobbyPlayers.Count == 2)
             {
-                isRunning = false;
-                deadEnemy = true;
-                DestruirEnemigosActivos();
-                panelVictoria.SetActive(true);
-                playerWinText.text = "Team 1";
-                p1.enabled = false;
-                p2.enabled = false;
-                Time.timeScale = 0;
+                if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
+                {
+                    isRunning = false;
+                    deadEnemy = true;
+                    DestruirEnemigosActivos();
+                    panelVictoria.SetActive(true);
+                    playerWinText.text = "Team 1";
+                    p1.enabled = false;
+                    p2.enabled = false;
+                    Time.timeScale = 0;
+                }
+
+                else if (puntosAGanarTeam2 >= puntosParaGanar && isRunning)
+                {
+                    isRunning = false;
+                    deadEnemy = true;
+                    DestruirEnemigosActivos();
+                    panelVictoria.SetActive(true);
+                    playerWinText.text = "Team 2";
+                    p1.enabled = false;
+                    p2.enabled = false;
+                    Time.timeScale = 0;
+                }
             }
 
-            else if (puntosAGanarTeam2 >= 3 && isRunning)
+            else if(infoLobbyPlayers.Count == 4)
             {
-                isRunning = false;
-                deadEnemy = true;
-                DestruirEnemigosActivos();
-                panelVictoria.SetActive(true);
-                playerWinText.text = "Team 2";
-                p1.enabled = false;
-                p2.enabled = false;
-                Time.timeScale = 0;
+                if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
+                {
+                    isRunning = false;
+                    deadEnemy = true;
+                    DestruirEnemigosActivos();
+                    panelVictoria.SetActive(true);
+                    playerWinText.text = "Team 1";
+                    p1.enabled = false;
+                    p2.enabled = false;
+                    p3.enabled = false;
+                    p4.enabled = false;
+                    Time.timeScale = 0;
+                }
+
+                else if (puntosAGanarTeam2 >= puntosParaGanar && isRunning)
+                {
+                    isRunning = false;
+                    deadEnemy = true;
+                    DestruirEnemigosActivos();
+                    panelVictoria.SetActive(true);
+                    playerWinText.text = "Team 2";
+                    p1.enabled = false;
+                    p2.enabled = false;
+                    p3.enabled = false;
+                    p4.enabled= false;
+                    Time.timeScale = 0;
+                }
             }
+            
         }
         else return;
 
@@ -727,7 +769,7 @@ public class GameManager : MonoBehaviour
     [Header("Temporizador")]
     [SerializeField] private GameObject panelTemporizador;
     [SerializeField] private GameObject panelTiempoAgotado;
-    [SerializeField] public float totalTime = 120f; // Total del tiempo en segundos, 120 segundos es igual a 2 minutos
+    [SerializeField] public float totalTime = 60f; // Total del tiempo en segundos, 120 segundos es igual a 2 minutos
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text ganadorTiempoAgotadoText;
 
@@ -930,15 +972,76 @@ public class GameManager : MonoBehaviour
         int team1Count = cuadrosTeam1.Count;
         int team2Count = cuadrosTeam2.Count;
 
-        if (team1Count > team2Count)
+        if(infoLobbyPlayers.Count == 2)
         {
-            panelVictoria.SetActive(true);
-            playerWinText.text = "Team: 1";
+            deadEnemy = true;
+            isRunning = false;
+            DestruirEnemigosActivos();
+
+            if (team1Count > team2Count)
+            {
+                panelVictoria.SetActive(true);
+                playerWinText.text = "Team: 1";
+
+                foreach(PlayerController p in activePlayers)
+                {
+                    if(p != null)
+                    {
+                        p.BloquearMovimiento = true;
+                    }
+                }
+
+                Time.timeScale = 0;
+            }
+            else if (team2Count > team1Count)
+            {
+                panelVictoria.SetActive(true);
+                playerWinText.text = "Team: 2";
+
+                foreach (PlayerController p in activePlayers)
+                {
+                    if (p != null)
+                    {
+                        p.BloquearMovimiento = true;
+                    }
+                }
+
+                Time.timeScale = 0;
+            }
         }
-        else if (team2Count > team1Count)
+
+        else if(infoLobbyPlayers.Count == 4)
         {
-            panelVictoria.SetActive(true);
-            playerWinText.text = "Team: 2";
+            if (team1Count > team2Count)
+            {
+                panelVictoria.SetActive(true);
+                playerWinText.text = "Team: 1";
+
+                foreach (PlayerController p in activePlayers)
+                {
+                    if (p != null)
+                    {
+                        p.BloquearMovimiento = true;
+                    }
+                }
+
+                Time.timeScale = 0;
+            }
+            else if (team2Count > team1Count)
+            {
+                panelVictoria.SetActive(true);
+                playerWinText.text = "Team: 2";
+
+                foreach (PlayerController p in activePlayers)
+                {
+                    if (p != null)
+                    {
+                        p.BloquearMovimiento = true;
+                    }
+                }
+
+                Time.timeScale = 0;
+            }
         }
     }
     #endregion MODO DUELO DE SALSAS
@@ -1381,6 +1484,7 @@ public class GameManager : MonoBehaviour
         remainingTime = totalTime;
         yield return new WaitForSeconds(3.50f);
         InicializarEnemySpawn();
+        yield return new WaitForSeconds(6.0f);
     }
 
 
@@ -1477,7 +1581,6 @@ public class GameManager : MonoBehaviour
             if (enemy != null && enemy.activeSelf)
             {
                 Destroy(enemy);
-                Debug.Log("Enemigo destruido");
                 enemigosInstanciados.RemoveAt(i);
             }
         }

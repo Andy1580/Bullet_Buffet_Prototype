@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
         InicializarSSD();
         Start_Habilidad();
 
-        playerHUD.Name = this.gameObject.name;
     }
 
     private void Update()
@@ -144,7 +143,7 @@ public class PlayerController : MonoBehaviour
 
     #region SLOT JUGADOR
 
-    private PlayerHUD playerHUD;
+    [HideInInspector] public PlayerHUD playerHUD;
 
     public void AsignarSlot(PlayerHUD playerHUD)
     {
@@ -441,7 +440,7 @@ public class PlayerController : MonoBehaviour
         canEscudo = false;
         escudo.gameObject.SetActive(true);
         playerHUD.shieldIcon.enabled = false;
-        diferenciaEscudo = transform.forward;
+        diferenciaEscudo = transform.forward * 2;
         escudo.position = transform.position + diferenciaEscudo;
         rotacionEscudo = transform.rotation;
 
@@ -456,7 +455,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator CooldawnEscudo()
     {
-        while (contadorEscudo >= 0)
+        while (contadorEscudo > 0)
         {
             contadorEscudo--;
             playerHUD.shieldCounter.text = contadorEscudo.ToString();
@@ -466,6 +465,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(cooldownEscudo);
         //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         canEscudo = true;
+        contadorEscudo = 5;
+        playerHUD.shieldCounter.text = contadorEscudo.ToString();
         playerHUD.shieldIcon.enabled = true;
     }
 
@@ -511,13 +512,13 @@ public class PlayerController : MonoBehaviour
         while (true)
         {
             habilidadProgreso += Time.deltaTime / cargaHabilidad; // Ajusta el tiempo de carga según sea necesario
-            playerHUD.BarraDeHabilidad = habilidadProgreso;
+            playerHUD.BarraDeHabilidad = (float) habilidadProgreso / cargaHabilidad;
             //GameManager.Instance.UpdatePlayerAbility(this, habilidadProgreso);
 
             if (habilidadProgreso >= 1)
             {
                 habilidadProgreso = 1;
-                playerHUD.BarraDeHabilidad = habilidadProgreso;
+                playerHUD.BarraDeHabilidad = (float) habilidadProgreso / cargaHabilidad;
                 // Habilidad está completamente cargada
             }
             yield return null;
@@ -535,6 +536,7 @@ public class PlayerController : MonoBehaviour
     void InicializarPowerUps()
     {
         actualHability = hability;
+        DesactivarSprite();
     }
 
     public void SetHability(string newHability)
@@ -542,13 +544,11 @@ public class PlayerController : MonoBehaviour
         hability = newHability;
         actualHability = hability;
 
-        //GameManager.Instance.UpdatePlayerPowerUp(this, actualHability);
         playerHUD.EnablePowerUpIcon(actualHability);
     }
 
     void DesactivarSprite()
     {
-        //GameManager.Instance.UpdatePlayerPowerUp(this, null);
         playerHUD.DisablePowerUpIcons();
 
     }

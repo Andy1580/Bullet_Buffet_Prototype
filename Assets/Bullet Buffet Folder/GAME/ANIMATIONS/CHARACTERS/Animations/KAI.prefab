@@ -2109,10 +2109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662857b2ce4717a4c81a5ea55c21c83b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipoRojo: {fileID: 1288321935782519873}
-  equipoAzul: {fileID: 2537894308474504418}
-  jugadorText: {fileID: 4884132089506119017}
-  hudSlot: {fileID: 0}
+  playerHUD: {fileID: 0}
   equipo: 0
   playerSpeed: 5
   smoothRotacion: 0.5
@@ -2140,20 +2137,14 @@ MonoBehaviour:
   cooldownDash: 5
   tiempoDash: 0.2
   contadorDash: 5
-  contadorDashText: {fileID: 0}
   maxSalud: 100
   renderer: {fileID: 6283969022184128244}
   tiempoEscudo: 5
   cooldownEscudo: 5
   escudo: {fileID: 7029042770311191465}
   contadorEscudo: 5
-  contadorEscudoText: {fileID: 0}
+  cargaHabilidad: 10
   actualHability: None
-  spritesPowerUp:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   isInvunerableTime: 5
   isInvulnerable: 0
   superSpeed: 0
@@ -2880,7 +2871,7 @@ Transform:
   m_GameObject: {fileID: 9200378710559945011}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.01, y: 0, z: 1.19}
+  m_LocalPosition: {x: -3.01, y: 0, z: 2.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
