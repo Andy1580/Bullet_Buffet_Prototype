@@ -395,7 +395,7 @@ public class GameManager : MonoBehaviour
             panelTemporizador.SetActive(false);
 
             //Puntaje
-            //puntosParaGanar = 1;
+            puntosParaGanar = 1;
 
             //Paneles de condicion de Victoria
             panelVictoria.SetActive(false);
@@ -648,7 +648,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text playerWinText;
     [SerializeField] private int puntosAGanarTeam1;
     [SerializeField] private int puntosAGanarTeam2;
-    [SerializeField] public int puntosParaGanar = 3; //Solo para testeo puse el 3 pero esto se modificara segun el numero de rondas que escojan los jugadores
+    [SerializeField] public int puntosParaGanar; //Solo para testeo puse el 3 pero esto se modificara segun el numero de rondas que escojan los jugadores
     private int puntajeInicial = 0;
 
     [Header("Puntaje MHS")]
@@ -1181,6 +1181,8 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
+                        p1.enabled = false;
+                        p2.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
                         Invoke("DestruirEnemigosActivos", 0.25f);
@@ -1194,6 +1196,8 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
+                        p1.enabled = false;
+                        p2.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
                         Invoke("DestruirEnemigosActivos", 0.25f);
@@ -1201,23 +1205,23 @@ public class GameManager : MonoBehaviour
                         Invoke("CambioDeRondaMHS", 4.0f);
                     }
                 }
-                else
-                {
-                    if (player.equipo == 1 || player.equipo == 2 && isRunning)
-                    {
-                        isRunning = false;
-                        puntosAGanarTeam2++;
-                        puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
-                        camaraPrincipalAnimator.SetTrigger("move");
-                        p1.BloquearMovimiento = true;
-                        p2.BloquearMovimiento = true;
-                        p3.BloquearMovimiento = true;
-                        p4.BloquearMovimiento = true;
-                        Invoke("DestruirEnemigosActivos", 0.25f);
-                        Invoke("Mago2", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4.0f);
-                    }
-                }
+                //else
+                //{
+                //    if (player.equipo == 1 || player.equipo == 2 && isRunning)
+                //    {
+                //        isRunning = false;
+                //        puntosAGanarTeam2++;
+                //        puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
+                //        camaraPrincipalAnimator.SetTrigger("move");
+                //        p1.BloquearMovimiento = true;
+                //        p2.BloquearMovimiento = true;
+                //        p3.BloquearMovimiento = true;
+                //        p4.BloquearMovimiento = true;
+                //        Invoke("DestruirEnemigosActivos", 0.25f);
+                //        Invoke("Mago2", 3.0f);
+                //        Invoke("CambioDeRondaMHS", 4.0f);
+                //    }
+                //}
 
             }
             else
@@ -1273,11 +1277,14 @@ public class GameManager : MonoBehaviour
         numeroDeRonda++;
         rondaText.text = numeroDeRonda.ToString();
 
-        if (infoLobbyPlayers.Count == 2)
+        if (activePlayers.Count == 2)
         {
+            Debug.Log("CAMBIO DE RONDA");
             // Desactivamos los prefabs de los jugadores
             p1.gameObject.SetActive(false);
             p2.gameObject.SetActive(false);
+
+            
 
             // Los movemos a sus posiciones iniciales
             p1.transform.position = modo1v1spawnTeam1.position;
@@ -1454,14 +1461,15 @@ public class GameManager : MonoBehaviour
     {
         if (infoLobbyPlayers.Count == 2)
         {
+            Debug.Log("Se reactivaron los jugadores");
             p1.gameObject.SetActive(true);
             p2.gameObject.SetActive(true);
             p1.enabled = true;
             p2.enabled = true;
-            p1.anim.SetTrigger("spawn");
-            p2.anim.SetTrigger("spawn");
             p1.Vida = 100;
             p2.Vida = 100;
+            p1.anim.SetTrigger("spawn");
+            p2.anim.SetTrigger("spawn");
             yield return new WaitForSeconds(time);
             p1.BloquearMovimiento = false;
             p2.BloquearMovimiento = false;

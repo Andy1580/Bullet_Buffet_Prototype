@@ -13,24 +13,16 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private GameObject panelSchemeControl;
     [SerializeField] private GameObject panelConfimarSalir;
 
-    [Header("Botones de rondas MHS")]
-    [SerializeField] private GameObject botonRonda1a2;
-    [SerializeField] private GameObject botonRonda2a3;
-    [SerializeField] private GameObject botonRonda3a2;
-    [SerializeField] private GameObject botonRonda2a1;
+    [Header("Rondas MHS")]
     [SerializeField] private TMP_Text rondaActualText;
 
-    [Header("Botonos de tiempo MHS")]   //minutos
-    [SerializeField] private GameObject botonTiempo2a3;
-    [SerializeField] private GameObject botonTiempo3a4;
-    [SerializeField] private GameObject botonTiempo4a5;
-    [SerializeField] private GameObject botonTiempo5a4;
-    [SerializeField] private GameObject botonTiempo4a3;
-    [SerializeField] private GameObject botonTiempo3a2;
+    [Header("Tiempo MDS")]   //minutos
     [SerializeField] private TMP_Text tiempoActualText;
 
     //[SerializeField] private GameObject eventSystem;
     //private EventSystem eventS;
+
+    private bool play;
 
     GameManager gM;
 
@@ -55,6 +47,7 @@ public class MainMenuSystem : MonoBehaviour
 
         //eventS = eventSystem.GetComponent<EventSystem>();
 
+        play = false;
         panelInicio.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
@@ -62,11 +55,9 @@ public class MainMenuSystem : MonoBehaviour
         panelMapasMDS.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelConfimarSalir.SetActive(false);
-        botonRonda1a2.SetActive(true);
-        botonRonda2a1.SetActive(true);
-        botonRonda2a3.SetActive(false);
-        botonRonda3a2.SetActive(false);
 
+        rondaActualText.text = "1";
+        tiempoActualText.text = "1:00";
         //eventS.firstSelectedGameObject = bModes;
     }
 
@@ -110,13 +101,12 @@ public class MainMenuSystem : MonoBehaviour
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelMapasMHS.SetActive(false);
-
-        botonRonda1a2.SetActive(true);
-        botonRonda2a1.SetActive(true);
-        botonRonda2a3.SetActive(false);
-        botonRonda3a2.SetActive(false);
+        play = false;
 
         GameManager.Instance.ResetiarVariables();
+
+        rondaActualText.text = "1";
+        tiempoActualText.text = "1:00";
 
         //rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
         //eventS.firstSelectedGameObject = bModes;
@@ -171,6 +161,7 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaStreetMHS = true;
         GameManager.boolMapaDungeonMHS = false;
         GameManager.boolMapaRestaurantMHS = false;
+        play = true;
     }
 
     public void MapaDungeonMHS()
@@ -178,6 +169,7 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaDungeonMHS = true;
         GameManager.boolMapaStreetMHS = false;
         GameManager.boolMapaRestaurantMHS = false;
+        play = true;
     }
 
     public void MapaRestaurantMHS()
@@ -185,113 +177,160 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaRestaurantMHS = true;
         GameManager.boolMapaStreetMHS = false;
         GameManager.boolMapaDungeonMHS = false;
-    }
-
-    public void CambiarNumeroDeRonda1a2()
-    {
-        if (GameManager.Instance.puntosParaGanar == 1)
-        {
-            GameManager.Instance.puntosParaGanar = 2;
-            rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
-            botonRonda1a2.SetActive(false);
-            botonRonda2a3.SetActive(true);
-            botonRonda2a1.SetActive(true);
-        }
+        play = true;
     }
 
     #region CAMBIOS DE RONDA MHS
     
-    public void CambiarNumeroDeRonda2a3()
+    public void AumentarRondas()
     {
-        if (GameManager.Instance.puntosParaGanar == 2)
-        {
-            GameManager.Instance.puntosParaGanar = 3;
-            rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
-            botonRonda2a3.SetActive(false);
-            botonRonda3a2.SetActive(true);
-        }
-    }
+        int ronda = GameManager.Instance.puntosParaGanar;
 
-    public void CambiarNumeroDeRonda3a2()
-    {
-        if (GameManager.Instance.puntosParaGanar == 3)
+        if(ronda == 1)
         {
             GameManager.Instance.puntosParaGanar = 2;
-            rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
-            botonRonda2a3.SetActive(true);
-            botonRonda2a1.SetActive(true);
-            botonRonda3a2.SetActive(false);
+            rondaActualText.text = "2";
+        }
+        else if(ronda == 2)
+        {
+            GameManager.Instance.puntosParaGanar = 3;
+            rondaActualText.text = "3";
+        }
+        else if(ronda == 3)
+        {
+            return;
         }
     }
 
-    public void CambiarNumeroDeRonda2a1()
+    public void DisminuirRonda()
     {
-        if (GameManager.Instance.puntosParaGanar == 2)
+        int ronda = GameManager.Instance.puntosParaGanar;
+
+        if(ronda == 3)
+        {
+            GameManager.Instance.puntosParaGanar = 2;
+            rondaActualText.text = "2";
+        }
+        else if (ronda == 2)
         {
             GameManager.Instance.puntosParaGanar = 1;
-            rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
-            botonRonda1a2.SetActive(true);
-            botonRonda2a1.SetActive(true);
-            botonRonda2a3.SetActive(false);
+            rondaActualText.text = "1";
+        }
+        else if(ronda == 1)
+        {
+            return;
+        }
+    }
+    #endregion CAMBIOS DE RONDA MHS
+
+    #region CAMBIOS DE TIEMPO MDS
+
+    public void AumentarTiempo()
+    {
+        float tiempo = GameManager.Instance.totalTime;
+
+        if (tiempo == 60f)
+        {
+            GameManager.Instance.totalTime = 90f;
+            tiempoActualText.text = "1:30";
+        }
+        else if (tiempo == 90f)
+        {
+            GameManager.Instance.totalTime = 120f;
+            tiempoActualText.text = "2:00";
+        }
+        else if (tiempo == 120f)
+        {
+            GameManager.Instance.totalTime = 150f;
+            tiempoActualText.text = "2:30";
+        }
+        else if (tiempo == 150f)
+        {
+            GameManager.Instance.totalTime = 180f;
+            tiempoActualText.text = "3:00";
+        }
+        else if (tiempo == 180f)
+        {
+            GameManager.Instance.totalTime = 210f;
+            tiempoActualText.text = "3:30";
+        }
+        else if (tiempo == 210f)
+        {
+            GameManager.Instance.totalTime = 240f;
+            tiempoActualText.text = "4:00";
+        }
+        else if (tiempo == 240f)
+        {
+            GameManager.Instance.totalTime = 270f;
+            tiempoActualText.text = "4:30";
+        }
+        else if (tiempo == 270f)
+        {
+            GameManager.Instance.totalTime = 300f;
+            tiempoActualText.text = "5:00";
+        }
+        else if (tiempo == 300f)
+        {
+            return;
         }
     }
 
-    #endregion CAMBIOS DE RONDA MHS
-
-    #region CAMBIOS DE TIEMPO MHS
-
-    public void CambiarTiempo1a2()
+    public void DisminuirTiempo()
     {
-        GameManager.Instance.totalTime = 120f;
-        tiempoActualText.text = "2:00";
-    }
+        float tiempo = GameManager.Instance.totalTime;
 
-    public void CambiarTiempo2a3()
-    {
-        GameManager.Instance.totalTime = 180f;
-        tiempoActualText.text = "3:00";
-    }
-
-    public void CambiarTiempo3a4()
-    {
-        GameManager.Instance.totalTime = 240f;
-        tiempoActualText.text = "4:00";
-    }
-
-    public void CambiarTiempo4a5()
-    {
-        GameManager.Instance.totalTime = 300f;
-        tiempoActualText.text = "5:00";
-    }
-
-    public void CambiarTiempo5a4()
-    {
-        GameManager.Instance.totalTime = 240f;
-        tiempoActualText.text = "4:00";
-    }
-
-    public void CambiarTiempo4a3()
-    {
-        GameManager.Instance.totalTime = 180f;
-        tiempoActualText.text = "3:00";
-    }
-
-    public void CambiarTiempo3a2()
-    {
-        GameManager.Instance.totalTime = 120f;
-        tiempoActualText.text = "2:00";
-    }
-
-    public void CambiarTiempo2a1()
-    {
-        GameManager.Instance.totalTime = 60f;
-        tiempoActualText.text = "1:00";
+        if (tiempo == 300f)
+        {
+            GameManager.Instance.totalTime = 270f;
+            tiempoActualText.text = "4:30";
+        }
+        else if (tiempo == 270f)
+        {
+            GameManager.Instance.totalTime = 240f;
+            tiempoActualText.text = "4:00";
+        }
+        else if (tiempo == 240f)
+        {
+            GameManager.Instance.totalTime = 210f;
+            tiempoActualText.text = "3:30";
+        }
+        else if (tiempo == 210f)
+        {
+            GameManager.Instance.totalTime = 180f;
+            tiempoActualText.text = "3:00";
+        }
+        else if (tiempo == 180f)
+        {
+            GameManager.Instance.totalTime = 150f;
+            tiempoActualText.text = "2:30";
+        }
+        else if (tiempo == 150f)
+        {
+            GameManager.Instance.totalTime = 120f;
+            tiempoActualText.text = "2:00";
+        }
+        else if (tiempo == 120f)
+        {
+            GameManager.Instance.totalTime = 90f;
+            tiempoActualText.text = "1:30";
+        }
+        else if (tiempo == 90f)
+        {
+            GameManager.Instance.totalTime = 60f;
+            tiempoActualText.text = "1:00";
+        }
+        else if (tiempo == 60f)
+        {
+            return;
+        }
     }
 
     #endregion CAMBIOS DE TIEMPO MHS
 
     public void CargarLobby()
     {
+        if (!play) return;
+
         SceneManager.LoadScene("LOBBY");
     }
 

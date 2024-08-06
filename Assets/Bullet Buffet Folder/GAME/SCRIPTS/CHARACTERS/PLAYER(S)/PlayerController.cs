@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class PlayerController : MonoBehaviour
         InicializarPowerUps();
         InicializarSSD();
         Start_Habilidad();
-
+        Start_Equipos();
     }
 
     private void Update()
@@ -153,6 +154,20 @@ public class PlayerController : MonoBehaviour
 
     #region EQUIPOS
     [SerializeField] internal int equipo;
+    [SerializeField] private Image circuloEquipo;
+
+    void Start_Equipos()
+    {
+        if(equipo == 1)
+        {
+            circuloEquipo.color = Color.red;
+        }
+        else if(equipo == 2)
+        {
+            circuloEquipo.color = Color.blue;
+        }
+    }
+
     #endregion EQUIPOS
 
     #region GAMEPAD
@@ -179,11 +194,13 @@ public class PlayerController : MonoBehaviour
 
     void Update_Movimiento()
     {
-        Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
-        transform.LookAt(rotation);
-
         if (BloquearMovimiento)
             return;
+
+        Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
+        circuloEquipo.transform.position = rotation; 
+        transform.LookAt(rotation);
+
 
         Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
         movement.x = moveXZ.x;
@@ -368,6 +385,8 @@ public class PlayerController : MonoBehaviour
         salud = maxSalud;
         playerHUD.BarraDeVida = (float)salud / maxSalud;
         //GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
+
+        Debug.Log("Nombre:"  + this.gameObject.name + Vida);
 
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
