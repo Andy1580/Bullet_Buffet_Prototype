@@ -16,7 +16,7 @@ public class PlayerHUD : MonoBehaviour
     public TMP_Text dashCounter;
     public TMP_Text shieldCounter;
     public string name;
-    
+
     //public void SetupHUD(InfoLobby.PlayerInfo playerInfo)
     //{
     //    // Configurar la información del HUD según el playerInfo
@@ -43,12 +43,17 @@ public class PlayerHUD : MonoBehaviour
 
     public float BarraDeVida
     {
-        set => healthBar.fillAmount = value;
+        set
+        {
+            healthBar.fillAmount = value;
+            print(value);
+        }
     }
 
     public float BarraDeHabilidad
     {
         set => abilityBar.fillAmount = value;
+
     }
 
     public string Name

@@ -430,6 +430,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Rechazar",
+                    "type": "Button",
+                    "id": "d056a17e-051e-4712-aa04-dfe85e0c119d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Axis_Control",
                     "type": "Value",
                     "id": "533bedef-0f64-45ee-84b5-d9e1815a5657",
@@ -622,6 +631,17 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Axis_Puntero",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d84c1cce-b034-4271-9f3f-c6a78992bba1",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Rechazar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

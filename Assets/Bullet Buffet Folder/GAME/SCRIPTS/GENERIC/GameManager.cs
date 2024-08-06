@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     #region RECIBIR INFORMACION
 
-    private List<InfoLobby.PlayerInfo> infoLobbyPlayers;
+    private static List<InfoLobby.PlayerInfo> infoLobbyPlayers;
 
     public void RecibirInformacionLobby(string json)
     {

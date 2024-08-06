@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 [System.Serializable]
 public class LobbyManager : MonoBehaviour
@@ -10,13 +9,13 @@ public class LobbyManager : MonoBehaviour
     public static LobbyManager self;
 
     private PlayerInput[] inputs;
-    [HideInInspector] public Dictionary<Gamepad, PlayerInput> dicControles = new Dictionary<Gamepad, PlayerInput>();
+    [HideInInspector] public static Dictionary<Gamepad, PlayerInput> dicControles = new Dictionary<Gamepad, PlayerInput>();
 
     [SerializeField] private Canvas canvas;
     public static Canvas Canvas => self.canvas;
 
-    [HideInInspector] public Dictionary<int, int> equipo = new Dictionary<int, int>(); // gamepadId -> equipo
-    [HideInInspector] public Dictionary<int, string> personaje = new Dictionary<int, string>(); // gamepadId -> personaje
+    [HideInInspector] public static Dictionary<int, int> equipo = new Dictionary<int, int>(); // gamepadId -> equipo
+    [HideInInspector] public static Dictionary<int, string> personaje = new Dictionary<int, string>(); // gamepadId -> personaje
 
     [SerializeField] private GameObject panelSelectTeam;
     [SerializeField] private GameObject panelSelectCh;
@@ -24,7 +23,11 @@ public class LobbyManager : MonoBehaviour
 
     public static bool escogiendoEquipo = true;
 
-    public static int[] equipoControles = new[] { 0, 0 };
+    public static int[] equipoControles = new[] { 0, 0, 0, 0 };
+
+    public static int equipo1 = 0;
+    public static int equipo2 = 0;
+
 
     // Nuevas variables para imágenes
     //[SerializeField] private Image[] teamImages;
@@ -104,20 +107,83 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    public void SeleccionarEquipo(Gamepad gamepad, int equipoSeleccionado)
+    public static void SeleccionarEquipo(Gamepad gamepad, int equipoSeleccionado)
     {
-        if(Gamepad.all.Count == 2)
+        equipoControles[equipoSeleccionado - 1]++;
+
+        int suma = equipoControles[0] + equipoControles[1] + equipoControles[2] + equipoControles[3];
+
+        if (Gamepad.all.Count == 2)
+        {
+            print("Equipo 1: " + equipoControles[0]);
+            print("Equipo 2: " + equipoControles[1]);
+
+
+            if (dicControles.ContainsKey(gamepad))
+            {
+                int gamepadId = gamepad.deviceId;
+                equipo[gamepadId] = equipoSeleccionado;
+                Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
+            }
+
+            if (suma == 2)
+            {
+                escogiendoEquipo = false;
+                print("escogiendoEquipo = false");
+                ActivarPanelSeleccionarPersonajes();
+            }
+        }
+        else if (Gamepad.all.Count == 4)
         {
             if (dicControles.ContainsKey(gamepad))
             {
                 int gamepadId = gamepad.deviceId;
-                this.equipo[gamepadId] = equipoSeleccionado;
+                equipo[gamepadId] = equipoSeleccionado;
                 Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
             }
 
-            if(dicControles.Count == 2)
+            if (suma == 4)
             {
+                escogiendoEquipo = false;
                 ActivarPanelSeleccionarPersonajes();
+
+
+            }
+        }
+
+    }
+
+    public static void RechazarEquipo(Gamepad gamepad, int equipoRechazado)
+    {
+        equipoControles[equipoRechazado - 1]--;
+
+        int resta = equipoControles[0] - equipoControles[1] - equipoControles[2] - equipoControles[3];
+
+        if (Gamepad.all.Count == 2)
+        {
+
+            if (dicControles.ContainsKey(gamepad))
+            {
+                int gamepadId = gamepad.deviceId;
+                if (equipo.ContainsKey(gamepadId))
+                {
+                    equipo.Remove(gamepadId);
+                    //teamImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del equipo
+                }
+                if (personaje.ContainsKey(gamepadId))
+                {
+                    personaje.Remove(gamepadId);
+                    //characterImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del personaje
+                }
+                Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
+            }
+
+            if(resta == 2)
+            {
+                escogiendoEquipo = true;
+                print("escogiendoEquipo = true");
+                ActivarPanelSeleccionarEquipo();
+                
             }
         }
         else if(Gamepad.all.Count == 4)
@@ -125,16 +191,27 @@ public class LobbyManager : MonoBehaviour
             if (dicControles.ContainsKey(gamepad))
             {
                 int gamepadId = gamepad.deviceId;
-                this.equipo[gamepadId] = equipoSeleccionado;
-                Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
+                if (equipo.ContainsKey(gamepadId))
+                {
+                    equipo.Remove(gamepadId);
+                    //teamImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del equipo
+                }
+                if (personaje.ContainsKey(gamepadId))
+                {
+                    personaje.Remove(gamepadId);
+                    //characterImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del personaje
+                }
+                Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
             }
 
-            if (dicControles.Count == 4)
+            if (resta == 4)
             {
-                ActivarPanelSeleccionarPersonajes();
+                escogiendoEquipo = true;
+                print("escogiendoEquipo = true");
+                ActivarPanelSeleccionarEquipo();
+
             }
         }
-       
     }
 
     public void SeleccionarPersonaje(Gamepad gamepad, string personajeSeleccionado)
@@ -142,13 +219,13 @@ public class LobbyManager : MonoBehaviour
         if (dicControles.ContainsKey(gamepad))
         {
             int gamepadId = gamepad.deviceId;
-            this.personaje[gamepadId] = personajeSeleccionado;
+            personaje[gamepadId] = personajeSeleccionado;
             Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el personaje {personajeSeleccionado}");
         }
 
-        if(Gamepad.all.Count == 2)
+        if (Gamepad.all.Count == 2)
         {
-            if(personaje.Count == 2)
+            if (personaje.Count == 2)
             {
                 botonJugar.SetActive(true);
             }
@@ -157,9 +234,9 @@ public class LobbyManager : MonoBehaviour
                 botonJugar.SetActive(false);
             }
         }
-        else if(Gamepad.all.Count == 4)
+        else if (Gamepad.all.Count == 4)
         {
-            if(personaje.Count == 4)
+            if (personaje.Count == 4)
             {
                 botonJugar.SetActive(true);
             }
@@ -170,19 +247,18 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    private void ActivarPanelSeleccionarPersonajes()
+
+
+    private static void ActivarPanelSeleccionarPersonajes()
     {
-        if (dicControles.Count >= 2 && equipo.Count >= 2)
-        {
-            panelSelectTeam.SetActive(false);
-            panelSelectCh.SetActive(true);
-        }
+        self.panelSelectTeam.SetActive(false);
+        self.panelSelectCh.SetActive(true);
     }
 
-    public void ActivarPanelSeleccionarEquipo()
+    public static void ActivarPanelSeleccionarEquipo()
     {
-        panelSelectTeam.SetActive(true);
-        panelSelectCh.SetActive(false);
+        self.panelSelectTeam.SetActive(true);
+        self.panelSelectCh.SetActive(false);
     }
 
     [HideInInspector] public Dictionary<int, Gamepad> idToGamepad = new Dictionary<int, Gamepad>();
@@ -212,7 +288,7 @@ public class LobbyManager : MonoBehaviour
     {
         Debug.Log("Iniciando recopilación de información...");
 
-        if (dicControles.Count < 2 || equipo.Count < 2 || personaje.Count < 2)
+        if (equipo.Count < 2 && personaje.Count < 2)
         {
             Debug.LogWarning("No hay suficientes datos para iniciar la partida.");
             return;
@@ -244,22 +320,5 @@ public class LobbyManager : MonoBehaviour
         SceneManager.LoadScene("ANDYINGAME");
     }
 
-    public void Input_Rechazar(Gamepad gamepad)
-    {
-        if (dicControles.ContainsKey(gamepad))
-        {
-            int gamepadId = gamepad.deviceId;
-            if (equipo.ContainsKey(gamepadId))
-            {
-                equipo.Remove(gamepadId);
-                //teamImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del equipo
-            }
-            if (personaje.ContainsKey(gamepadId))
-            {
-                personaje.Remove(gamepadId);
-                //characterImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del personaje
-            }
-            Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
-        }
-    }
+
 }

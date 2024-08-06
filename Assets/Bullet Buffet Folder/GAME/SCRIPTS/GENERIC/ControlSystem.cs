@@ -72,15 +72,83 @@ public class ControlSystem : MonoBehaviour
     {
         if (context.performed)
         {
-            if (selectTm && equipo != 0)
+            if (LobbyManager.escogiendoEquipo)
             {
-                selectTm = false;
-                selectCh = true;
-                Gamepad currentGamepad = context.control.device as Gamepad;
-                loby.SeleccionarEquipo(currentGamepad, equipo);
-                puntero.gameObject.SetActive(true);
-                controlImg.color = Color.white;
+                if (!equipoBloqueado)
+                {
+                    if (selectTm && equipo != 0)
+                    {
+                        if (Gamepad.all.Count == 2)
+                        {
+                            if (LobbyManager.equipoControles[equipo - 1] <= 0)
+                            {
+                                Debug.Log("1");
+                                equipoBloqueado = true;
+                                selectTm = false;
+                                selectCh = true;
+                                Gamepad currentGamepad = context.control.device as Gamepad;
+                                puntero.gameObject.SetActive(true);
+                                controlImg.color = Color.white;
+
+                                if (equipo == 1 && LobbyManager.equipo1 < Gamepad.all.Count / 2)
+                                {
+                                    LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
+                                    LobbyManager.equipo1++;
+                                    Debug.Log("Te unes al equipo 1");
+                                }
+                                else if ((equipo == 2) && LobbyManager.equipo2 < Gamepad.all.Count / 2)
+                                {
+                                    LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
+                                    LobbyManager.equipo2++;
+                                    Debug.Log("Te unes al equipo 2");
+                                }
+                                else
+                                {
+                                    Debug.Log("No hay espacio en el equipo " + equipo);
+                                }
+                            }
+
+                        }
+                        else if (Gamepad.all.Count == 4)
+                        {
+                            if (LobbyManager.equipoControles[equipo - 1] <= 1)
+                            {
+                                Debug.Log("2");
+                                equipoBloqueado = true;
+                                selectTm = false;
+                                selectCh = true;
+                                Gamepad currentGamepad = context.control.device as Gamepad;
+                                //LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
+                                puntero.gameObject.SetActive(true);
+                                controlImg.color = Color.white;
+                                if (equipo == 1 && LobbyManager.equipo1 < Gamepad.all.Count / 2)
+                                {
+                                    LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
+                                    LobbyManager.equipo1++;
+                                    Debug.Log("Te unes al equipo 1");
+                                }                                   // 2                // 4/2 = 2
+                                else if ((equipo == 2) && LobbyManager.equipo2 < Gamepad.all.Count / 2)
+                                {
+                                    LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
+                                    LobbyManager.equipo2++;
+                                    Debug.Log("Te unes al equipo 2");
+                                }
+                                else
+                                {
+                                    Debug.Log("No hay espacio en el equipo " + equipo);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            Debug.Log("3");
+                        }
+                    }
+
+                }
             }
+
 
             if (selectCh && selectedCharacter != null)
             {
@@ -119,20 +187,48 @@ public class ControlSystem : MonoBehaviour
     {
         if (context.performed)
         {
-            Gamepad currentGamepad = context.control.device as Gamepad;
-            loby.Input_Rechazar(currentGamepad);
-            selectTm = true;
-            selectCh = false;
-            puntero.gameObject.SetActive(false);
-            c_Animator.SetInteger("Posicion", 0);
-            controlImg.color = new Color(1, 1, 1, 0.6f);
-            loby.ActivarPanelSeleccionarEquipo();
+            if (Gamepad.all.Count == 2 || Gamepad.all.Count == 4)
+            {
+                if (LobbyManager.equipoControles[equipo - 1] > 0)
+                {
+                    Gamepad currentGamepad = context.control.device as Gamepad;
+                    if (equipo == 1)
+                    {
+                        LobbyManager.RechazarEquipo(currentGamepad, equipo);
+                        LobbyManager.equipo1--;
+                        Debug.Log("Te sales del equipo 1 y ahora queda " + LobbyManager.equipo1 + " espacios en el equipo 1");
+                    }
+                    else if (equipo == 2)
+                    {
+                        LobbyManager.RechazarEquipo(currentGamepad, equipo);
+                        LobbyManager.equipo2--;
+                        Debug.Log("Te sales del equipo 2 y ahora queda " + LobbyManager.equipo2 + " espacios en el equipo 2");
+                    }
+                    else
+                    {
+                        // No estas en ningun equipo
+                        Debug.Log("No estas en ningun equipo");
+                    }
+                    equipo = 0;
+                    equipoBloqueado = false;
+                    selectTm = true;
+                    selectCh = false;
+                    puntero.gameObject.SetActive(false);
+                    puntero.gameObject.transform.position = slot.position;
+                    selectedCharacter = null;
+                    c_Animator.SetInteger("Posicion", 0);
+                    controlImg.color = new Color(1, 1, 1, 0.6f);
+                    //equipo = 0;
+                    LobbyManager.ActivarPanelSeleccionarEquipo();
+                }
+            }
+
         }
     }
 
     private Sprite CheckSprite(string personaje)
     {
-        
+
 
         switch (personaje)
         {
@@ -149,10 +245,6 @@ public class ControlSystem : MonoBehaviour
         }
     }
 
-    private bool TodosEquiposSeleccionados()
-    {
-        return loby.equipo.Count >= 2 && loby.equipo.Count == loby.dicControles.Count;
-    }
     #endregion INPUT
 
     #region PUNTERO
