@@ -701,7 +701,7 @@ public class GameManager : MonoBehaviour
                     playerWinText.text = "Team 1";
                     p1.enabled = false;
                     p2.enabled = false;
-                    Time.timeScale = 0;
+                    Invoke("DetenerTiempo", 0.80f);
                 }
 
                 else if (puntosAGanarTeam2 >= puntosParaGanar && isRunning)
@@ -713,7 +713,7 @@ public class GameManager : MonoBehaviour
                     playerWinText.text = "Team 2";
                     p1.enabled = false;
                     p2.enabled = false;
-                    Time.timeScale = 0;
+                    Invoke("DetenerTiempo", 0.80f);
                 }
             }
 
@@ -730,7 +730,7 @@ public class GameManager : MonoBehaviour
                     p2.enabled = false;
                     p3.enabled = false;
                     p4.enabled = false;
-                    Time.timeScale = 0;
+                    Invoke("DetenerTiempo", 0.80f);
                 }
 
                 else if (puntosAGanarTeam2 >= puntosParaGanar && isRunning)
@@ -744,13 +744,18 @@ public class GameManager : MonoBehaviour
                     p2.enabled = false;
                     p3.enabled = false;
                     p4.enabled= false;
-                    Time.timeScale = 0;
+                    Invoke("DetenerTiempo", 0.80f);
                 }
             }
             
         }
         else return;
 
+    }
+
+    void DetenerTiempo()
+    {
+        Time.timeScale = 0;
     }
     #endregion MARCADOR MHS
 
@@ -1205,23 +1210,45 @@ public class GameManager : MonoBehaviour
                         Invoke("CambioDeRondaMHS", 4.0f);
                     }
                 }
-                //else
-                //{
-                //    if (player.equipo == 1 || player.equipo == 2 && isRunning)
-                //    {
-                //        isRunning = false;
-                //        puntosAGanarTeam2++;
-                //        puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
-                //        camaraPrincipalAnimator.SetTrigger("move");
-                //        p1.BloquearMovimiento = true;
-                //        p2.BloquearMovimiento = true;
-                //        p3.BloquearMovimiento = true;
-                //        p4.BloquearMovimiento = true;
-                //        Invoke("DestruirEnemigosActivos", 0.25f);
-                //        Invoke("Mago2", 3.0f);
-                //        Invoke("CambioDeRondaMHS", 4.0f);
-                //    }
-                //}
+
+                else if(infoLobbyPlayers.Count == 4)
+                {
+                    if (player.equipo == 1 && isRunning)
+                    {
+                        isRunning = false;
+                        deadEnemy = true;
+                        puntosAGanarTeam2++;
+                        puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
+                        camaraPrincipalAnimator.SetTrigger("move");
+                        p1.enabled = false;
+                        p2.enabled = false;
+                        p3.enabled = false;
+                        p4.enabled = false;
+                        p1.BloquearMovimiento = true;
+                        p2.BloquearMovimiento = true;
+                        p3.BloquearMovimiento = true;
+                        p4.BloquearMovimiento = true;
+                        Invoke("DestruirEnemigosActivos", 0.25f);
+                        Invoke("Mago2", 3.0f);
+                        Invoke("CambioDeRondaMHS", 4.0f);
+                    }
+                    else if (player.equipo == 2 && isRunning)
+                    {
+                        isRunning = false;
+                        deadEnemy = true;
+                        puntosAGanarTeam1++;
+                        puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
+                        camaraPrincipalAnimator.SetTrigger("move");
+                        p1.enabled = false;
+                        p2.enabled = false;
+                        p1.BloquearMovimiento = true;
+                        p2.BloquearMovimiento = true;
+                        Invoke("DestruirEnemigosActivos", 0.25f);
+                        Invoke("Mago1", 3.0f);
+                        Invoke("CambioDeRondaMHS", 4.0f);
+                    }
+                }
+                
 
             }
             else
@@ -1252,13 +1279,13 @@ public class GameManager : MonoBehaviour
                 {
                     player.BloquearMovimiento = true;
                     player.enabled = false;
-                    StartCoroutine(RespawnearJugadorMDS(player, 7));
+                    StartCoroutine(RespawnearJugadorMDS(player, 5));
                 }
                 else if (player.equipo == 2)
                 {
                     player.BloquearMovimiento = true;
                     player.enabled = false;
-                    StartCoroutine(RespawnearJugadorMDS(player, 7));
+                    StartCoroutine(RespawnearJugadorMDS(player, 5));
                 }
             }
 
@@ -1308,6 +1335,58 @@ public class GameManager : MonoBehaviour
 
         // Los reactivamos
         StartCoroutine(ReactivacionMHS(3.0f));
+    }
+
+    IEnumerator ReactivacionMHS(float time)
+    {
+        if (infoLobbyPlayers.Count == 2)
+        {
+            Debug.Log("Se reactivaron los jugadores");
+            p1.gameObject.SetActive(true);
+            p2.gameObject.SetActive(true);
+            p1.enabled = true;
+            p2.enabled = true;
+            p1.Vida = 100;
+            p2.Vida = 100;
+            p1.anim.SetTrigger("spawn");
+            p2.anim.SetTrigger("spawn");
+            yield return new WaitForSeconds(time);
+            p1.BloquearMovimiento = false;
+            p2.BloquearMovimiento = false;
+        }
+
+        else if (infoLobbyPlayers.Count == 4)
+        {
+            Debug.Log("Se reactivaron los jugadores");
+            p1.gameObject.SetActive(true);
+            p2.gameObject.SetActive(true);
+            p3.gameObject.SetActive(true);
+            p4.gameObject.SetActive(true);
+            p1.enabled = true;
+            p2.enabled = true;
+            p3.enabled = true;
+            p4.enabled = true;
+            p1.Vida = 100;
+            p2.Vida = 100;
+            p3.Vida = 100;
+            p4.Vida = 100;
+            p1.anim.SetTrigger("spawn");
+            p2.anim.SetTrigger("spawn");
+            p3.anim.SetTrigger("spawn");
+            p4.anim.SetTrigger("spawn");
+            yield return new WaitForSeconds(time);
+            p1.BloquearMovimiento = false;
+            p2.BloquearMovimiento = false;
+            p3.BloquearMovimiento = false;
+            p4.BloquearMovimiento = false;
+        }
+
+        isRunning = true;
+        deadEnemy = false;
+        remainingTime = totalTime;
+        yield return new WaitForSeconds(3.50f);
+        InicializarEnemySpawn();
+        yield return new WaitForSeconds(6.0f);
     }
 
     private IEnumerator RespawnearJugadorMDS(PlayerController player, float time)
@@ -1456,45 +1535,6 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(6.0f);
     }
-
-    IEnumerator ReactivacionMHS(float time)
-    {
-        if (infoLobbyPlayers.Count == 2)
-        {
-            Debug.Log("Se reactivaron los jugadores");
-            p1.gameObject.SetActive(true);
-            p2.gameObject.SetActive(true);
-            p1.enabled = true;
-            p2.enabled = true;
-            p1.Vida = 100;
-            p2.Vida = 100;
-            p1.anim.SetTrigger("spawn");
-            p2.anim.SetTrigger("spawn");
-            yield return new WaitForSeconds(time);
-            p1.BloquearMovimiento = false;
-            p2.BloquearMovimiento = false;
-        }
-        else
-        {
-            p1.gameObject.SetActive(true);
-            p2.gameObject.SetActive(true);
-            p3.gameObject.SetActive(true);
-            p4.gameObject.SetActive(true);
-            yield return new WaitForSeconds(time);
-            p1.BloquearMovimiento = false;
-            p2.BloquearMovimiento = false;
-            p3.BloquearMovimiento = false;
-            p4.BloquearMovimiento = false;
-        }
-
-        isRunning = true;
-        deadEnemy = false;
-        remainingTime = totalTime;
-        yield return new WaitForSeconds(3.50f);
-        InicializarEnemySpawn();
-        yield return new WaitForSeconds(6.0f);
-    }
-
 
 
     //IEnumerator ReactivacionMDS(float time)
