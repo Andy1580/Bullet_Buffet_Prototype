@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
+    [SerializeField] private GameObject vfx;
+
+
     private void FixedUpdate()
     {
         transform.Rotate(0, 25f * Time.fixedDeltaTime, 0);
@@ -18,11 +21,13 @@ public class PowerUp : MonoBehaviour
             if (player != null && player.hability == null)
             {
                 player.SetHability(gameObject.name);
-                Destroy(this.gameObject);
+                Instantiate(vfx,this.transform);
+                Destroy(this.gameObject, 0.25f);
             }
             else
             {
-                Destroy(this.gameObject);
+                Instantiate(vfx, this.transform);
+                Destroy(this.gameObject, 0.25f);
             }
         }
     }
