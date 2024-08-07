@@ -452,6 +452,8 @@ public class PlayerController : MonoBehaviour
     {
         //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         playerHUD.shieldIcon.enabled = true;
+        contadorEscudo = 5;
+        playerHUD.shieldCounter.text = contadorEscudo.ToString();
     }
 
     void ActivarEscudo()

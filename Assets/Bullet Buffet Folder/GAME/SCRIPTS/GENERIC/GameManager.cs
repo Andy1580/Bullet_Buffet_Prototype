@@ -460,8 +460,16 @@ public class GameManager : MonoBehaviour
         if (infoLobbyPlayers == null)
             InicializarJugadores();
 
+        slotsHUD[0].gameObject.SetActive(false);
+        slotsHUD[1].gameObject.SetActive(false);
+        slotsHUD[2].gameObject.SetActive(false);
+        slotsHUD[3].gameObject.SetActive(false);
+
         if (infoLobbyPlayers.Count == 2)
         {
+            slotsHUD[0].gameObject.SetActive(true);
+            slotsHUD[1].gameObject.SetActive(true);
+
             p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam1, infoLobbyPlayers[0].gamepadId);
             p1.equipo = infoLobbyPlayers[0].equipo;
             p1.AsignarSlot(slotsHUD[0]);
@@ -478,6 +486,11 @@ public class GameManager : MonoBehaviour
         }
         else if (infoLobbyPlayers.Count == 4)
         {
+            slotsHUD[0].gameObject.SetActive(true);
+            slotsHUD[1].gameObject.SetActive(true);
+            slotsHUD[2].gameObject.SetActive(true);
+            slotsHUD[3].gameObject.SetActive(true);
+
             p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo2v2spawnTeam1_1, infoLobbyPlayers[0].gamepadId);
             p1.equipo = infoLobbyPlayers[0].equipo;
             p1.AsignarSlot(slotsHUD[0]);
