@@ -200,6 +200,9 @@ public class PlayerController : MonoBehaviour
 
     void Update_Movimiento()
     {
+        if (GameManager.EnPausa)
+            return;
+
         if (BloquearMovimiento)
             return;
 
@@ -219,24 +222,6 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("zmov", movement.z);
 
         
-
-        //if (enDash)
-        //{
-        //    animator.SetBool("enDash", enDash);
-        //    animator.SetFloat("xdash", movement.x);
-        //    animator.SetFloat("zdash", movement.z);
-        //}
-        //else
-        //{
-        //    animator.SetBool("enDash", !enDash);
-        //}
-
-        if (GameManager.EnPausa)
-            return;
-
-       
-        
-
 
         if (controller.isGrounded)
         {
@@ -274,7 +259,7 @@ public class PlayerController : MonoBehaviour
     {
         if (cont <= 0)
         {
-            animator.SetTrigger("disparo");
+            //animator.SetTrigger("disparo");
             Transform clon = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
             clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
             Destroy(clon.gameObject, 3);
@@ -468,6 +453,7 @@ public class PlayerController : MonoBehaviour
     void Start_Escudo()
     {
         //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
+        canEscudo = true;
         playerHUD.shieldIcon.enabled = true;
         contadorEscudo = 5;
         playerHUD.shieldCounter.text = contadorEscudo.ToString();
@@ -573,6 +559,8 @@ public class PlayerController : MonoBehaviour
 
         // Iniciamos la coroutine para cargar la habilidad
         StartCoroutine(CargarHabilidad());
+
+        Start_Escudo();
     }
 
     #endregion Habilidad

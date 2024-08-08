@@ -16,6 +16,7 @@ public class DañoVida : MonoBehaviour
                 if (pC.Vida != 0)
                 {
                     pC.Vida -= damage;
+                    pC.anim.SetTrigger("daño");
                     Destroy(this.gameObject);
 
                 }

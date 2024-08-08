@@ -70,13 +70,13 @@ public class ExplosiveBullet : MonoBehaviour
         Vector3 initialScale = sphereCollider.transform.localScale;
         Vector3 targetScale = initialScale * maxRadius;
 
-        float elapsedTime = 0f;
-        while (elapsedTime < expansionDuration)
-        {
-            sphereCollider.transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / expansionDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        //float elapsedTime = 0f;
+        //while (elapsedTime < expansionDuration)
+        //{
+        //    sphereCollider.transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / expansionDuration);
+        //    elapsedTime += Time.deltaTime;
+        //    yield return null;
+        //}
 
         sphereCollider.transform.localScale = targetScale;
 

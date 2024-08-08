@@ -307,12 +307,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        Update_Marcador_MHS();
+        
     }
 
     private void FixedUpdate()
     {
         FixUpdate_Temporizador();
+        FixUpdate_Marcador_MHS();
     }
 
     private void MakeSingleton()
@@ -345,7 +346,6 @@ public class GameManager : MonoBehaviour
 
             InicializarHUD();
             IniciarPartida();
-            InicializarTemporizador();
             InicializarMapas();
             InicializarPuntaje();
             InicializarMuerteJugadores();
@@ -363,6 +363,7 @@ public class GameManager : MonoBehaviour
             else if (modoDS)
             {
                 //Aqui ira todo lo que necesita el MDS
+                InicializarTemporizador();
                 InicializarMDS();
                 InicializarMarcadorMDS();
                 pistaPintable.SetActive(true);
@@ -661,7 +662,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text playerWinText;
     [SerializeField] private int puntosAGanarTeam1;
     [SerializeField] private int puntosAGanarTeam2;
-    [SerializeField] public int puntosParaGanar; //Solo para testeo puse el 3 pero esto se modificara segun el numero de rondas que escojan los jugadores
+    [SerializeField] public int puntosParaGanar;
     private int puntajeInicial = 0;
 
     [Header("Puntaje MHS")]
@@ -671,6 +672,7 @@ public class GameManager : MonoBehaviour
     [Header("Puntaje MDS")]
     [SerializeField] private TMP_Text puntajeTeam1MDS;
     [SerializeField] private TMP_Text puntajeTeam2MDS;
+
     void InicializarPuntaje()
     {
         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
@@ -699,33 +701,35 @@ public class GameManager : MonoBehaviour
         rondaText.text = numeroDeRonda.ToString();
     }
 
-    void Update_Marcador_MHS()
+    void FixUpdate_Marcador_MHS()
     {
         if (SceneManager.GetActiveScene().name == "ANDYINGAME" && modoHS)
         {
             if(infoLobbyPlayers.Count == 2)
             {
-                if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
+                if (puntosAGanarTeam1 >= puntosParaGanar)
                 {
-                    isRunning = false;
                     deadEnemy = true;
                     DestruirEnemigosActivos();
                     panelVictoria.SetActive(true);
                     playerWinText.text = "Team 1";
                     p1.enabled = false;
                     p2.enabled = false;
+                    p1.BloquearMovimiento = true;
+                    p2.BloquearMovimiento = true;
                     Invoke("DetenerTiempo", 0.80f);
                 }
 
                 else if (puntosAGanarTeam2 >= puntosParaGanar && isRunning)
                 {
-                    isRunning = false;
                     deadEnemy = true;
                     DestruirEnemigosActivos();
                     panelVictoria.SetActive(true);
                     playerWinText.text = "Team 2";
                     p1.enabled = false;
                     p2.enabled = false;
+                    p1.BloquearMovimiento = true;
+                    p2.BloquearMovimiento = true;
                     Invoke("DetenerTiempo", 0.80f);
                 }
             }
@@ -743,6 +747,10 @@ public class GameManager : MonoBehaviour
                     p2.enabled = false;
                     p3.enabled = false;
                     p4.enabled = false;
+                    p1.BloquearMovimiento = true;
+                    p2.BloquearMovimiento = true;
+                    p3.BloquearMovimiento = true;
+                    p4.BloquearMovimiento = true;
                     Invoke("DetenerTiempo", 0.80f);
                 }
 
@@ -757,6 +765,10 @@ public class GameManager : MonoBehaviour
                     p2.enabled = false;
                     p3.enabled = false;
                     p4.enabled= false;
+                    p1.BloquearMovimiento = true;
+                    p2.BloquearMovimiento = true;
+                    p3.BloquearMovimiento = true;
+                    p4.BloquearMovimiento = true;
                     Invoke("DetenerTiempo", 0.80f);
                 }
             }
@@ -805,7 +817,7 @@ public class GameManager : MonoBehaviour
 
     private void FixUpdate_Temporizador()
     {
-        if (SceneManager.GetActiveScene().name == "ANDYINGAME")
+        if (SceneManager.GetActiveScene().name == "ANDYINGAME" && modoDS)
         {
             if (isRunning)
             {
@@ -818,22 +830,22 @@ public class GameManager : MonoBehaviour
                 isRunning = false;
                 TimerEnded();
 
-                if (modoHS)
-                {
-                    if (p1.Vida < p2.Vida)
-                    {
-                        puntosAGanarTeam2++;
-                        CambioDeRondaMHS();
+                //if (modoHS)
+                //{
+                //    if (p1.Vida < p2.Vida)
+                //    {
+                //        puntosAGanarTeam2++;
+                //        CambioDeRondaMHS();
 
-                    }
-                    else
-                    {
-                        puntosAGanarTeam1++;
-                        CambioDeRondaMHS();
-                    }
+                //    }
+                //    else
+                //    {
+                //        puntosAGanarTeam1++;
+                //        CambioDeRondaMHS();
+                //    }
 
-                }
-                else if (modoDS)
+                //}
+                if (modoDS)
                 {
                     TiempoAgotadoMDS();
                 }
@@ -1192,9 +1204,8 @@ public class GameManager : MonoBehaviour
             {
                 if (infoLobbyPlayers.Count == 2)
                 {
-                    if (player.equipo == 1 && isRunning)
+                    if (player.equipo == 1)
                     {
-                        isRunning = false;
                         deadEnemy = true;
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
@@ -1207,9 +1218,8 @@ public class GameManager : MonoBehaviour
                         Invoke("Mago2", 3.0f);
                         Invoke("CambioDeRondaMHS", 4.0f);
                     }
-                    else if (player.equipo == 2 && isRunning)
+                    else if (player.equipo == 2)
                     {
-                        isRunning = false;
                         deadEnemy = true;
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
@@ -1226,9 +1236,8 @@ public class GameManager : MonoBehaviour
 
                 else if (infoLobbyPlayers.Count == 4)
                 {
-                    if (player.equipo == 1 && isRunning)
+                    if (player.equipo == 1)
                     {
-                        isRunning = false;
                         deadEnemy = true;
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
@@ -1245,17 +1254,20 @@ public class GameManager : MonoBehaviour
                         Invoke("Mago2", 3.0f);
                         Invoke("CambioDeRondaMHS", 4.0f);
                     }
-                    else if (player.equipo == 2 && isRunning)
+                    else if (player.equipo == 2)
                     {
-                        isRunning = false;
                         deadEnemy = true;
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
                         p1.enabled = false;
                         p2.enabled = false;
+                        p3.enabled = false;
+                        p4.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
+                        p3.BloquearMovimiento = true;
+                        p4.BloquearMovimiento = true;
                         Invoke("DestruirEnemigosActivos", 0.25f);
                         Invoke("Mago1", 3.0f);
                         Invoke("CambioDeRondaMHS", 4.0f);
@@ -1283,7 +1295,7 @@ public class GameManager : MonoBehaviour
                         StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
 
                     }
-                    else
+                    else if(player == p2)
                     {
                         p2.BloquearMovimiento = true;
                         p2.enabled = false;
@@ -1299,7 +1311,7 @@ public class GameManager : MonoBehaviour
                         p1.enabled = false;
                         StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
                     }
-                    else
+                    else if(player == p2)
                     {
                         p2.BloquearMovimiento = true;
                         p2.enabled = false;
@@ -1416,7 +1428,6 @@ public class GameManager : MonoBehaviour
             p4.BloquearMovimiento = false;
         }
 
-        isRunning = true;
         deadEnemy = false;
         remainingTime = totalTime;
         yield return new WaitForSeconds(3.50f);
@@ -1519,22 +1530,22 @@ public class GameManager : MonoBehaviour
     //    yield return new WaitForSeconds(time);
     //}
 
-    private void BloquearMovimientoJugadores()
-    {
-        Debug.Log("Se bloquearon los movimientos de los jugadores");
-        p1.BloquearMovimiento = true;
-        p2.BloquearMovimiento = true;
-        p3.BloquearMovimiento = true;
-        p4.BloquearMovimiento = true;
-    }
+    //private void BloquearMovimientoJugadores()
+    //{
+    //    Debug.Log("Se bloquearon los movimientos de los jugadores");
+    //    p1.BloquearMovimiento = true;
+    //    p2.BloquearMovimiento = true;
+    //    p3.BloquearMovimiento = true;
+    //    p4.BloquearMovimiento = true;
+    //}
 
-    private void ResetearJugador(PlayerController player)
-    {
-        player.Vida = 100;
-        player.enabled = true;
-        player.isInvulnerable = false;
-        player.anim.SetTrigger("spawn");
-    }
+    //private void ResetearJugador(PlayerController player)
+    //{
+    //    player.Vida = 100;
+    //    player.enabled = true;
+    //    player.isInvulnerable = false;
+    //    player.anim.SetTrigger("spawn");
+    //}
     #endregion DEAD EVENT PLAYER MHS
 
     #region SPAWN DE ENEMIGOS
@@ -1552,11 +1563,26 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "ANDYINGAME" && !deadEnemy)
         {
-            Debug.Log("Se inicio el Spawn de Enemigos");
-            print(deadEnemy);
-
-            if (isRunning)
+            if(modoDS)
             {
+                Debug.Log("Se inicio el Spawn de Enemigos MDS");
+                print(deadEnemy);
+
+                if (isRunning)
+                {
+                    for (int i = 0; i < enemigosMaximosActivos; i++)
+                    {
+                        SpawnEnemy();
+                    }
+
+                    InvokeRepeating(nameof(SpawnEnemyContinuously), Random.Range(minSpawnTime, maxSpawnTime), Random.Range(minSpawnTime, maxSpawnTime));
+                }
+            }
+            else if(modoHS)
+            {
+                Debug.Log("Se inicio el Spawn de Enemigos MHS");
+                print(deadEnemy);
+
                 for (int i = 0; i < enemigosMaximosActivos; i++)
                 {
                     SpawnEnemy();
@@ -1564,6 +1590,7 @@ public class GameManager : MonoBehaviour
 
                 InvokeRepeating(nameof(SpawnEnemyContinuously), Random.Range(minSpawnTime, maxSpawnTime), Random.Range(minSpawnTime, maxSpawnTime));
             }
+            
         }
         else
         {
