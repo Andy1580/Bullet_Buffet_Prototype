@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour
         if (!enDash && canDash)
         {
             animator.SetTrigger("dash");
+            animator.SetFloat("xdash", movement.x);
+            animator.SetFloat("zdash", movement.z);
             enDash = true;
             canDash = false;
             playerHUD.dashIcon.enabled = false;
@@ -213,18 +215,27 @@ public class PlayerController : MonoBehaviour
         //animator.SetFloat("x", movement.x);
         //animator.SetFloat("z", movement.z);
 
+        animator.SetFloat("xmov", movement.x);
+        animator.SetFloat("zmov", movement.z);
+
+        
+
+        //if (enDash)
+        //{
+        //    animator.SetBool("enDash", enDash);
+        //    animator.SetFloat("xdash", movement.x);
+        //    animator.SetFloat("zdash", movement.z);
+        //}
+        //else
+        //{
+        //    animator.SetBool("enDash", !enDash);
+        //}
 
         if (GameManager.EnPausa)
             return;
 
-        if (moveXZ == Vector3.zero)
-        {
-            animator.SetBool("movimiento", false);
-        }
-        else if (moveXZ != Vector3.zero)
-        {
-            animator.SetBool("movimiento", true);
-        }
+       
+        
 
 
         if (controller.isGrounded)
@@ -263,6 +274,7 @@ public class PlayerController : MonoBehaviour
     {
         if (cont <= 0)
         {
+            animator.SetTrigger("disparo");
             Transform clon = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
             clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
             Destroy(clon.gameObject, 3);
@@ -411,6 +423,7 @@ public class PlayerController : MonoBehaviour
             if (value < salud)
             {
                 StartCoroutine(DañoEmisivo());
+                animator.SetTrigger("daño");
             }
 
             if (value <= 0)
@@ -462,6 +475,7 @@ public class PlayerController : MonoBehaviour
 
     void ActivarEscudo()
     {
+        animator.SetTrigger("escudo");
         canEscudo = false;
         escudo.gameObject.SetActive(true);
         playerHUD.shieldIcon.enabled = false;
