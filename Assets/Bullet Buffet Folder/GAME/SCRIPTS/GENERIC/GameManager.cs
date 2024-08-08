@@ -1224,7 +1224,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                else if(infoLobbyPlayers.Count == 4)
+                else if (infoLobbyPlayers.Count == 4)
                 {
                     if (player.equipo == 1 && isRunning)
                     {
@@ -1261,7 +1261,7 @@ public class GameManager : MonoBehaviour
                         Invoke("CambioDeRondaMHS", 4.0f);
                     }
                 }
-                
+
 
             }
             else
@@ -1276,14 +1276,36 @@ public class GameManager : MonoBehaviour
             {
                 if (player.equipo == 1)
                 {
-                    player.BloquearMovimiento = true;
-                    StartCoroutine(RespawnearJugadorMDS(player, 7));
-                    player.enabled = false;
+                    if (player == p1)
+                    {
+                        p1.BloquearMovimiento = true;
+                        p1.enabled = false;
+                        StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
+
+                    }
+                    else
+                    {
+                        p2.BloquearMovimiento = true;
+                        p2.enabled = false;
+                        StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
+
+                    }
                 }
                 else if (player.equipo == 2)
                 {
-                    player.BloquearMovimiento = true;
-                    StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
+                    if (player == p1)
+                    {
+                        p1.BloquearMovimiento = true;
+                        p1.enabled = false;
+                        StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
+                    }
+                    else
+                    {
+                        p2.BloquearMovimiento = true;
+                        p2.enabled = false;
+                        StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
+                    }
+
                 }
             }
             else if (infoLobbyPlayers.Count == 4)
@@ -1324,7 +1346,7 @@ public class GameManager : MonoBehaviour
             p1.gameObject.SetActive(false);
             p2.gameObject.SetActive(false);
 
-            
+
 
             // Los movemos a sus posiciones iniciales
             p1.transform.position = modo1v1spawnTeam1.position;
@@ -1410,6 +1432,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(time);
         player.enabled = false;
         yield return new WaitForSeconds(1.5f);
+
         if (infoLobbyPlayers.Count == 2)
         {
             if (player.equipo == 1)
@@ -1418,6 +1441,7 @@ public class GameManager : MonoBehaviour
                 {
                     p1.gameObject.SetActive(true);
                     p1.Vida = 100;
+                    p1.habilidadProgreso = 0;
                     p1.enabled = true;
                     p1.BloquearMovimiento = false;
                     p1.anim.SetTrigger("spawn");
@@ -1427,6 +1451,7 @@ public class GameManager : MonoBehaviour
                 {
                     p1.gameObject.SetActive(true);
                     p1.Vida = 100;
+                    p1.habilidadProgreso = 0;
                     p1.enabled = true;
                     p1.BloquearMovimiento = false;
                     p1.anim.SetTrigger("spawn");
@@ -1438,7 +1463,8 @@ public class GameManager : MonoBehaviour
                 if (player == p2)
                 {
                     p2.gameObject.SetActive(true);
-                    p2.salud = 100;
+                    p2.Vida = 100;
+                    p2.habilidadProgreso = 0;
                     p2.enabled = true;
                     p2.BloquearMovimiento = false;
                     p2.anim.SetTrigger("spawn");
@@ -1447,7 +1473,8 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     p2.gameObject.SetActive(true);
-                    p2.salud = 100;
+                    p2.Vida = 100;
+                    p2.habilidadProgreso = 0;
                     p2.enabled = true;
                     p2.BloquearMovimiento = false;
                     p2.anim.SetTrigger("spawn");
@@ -1457,92 +1484,207 @@ public class GameManager : MonoBehaviour
         }
         else if (infoLobbyPlayers.Count == 4)
         {
-            if (p1.equipo == 1 && p2.equipo == 1)
+
+            if (player.equipo == 1)
             {
-                if (player.equipo == p1.equipo)
+                if (player == p1)
                 {
-                    if (p1.equipo == 1)
-                    {
-                        p1.gameObject.SetActive(true);
-                        p1.enabled = true;
-                        p1.Vida = 100;
-                        p1.anim.SetTrigger("spawn");
-                        p1.transform.position = modo2v2spawnTeam1_1.position;
-                    }
-                    else
-                    {
-                        p1.gameObject.SetActive(true);
-                        p1.enabled = true;
-                        p1.Vida = 100;
-                        p1.anim.SetTrigger("spawn");
-                        p1.transform.position = modo2v2spawnTeam2_1.position;
-                    }
+                    p1.gameObject.SetActive(true);
+                    p1.Vida = 100;
+                    p1.habilidadProgreso = 0;
+                    p1.enabled = true;
+                    p1.anim.SetTrigger("spawn");
+                    p1.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else
+                {
+                    p1.gameObject.SetActive(true);
+                    p1.Vida = 100;
+                    p1.habilidadProgreso = 0;
+                    p1.enabled = true;
+                    p1.anim.SetTrigger("spawn");
+                    p1.transform.position = modo2v2spawnTeam2_1.position;
                 }
 
-                else if (player.equipo == p2.equipo)
+                if (player == p2)
                 {
-                    if (p2.equipo == 1)
-                    {
-                        p2.gameObject.SetActive(true);
-                        p2.enabled = true;
-                        p2.Vida = 100;
-                        p2.anim.SetTrigger("spawn");
-                        p2.transform.position = modo2v2spawnTeam1_2.position;
-                    }
-                    else if (p2.equipo == 2)
-                    {
-                        p2.gameObject.SetActive(true);
-                        p2.enabled = true;
-                        p2.Vida = 100;
-                        p2.anim.SetTrigger("spawn");
-                        p2.transform.position = modo2v2spawnTeam2_1.position;
-                    }
+                    p2.gameObject.SetActive(true);
+                    p2.Vida = 100;
+                    p2.habilidadProgreso = 0;
+                    p2.enabled = true;
+                    p2.anim.SetTrigger("spawn");
+                    p2.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else
+                {
+                    p2.gameObject.SetActive(true);
+                    p2.Vida = 100;
+                    p2.habilidadProgreso = 0;
+                    p2.enabled = true;
+                    p2.anim.SetTrigger("spawn");
+                    p2.transform.position = modo2v2spawnTeam2_1.position;
+                }
 
+                if (player == p3)
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.Vida = 100;
+                    p3.habilidadProgreso = 0;
+                    p3.enabled = true;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.Vida = 100;
+                    p3.habilidadProgreso = 0;
+                    p3.enabled = true;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam2_1.position;
+                }
+
+                if (player == p3)
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.Vida = 100;
+                    p3.habilidadProgreso = 0;
+                    p3.enabled = true;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.Vida = 100;
+                    p3.habilidadProgreso = 0;
+                    p3.enabled = true;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam2_1.position;
                 }
             }
 
-            if (p3.equipo == 2 && p4.equipo == 2)
+            else if (player.equipo == 2)
             {
-                if (player.equipo == p3.equipo)
+                if (player == p1)
                 {
-                    if (p3.equipo == 1)
-                    {
-                        p3.gameObject.SetActive(true);
-                        p3.enabled = true;
-                        p3.Vida = 100;
-                        p3.anim.SetTrigger("spawn");
-                        p3.transform.position = modo2v2spawnTeam1_1.position;
-                    }
-                    else if (p3.equipo == 2)
-                    {
-                        p3.gameObject.SetActive(true);
-                        p3.enabled = true;
-                        p3.Vida = 100;
-                        p3.anim.SetTrigger("spawn");
-                        p3.transform.position = modo2v2spawnTeam2_1.position;
-                    }
+                    p1.gameObject.SetActive(true);
+                    p1.Vida = 100;
+                    p1.habilidadProgreso = 0;
+                    p1.enabled = true;
+                    p1.anim.SetTrigger("spawn");
+                    p1.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else
+                {
+                    p1.gameObject.SetActive(true);
+                    p1.Vida = 100;
+                    p1.habilidadProgreso = 0;
+                    p1.enabled = true;
+                    p1.anim.SetTrigger("spawn");
+                    p1.transform.position = modo2v2spawnTeam2_1.position;
                 }
 
-                else if (player.equipo == p4.equipo)
+                if (player == p2)
                 {
-                    if (p4.equipo == 1)
-                    {
-                        p4.gameObject.SetActive(true);
-                        p4.enabled = true;
-                        p4.Vida = 100;
-                        p4.anim.SetTrigger("spawn");
-                        p4.transform.position = modo2v2spawnTeam1_2.position;
-                    }
-                    else if (p4.equipo == 2)
-                    {
-                        p4.gameObject.SetActive(true);
-                        p4.enabled = true;
-                        p4.Vida = 100;
-                        p4.anim.SetTrigger("spawn");
-                        p4.transform.position = modo2v2spawnTeam2_2.position;
-                    }
+                    p2.gameObject.SetActive(true);
+                    p2.Vida = 100;
+                    p2.habilidadProgreso = 0;
+                    p2.enabled = true;
+                    p2.anim.SetTrigger("spawn");
+                    p2.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else
+                {
+                    p2.gameObject.SetActive(true);
+                    p2.Vida = 100;
+                    p2.habilidadProgreso = 0;
+                    p2.enabled = true;
+                    p2.anim.SetTrigger("spawn");
+                    p2.transform.position = modo2v2spawnTeam2_1.position;
+                }
+
+                if (player == p3)
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.Vida = 100;
+                    p3.habilidadProgreso = 0;
+                    p3.enabled = true;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.Vida = 100;
+                    p3.habilidadProgreso = 0;
+                    p3.enabled = true;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam2_1.position;
+                }
+
+                if (player == p3)
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.Vida = 100;
+                    p3.habilidadProgreso = 0;
+                    p3.enabled = true;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.Vida = 100;
+                    p3.habilidadProgreso = 0;
+                    p3.enabled = true;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam2_1.position;
                 }
             }
+
+
+
+            else if (player.equipo == p3.equipo)
+            {
+                if (p3.equipo == 1)
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.enabled = true;
+                    p3.Vida = 100;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam1_1.position;
+                }
+                else if (p3.equipo == 2)
+                {
+                    p3.gameObject.SetActive(true);
+                    p3.enabled = true;
+                    p3.Vida = 100;
+                    p3.anim.SetTrigger("spawn");
+                    p3.transform.position = modo2v2spawnTeam2_1.position;
+                }
+            }
+
+            else if (player.equipo == p4.equipo)
+            {
+                if (p4.equipo == 1)
+                {
+                    p4.gameObject.SetActive(true);
+                    p4.enabled = true;
+                    p4.Vida = 100;
+                    p4.anim.SetTrigger("spawn");
+                    p4.transform.position = modo2v2spawnTeam1_2.position;
+                }
+                else if (p4.equipo == 2)
+                {
+                    p4.gameObject.SetActive(true);
+                    p4.enabled = true;
+                    p4.Vida = 100;
+                    p4.anim.SetTrigger("spawn");
+                    p4.transform.position = modo2v2spawnTeam2_2.position;
+                }
+            }
+
 
         }
 

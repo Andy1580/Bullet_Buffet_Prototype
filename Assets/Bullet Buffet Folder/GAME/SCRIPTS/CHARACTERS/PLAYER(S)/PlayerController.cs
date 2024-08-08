@@ -129,11 +129,15 @@ public class PlayerController : MonoBehaviour
             {
                 SuperShoot();
                 habilidadProgreso = 0;
+                playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+                StartCoroutine(CargarHabilidad());
             }
             else if (habilidadProgreso >= 0.47f)
             {
                 ExplosiveBullet();
                 habilidadProgreso = 0;
+                playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+                StartCoroutine(CargarHabilidad());
             }
 
             //playerHUD.UpdateHability(habilidadProgreso);
@@ -158,11 +162,11 @@ public class PlayerController : MonoBehaviour
 
     void Start_Equipos()
     {
-        if(equipo == 1)
+        if (equipo == 1)
         {
             circuloEquipo.color = Color.red;
         }
-        else if(equipo == 2)
+        else if (equipo == 2)
         {
             circuloEquipo.color = Color.blue;
         }
@@ -198,7 +202,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
-        circuloEquipo.transform.position = rotation; 
+        circuloEquipo.transform.position = rotation;
         transform.LookAt(rotation);
 
 
@@ -386,7 +390,7 @@ public class PlayerController : MonoBehaviour
         playerHUD.BarraDeVida = (float)salud / maxSalud;
         //GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
 
-        Debug.Log("Nombre:"  + this.gameObject.name + Vida);
+        Debug.Log("Nombre:" + this.gameObject.name + Vida);
 
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -496,14 +500,14 @@ public class PlayerController : MonoBehaviour
     #region Habilidad
 
     [Header("Ability Stats")]
-    [SerializeField] private float cargaHabilidad = 10f;
-    private float habilidadProgreso;
-    
+    [SerializeField] private float cargaHabilidad;
+    public float habilidadProgreso;
+
 
     void Start_Habilidad()
     {
         habilidadProgreso = 0;
-        playerHUD.BarraDeHabilidad = habilidadProgreso;
+        playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
         StartCoroutine(CargarHabilidad());
     }
 
@@ -517,7 +521,7 @@ public class PlayerController : MonoBehaviour
         {
             playerHUD.coneShotIcon.enabled = false;
         }
-        
+
         if (habilidadProgreso >= 0.47f)
         {
             playerHUD.explosiveShotIcon.enabled = true;
@@ -530,22 +534,32 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator CargarHabilidad()
     {
-        while (true)
+        while (habilidadProgreso < 1f)
         {
             habilidadProgreso += Time.deltaTime / cargaHabilidad; // Ajusta el tiempo de carga según sea necesario
-            playerHUD.BarraDeHabilidad = (float) habilidadProgreso / cargaHabilidad;
+            playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
             //GameManager.Instance.UpdatePlayerAbility(this, habilidadProgreso);
 
-            if (habilidadProgreso >= 1)
+            if (habilidadProgreso == 1f)
             {
-                habilidadProgreso = 1;
-                playerHUD.BarraDeHabilidad = (float) habilidadProgreso / cargaHabilidad;
+                habilidadProgreso = 1f;
+                playerHUD.BarraDeHabilidad = (float)habilidadProgreso / cargaHabilidad;
                 // Habilidad está completamente cargada
             }
+
             yield return null;
         }
     }
 
+    void OnEnable()
+    {
+        // Reiniciamos el progreso de la habilidad
+        habilidadProgreso = 0f;
+        playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+
+        // Iniciamos la coroutine para cargar la habilidad
+        StartCoroutine(CargarHabilidad());
+    }
 
     #endregion Habilidad
 
