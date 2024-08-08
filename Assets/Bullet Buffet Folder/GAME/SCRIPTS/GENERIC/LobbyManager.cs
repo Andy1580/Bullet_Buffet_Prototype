@@ -48,6 +48,15 @@ public class LobbyManager : MonoBehaviour
         panelSelectTeam.SetActive(true);
         panelSelectCh.SetActive(false);
         botonJugar.SetActive(false);
+
+        escogiendoEquipo = true;
+        equipoControles = new int[equipoControles.Length];
+
+        equipo1 = 0;
+        equipo2 = 0;
+
+        equipo = new Dictionary<int, int>();
+        personaje = new Dictionary<int, string>();  
     }
 
     private void MakeSingleton()
@@ -178,15 +187,15 @@ public class LobbyManager : MonoBehaviour
                 Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
             }
 
-            if(resta == 2)
+            if (resta == 2)
             {
                 escogiendoEquipo = true;
                 print("escogiendoEquipo = true");
                 ActivarPanelSeleccionarEquipo();
-                
+
             }
         }
-        else if(Gamepad.all.Count == 4)
+        else if (Gamepad.all.Count == 4)
         {
             if (dicControles.ContainsKey(gamepad))
             {

@@ -101,6 +101,7 @@ public class MainMenuSystem : MonoBehaviour
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelMapasMHS.SetActive(false);
+        panelMapasMDS.SetActive(false);
         play = false;
 
         GameManager.Instance.ResetiarVariables();

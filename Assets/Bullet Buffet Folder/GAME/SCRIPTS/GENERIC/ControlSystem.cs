@@ -26,7 +26,13 @@ public class ControlSystem : MonoBehaviour
         puntero.gameObject.SetActive(false);
         puntero.gameObject.transform.position = slot.position;
 
+        c_Animator.SetInteger("Posicion", 0);
+
         controlImg.color = new Color(1, 1, 1, 0.6f);
+        equipoBloqueado = false;
+        equipo = 0;
+
+
     }
 
     private void Update()
