@@ -65,7 +65,8 @@ public class PlayerController : MonoBehaviour
         if (!enDash && canDash)
         {
             animator.SetTrigger("dash");
-            //agregar los floats de animator
+            animator.SetFloat("xdash", movement.x);
+            animator.SetFloat("zdash", movement.z);
             enDash = true;
             canDash = false;
             playerHUD.dashIcon.enabled = false;
@@ -78,6 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         if (canEscudo)
         {
+            animator.SetTrigger("escudo");
             ActivarEscudo();
         }
     }
@@ -215,20 +217,10 @@ public class PlayerController : MonoBehaviour
         movement.x = moveXZ.x;
         movement.z = moveXZ.z;
 
-        //animator.SetFloat("x", movement.x);
-        //animator.SetFloat("z", movement.z);
+        animator.SetFloat("xmov", movement.x);
+        animator.SetFloat("zmov", movement.z);
 
 
-        
-
-        if (moveXZ == Vector3.zero)
-        {
-            animator.SetBool("movimiento", false);
-        }
-        else if (moveXZ != Vector3.zero)
-        {
-            animator.SetBool("movimiento", true);
-        }
 
 
         if (controller.isGrounded)
