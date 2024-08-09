@@ -564,6 +564,7 @@ public class PlayerController : MonoBehaviour
         habilidadProgreso = 0f;
         playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
 
+        canEscudo = true;
         actualHability = hability;
         muerto = false;
         // Iniciamos la coroutine para cargar la habilidad
