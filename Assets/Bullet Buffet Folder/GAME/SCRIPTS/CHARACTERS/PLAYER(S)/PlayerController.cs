@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -199,6 +200,9 @@ public class PlayerController : MonoBehaviour
 
     void Update_Movimiento()
     {
+        if (GameManager.EnPausa)
+            return;
+
         if (BloquearMovimiento)
             return;
 
@@ -215,8 +219,7 @@ public class PlayerController : MonoBehaviour
         //animator.SetFloat("z", movement.z);
 
 
-        if (GameManager.EnPausa)
-            return;
+        
 
         if (moveXZ == Vector3.zero)
         {
@@ -560,6 +563,9 @@ public class PlayerController : MonoBehaviour
 
         // Iniciamos la coroutine para cargar la habilidad
         StartCoroutine(CargarHabilidad());
+
+        Start_Dash();
+        Start_Escudo();
     }
 
     #endregion Habilidad
