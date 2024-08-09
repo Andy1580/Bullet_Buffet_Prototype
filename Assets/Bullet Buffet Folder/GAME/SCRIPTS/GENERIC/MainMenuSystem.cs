@@ -184,8 +184,32 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
     }
 
+    public void MapaStreetMDS()
+    {
+        GameManager.boolMapaStreetMDS = true;
+        GameManager.boolMapaDungeonMDS = false;
+        GameManager.boolMapaRestaurantMDS = false;
+        play = true;
+    }
+
+    public void MapaDungeonMDS()
+    {
+        GameManager.boolMapaDungeonMDS = true;
+        GameManager.boolMapaStreetMDS = false;
+        GameManager.boolMapaRestaurantMDS = false;
+        play = true;
+    }
+
+    public void MapaRestaurantMDS()
+    {
+        GameManager.boolMapaRestaurantMDS = true;
+        GameManager.boolMapaStreetMDS = false;
+        GameManager.boolMapaDungeonMDS = false;
+        play = true;
+    }
+
     #region CAMBIOS DE RONDA MHS
-    
+
     public void AumentarRondas()
     {
         int ronda = GameManager.Instance.puntosParaGanar;

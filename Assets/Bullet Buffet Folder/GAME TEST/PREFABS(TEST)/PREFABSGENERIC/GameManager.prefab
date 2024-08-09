@@ -10088,6 +10088,9 @@ MonoBehaviour:
   mapaStreetMHS: {fileID: 3120673194328734293}
   mapaRestaurantMHS: {fileID: 2786495737624148827}
   mapaDungeonMHS: {fileID: 5504987677671154326}
+  mapaStreetMDS: {fileID: 3516007362145482961}
+  mapaRestaurantMDS: {fileID: 5044141330125635577}
+  mapaDungeonMDS: {fileID: 2528321212684003706}
   panelPausa: {fileID: 6707128079941094937}
   panelControles: {fileID: 2954470496891740527}
   panelConfiguracion: {fileID: 6019538319649685322}
@@ -10152,12 +10155,13 @@ MonoBehaviour:
   spawnHechizo2: {fileID: 958628431539229426}
   prefabsEnemigos:
   - {fileID: 6333739685470477795, guid: 1fdc1200ce22db5409de2be3c999829e, type: 3}
+  - {fileID: 6443351982116186722, guid: 61c82cd2db48ea54faf9fb10e975965e, type: 3}
   spawnPoints:
   - {fileID: 8855384402205128968}
   - {fileID: 2951715596765054301}
   - {fileID: 2012891203814655087}
   - {fileID: 8210065210584080994}
-  enemigosMaximosActivos: 0
+  enemigosMaximosActivos: 4
   minSpawnTime: 12
   maxSpawnTime: 17
   deadEnemy: 0
@@ -34366,7 +34370,7 @@ Transform:
   m_GameObject: {fileID: 6017433893337570208}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.47, y: 0.37, z: -14.66}
+  m_LocalPosition: {x: -10.36, y: 0.37, z: -14.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35080,7 +35084,7 @@ Transform:
   m_GameObject: {fileID: 6115920476481128802}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.59, y: 0, z: -14.68}
+  m_LocalPosition: {x: 16.41, y: 0.47, z: -14.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46403,7 +46407,7 @@ Transform:
   m_GameObject: {fileID: 8287758335934494197}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.05, y: 0, z: 8.25}
+  m_LocalPosition: {x: -17.37, y: 0, z: 8.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48624,7 +48628,7 @@ Transform:
   m_GameObject: {fileID: 8785865695614500697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.13, y: 0.47, z: 8.39}
+  m_LocalPosition: {x: 17.12, y: 0.47, z: 6.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52014,6 +52018,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4830006255865114699}
     m_Modifications:
+    - target: {fileID: 1419303724750400388, guid: 4c2c09edac729d04488294ebd6313481,
+        type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: e9b4b159ce08c8c469cd903bd54c8ae3,
+        type: 2}
     - target: {fileID: 2129984709212977588, guid: 4c2c09edac729d04488294ebd6313481,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -52064,6 +52074,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6616304674154791203, guid: 4c2c09edac729d04488294ebd6313481,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7306590509626430844, guid: 4c2c09edac729d04488294ebd6313481,
         type: 3}
       propertyPath: m_Name
@@ -52072,7 +52087,7 @@ PrefabInstance:
     - target: {fileID: 7306590509626430844, guid: 4c2c09edac729d04488294ebd6313481,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -52082,6 +52097,12 @@ PrefabInstance:
 --- !u!4 &4533263648048550705 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2129984709212977588, guid: 4c2c09edac729d04488294ebd6313481,
+    type: 3}
+  m_PrefabInstance: {fileID: 2550825795598101125}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5044141330125635577 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7306590509626430844, guid: 4c2c09edac729d04488294ebd6313481,
     type: 3}
   m_PrefabInstance: {fileID: 2550825795598101125}
   m_PrefabAsset: {fileID: 0}
@@ -52331,13 +52352,19 @@ PrefabInstance:
     - target: {fileID: 7900544160418490385, guid: e33915d1f6355b24084c8e67161f9ff4,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e33915d1f6355b24084c8e67161f9ff4, type: 3}
+--- !u!1 &3516007362145482961 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7900544160418490385, guid: e33915d1f6355b24084c8e67161f9ff4,
+    type: 3}
+  m_PrefabInstance: {fileID: 6732601201374859456}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4730396849807088198 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2074681411477031558, guid: e33915d1f6355b24084c8e67161f9ff4,
@@ -52574,7 +52601,7 @@ PrefabInstance:
     - target: {fileID: 6530115667690439607, guid: f57fe2292a8ae9b4d9e82a5d376fc259,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -52584,6 +52611,12 @@ PrefabInstance:
 --- !u!4 &2413670229299762406 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6410543581838360107, guid: f57fe2292a8ae9b4d9e82a5d376fc259,
+    type: 3}
+  m_PrefabInstance: {fileID: 8757749913652800205}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2528321212684003706 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6530115667690439607, guid: f57fe2292a8ae9b4d9e82a5d376fc259,
     type: 3}
   m_PrefabInstance: {fileID: 8757749913652800205}
   m_PrefabAsset: {fileID: 0}

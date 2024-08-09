@@ -9,7 +9,7 @@ public class EnemyAI_Flying : MonoBehaviour
     [SerializeField] private GameObject balaPrefab;
     [SerializeField] private Transform balaSpawn;
     [SerializeField] private float distanciaMinima = 5f;
-    [SerializeField] private int maxVida = 200;
+    [SerializeField] private int maxVida = 45;
     [SerializeField] internal int vida;
     [SerializeField] private SkinnedMeshRenderer renderer;
     [SerializeField] public Animator animator;

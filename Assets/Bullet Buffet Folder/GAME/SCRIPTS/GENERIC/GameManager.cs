@@ -386,6 +386,9 @@ public class GameManager : MonoBehaviour
             boolMapaStreetMHS = false;
             boolMapaDungeonMHS = false;
             boolMapaRestaurantMHS = false;
+            boolMapaStreetMDS = false;
+            boolMapaDungeonMDS = false;
+            boolMapaRestaurantMDS = false;
 
             //Temporizador
             totalTime = 60;
@@ -404,6 +407,10 @@ public class GameManager : MonoBehaviour
             mapaStreetMHS.SetActive(false);
             mapaRestaurantMHS.SetActive(false);
             mapaDungeonMHS.SetActive(false);
+            mapaStreetMDS.SetActive(false);
+            mapaRestaurantMDS.SetActive(false);
+            mapaDungeonMDS.SetActive(false);
+
 
             //Modo Hechizos Sazonados
             magosPrincipales.SetActive(false);
@@ -444,6 +451,9 @@ public class GameManager : MonoBehaviour
     public static bool boolMapaStreetMHS;
     public static bool boolMapaDungeonMHS;
     public static bool boolMapaRestaurantMHS;
+    public static bool boolMapaStreetMDS;
+    public static bool boolMapaDungeonMDS;
+    public static bool boolMapaRestaurantMDS;
     public static bool modoHS;
     public static bool modoDS;
 
@@ -538,9 +548,16 @@ public class GameManager : MonoBehaviour
 
     #region MAPAS
     [Header("Mapas")]
+
+    [Header("Modo Hechizos Sazonados")]
     [SerializeField] private GameObject mapaStreetMHS;
     [SerializeField] private GameObject mapaRestaurantMHS;
     [SerializeField] private GameObject mapaDungeonMHS;
+
+    [Header("Modo Duelo de Salsas")]
+    [SerializeField] private GameObject mapaStreetMDS;
+    [SerializeField] private GameObject mapaRestaurantMDS;
+    [SerializeField] private GameObject mapaDungeonMDS;
 
     void InicializarMapas()
     {
@@ -555,6 +572,18 @@ public class GameManager : MonoBehaviour
         else if (boolMapaRestaurantMHS)
         {
             mapaRestaurantMHS.SetActive(true);
+        }
+        else if(boolMapaStreetMDS)
+        {
+            mapaStreetMDS.SetActive(true);
+        }
+        else if(boolMapaRestaurantMDS)
+        {
+            mapaRestaurantMDS.SetActive(true);
+        }
+        else if(boolMapaDungeonMDS)
+        {
+            mapaDungeonMDS.SetActive(true);
         }
     }
     #endregion MAPAS
@@ -703,7 +732,7 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "ANDYINGAME" && modoHS)
         {
-            if(infoLobbyPlayers.Count == 2)
+            if (infoLobbyPlayers.Count == 2)
             {
                 if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
                 {
@@ -730,7 +759,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            else if(infoLobbyPlayers.Count == 4)
+            else if (infoLobbyPlayers.Count == 4)
             {
                 if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
                 {
@@ -756,11 +785,11 @@ public class GameManager : MonoBehaviour
                     p1.enabled = false;
                     p2.enabled = false;
                     p3.enabled = false;
-                    p4.enabled= false;
+                    p4.enabled = false;
                     Invoke("DetenerTiempo", 0.80f);
                 }
             }
-            
+
         }
         else return;
 
@@ -988,7 +1017,7 @@ public class GameManager : MonoBehaviour
         int team1Count = cuadrosTeam1.Count;
         int team2Count = cuadrosTeam2.Count;
 
-        if(infoLobbyPlayers.Count == 2)
+        if (infoLobbyPlayers.Count == 2)
         {
             deadEnemy = true;
             isRunning = false;
@@ -999,9 +1028,9 @@ public class GameManager : MonoBehaviour
                 panelVictoria.SetActive(true);
                 playerWinText.text = "Team: 1";
 
-                foreach(PlayerController p in activePlayers)
+                foreach (PlayerController p in activePlayers)
                 {
-                    if(p != null)
+                    if (p != null)
                     {
                         p.BloquearMovimiento = true;
                     }
@@ -1013,6 +1042,21 @@ public class GameManager : MonoBehaviour
             {
                 panelVictoria.SetActive(true);
                 playerWinText.text = "Team: 2";
+
+                foreach (PlayerController p in activePlayers)
+                {
+                    if (p != null)
+                    {
+                        p.BloquearMovimiento = true;
+                    }
+                }
+
+                Time.timeScale = 0;
+            }
+            else if(team1Count == 0 || team2Count == 0)
+            {
+                panelTiempoAgotado.SetActive(true);
+                TiempoAgotadoText.text = "¡SE AGOTO EL TIEMPO!";
 
                 foreach (PlayerController p in activePlayers)
                 {
@@ -1026,7 +1070,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        else if(infoLobbyPlayers.Count == 4)
+        else if (infoLobbyPlayers.Count == 4)
         {
             if (team1Count > team2Count)
             {
@@ -1047,6 +1091,21 @@ public class GameManager : MonoBehaviour
             {
                 panelVictoria.SetActive(true);
                 playerWinText.text = "Team: 2";
+
+                foreach (PlayerController p in activePlayers)
+                {
+                    if (p != null)
+                    {
+                        p.BloquearMovimiento = true;
+                    }
+                }
+
+                Time.timeScale = 0;
+            }
+            else if (team1Count == 0 || team2Count == 0)
+            {
+                panelTiempoAgotado.SetActive(true);
+                TiempoAgotadoText.text = "¡SE AGOTO EL TIEMPO!";
 
                 foreach (PlayerController p in activePlayers)
                 {
@@ -1453,7 +1512,7 @@ public class GameManager : MonoBehaviour
                 p2.anim.SetTrigger("spawn");
                 p2.transform.position = modo1v1spawnTeam2.position;
             }
-            
+
         }
         else if (infoLobbyPlayers.Count == 4)
         {
