@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
         InicializarSSD();
         Start_Habilidad();
         Start_Equipos();
+
+        BloquearMovimiento = false;
     }
 
     private void Update()
@@ -193,7 +195,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 axis1 = Vector3.zero;
     private Vector3 axis2 = Vector3.zero;
 
-    internal bool BloquearMovimiento = false;
+    [SerializeField] internal bool BloquearMovimiento = false;
 
     private void Start_Movimiento()
     {
@@ -202,8 +204,7 @@ public class PlayerController : MonoBehaviour
 
     void Update_Movimiento()
     {
-        if (GameManager.EnPausa)
-            return;
+        
 
         if (BloquearMovimiento)
             return;
@@ -220,7 +221,8 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("xmov", movement.x);
         animator.SetFloat("zmov", movement.z);
 
-
+        //if (GameManager.EnPausa)
+        //    return;
 
 
         if (controller.isGrounded)
@@ -558,6 +560,8 @@ public class PlayerController : MonoBehaviour
 
         Start_Dash();
         Start_Escudo();
+
+        BloquearMovimiento = false;
     }
 
     #endregion Habilidad

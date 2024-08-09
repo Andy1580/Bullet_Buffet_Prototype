@@ -530,6 +530,11 @@ public class GameManager : MonoBehaviour
             activePlayers.Add(p4);
         }
 
+        foreach (PlayerController j in activePlayers)
+        {
+            j.BloquearMovimiento = false;
+        }
+
     }
 
     private void InicializarJugadores()
@@ -542,6 +547,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         deadEnemy = false;
         DestruirEnemigosActivos();
+
         SceneManager.LoadScene("ANDYMENUTEST");
     }
     #endregion PARTIDA
