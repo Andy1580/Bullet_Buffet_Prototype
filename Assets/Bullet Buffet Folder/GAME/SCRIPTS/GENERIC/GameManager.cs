@@ -789,7 +789,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject panelTiempoAgotado;
     [SerializeField] public float totalTime = 60f; // Total del tiempo en segundos, 120 segundos es igual a 2 minutos
     [SerializeField] private TMP_Text timerText;
-    [SerializeField] private TMP_Text ganadorTiempoAgotadoText;
+    [SerializeField] private TMP_Text TiempoAgotadoText;
 
     public static float remainingTime;
     private bool isRunning = false;
@@ -800,7 +800,12 @@ public class GameManager : MonoBehaviour
         panelTiempoAgotado.SetActive(false);
         remainingTime = totalTime;
         isRunning = true;
-        Start_TimerText();
+
+        int minutes = Mathf.FloorToInt(remainingTime / 60);
+        int seconds = Mathf.FloorToInt(remainingTime % 60);
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+
+        //Start_TimerText();
     }
 
     private void FixUpdate_Temporizador()
@@ -816,21 +821,14 @@ public class GameManager : MonoBehaviour
             if (remainingTime <= 0)
             {
                 isRunning = false;
+                timerText.text = "00:00";
                 TimerEnded();
 
                 if (modoHS)
                 {
-                    if (p1.Vida < p2.Vida)
-                    {
-                        puntosAGanarTeam2++;
-                        CambioDeRondaMHS();
-
-                    }
-                    else
-                    {
-                        puntosAGanarTeam1++;
-                        CambioDeRondaMHS();
-                    }
+                    panelTiempoAgotado.SetActive(true);
+                    TiempoAgotadoText.text = "¡SE AGOTO EL TIEMPO!";
+                    Time.timeScale = 0;
 
                 }
                 else if (modoDS)

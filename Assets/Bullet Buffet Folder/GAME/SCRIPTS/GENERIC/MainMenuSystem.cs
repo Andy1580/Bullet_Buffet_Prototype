@@ -17,7 +17,8 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private TMP_Text rondaActualText;
 
     [Header("Tiempo MDS")]   //minutos
-    [SerializeField] private TMP_Text tiempoActualText;
+    [SerializeField] private TMP_Text tiempoActualMDSText;
+    [SerializeField] private TMP_Text tiempoActualMHSText;
 
     //[SerializeField] private GameObject eventSystem;
     //private EventSystem eventS;
@@ -57,7 +58,8 @@ public class MainMenuSystem : MonoBehaviour
         panelConfimarSalir.SetActive(false);
 
         rondaActualText.text = "1";
-        tiempoActualText.text = "1:00";
+        tiempoActualMDSText.text = "1:00";
+        tiempoActualMHSText.text = "1:00";
         //eventS.firstSelectedGameObject = bModes;
     }
 
@@ -107,7 +109,8 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.Instance.ResetiarVariables();
 
         rondaActualText.text = "1";
-        tiempoActualText.text = "1:00";
+        tiempoActualMDSText.text = "1:00";
+        tiempoActualMHSText.text = "1:00";
 
         //rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
         //eventS.firstSelectedGameObject = bModes;
@@ -199,6 +202,41 @@ public class MainMenuSystem : MonoBehaviour
         }
         else if(ronda == 3)
         {
+            GameManager.Instance.puntosParaGanar = 4;
+            rondaActualText.text = "4";
+        }
+        else if (ronda == 4)
+        {
+            GameManager.Instance.puntosParaGanar = 5;
+            rondaActualText.text = "5";
+        }
+        else if (ronda == 5)
+        {
+            GameManager.Instance.puntosParaGanar = 6;
+            rondaActualText.text = "6";
+        }
+        else if (ronda == 6)
+        {
+            GameManager.Instance.puntosParaGanar = 7;
+            rondaActualText.text = "7";
+        }
+        else if (ronda == 7)
+        {
+            GameManager.Instance.puntosParaGanar = 8;
+            rondaActualText.text = "8";
+        }
+        else if (ronda == 8)
+        {
+            GameManager.Instance.puntosParaGanar = 9;
+            rondaActualText.text = "9";
+        }
+        else if (ronda == 9)
+        {
+            GameManager.Instance.puntosParaGanar = 10;
+            rondaActualText.text = "10";
+        }
+        else if(ronda == 10)
+        {
             return;
         }
     }
@@ -207,7 +245,42 @@ public class MainMenuSystem : MonoBehaviour
     {
         int ronda = GameManager.Instance.puntosParaGanar;
 
-        if(ronda == 3)
+        if(ronda == 10)
+        {
+            GameManager.Instance.puntosParaGanar = 9;
+            rondaActualText.text = "9";
+        }
+        else if (ronda == 9)
+        {
+            GameManager.Instance.puntosParaGanar = 8;
+            rondaActualText.text = "8";
+        }
+        else if(ronda == 8)
+        {
+            GameManager.Instance.puntosParaGanar = 7;
+            rondaActualText.text = "7";
+        }
+        else if (ronda == 7)
+        {
+            GameManager.Instance.puntosParaGanar = 6;
+            rondaActualText.text = "6";
+        }
+        else if (ronda == 6)
+        {
+            GameManager.Instance.puntosParaGanar = 5;
+            rondaActualText.text = "5";
+        }
+        else if (ronda == 5)
+        {
+            GameManager.Instance.puntosParaGanar = 4;
+            rondaActualText.text = "4";
+        }
+        else if (ronda == 4)
+        {
+            GameManager.Instance.puntosParaGanar = 3;
+            rondaActualText.text = "3";
+        }
+        else if (ronda == 3)
         {
             GameManager.Instance.puntosParaGanar = 2;
             rondaActualText.text = "2";
@@ -217,7 +290,7 @@ public class MainMenuSystem : MonoBehaviour
             GameManager.Instance.puntosParaGanar = 1;
             rondaActualText.text = "1";
         }
-        else if(ronda == 1)
+        else if (ronda == 1)
         {
             return;
         }
@@ -233,42 +306,50 @@ public class MainMenuSystem : MonoBehaviour
         if (tiempo == 60f)
         {
             GameManager.Instance.totalTime = 90f;
-            tiempoActualText.text = "1:30";
+            tiempoActualMDSText.text = "1:30";
+            tiempoActualMHSText.text = "1:30";
         }
         else if (tiempo == 90f)
         {
             GameManager.Instance.totalTime = 120f;
-            tiempoActualText.text = "2:00";
+            tiempoActualMDSText.text = "2:00";
+            tiempoActualMHSText.text = "2:00";
         }
         else if (tiempo == 120f)
         {
             GameManager.Instance.totalTime = 150f;
-            tiempoActualText.text = "2:30";
+            tiempoActualMDSText.text = "2:30";
+            tiempoActualMHSText.text = "2:30";
         }
         else if (tiempo == 150f)
         {
             GameManager.Instance.totalTime = 180f;
-            tiempoActualText.text = "3:00";
+            tiempoActualMDSText.text = "3:00";
+            tiempoActualMHSText.text = "3:00";
         }
         else if (tiempo == 180f)
         {
             GameManager.Instance.totalTime = 210f;
-            tiempoActualText.text = "3:30";
+            tiempoActualMDSText.text = "3:30";
+            tiempoActualMHSText.text = "3:30";
         }
         else if (tiempo == 210f)
         {
             GameManager.Instance.totalTime = 240f;
-            tiempoActualText.text = "4:00";
+            tiempoActualMDSText.text = "4:00";
+            tiempoActualMHSText.text = "4:00";
         }
         else if (tiempo == 240f)
         {
             GameManager.Instance.totalTime = 270f;
-            tiempoActualText.text = "4:30";
+            tiempoActualMDSText.text = "4:30";
+            tiempoActualMHSText.text = "4:30";
         }
         else if (tiempo == 270f)
         {
             GameManager.Instance.totalTime = 300f;
-            tiempoActualText.text = "5:00";
+            tiempoActualMDSText.text = "5:00";
+            tiempoActualMHSText.text = "5:00";
         }
         else if (tiempo == 300f)
         {
@@ -283,42 +364,50 @@ public class MainMenuSystem : MonoBehaviour
         if (tiempo == 300f)
         {
             GameManager.Instance.totalTime = 270f;
-            tiempoActualText.text = "4:30";
+            tiempoActualMDSText.text = "4:30";
+            tiempoActualMHSText.text = "4:30";
         }
         else if (tiempo == 270f)
         {
             GameManager.Instance.totalTime = 240f;
-            tiempoActualText.text = "4:00";
+            tiempoActualMDSText.text = "4:00";
+            tiempoActualMHSText.text = "4:00";
         }
         else if (tiempo == 240f)
         {
             GameManager.Instance.totalTime = 210f;
-            tiempoActualText.text = "3:30";
+            tiempoActualMDSText.text = "3:30";
+            tiempoActualMHSText.text = "3:30";
         }
         else if (tiempo == 210f)
         {
             GameManager.Instance.totalTime = 180f;
-            tiempoActualText.text = "3:00";
+            tiempoActualMDSText.text = "3:00";
+            tiempoActualMHSText.text = "3:00";
         }
         else if (tiempo == 180f)
         {
             GameManager.Instance.totalTime = 150f;
-            tiempoActualText.text = "2:30";
+            tiempoActualMDSText.text = "2:30";
+            tiempoActualMHSText.text = "2:30";
         }
         else if (tiempo == 150f)
         {
             GameManager.Instance.totalTime = 120f;
-            tiempoActualText.text = "2:00";
+            tiempoActualMDSText.text = "2:00";
+            tiempoActualMHSText.text = "2:00";
         }
         else if (tiempo == 120f)
         {
             GameManager.Instance.totalTime = 90f;
-            tiempoActualText.text = "1:30";
+            tiempoActualMDSText.text = "1:30";
+            tiempoActualMHSText.text = "1:30";
         }
         else if (tiempo == 90f)
         {
             GameManager.Instance.totalTime = 60f;
-            tiempoActualText.text = "1:00";
+            tiempoActualMDSText.text = "1:00";
+            tiempoActualMHSText.text = "1:00";
         }
         else if (tiempo == 60f)
         {

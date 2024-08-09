@@ -8207,7 +8207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7263654852446894424
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10109,7 +10109,7 @@ MonoBehaviour:
   panelTiempoAgotado: {fileID: 1495770712930722755}
   totalTime: 120
   timerText: {fileID: 210926519092723381}
-  ganadorTiempoAgotadoText: {fileID: 6774633814426838450}
+  TiempoAgotadoText: {fileID: 6774633814426838450}
   pfCRIM: {fileID: 5098610925745965914, guid: 7097c436e679a2c4d9b9a676ca3d98a4, type: 3}
   pfKAI: {fileID: 5098610925745965914, guid: c9336336df7c0cd45a9f5a68678c609b, type: 3}
   pfNOVA: {fileID: 5098610925745965914, guid: dc6655718a0d30840b074463f9e1b86a, type: 3}
@@ -26317,10 +26317,10 @@ RectTransform:
   - {fileID: 7545625403126919979}
   - {fileID: 549985199140808776}
   - {fileID: 6370066137428918470}
-  - {fileID: 7263654852446894424}
   - {fileID: 4561131494265666009}
   - {fileID: 7796748611400102415}
   - {fileID: 2527809080170302329}
+  - {fileID: 7263654852446894424}
   - {fileID: 6731430466015079548}
   m_Father: {fileID: 4830006255865114699}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -42710,7 +42710,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1773205105280767333}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: MainMenu
+        m_MethodName: GoToMenuVictory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

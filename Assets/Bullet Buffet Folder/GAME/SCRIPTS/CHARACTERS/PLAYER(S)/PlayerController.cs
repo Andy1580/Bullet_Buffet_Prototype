@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
         if (!enDash && canDash)
         {
             animator.SetTrigger("dash");
+            //agregar los floats de animator
             enDash = true;
             canDash = false;
             playerHUD.dashIcon.enabled = false;
