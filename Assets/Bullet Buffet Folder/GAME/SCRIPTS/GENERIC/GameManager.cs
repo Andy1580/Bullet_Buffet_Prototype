@@ -351,6 +351,7 @@ public class GameManager : MonoBehaviour
             InicializarMuerteJugadores();
             InicializarPausa();
             InicializarCamara();
+            InstanciarPowerUp();
             Invoke("InicializarEnemySpawn", 5);
 
             if (modoHS)
@@ -1262,13 +1263,15 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
+                        p1.muerto = true;
+                        p2.muerto = true;
                         p1.enabled = false;
                         p2.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
                         Invoke("DestruirEnemigosActivos", 0.25f);
                         Invoke("Mago2", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4.0f);
+                        Invoke("CambioDeRondaMHS", 4f);
                     }
                     else if (player.equipo == 2 && isRunning)
                     {
@@ -1277,13 +1280,15 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
+                        p1.muerto = true;
+                        p2.muerto = true;
                         p1.enabled = false;
                         p2.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
                         Invoke("DestruirEnemigosActivos", 0.25f);
                         Invoke("Mago1", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4.0f);
+                        Invoke("CambioDeRondaMHS", 4f);
                     }
                 }
 
@@ -1296,6 +1301,10 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
+                        p1.muerto = true;
+                        p2.muerto = true;
+                        p3.muerto = true;
+                        p4.muerto = true;
                         p1.enabled = false;
                         p2.enabled = false;
                         p3.enabled = false;
@@ -1306,7 +1315,7 @@ public class GameManager : MonoBehaviour
                         p4.BloquearMovimiento = true;
                         Invoke("DestruirEnemigosActivos", 0.25f);
                         Invoke("Mago2", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4.0f);
+                        Invoke("CambioDeRondaMHS", 4f);
                     }
                     else if (player.equipo == 2 && isRunning)
                     {
@@ -1315,13 +1324,21 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
+                        p1.muerto = true;
+                        p2.muerto = true;
+                        p3.muerto = true;
+                        p4.muerto = true;
                         p1.enabled = false;
                         p2.enabled = false;
+                        p3.enabled = false;
+                        p4.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
+                        p3.BloquearMovimiento = true;
+                        p4.BloquearMovimiento = true;
                         Invoke("DestruirEnemigosActivos", 0.25f);
                         Invoke("Mago1", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4.0f);
+                        Invoke("CambioDeRondaMHS", 4f);
                     }
                 }
 
@@ -1440,6 +1457,7 @@ public class GameManager : MonoBehaviour
         if (infoLobbyPlayers.Count == 2)
         {
             Debug.Log("Se reactivaron los jugadores");
+            yield return new WaitForSeconds(4f);
             p1.gameObject.SetActive(true);
             p2.gameObject.SetActive(true);
             p1.enabled = true;
@@ -1448,14 +1466,17 @@ public class GameManager : MonoBehaviour
             p2.Vida = 100;
             p1.anim.SetTrigger("spawn");
             p2.anim.SetTrigger("spawn");
-            yield return new WaitForSeconds(time);
             p1.BloquearMovimiento = false;
             p2.BloquearMovimiento = false;
+            p1.muerto = false;
+            p2.muerto = false;
+            
         }
 
         else if (infoLobbyPlayers.Count == 4)
         {
             Debug.Log("Se reactivaron los jugadores");
+            yield return new WaitForSeconds(4f);
             p1.gameObject.SetActive(true);
             p2.gameObject.SetActive(true);
             p3.gameObject.SetActive(true);
@@ -1472,11 +1493,14 @@ public class GameManager : MonoBehaviour
             p2.anim.SetTrigger("spawn");
             p3.anim.SetTrigger("spawn");
             p4.anim.SetTrigger("spawn");
-            yield return new WaitForSeconds(time);
             p1.BloquearMovimiento = false;
             p2.BloquearMovimiento = false;
             p3.BloquearMovimiento = false;
             p4.BloquearMovimiento = false;
+            p1.muerto = false;
+            p2.muerto = false;
+            p3.muerto = false;
+            p4.muerto = false;
         }
 
         isRunning = true;
@@ -1484,7 +1508,8 @@ public class GameManager : MonoBehaviour
         remainingTime = totalTime;
         yield return new WaitForSeconds(3.50f);
         InicializarEnemySpawn();
-        yield return new WaitForSeconds(6.0f);
+        InstanciarPowerUp();
+        yield return new WaitForSeconds(10.0f);
     }
 
     private IEnumerator RespawnearJugadorMDS(PlayerController player, float time)
@@ -1506,7 +1531,7 @@ public class GameManager : MonoBehaviour
                 p1.enabled = true;
                 p1.BloquearMovimiento = false;
                 p1.anim.SetTrigger("spawn");
-                p1.transform.position = modo1v1spawnTeam1.position;
+                p1.transform.position = modo1v1spawnTeam1.localPosition;
             }
             else if (player == p2)
             {
@@ -1516,7 +1541,7 @@ public class GameManager : MonoBehaviour
                 p2.enabled = true;
                 p2.BloquearMovimiento = false;
                 p2.anim.SetTrigger("spawn");
-                p2.transform.position = modo1v1spawnTeam2.position;
+                p2.transform.position = modo1v1spawnTeam2.localPosition;
             }
 
         }
@@ -1529,7 +1554,7 @@ public class GameManager : MonoBehaviour
                 p1.habilidadProgreso = 0;
                 p1.enabled = true;
                 p1.anim.SetTrigger("spawn");
-                p1.transform.position = modo2v2spawnTeam1_1.position;
+                p1.transform.position = modo2v2spawnTeam1_1.localPosition;
             }
 
             else if (player == p2)
@@ -1539,7 +1564,7 @@ public class GameManager : MonoBehaviour
                 p2.habilidadProgreso = 0;
                 p2.enabled = true;
                 p2.anim.SetTrigger("spawn");
-                p2.transform.position = modo2v2spawnTeam1_2.position;
+                p2.transform.position = modo2v2spawnTeam1_2.localPosition;
             }
 
             else if (player == p3)
@@ -1549,7 +1574,7 @@ public class GameManager : MonoBehaviour
                 p3.habilidadProgreso = 0;
                 p3.enabled = true;
                 p3.anim.SetTrigger("spawn");
-                p3.transform.position = modo2v2spawnTeam2_1.position;
+                p3.transform.position = modo2v2spawnTeam2_1.localPosition;
             }
 
             else if (player == p4)
@@ -1559,7 +1584,7 @@ public class GameManager : MonoBehaviour
                 p4.habilidadProgreso = 0;
                 p4.enabled = true;
                 p4.anim.SetTrigger("spawn");
-                p4.transform.position = modo2v2spawnTeam2_2.position;
+                p4.transform.position = modo2v2spawnTeam2_2.localPosition;
             }
         }
 
@@ -1734,4 +1759,22 @@ public class GameManager : MonoBehaviour
         SpawnEnemy();
     }
     #endregion SPAWN DE ENEMIGOS
+
+    #region POWER UP
+
+    [Header("POWER UPs CORE")]
+    [SerializeField] private GameObject poweUpVel;
+    [SerializeField] private GameObject poweUpInv;
+    [SerializeField] private Transform spawnPowerUp1;
+    [SerializeField] private Transform spawnPowerUp2;
+
+    void InstanciarPowerUp()
+    {
+        GameObject power1 = Instantiate(poweUpInv, spawnPowerUp1.position, spawnPowerUp1.rotation);
+        GameObject power2 = Instantiate(poweUpVel, spawnPowerUp2.position, spawnPowerUp2.rotation);
+
+        power1.name = poweUpInv.name;
+        power2.name = poweUpVel.name;
+    }
+    #endregion POWER UP
 }

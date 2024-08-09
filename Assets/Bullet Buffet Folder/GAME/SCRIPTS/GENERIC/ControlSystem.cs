@@ -265,8 +265,8 @@ public class ControlSystem : MonoBehaviour
     public Vector2 canvasTamaño;
     void Update_Puntero()
     {
-        if (puntero.localPosition.x > -928f)//Falto terminar...
-            puntero.localPosition += axis * (Time.deltaTime * velocidadPuntero);
+        //if (puntero.localPosition.x > -928f)//Falto terminar...
+        puntero.localPosition += axis * (Time.deltaTime * velocidadPuntero);
         limon = puntero.localPosition;
         aguacate = puntero.anchoredPosition;
         canvasTamaño = LobbyManager.Canvas.GetComponent<RectTransform>().sizeDelta;

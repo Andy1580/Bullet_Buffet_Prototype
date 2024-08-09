@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -204,7 +203,7 @@ public class PlayerController : MonoBehaviour
 
     void Update_Movimiento()
     {
-        
+
 
         if (BloquearMovimiento)
             return;
@@ -380,14 +379,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int maxSalud = 100;
     [SerializeField] private SkinnedMeshRenderer renderer;
     internal int salud;
-    //internal bool muerto = false;
+    internal bool muerto = false;
 
     void Start_Vida()
     {
         salud = maxSalud;
         playerHUD.BarraDeVida = (float)salud / maxSalud;
         //GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
-
+        muerto = false;
         Debug.Log("Nombre:" + this.gameObject.name + Vida);
 
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -398,6 +397,7 @@ public class PlayerController : MonoBehaviour
     void DeadEvent()
     {
         animator.SetTrigger("muerto");
+        muerto = true;
         GameManager.Instance.DeadPlayerEventMHS(this);
     }
 
@@ -532,8 +532,15 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator CargarHabilidad()
     {
+
         while (habilidadProgreso < 1f)
         {
+
+            if(muerto)
+            {
+                yield break;
+            }
+
             habilidadProgreso += Time.deltaTime / cargaHabilidad; // Ajusta el tiempo de carga según sea necesario
             playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
             //GameManager.Instance.UpdatePlayerAbility(this, habilidadProgreso);
@@ -547,6 +554,8 @@ public class PlayerController : MonoBehaviour
 
             yield return null;
         }
+
+
     }
 
     void OnEnable()
@@ -555,6 +564,8 @@ public class PlayerController : MonoBehaviour
         habilidadProgreso = 0f;
         playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
 
+        actualHability = hability;
+        muerto = false;
         // Iniciamos la coroutine para cargar la habilidad
         StartCoroutine(CargarHabilidad());
 
@@ -562,6 +573,7 @@ public class PlayerController : MonoBehaviour
         Start_Escudo();
 
         BloquearMovimiento = false;
+        
     }
 
     #endregion Habilidad

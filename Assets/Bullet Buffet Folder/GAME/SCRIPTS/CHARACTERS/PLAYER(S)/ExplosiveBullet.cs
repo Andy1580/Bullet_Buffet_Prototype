@@ -6,7 +6,7 @@ public class ExplosiveBullet : MonoBehaviour
     [Header("Explosive Bullet")]
     public float expansionDuration = 2f; // Duración de la expansión
     public float maxRadius = 5f; // Radio máximo de expansión
-    public float destructionDelay = 2f; // Tiempo antes de la destrucción después de la expansión
+    public float destructionDelay = 0.01f; // Tiempo antes de la destrucción después de la expansión
     private SphereCollider sphereCollider;
     private bool isExpanding = false;
     public float velicidadBala = 8f;
@@ -70,13 +70,13 @@ public class ExplosiveBullet : MonoBehaviour
         Vector3 initialScale = sphereCollider.transform.localScale;
         Vector3 targetScale = initialScale * maxRadius;
 
-        float elapsedTime = 0f;
-        while (elapsedTime < expansionDuration)
-        {
-            sphereCollider.transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / expansionDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        //float elapsedTime = 0f;
+        //while (elapsedTime < expansionDuration)
+        //{
+        //    sphereCollider.transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / expansionDuration);
+        //    elapsedTime += Time.deltaTime;
+        //    yield return null;
+        //}
 
         sphereCollider.transform.localScale = targetScale;
 
