@@ -342,7 +342,7 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "ANDYINGAME")
         {
-
+            //AudioManager.instance.PlaySound("");
             InicializarHUD();
             IniciarPartida();
             InicializarTemporizador();
@@ -435,7 +435,7 @@ public class GameManager : MonoBehaviour
             activePlayers = new List<PlayerController>();
 
             //Spawn de Enemigos
-            deadEnemy = false;
+            deadEnemy = true;
             enemigosInstanciados = new List<GameObject>();
             DestruirEnemigosActivos();
 
@@ -546,7 +546,7 @@ public class GameManager : MonoBehaviour
     public void GoToMenuVictory()
     {
         Time.timeScale = 1;
-        deadEnemy = false;
+        deadEnemy = true;
         DestruirEnemigosActivos();
 
         SceneManager.LoadScene("ANDYMENUTEST");
@@ -580,15 +580,15 @@ public class GameManager : MonoBehaviour
         {
             mapaRestaurantMHS.SetActive(true);
         }
-        else if(boolMapaStreetMDS)
+        else if (boolMapaStreetMDS)
         {
             mapaStreetMDS.SetActive(true);
         }
-        else if(boolMapaRestaurantMDS)
+        else if (boolMapaRestaurantMDS)
         {
             mapaRestaurantMDS.SetActive(true);
         }
-        else if(boolMapaDungeonMDS)
+        else if (boolMapaDungeonMDS)
         {
             mapaDungeonMDS.SetActive(true);
         }
@@ -1060,7 +1060,7 @@ public class GameManager : MonoBehaviour
 
                 Time.timeScale = 0;
             }
-            else if(team1Count == 0 || team2Count == 0)
+            else if (team1Count == 0 || team2Count == 0)
             {
                 panelTiempoAgotado.SetActive(true);
                 TiempoAgotadoText.text = "¡SE AGOTO EL TIEMPO!";
@@ -1260,6 +1260,7 @@ public class GameManager : MonoBehaviour
                     {
                         isRunning = false;
                         deadEnemy = true;
+                        DestruirEnemigosActivos();
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
@@ -1269,14 +1270,14 @@ public class GameManager : MonoBehaviour
                         p2.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
-                        Invoke("DestruirEnemigosActivos", 0.25f);
-                        Invoke("Mago2", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4f);
+                        Invoke("Mago2", 2f);
+                        Invoke("CambioDeRondaMHS", 2f);
                     }
                     else if (player.equipo == 2 && isRunning)
                     {
                         isRunning = false;
                         deadEnemy = true;
+                        DestruirEnemigosActivos();
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
@@ -1286,9 +1287,8 @@ public class GameManager : MonoBehaviour
                         p2.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
-                        Invoke("DestruirEnemigosActivos", 0.25f);
-                        Invoke("Mago1", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4f);
+                        Invoke("Mago1", 2f);
+                        Invoke("CambioDeRondaMHS", 2f);
                     }
                 }
 
@@ -1298,6 +1298,7 @@ public class GameManager : MonoBehaviour
                     {
                         isRunning = false;
                         deadEnemy = true;
+                        DestruirEnemigosActivos();
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
@@ -1313,14 +1314,14 @@ public class GameManager : MonoBehaviour
                         p2.BloquearMovimiento = true;
                         p3.BloquearMovimiento = true;
                         p4.BloquearMovimiento = true;
-                        Invoke("DestruirEnemigosActivos", 0.25f);
-                        Invoke("Mago2", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4f);
+                        Invoke("Mago2", 2f);
+                        Invoke("CambioDeRondaMHS", 2f);
                     }
                     else if (player.equipo == 2 && isRunning)
                     {
                         isRunning = false;
                         deadEnemy = true;
+                        DestruirEnemigosActivos();
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
@@ -1336,9 +1337,8 @@ public class GameManager : MonoBehaviour
                         p2.BloquearMovimiento = true;
                         p3.BloquearMovimiento = true;
                         p4.BloquearMovimiento = true;
-                        Invoke("DestruirEnemigosActivos", 0.25f);
-                        Invoke("Mago1", 3.0f);
-                        Invoke("CambioDeRondaMHS", 4f);
+                        Invoke("Mago1", 2f);
+                        Invoke("CambioDeRondaMHS", 2f);
                     }
                 }
 
@@ -1449,7 +1449,7 @@ public class GameManager : MonoBehaviour
 
 
         // Los reactivamos
-        StartCoroutine(ReactivacionMHS(3.0f));
+        StartCoroutine(ReactivacionMHS(2.5f));
     }
 
     IEnumerator ReactivacionMHS(float time)
@@ -1457,7 +1457,7 @@ public class GameManager : MonoBehaviour
         if (infoLobbyPlayers.Count == 2)
         {
             Debug.Log("Se reactivaron los jugadores");
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(2.25f);
             p1.gameObject.SetActive(true);
             p2.gameObject.SetActive(true);
             p1.enabled = true;
@@ -1470,13 +1470,13 @@ public class GameManager : MonoBehaviour
             p2.BloquearMovimiento = false;
             p1.muerto = false;
             p2.muerto = false;
-            
+
         }
 
         else if (infoLobbyPlayers.Count == 4)
         {
             Debug.Log("Se reactivaron los jugadores");
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(2.25f);
             p1.gameObject.SetActive(true);
             p2.gameObject.SetActive(true);
             p3.gameObject.SetActive(true);
@@ -1503,13 +1503,12 @@ public class GameManager : MonoBehaviour
             p4.muerto = false;
         }
 
+        yield return new WaitForSeconds(3f);
         isRunning = true;
-        deadEnemy = false;
         remainingTime = totalTime;
-        yield return new WaitForSeconds(3.50f);
+        yield return new WaitForSeconds(7f);
         InicializarEnemySpawn();
         InstanciarPowerUp();
-        yield return new WaitForSeconds(10.0f);
     }
 
     private IEnumerator RespawnearJugadorMDS(PlayerController player, float time)
@@ -1638,6 +1637,8 @@ public class GameManager : MonoBehaviour
 
     void InicializarEnemySpawn()
     {
+        deadEnemy = false;
+
         if (SceneManager.GetActiveScene().name == "ANDYINGAME" && !deadEnemy)
         {
             Debug.Log("Se inicio el Spawn de Enemigos");
@@ -1706,7 +1707,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnEnemyContinuously()
     {
-        if (SceneManager.GetActiveScene().name != "ANDYINGAME")
+        if (SceneManager.GetActiveScene().name != "ANDYINGAME" || deadEnemy)
             return;
 
         CheckAndRemoveDeadEnemies();

@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
         InicializarSSD();
         Start_Habilidad();
         Start_Equipos();
+        Start_Disparo();
 
         BloquearMovimiento = false;
 
@@ -90,7 +91,10 @@ public class PlayerController : MonoBehaviour
 
     public void Input_Disparo(InputAction.CallbackContext context)
     {
-        BulletShoot();
+        if (canShoot)
+        {
+            BulletShoot();
+        }
     }
 
     public void Input_Pausa(InputAction.CallbackContext context)
@@ -135,14 +139,14 @@ public class PlayerController : MonoBehaviour
             //Si no funciona correctamente, agregar el timetoshoot y booleanos necesarios
             if (habilidadProgreso >= 0.97f)
             {
-                SuperShoot();
+                ExplosiveBullet();
                 habilidadProgreso = 0;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
                 StartCoroutine(CargarHabilidad());
             }
             else if (habilidadProgreso >= 0.47f)
             {
-                ExplosiveBullet();
+                SuperShoot();
                 habilidadProgreso = 0;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
                 StartCoroutine(CargarHabilidad());
@@ -249,10 +253,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float cooldown;
     private float cont = 0;
+    private bool canShoot;
 
     [Header("Shoot Objects")]
     [SerializeField] private Transform bulletPrefab;
     [SerializeField] private Transform bulletSpawn;
+
+    void Start_Disparo()
+    {
+        canShoot = true;
+    }
 
     void Update_Shoot()
     {
@@ -263,6 +273,7 @@ public class PlayerController : MonoBehaviour
     {
         if (cont <= 0)
         {
+            //AudioManager.instance.PlaySound("");
             Transform clon = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
             clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
             Destroy(clon.gameObject, 3);
@@ -464,6 +475,7 @@ public class PlayerController : MonoBehaviour
     void ActivarEscudo()
     {
         canEscudo = false;
+        canShoot = false;
         escudo.gameObject.SetActive(true);
         playerHUD.shieldIcon.enabled = false;
         diferenciaEscudo = transform.forward * 2;
@@ -475,6 +487,7 @@ public class PlayerController : MonoBehaviour
 
     void DesactivarEscudo()
     {
+        canShoot = true;
         escudo.gameObject.SetActive(false);
         StartCoroutine(CooldawnEscudo());
     }
@@ -516,20 +529,21 @@ public class PlayerController : MonoBehaviour
     {
         if (habilidadProgreso >= 0.97f)
         {
-            playerHUD.coneShotIcon.enabled = true;
-        }
-        else
-        {
-            playerHUD.coneShotIcon.enabled = false;
-        }
-
-        if (habilidadProgreso >= 0.47f)
-        {
             playerHUD.explosiveShotIcon.enabled = true;
         }
         else
         {
             playerHUD.explosiveShotIcon.enabled = false;
+        }
+
+        if (habilidadProgreso >= 0.47f)
+        {
+            playerHUD.coneShotIcon.enabled = true;
+
+        }
+        else
+        {
+            playerHUD.coneShotIcon.enabled = false;
         }
     }
 
@@ -539,7 +553,7 @@ public class PlayerController : MonoBehaviour
         while (habilidadProgreso < 1f)
         {
 
-            if(muerto)
+            if (muerto)
             {
                 yield break;
             }
@@ -561,7 +575,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    
+
 
     #endregion Habilidad
 
@@ -660,6 +674,8 @@ public class PlayerController : MonoBehaviour
         canEscudo = true;
         actualHability = hability;
         muerto = false;
+
+        canShoot = true;
         // Iniciamos la coroutine para cargar la habilidad
         StartCoroutine(CargarHabilidad());
 

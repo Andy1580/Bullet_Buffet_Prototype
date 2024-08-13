@@ -5,7 +5,7 @@ using UnityEngine;
 public class SuperShoot : MonoBehaviour
 {
     [SerializeField] private float vidaBala = 3;
-
+    [SerializeField] private int daño;
     public float spreadSpeed = 300f;
 
     [SerializeField] private float velocidadBala = 300f;
@@ -39,7 +39,7 @@ public class SuperShoot : MonoBehaviour
 
             if (player != null)
             {
-                player.Vida = 0;
+                player.Vida = daño;
                 Destroy(this.gameObject);
             }
 
@@ -52,13 +52,13 @@ public class SuperShoot : MonoBehaviour
 
             if (eM != null)
             {
-                eM.VidaEnemigo = 0;
+                eM.VidaEnemigo = daño;
                 Destroy(this.gameObject);
             }
 
             if(eF != null)
             {
-                eF.VidaEnemigo = 0;
+                eF.VidaEnemigo = daño;
                 Destroy(this.gameObject);
             }
         }

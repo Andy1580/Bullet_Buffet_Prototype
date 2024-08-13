@@ -82,7 +82,7 @@ public class ExplosiveBullet : MonoBehaviour
 
         yield return new WaitForSeconds(destructionDelay);
 
-        Destroy(gameObject);
+        Destroy(gameObject, 0.35f);
     }
 
 }
