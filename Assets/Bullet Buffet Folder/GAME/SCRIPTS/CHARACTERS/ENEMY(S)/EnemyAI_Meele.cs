@@ -11,6 +11,7 @@ public class EnemyAI_Meele : MonoBehaviour
     [SerializeField] internal int vida;
     [SerializeField] private SkinnedMeshRenderer renderer;
     [SerializeField] public Animator animator;
+    [SerializeField] public GameObject vfxRespawn;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -22,6 +23,8 @@ public class EnemyAI_Meele : MonoBehaviour
         agente.stoppingDistance = distanciaMinima;
         vida = maxVida;
         attackCollider.SetActive(false);
+        GameObject clone = Instantiate(vfxRespawn, transform.position, transform.rotation);
+        Destroy(clone, 1.5f);
         animator = GetComponent<Animator>();
         if (renderer == null)
         {

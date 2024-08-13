@@ -13,6 +13,7 @@ public class EnemyAI_Flying : MonoBehaviour
     [SerializeField] internal int vida;
     [SerializeField] private SkinnedMeshRenderer renderer;
     [SerializeField] public Animator animator;
+    [SerializeField] public GameObject vfxRespawn;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -24,6 +25,10 @@ public class EnemyAI_Flying : MonoBehaviour
         agente.stoppingDistance = distanciaMinima;
         vida = maxVida;
 
+        
+
+        GameObject clone = Instantiate(vfxRespawn, transform.position, transform.rotation);
+        Destroy(clone, 1.5f);
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
         if (jugadorObjetivo == null)
         {

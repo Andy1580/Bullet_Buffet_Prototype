@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
         Start_Equipos();
 
         BloquearMovimiento = false;
+
+        GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
+        Destroy(clone, 1.5f);
     }
 
     private void Update()
@@ -558,24 +561,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void OnEnable()
-    {
-        // Reiniciamos el progreso de la habilidad
-        habilidadProgreso = 0f;
-        playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
-
-        canEscudo = true;
-        actualHability = hability;
-        muerto = false;
-        // Iniciamos la coroutine para cargar la habilidad
-        StartCoroutine(CargarHabilidad());
-
-        Start_Dash();
-        Start_Escudo();
-
-        BloquearMovimiento = false;
-        
-    }
+    
 
     #endregion Habilidad
 
@@ -659,4 +645,31 @@ public class PlayerController : MonoBehaviour
 
     #endregion POWER UP
 
+    #region VFX RESPAWN
+
+    [Header("VFX RESPAWN")]
+    [SerializeField] GameObject vfxRespanPlayer;
+    #endregion VFX RESPAWN
+
+    void OnEnable()
+    {
+        // Reiniciamos el progreso de la habilidad
+        habilidadProgreso = 0f;
+        playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+
+        canEscudo = true;
+        actualHability = hability;
+        muerto = false;
+        // Iniciamos la coroutine para cargar la habilidad
+        StartCoroutine(CargarHabilidad());
+
+        Start_Dash();
+        Start_Escudo();
+
+        BloquearMovimiento = false;
+
+        GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
+        Destroy(clone, 1.5f);
+
+    }
 }
