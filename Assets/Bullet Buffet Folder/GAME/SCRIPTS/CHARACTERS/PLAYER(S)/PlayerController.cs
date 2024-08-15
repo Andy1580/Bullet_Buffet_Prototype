@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
     {
         if (canShoot)
         {
+            AudioManager.instance.PlaySound("disparojugador");
             BulletShoot();
         }
     }
@@ -411,6 +412,7 @@ public class PlayerController : MonoBehaviour
     void DeadEvent()
     {
         animator.SetTrigger("muerto");
+        AudioManager.instance.PlaySound("muertejugador");
         muerto = true;
         GameManager.Instance.DeadPlayerEventMHS(this);
     }

@@ -10728,6 +10728,8 @@ MonoBehaviour:
   minSpawnTime: 12
   maxSpawnTime: 17
   deadEnemy: 0
+  vfxDisappearEnemy: {fileID: 8501132627541630109, guid: 59bfca0a48f2ed44caf242abbf007871,
+    type: 3}
   poweUpVel: {fileID: 6016782402393687215, guid: bc89e0576591b7745bdd50060ebfdc00,
     type: 3}
   poweUpInv: {fileID: 777215310296325672, guid: 2a25c7caa83baa140911483300377d18,
@@ -32557,7 +32559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2932131835275591524
 Transform:
   m_ObjectHideFlags: 0
@@ -32567,7 +32569,7 @@ Transform:
   m_GameObject: {fileID: 5252244703789024044}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.163588, y: -1.59, z: -6.65}
+  m_LocalPosition: {x: 4.163588, y: -3.99, z: -6.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -71570,7 +71572,7 @@ PrefabInstance:
     - target: {fileID: 1575289569116050670, guid: 8f39c0b432aab1b458e2b6fc790609b9,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5396416092458698373, guid: 8f39c0b432aab1b458e2b6fc790609b9,
         type: 3}
@@ -74540,7 +74542,7 @@ PrefabInstance:
     - target: {fileID: 8293097939378864508, guid: 73807840af30e664eaafb1827b55144f,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9223085404540518169, guid: 73807840af30e664eaafb1827b55144f,
         type: 3}
@@ -84769,7 +84771,7 @@ PrefabInstance:
     - target: {fileID: 7900544160418490385, guid: e33915d1f6355b24084c8e67161f9ff4,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -91753,7 +91755,7 @@ PrefabInstance:
     - target: {fileID: 6828069158864884785, guid: f0a6c7e11c1a1b742bc9993e23df1038,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -92733,7 +92735,7 @@ PrefabInstance:
     - target: {fileID: 6530115667690439607, guid: f57fe2292a8ae9b4d9e82a5d376fc259,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

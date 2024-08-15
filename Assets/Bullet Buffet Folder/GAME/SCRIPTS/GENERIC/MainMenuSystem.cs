@@ -92,7 +92,7 @@ public class MainMenuSystem : MonoBehaviour
         panelSchemeControl.SetActive(false);
         panelMapasMHS.SetActive(false);
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
         //eventS.firstSelectedGameObject = bHechizos;
     }
 
@@ -113,7 +113,7 @@ public class MainMenuSystem : MonoBehaviour
         tiempoActualMDSText.text = "1:00";
         tiempoActualMHSText.text = "1:00";
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
 
         //rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
         //eventS.firstSelectedGameObject = bModes;
@@ -128,7 +128,7 @@ public class MainMenuSystem : MonoBehaviour
         panelSchemeControl.SetActive(false);
         panelMapasMHS.SetActive(false);
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void GoToSchemeControl()
@@ -140,7 +140,7 @@ public class MainMenuSystem : MonoBehaviour
         panelConfimarSalir.SetActive(false);
         panelMapasMHS.SetActive(false);
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void ModoHechizosSazonados()
@@ -154,7 +154,7 @@ public class MainMenuSystem : MonoBehaviour
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void ModoDueloDeSalsas()
@@ -168,7 +168,7 @@ public class MainMenuSystem : MonoBehaviour
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void MapaStreetMHS()
@@ -178,7 +178,7 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaRestaurantMHS = false;
         play = true;
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void MapaDungeonMHS()
@@ -188,7 +188,7 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaRestaurantMHS = false;
         play = true;
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void MapaRestaurantMHS()
@@ -198,7 +198,7 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaDungeonMHS = false;
         play = true;
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void MapaStreetMDS()
@@ -208,7 +208,7 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaRestaurantMDS = false;
         play = true;
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void MapaDungeonMDS()
@@ -218,7 +218,7 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaRestaurantMDS = false;
         play = true;
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void MapaRestaurantMDS()
@@ -228,14 +228,14 @@ public class MainMenuSystem : MonoBehaviour
         GameManager.boolMapaDungeonMDS = false;
         play = true;
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     #region CAMBIOS DE RONDA
 
     public void AumentarRondas()
     {
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
 
         int ronda = GameManager.Instance.puntosParaGanar;
 
@@ -292,7 +292,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void DisminuirRonda()
     {
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
 
         int ronda = GameManager.Instance.puntosParaGanar;
 
@@ -352,7 +352,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void AumentarTiempo()
     {
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
 
         float tiempo = GameManager.Instance.totalTime;
 
@@ -412,7 +412,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void DisminuirTiempo()
     {
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
 
         float tiempo = GameManager.Instance.totalTime;
 
@@ -475,7 +475,7 @@ public class MainMenuSystem : MonoBehaviour
     public void CargarLobby()
     {
         if (!play) return;
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
         SceneManager.LoadScene("LOBBY");
     }
 
@@ -488,7 +488,7 @@ public class MainMenuSystem : MonoBehaviour
         panelSchemeControl.SetActive(false);
         panelMapasMHS.SetActive(false);
 
-        //AudioManager.instance.PlaySound("");
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void Salir()

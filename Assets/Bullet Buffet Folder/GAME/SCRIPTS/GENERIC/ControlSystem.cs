@@ -84,6 +84,8 @@ public class ControlSystem : MonoBehaviour
                 {
                     if (selectTm && equipo != 0)
                     {
+                        AudioManager.instance.PlaySound("botonmenu");
+
                         if (Gamepad.all.Count == 2)
                         {
                             if (LobbyManager.equipoControles[equipo - 1] <= 0)
@@ -177,6 +179,7 @@ public class ControlSystem : MonoBehaviour
                 }
                 else
                 {
+                    AudioManager.instance.PlaySound("seleccionpersonaje");
                     selectedCharacter = col.gameObject.name;
                     CheckSprite(selectedCharacter);
                     Gamepad currentGamepad = context.control.device as Gamepad;

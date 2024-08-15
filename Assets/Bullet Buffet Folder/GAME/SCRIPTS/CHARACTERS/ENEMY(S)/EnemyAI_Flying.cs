@@ -226,6 +226,7 @@ public class EnemyAI_Flying : MonoBehaviour
 
     void Ataque()
     {
+        AudioManager.instance.PlaySound("disparomedusa");
         GameObject clone = Instantiate(balaPrefab, balaSpawn.position, balaSpawn.rotation);
         Destroy(clone, 8.0f);
     }

@@ -366,7 +366,7 @@ public class GameManager : MonoBehaviour
                 //Aqui ira todo lo que necesita el MDS
                 InicializarMDS();
                 InicializarMarcadorMDS();
-                pistaPintable.SetActive(true);
+                //pistaPintable.SetActive(true);
             }
         }
         else
@@ -380,6 +380,8 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
             Debug.Log("Se Resetiaron las variables");
+
+            AudioManager.instance.PlaySound("1");
 
             //Booleanos Partida
             modoHS = false;
@@ -1632,6 +1634,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float minSpawnTime = 3f; // Tiempo mínimo entre spawns
     [SerializeField] private float maxSpawnTime = 5f; // Tiempo máximo entre spawns
     [SerializeField] private bool deadEnemy = false;
+    [SerializeField] private GameObject vfxDisappearEnemy;
 
     private List<GameObject> enemigosInstanciados = new List<GameObject>();
 
@@ -1686,6 +1689,8 @@ public class GameManager : MonoBehaviour
             {
                 Destroy(enemy);
                 enemigosInstanciados.RemoveAt(i);
+                GameObject cloneVFX = Instantiate(vfxDisappearEnemy, enemy.transform);
+                Destroy(cloneVFX, 3);
             }
         }
     }

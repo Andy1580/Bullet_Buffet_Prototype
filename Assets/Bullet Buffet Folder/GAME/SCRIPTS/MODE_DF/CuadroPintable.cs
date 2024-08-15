@@ -57,6 +57,7 @@ public class CuadroPintable : MonoBehaviour
                     GameManager.Instance.RemoverCuadroPintado(this, currentTeam);
                 }
                 CambiarPropietario(playerTeam.equipo);
+                AudioManager.instance.PlaySound("pista");
             }
             else if (playerTeam.equipo == 2 && currentTeam != 2)
             {
@@ -65,6 +66,7 @@ public class CuadroPintable : MonoBehaviour
                     GameManager.Instance.RemoverCuadroPintado(this, currentTeam);
                 }
                 CambiarPropietario(playerTeam.equipo);
+                AudioManager.instance.PlaySound("pista");
             }
         }
     }
