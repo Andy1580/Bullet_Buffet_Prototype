@@ -14,6 +14,14 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private GameObject panelSchemeControl;
     [SerializeField] private GameObject panelConfimarSalir;
 
+    [Header("Imagenes de Mapas")]
+    [SerializeField] private GameObject cafeMHS;
+    [SerializeField] private GameObject ciudadMHS;
+    [SerializeField] private GameObject dungeonMHS;
+    [SerializeField] private GameObject cafeMDS;
+    [SerializeField] private GameObject ciudadMDS;
+    [SerializeField] private GameObject dungeonMDS;
+
     [Header("Rondas MHS")]
     [SerializeField] private TMP_Text rondaActualText;
 
@@ -26,11 +34,13 @@ public class MainMenuSystem : MonoBehaviour
 
     private bool play;
 
+    private bool startGame;
+
     GameManager gM;
 
     private void Awake()
     {
-        panelMenu.SetActive(true);
+        DontDestroyOnLoad(panelMenu);
     }
 
     private void Start()
@@ -39,8 +49,6 @@ public class MainMenuSystem : MonoBehaviour
         {
             gM = FindFirstObjectByType<GameManager>();
         }
-
-
 
         //if (eventSystem == null)
         //{
@@ -62,6 +70,13 @@ public class MainMenuSystem : MonoBehaviour
         panelMapasMDS.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelConfimarSalir.SetActive(false);
+
+        cafeMHS.SetActive(false);
+        ciudadMHS.SetActive(false);
+        dungeonMHS.SetActive(false);
+        cafeMDS.SetActive(false);
+        ciudadMDS.SetActive(false);
+        dungeonMDS.SetActive(false);
 
         rondaActualText.text = "1";
         tiempoActualMDSText.text = "1:00";
@@ -127,6 +142,13 @@ public class MainMenuSystem : MonoBehaviour
 
         AudioManager.instance.PlaySound("botonmenu");
 
+        cafeMHS.SetActive(false);
+        ciudadMHS.SetActive(false);
+        dungeonMHS.SetActive(false);
+        cafeMDS.SetActive(false);
+        ciudadMDS.SetActive(false);
+        dungeonMDS.SetActive(false);
+
         //rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
         //eventS.firstSelectedGameObject = bModes;
     }
@@ -191,6 +213,10 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        ciudadMHS.SetActive(true);
+        cafeMHS.SetActive(false);
+        dungeonMHS.SetActive(false);
     }
 
     public void MapaDungeonMHS()
@@ -201,6 +227,10 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        dungeonMHS.SetActive(true);
+        cafeMHS.SetActive(false);
+        ciudadMHS.SetActive(false);
     }
 
     public void MapaRestaurantMHS()
@@ -211,6 +241,10 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        cafeMHS.SetActive(true);
+        ciudadMHS.SetActive(false);
+        dungeonMHS.SetActive(false);
     }
 
     public void MapaStreetMDS()
@@ -221,6 +255,10 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        ciudadMDS.SetActive(true);
+        cafeMDS.SetActive(false);
+        dungeonMDS.SetActive(false);
     }
 
     public void MapaDungeonMDS()
@@ -231,6 +269,10 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        dungeonMDS.SetActive(true);
+        cafeMDS.SetActive(false);
+        ciudadMDS.SetActive(false);
     }
 
     public void MapaRestaurantMDS()
@@ -241,6 +283,10 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        cafeMDS.SetActive(true);
+        ciudadMDS.SetActive(false);
+        dungeonMDS.SetActive(false);
     }
 
     #region CAMBIOS DE RONDA
@@ -251,17 +297,17 @@ public class MainMenuSystem : MonoBehaviour
 
         int ronda = GameManager.Instance.puntosParaGanar;
 
-        if(ronda == 1)
+        if (ronda == 1)
         {
             GameManager.Instance.puntosParaGanar = 2;
             rondaActualText.text = "2";
         }
-        else if(ronda == 2)
+        else if (ronda == 2)
         {
             GameManager.Instance.puntosParaGanar = 3;
             rondaActualText.text = "3";
         }
-        else if(ronda == 3)
+        else if (ronda == 3)
         {
             GameManager.Instance.puntosParaGanar = 4;
             rondaActualText.text = "4";
@@ -296,7 +342,7 @@ public class MainMenuSystem : MonoBehaviour
             GameManager.Instance.puntosParaGanar = 10;
             rondaActualText.text = "10";
         }
-        else if(ronda == 10)
+        else if (ronda == 10)
         {
             return;
         }
@@ -308,7 +354,7 @@ public class MainMenuSystem : MonoBehaviour
 
         int ronda = GameManager.Instance.puntosParaGanar;
 
-        if(ronda == 10)
+        if (ronda == 10)
         {
             GameManager.Instance.puntosParaGanar = 9;
             rondaActualText.text = "9";
@@ -318,7 +364,7 @@ public class MainMenuSystem : MonoBehaviour
             GameManager.Instance.puntosParaGanar = 8;
             rondaActualText.text = "8";
         }
-        else if(ronda == 8)
+        else if (ronda == 8)
         {
             GameManager.Instance.puntosParaGanar = 7;
             rondaActualText.text = "7";

@@ -363,6 +363,7 @@ public class GameManager : MonoBehaviour
     {
         ResetiarVariables();
         EscenaDeJuego();
+        InicializarMusica();
     }
 
     void EscenaDeJuego()

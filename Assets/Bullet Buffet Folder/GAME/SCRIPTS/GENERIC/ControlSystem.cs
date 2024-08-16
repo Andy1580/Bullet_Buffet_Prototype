@@ -31,7 +31,7 @@ public class ControlSystem : MonoBehaviour
         controlImg.color = new Color(1, 1, 1, 0.6f);
         equipoBloqueado = false;
         equipo = 0;
-
+        //spritePersonaje.sprite = spritePersonaje.sprite;
 
     }
 
@@ -42,7 +42,7 @@ public class ControlSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        spritePersonaje.sprite = CheckSprite(selectedCharacter);
+        //spritePersonaje.sprite = CheckSprite(selectedCharacter);
     }
 
     #region INPUT
@@ -84,7 +84,7 @@ public class ControlSystem : MonoBehaviour
                 {
                     if (selectTm && equipo != 0)
                     {
-                        AudioManager.instance.PlaySound("botonmenu");
+                        //AudioManager.instance.PlaySound("botonmenu");
 
                         if (Gamepad.all.Count == 2)
                         {
@@ -181,7 +181,7 @@ public class ControlSystem : MonoBehaviour
                 {
                     AudioManager.instance.PlaySound("seleccionpersonaje");
                     selectedCharacter = col.gameObject.name;
-                    CheckSprite(selectedCharacter);
+                    spritePersonaje.sprite = CheckSprite(selectedCharacter);
                     Gamepad currentGamepad = context.control.device as Gamepad;
                     loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
                     Debug.Log("Escojio el personaje: " + selectedCharacter);

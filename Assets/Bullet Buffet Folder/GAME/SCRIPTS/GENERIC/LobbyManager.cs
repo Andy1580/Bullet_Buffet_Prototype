@@ -20,6 +20,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject panelSelectTeam;
     [SerializeField] private GameObject panelSelectCh;
     [SerializeField] private GameObject botonJugar;
+    [SerializeField] private GameObject tiras;
 
     public static bool escogiendoEquipo = true;
 
@@ -48,6 +49,7 @@ public class LobbyManager : MonoBehaviour
         panelSelectTeam.SetActive(true);
         panelSelectCh.SetActive(false);
         botonJugar.SetActive(false);
+        tiras.SetActive(false);
 
         escogiendoEquipo = true;
         equipoControles = new int[equipoControles.Length];
@@ -237,10 +239,12 @@ public class LobbyManager : MonoBehaviour
             if (personaje.Count == 2)
             {
                 botonJugar.SetActive(true);
+                tiras.SetActive(true);
             }
             else
             {
                 botonJugar.SetActive(false);
+                tiras.SetActive(false);
             }
         }
         else if (Gamepad.all.Count == 4)
@@ -248,10 +252,12 @@ public class LobbyManager : MonoBehaviour
             if (personaje.Count == 4)
             {
                 botonJugar.SetActive(true);
+                tiras.SetActive(true);
             }
             else
             {
                 botonJugar.SetActive(false);
+                tiras.SetActive(false);
             }
         }
     }
@@ -323,7 +329,7 @@ public class LobbyManager : MonoBehaviour
 
         string json = JsonUtility.ToJson(infoLobby);
         Debug.Log("JSON generado: " + json);
-
+        AudioManager.instance.StopSound("menu");
         GameManager.Instance.RecibirInformacionLobby(json);
 
         SceneManager.LoadScene("ANDYINGAME");

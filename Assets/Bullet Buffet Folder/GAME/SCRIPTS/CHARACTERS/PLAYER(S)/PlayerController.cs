@@ -93,7 +93,6 @@ public class PlayerController : MonoBehaviour
     {
         if (canShoot)
         {
-            AudioManager.instance.PlaySound("disparojugador");
             BulletShoot();
         }
     }
@@ -274,7 +273,7 @@ public class PlayerController : MonoBehaviour
     {
         if (cont <= 0)
         {
-            //AudioManager.instance.PlaySound("");
+            AudioManager.instance.PlaySound("disparojugador");
             Transform clon = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
             clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
             Destroy(clon.gameObject, 3);

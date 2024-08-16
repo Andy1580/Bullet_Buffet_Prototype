@@ -15,7 +15,7 @@ public class EnemyAI_Meele : MonoBehaviour
 
     List<PlayerController> players;
     private NavMeshAgent agente;
-    private PlayerController jugadorObjetivo;
+    [SerializeField] private PlayerController jugadorObjetivo;
 
     void Start()
     {
@@ -63,7 +63,14 @@ public class EnemyAI_Meele : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.LookAt(jugadorObjetivo.transform);
+        if (jugadorObjetivo != null)
+        {
+            transform.LookAt(jugadorObjetivo.transform);
+        }
+        else
+        {
+            BuscarJugadorCercano();
+        }
 
         if (jugadorObjetivo.Vida <= 0)
         {
