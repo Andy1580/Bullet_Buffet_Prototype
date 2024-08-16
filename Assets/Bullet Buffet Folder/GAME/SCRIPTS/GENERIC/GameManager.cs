@@ -284,6 +284,33 @@ public class GameManager : MonoBehaviour
 
     #endregion LOBBY
 
+    #region MUSICA
+
+    void InicializarMusica()
+    {
+        if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
+        {
+            AudioManager.instance.PlaySound("menu");
+            AudioManager.instance.StopSound("hechizos");
+            AudioManager.instance.StopSound("duelo");
+        }
+        else if (SceneManager.GetActiveScene().name == "ANDYINGAME")
+        {
+            if(modoHS)
+            {
+                AudioManager.instance.StopSound("menu");
+                AudioManager.instance.PlaySound("hechizos");
+            }
+            else if(modoDS)
+            {
+                AudioManager.instance.StopSound("menu");
+                AudioManager.instance.PlaySound("duelo");
+            }
+        }
+    }
+
+    #endregion MUSICA
+
     #region GAME MANAGER
     public static GameManager Instance;
 
@@ -299,7 +326,7 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
 
-
+        InicializarMusica();
         InicializarJugadores();
         EscenaDeJuego();
         ResetiarVariables();

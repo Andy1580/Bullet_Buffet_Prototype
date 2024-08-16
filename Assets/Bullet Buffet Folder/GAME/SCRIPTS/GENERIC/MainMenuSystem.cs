@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class MainMenuSystem : MonoBehaviour
 {
     [Header("Main Menu Core")]
+    [SerializeField] private GameObject panelMenu;
     [SerializeField] private GameObject panelInicio;
     [SerializeField] private GameObject panelModos;
     [SerializeField] private GameObject panelMapasMHS;
@@ -26,6 +27,11 @@ public class MainMenuSystem : MonoBehaviour
     private bool play;
 
     GameManager gM;
+
+    private void Awake()
+    {
+        panelMenu.SetActive(true);
+    }
 
     private void Start()
     {
@@ -82,6 +88,12 @@ public class MainMenuSystem : MonoBehaviour
     //        Invoke("CargarLobby", 0.25f);
     //    }
     //}
+
+    public void GoToMenu()
+    {
+        panelMenu.SetActive(false);
+        panelInicio.SetActive(true);
+    }
 
     public void GoToModos()
     {
