@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
         infoLobbyPlayers = infoLobby.playerInfos;
         //SetupHUDs(infoLobbyPlayers);
         //ActivarHUD();
+
+
+        CargarEscena();
     }
 
     #endregion RECIBIR INFORMACION
@@ -284,6 +287,43 @@ public class GameManager : MonoBehaviour
 
     #endregion LOBBY
 
+    #region CARGAR ESCENA
+
+    private void CargarEscena()
+    {
+        if (boolMapaStreetMHS)
+        {
+            SceneManager.LoadScene("MapaStreetMHS");
+        }
+        else if (boolMapaRestaurantMHS)
+        {
+            SceneManager.LoadScene("MapaRestaurantMHS");
+        }
+        else if(boolMapaDungeonMHS)
+        {
+            SceneManager.LoadScene("MapaDungeonMHS");
+        }
+        else if(boolMapaStreetMDS)
+        {
+            SceneManager.LoadScene("MapaStreetMDS");
+        }
+        else if(boolMapaRestaurantMDS)
+        {
+            SceneManager.LoadScene("MapaRestaurantMDS");
+        }
+        else if(boolMapaDungeonMDS)
+        {
+            SceneManager.LoadScene("MapaDungeonMDS");
+        }
+        else
+        {
+            return;
+        }
+
+        EscenaDeJuego();
+    }
+    #endregion CARGAR ESCENA
+
     #region MUSICA
 
     void InicializarMusica()
@@ -296,12 +336,12 @@ public class GameManager : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "ANDYINGAME")
         {
-            if(modoHS)
+            if (modoHS)
             {
                 AudioManager.instance.StopSound("menu");
                 AudioManager.instance.PlaySound("hechizos");
             }
-            else if(modoDS)
+            else if (modoDS)
             {
                 AudioManager.instance.StopSound("menu");
                 AudioManager.instance.PlaySound("duelo");
@@ -328,7 +368,6 @@ public class GameManager : MonoBehaviour
 
         InicializarMusica();
         InicializarJugadores();
-        EscenaDeJuego();
         ResetiarVariables();
     }
 
@@ -362,44 +401,36 @@ public class GameManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         ResetiarVariables();
-        EscenaDeJuego();
         InicializarMusica();
     }
 
     void EscenaDeJuego()
     {
-        if (SceneManager.GetActiveScene().name == "ANDYINGAME")
-        {
-            //AudioManager.instance.PlaySound("");
-            InicializarHUD();
-            IniciarPartida();
-            InicializarTemporizador();
-            InicializarMapas();
-            InicializarPuntaje();
-            InicializarMuerteJugadores();
-            InicializarPausa();
-            InicializarCamara();
-            InstanciarPowerUp();
-            Invoke("InicializarEnemySpawn", 5);
+        //AudioManager.instance.PlaySound("");
+        InicializarHUD();
+        IniciarPartida();
+        InicializarTemporizador();
+        //InicializarMapas();
+        InicializarPuntaje();
+        //InicializarComponentesJugadores();
+        InicializarPausa();
+        InicializarCamara();
+        InstanciarPowerUp();
+        Invoke("InicializarEnemySpawn", 5);
 
-            if (modoHS)
-            {
-                //Aqui ira todo lo que necesita el MHS
-                InicializarMHS();
-                InicializarMarcadorMHS();
-                magosPrincipales.SetActive(true);
-            }
-            else if (modoDS)
-            {
-                //Aqui ira todo lo que necesita el MDS
-                InicializarMDS();
-                InicializarMarcadorMDS();
-                //pistaPintable.SetActive(true);
-            }
-        }
-        else
+        if (modoHS)
         {
-            return;
+            //Aqui ira todo lo que necesita el MHS
+            InicializarMHS();
+            InicializarMarcadorMHS();
+            magosPrincipales.SetActive(true);
+        }
+        else if (modoDS)
+        {
+            //Aqui ira todo lo que necesita el MDS
+            InicializarMDS();
+            InicializarMarcadorMDS();
+            //pistaPintable.SetActive(true);
         }
     }
 
@@ -493,9 +524,6 @@ public class GameManager : MonoBehaviour
 
     public void IniciarPartida()
     {
-        if (SceneManager.GetActiveScene().name != "ANDYINGAME")
-            return;
-
         Debug.Log("Se inicio el metodo: IniciarPartida");
 
         if (infoLobbyPlayers == null)
@@ -1270,7 +1298,7 @@ public class GameManager : MonoBehaviour
     //CharacterController chP1;
     //CharacterController chP2;
 
-    void InicializarMuerteJugadores()
+    void InicializarComponentesJugadores()
     {
         //chP1 = p1.GetComponent<CharacterController>();
         //chP2 = p2.GetComponent<CharacterController>();

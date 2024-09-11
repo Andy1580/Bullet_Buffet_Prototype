@@ -331,8 +331,7 @@ public class LobbyManager : MonoBehaviour
         Debug.Log("JSON generado: " + json);
         AudioManager.instance.StopSound("menu");
         GameManager.Instance.RecibirInformacionLobby(json);
-
-        SceneManager.LoadScene("ANDYINGAME");
+        
     }
 
 
