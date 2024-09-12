@@ -689,4 +689,9 @@ public class PlayerController : MonoBehaviour
         Destroy(clone, 1.5f);
 
     }
+
+    private void OnDestroy()
+    {
+        Debug.Log("El objeto " + gameObject.name + " ha sido destruido.");
+    }
 }

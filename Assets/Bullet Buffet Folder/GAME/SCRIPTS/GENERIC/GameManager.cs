@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public bool inGame;
+
     #region LOBBY
 
     #region RECIBIR INFORMACION
@@ -26,34 +28,11 @@ public class GameManager : MonoBehaviour
 
     #endregion RECIBIR INFORMACION
 
-    #region BUSCAR JUGADORES
+    #region HUD
 
-    private PlayerController FindPlayerController(int gamepadId)
-    {
-        Gamepad gamepad;
-
-        if (LobbyManager.self.idToGamepad.TryGetValue(gamepadId, out gamepad))
-        {
-            foreach (var player in FindObjectsOfType<PlayerController>())
-            {
-                //if (player._gamepad == gamepad)
-                //{
-                //    return player;
-                //}
-            }
-        }
-        return null;
-    }
-    #endregion BUSCAR JUGADORES
-
-    #region LIGAR INFORMACION AL HUD
-
-    [Header("Panels")]
+    [Header("HUD Jugadores")]
     [SerializeField] private GameObject panelHUDs;
     [SerializeField] private PlayerHUD[] slotsHUD;
-    //[SerializeField] private GameObject panelCuatroJugadores;
-
-    private const float MaxHealth = 100f;
 
     private List<PlayerHUD> playerHUDs = new List<PlayerHUD>();
 
@@ -62,228 +41,7 @@ public class GameManager : MonoBehaviour
         panelHUDs.SetActive(true);
     }
 
-    //void ActivarHUD()
-    //{
-    //    if(infoLobbyPlayers.Count == 2)
-    //    {
-    //        panelHUDs.SetActive(true);
-    //    }
-    //    else if (infoLobbyPlayers.Count == 4)
-    //    {
-    //        panelCuatroJugadores.SetActive(true);
-    //    }
-    //}
-
-    //public void SetupPlayer(PlayerController player)
-    //{
-    //    InfoLobby.PlayerInfo playerInfo = infoLobbyPlayers.Find(p => p.gamepadId == player.gamepadIndex.deviceId);
-    //    player.equipo = playerInfo.equipo;
-    //    player.hudSlot = AssignHUDSlot(player);
-    //}
-
-    //public void RegisterPlayerHUD(PlayerController player, PlayerHUD playerHUD)
-    //{
-    //    playerHUDMapping[player] = playerHUD;
-    //}
-
-    //public PlayerHUD GetPlayerHUD(PlayerController player)
-    //{
-    //    return playerHUDMapping.TryGetValue(player, out PlayerHUD playerHUD) ? playerHUD : null;
-    //}
-
-    //public GameObject AssignHUDSlot(PlayerController player)
-    //{
-    //    if (infoLobbyPlayers.Count == 2)
-    //    {
-    //        panelHUDs.SetActive(true);
-    //        panelCuatroJugadores.SetActive(false);
-    //        return panelHUDs.transform.GetChild(player.gamepadIndex.deviceId).gameObject;
-    //    }
-    //    else if (infoLobbyPlayers.Count == 4)
-    //    {
-    //        panelHUDs.SetActive(false);
-    //        panelCuatroJugadores.SetActive(true);
-    //        return panelCuatroJugadores.transform.GetChild(player.gamepadIndex.deviceId).gameObject;
-    //    }
-
-    //    return null;
-    //}
-
-    //public void SetupHUDs(List<InfoLobby.PlayerInfo> playerInfos)
-    //{
-    //    if (playerInfos.Count == 2)
-    //    {
-    //        panelHUDs.SetActive(true);
-    //        SetupTwoPlayersHUD(playerInfos);
-    //    }
-    //    else if (playerInfos.Count == 4)
-    //    {
-    //        panelCuatroJugadores.SetActive(true);
-    //        SetupFourPlayersHUD(playerInfos);
-    //    }
-
-    //    foreach (var playerInfo in playerInfos)
-    //    {
-    //        Debug.Log("Entro al foreach, info del playerInfo: " + playerInfo);
-    //        PlayerController playerController = FindPlayerController(playerInfo.gamepadId);
-    //        if (playerController != null)
-    //        {
-    //            Debug.Log("Se encontro player metodo SetupHuds");
-    //            PlayerHUD playerHUD = GetHUDForPlayer(playerController);
-
-    //            if (playerHUD != null)
-    //            {
-    //                playerHUD.SetupHUD(playerInfo);
-    //                playerHUDMapping[playerController] = playerHUD; // Mapear el PlayerController al HUD
-
-    //                // Asignar valores de salud iniciales
-    //                float initialHealth = MaxHealth;
-    //                playerHUD.UpdateHealth(initialHealth, MaxHealth);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            Debug.LogWarning($"No se encontró el PlayerController para el gamepadId {playerInfo.gamepadId}");
-    //        }
-    //    }
-    //}
-
-    //private void SetupTwoPlayersHUD(List<InfoLobby.PlayerInfo> playerInfos)
-    //{
-    //    // Referenciar HUDs de los paneles de dos jugadores
-    //    PlayerHUD hud1 = panelHUDs.transform.GetChild(0).GetComponent<PlayerHUD>();
-    //    PlayerHUD hud2 = panelHUDs.transform.GetChild(1).GetComponent<PlayerHUD>();
-
-    //    // Asignar información a los HUDs
-    //    playerHUDs.Add(hud1);
-    //    playerHUDs.Add(hud2);
-
-    //    AssignHUDs(playerInfos);
-    //}
-
-    //private void SetupFourPlayersHUD(List<InfoLobby.PlayerInfo> playerInfos)
-    //{
-    //    // Referenciar HUDs de los paneles de cuatro jugadores
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //        PlayerHUD hud = panelCuatroJugadores.transform.GetChild(i).GetComponentInChildren<PlayerHUD>();
-
-    //        //PlayerHUD hud = panelCuatroJugadores.transform.GetComponentsInChildren<PlayerHUD>(i);
-    //        playerHUDs.Add(hud);
-    //    }
-
-    //    // Asignar información a los HUDs
-    //    AssignHUDs(playerInfos);
-    //}
-
-    //private void AssignHUDs(List<InfoLobby.PlayerInfo> playerInfos)
-    //{
-    //    int team1Index = 0;
-    //    int team2Index = playerHUDs.Count / 2; // 2 for 1v1, 2 for 2v2
-
-    //    foreach (var playerInfo in playerInfos)
-    //    {
-    //        PlayerHUD hud;
-    //        if (playerInfo.equipo == 1)
-    //        {
-    //            hud = playerHUDs[team1Index++];
-    //        }
-    //        else
-    //        {
-    //            hud = playerHUDs[team2Index++];
-    //        }
-
-    //        hud.SetupHUD(playerInfo);
-    //    }
-    //}
-    #endregion LIGAR INFORMACION AL HUD
-
-    #region MODIFICAR HUD
-    // Diccionario para mapear PlayerController a PlayerHUD
-    //private Dictionary<PlayerController, PlayerHUD> playerHUDMapping = new Dictionary<PlayerController, PlayerHUD>();
-
-
-    //public void UpdatePlayerHealth(PlayerController player, int health, int maxHealth)
-    //{
-    //    PlayerHUD hud = GetHUDForPlayer(player);
-    //    if (hud != null)
-    //    {
-    //        hud.UpdateHealth((float)health, (float)maxHealth); // Pasar ambos parámetros como float
-    //    }
-    //}
-
-    //public void UpdatePlayerAbility(PlayerController player, float progress)
-    //{
-    //    PlayerHUD hud = GetHUDForPlayer(player);
-    //    if (hud != null)
-    //    {
-    //        hud.UpdateHability(progress);
-
-    //        if (progress >= 0.97f)
-    //        {
-    //            hud.EnableSuperShootIcon();
-    //        }
-    //        else
-    //        {
-    //            hud.DisableSuperShootIcon();
-    //        }
-
-    //        if (progress >= 0.47f)
-    //        {
-    //            hud.EnableExplosiveBulletIcon();
-    //        }
-    //        else
-    //        {
-    //            hud.DisableExplosiveBulletIcon();
-    //        }
-    //    }
-    //}
-
-    //public void UpdatePlayerPowerUp(PlayerController player, string powerUp)
-    //{
-    //    PlayerHUD playerHUD = GetHUDForPlayer(player);
-    //    if (playerHUD != null)
-    //    {
-    //        if (string.IsNullOrEmpty(powerUp))
-    //        {
-    //            playerHUD.DisablePowerUpIcons();
-    //        }
-    //        else
-    //        {
-    //            playerHUD.EnablePowerUpIcon(powerUp);
-    //        }
-    //    }
-    //}
-
-    //public void UpdateDashStatus(PlayerController player, bool isActive, float count)
-    //{
-    //    PlayerHUD hud = GetHUDForPlayer(player);
-    //    if (hud != null)
-    //    {
-    //        hud.UpdateDashStatus(isActive, count);
-    //    }
-    //}
-
-    //public void UpdateShieldStatus(PlayerController player, bool isActive, int count)
-    //{
-    //    PlayerHUD hud = GetHUDForPlayer(player);
-    //    if (hud != null)
-    //    {
-    //        hud.UpdateShieldStatus(isActive, count);
-    //    }
-    //}
-
-    //private PlayerHUD GetHUDForPlayer(PlayerController player)
-    //{
-    //    // Implementar lógica para obtener el HUD correspondiente basado en el PlayerController
-    //    if (playerHUDMapping.TryGetValue(player, out PlayerHUD hud))
-    //    {
-    //        Debug.Log("Se obtuvo el hud para el player");
-    //        return hud;
-    //    }
-    //    return null;
-    //}
-    #endregion MODIFICAR HUD
+    #endregion HUD
 
     #endregion LOBBY
 
@@ -291,6 +49,9 @@ public class GameManager : MonoBehaviour
 
     private void CargarEscena()
     {
+        //EscenaDeJuego();
+        Invoke("EscenaDeJuego", 0.01f);
+
         if (boolMapaStreetMHS)
         {
             SceneManager.LoadScene("MapaStreetMHS");
@@ -299,19 +60,19 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("MapaRestaurantMHS");
         }
-        else if(boolMapaDungeonMHS)
+        else if (boolMapaDungeonMHS)
         {
             SceneManager.LoadScene("MapaDungeonMHS");
         }
-        else if(boolMapaStreetMDS)
+        else if (boolMapaStreetMDS)
         {
             SceneManager.LoadScene("MapaStreetMDS");
         }
-        else if(boolMapaRestaurantMDS)
+        else if (boolMapaRestaurantMDS)
         {
             SceneManager.LoadScene("MapaRestaurantMDS");
         }
-        else if(boolMapaDungeonMDS)
+        else if (boolMapaDungeonMDS)
         {
             SceneManager.LoadScene("MapaDungeonMDS");
         }
@@ -320,7 +81,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        EscenaDeJuego();
     }
     #endregion CARGAR ESCENA
 
@@ -334,7 +94,7 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.StopSound("hechizos");
             AudioManager.instance.StopSound("duelo");
         }
-        else if (SceneManager.GetActiveScene().name == "ANDYINGAME")
+        else if (inGame)
         {
             if (modoHS)
             {
@@ -406,7 +166,9 @@ public class GameManager : MonoBehaviour
 
     void EscenaDeJuego()
     {
+        Debug.Log("Se activo metodo Escena de jueo");
         //AudioManager.instance.PlaySound("");
+        inGame = true;
         InicializarHUD();
         IniciarPartida();
         InicializarTemporizador();
@@ -466,12 +228,12 @@ public class GameManager : MonoBehaviour
             panelVictoria.SetActive(false);
 
             //Mapas
-            mapaStreetMHS.SetActive(false);
-            mapaRestaurantMHS.SetActive(false);
-            mapaDungeonMHS.SetActive(false);
-            mapaStreetMDS.SetActive(false);
-            mapaRestaurantMDS.SetActive(false);
-            mapaDungeonMDS.SetActive(false);
+            //mapaStreetMHS.SetActive(false);
+            //mapaRestaurantMHS.SetActive(false);
+            //mapaDungeonMHS.SetActive(false);
+            //mapaStreetMDS.SetActive(false);
+            //mapaRestaurantMDS.SetActive(false);
+            //mapaDungeonMDS.SetActive(false);
 
 
             //Modo Hechizos Sazonados
@@ -482,7 +244,7 @@ public class GameManager : MonoBehaviour
             puntosAGanarTeam2 = puntajeInicial;
 
             //Modo Duelo De Salsas
-            pistaPintable.SetActive(false);
+            //pistaPintable.SetActive(false);
             panelMarcadorMDS.SetActive(false);
             camaraObjeto.SetActive(false);
 
@@ -502,6 +264,12 @@ public class GameManager : MonoBehaviour
 
             //Cerrar el HUD
             panelHUDs.SetActive(false);
+
+            //Booleano para juego
+            inGame = false;
+
+            //Lista de info jugadores
+            //InicializarJugadores();
         }
         else return;
     }
@@ -612,45 +380,45 @@ public class GameManager : MonoBehaviour
     #endregion PARTIDA
 
     #region MAPAS
-    [Header("Mapas")]
+    //[Header("Mapas")]
 
-    [Header("Modo Hechizos Sazonados")]
-    [SerializeField] private GameObject mapaStreetMHS;
-    [SerializeField] private GameObject mapaRestaurantMHS;
-    [SerializeField] private GameObject mapaDungeonMHS;
+    //[Header("Modo Hechizos Sazonados")]
+    //[SerializeField] private GameObject mapaStreetMHS;
+    //[SerializeField] private GameObject mapaRestaurantMHS;
+    //[SerializeField] private GameObject mapaDungeonMHS;
 
-    [Header("Modo Duelo de Salsas")]
-    [SerializeField] private GameObject mapaStreetMDS;
-    [SerializeField] private GameObject mapaRestaurantMDS;
-    [SerializeField] private GameObject mapaDungeonMDS;
+    //[Header("Modo Duelo de Salsas")]
+    //[SerializeField] private GameObject mapaStreetMDS;
+    //[SerializeField] private GameObject mapaRestaurantMDS;
+    //[SerializeField] private GameObject mapaDungeonMDS;
 
-    void InicializarMapas()
-    {
-        if (boolMapaStreetMHS)
-        {
-            mapaStreetMHS.SetActive(true);
-        }
-        else if (boolMapaDungeonMHS)
-        {
-            mapaDungeonMHS.SetActive(true);
-        }
-        else if (boolMapaRestaurantMHS)
-        {
-            mapaRestaurantMHS.SetActive(true);
-        }
-        else if (boolMapaStreetMDS)
-        {
-            mapaStreetMDS.SetActive(true);
-        }
-        else if (boolMapaRestaurantMDS)
-        {
-            mapaRestaurantMDS.SetActive(true);
-        }
-        else if (boolMapaDungeonMDS)
-        {
-            mapaDungeonMDS.SetActive(true);
-        }
-    }
+    //void InicializarMapas()
+    //{
+    //    if (boolMapaStreetMHS)
+    //    {
+    //        mapaStreetMHS.SetActive(true);
+    //    }
+    //    else if (boolMapaDungeonMHS)
+    //    {
+    //        mapaDungeonMHS.SetActive(true);
+    //    }
+    //    else if (boolMapaRestaurantMHS)
+    //    {
+    //        mapaRestaurantMHS.SetActive(true);
+    //    }
+    //    else if (boolMapaStreetMDS)
+    //    {
+    //        mapaStreetMDS.SetActive(true);
+    //    }
+    //    else if (boolMapaRestaurantMDS)
+    //    {
+    //        mapaRestaurantMDS.SetActive(true);
+    //    }
+    //    else if (boolMapaDungeonMDS)
+    //    {
+    //        mapaDungeonMDS.SetActive(true);
+    //    }
+    //}
     #endregion MAPAS
 
     #region PAUSA
@@ -755,7 +523,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text playerWinText;
     [SerializeField] private int puntosAGanarTeam1;
     [SerializeField] private int puntosAGanarTeam2;
-    [SerializeField] public int puntosParaGanar; //Solo para testeo puse el 3 pero esto se modificara segun el numero de rondas que escojan los jugadores
+    [SerializeField] public int puntosParaGanar;
     private int puntajeInicial = 0;
 
     [Header("Puntaje MHS")]
@@ -795,7 +563,7 @@ public class GameManager : MonoBehaviour
 
     void Update_Marcador_MHS()
     {
-        if (SceneManager.GetActiveScene().name == "ANDYINGAME" && modoHS)
+        if (inGame)
         {
             if (infoLobbyPlayers.Count == 2)
             {
@@ -904,7 +672,7 @@ public class GameManager : MonoBehaviour
 
     private void FixUpdate_Temporizador()
     {
-        if (SceneManager.GetActiveScene().name == "ANDYINGAME")
+        if (inGame)
         {
             if (isRunning)
             {
@@ -989,6 +757,7 @@ public class GameManager : MonoBehaviour
 
         if (prefabPersonaje != null)
         {
+            Debug.Log("Si se mando el SpawnJugador a IniciarPartida");
             PlayerController playerController = Instantiate(prefabPersonaje, spawnPoint.position, spawnPoint.rotation);
             playerController.gamepadIndex = LobbyManager.self.GetGamepadById(gamepadId); // Asignar el Gamepad
             return playerController;
@@ -1012,11 +781,11 @@ public class GameManager : MonoBehaviour
     #endregion CAMARA
 
     #region MODO DUELO DE SALSAS
-    [Header("Modo Duelo De Salsas")]
+    //[Header("Modo Duelo De Salsas")]
 
-    [Header("Pista")]
-    [SerializeField] private GameObject pistaPintable;
-    [SerializeField] private List<CuadroPintable> cuadrosPintables;
+    //[Header("Pista")]
+    //[SerializeField] private GameObject pistaPintable;
+    //[SerializeField] private List<CuadroPintable> cuadrosPintables;
     private List<CuadroPintable> cuadrosTeam1;
     private List<CuadroPintable> cuadrosTeam2;
 
@@ -1698,7 +1467,7 @@ public class GameManager : MonoBehaviour
     {
         deadEnemy = false;
 
-        if (SceneManager.GetActiveScene().name == "ANDYINGAME" && !deadEnemy)
+        if (inGame && !deadEnemy)
         {
             Debug.Log("Se inicio el Spawn de Enemigos");
             print(deadEnemy);
@@ -1768,7 +1537,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnEnemyContinuously()
     {
-        if (SceneManager.GetActiveScene().name != "ANDYINGAME" || deadEnemy)
+        if (!inGame || deadEnemy)
             return;
 
         CheckAndRemoveDeadEnemies();

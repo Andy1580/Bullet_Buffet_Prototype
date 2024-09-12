@@ -18,6 +18,11 @@ public class ControlSystem : MonoBehaviour
     public bool selectTm;
     public bool selectCh;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Start()
     {
         selectTm = true;
