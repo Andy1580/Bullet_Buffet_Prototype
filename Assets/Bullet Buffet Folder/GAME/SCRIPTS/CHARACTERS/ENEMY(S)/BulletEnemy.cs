@@ -15,17 +15,17 @@ public class BulletEnemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.layer == 8) //Layer Player = 8
         {
             PlayerController pC = other.GetComponent<PlayerController>();
-            if (pC != null && !pC.isInvulnerable)
+            if (!pC.isInvulnerable)
             {
                 pC.Vida -= damage;
                 //Debug.Log("vida restante: " + pC.Vida.ToString());
                 Destroy(this.gameObject, vidaBala);
             }
         }
-        else if(other.CompareTag("Shield"))
+        else if(other.gameObject.layer == 0)
         {
             Destroy(this.gameObject);
         }

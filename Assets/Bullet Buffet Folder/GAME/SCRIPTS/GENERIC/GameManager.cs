@@ -289,6 +289,8 @@ public class GameManager : MonoBehaviour
 
     public static List<PlayerController> activePlayers = new List<PlayerController>();
 
+    private Transform respawnJ1;
+    private Transform respawnJ2;
 
     public void IniciarPartida()
     {
@@ -328,6 +330,9 @@ public class GameManager : MonoBehaviour
                 spawn1v1J2 = modo1v1spawnTeam2;
             }
 
+            respawnJ1 = spawn1v1J1;
+            respawnJ2 = spawn1v1J2;
+
             slotsHUD[0].gameObject.SetActive(true);
             slotsHUD[1].gameObject.SetActive(true);
 
@@ -345,11 +350,55 @@ public class GameManager : MonoBehaviour
             p2.BloquearMovimiento = false;
             activePlayers.Add(p2);
 
-            
-            
+
+
         }
         else if (infoLobbyPlayers.Count == 4)
         {
+            //int equipoJ1 = infoLobbyPlayers[0].equipo;
+            //int equipoJ2 = infoLobbyPlayers[1].equipo;
+            //int equipoJ3 = infoLobbyPlayers[2].equipo;
+            //int equipoJ4 = infoLobbyPlayers[3].equipo;
+
+            //Transform spawn2v2J1;
+            //Transform spawn2v2J2;
+            //Transform spawn2v2J3;
+            //Transform spawn2v2J4;
+
+            //if (equipoJ1 == 1)
+            //{
+            //    spawn2v2J1 = modo2v2spawnTeam1_1;
+            //}
+            //else
+            //{
+            //    spawn2v2J1 = modo2v2spawnTeam2_1;
+            //}
+
+            //if (equipoJ2 == 1)
+            //{
+            //    spawn2v2J2 = modo2v2spawnTeam1_1;
+            //}
+            //else
+            //{
+            //    spawn2v2J1 = modo2v2spawnTeam2_1;
+            //}
+
+            //if (equipoJ3 == 1)
+            //{
+
+            //}
+
+            //List<int> equipo1 = new List<int>();
+            //List<int> equipo2 = new List<int>();
+
+            //foreach (var i in infoLobbyPlayers)
+            //{
+            //    if (i.equipo == 1)
+            //    {
+            //        equipo1.Add(i.equipo);
+            //    }
+            //}
+
             slotsHUD[0].gameObject.SetActive(true);
             slotsHUD[1].gameObject.SetActive(true);
             slotsHUD[2].gameObject.SetActive(true);
@@ -393,7 +442,7 @@ public class GameManager : MonoBehaviour
 
     void InicializarSpawnJugadores()
     {
-        if(infoLobbyPlayers.Count == 2)
+        if (infoLobbyPlayers.Count == 2)
         {
             if (p1.equipo == 1)
             {
@@ -1113,7 +1162,7 @@ public class GameManager : MonoBehaviour
     //}
     #endregion MODO HECHIZOS SAZONADOS
 
-    #region DEAD EVENT PLAYER MHS
+    #region DEAD EVENT PLAYER
 
     //CharacterController chP1;
     //CharacterController chP2;
@@ -1307,8 +1356,8 @@ public class GameManager : MonoBehaviour
 
 
             // Los movemos a sus posiciones iniciales
-            p1.transform.position = modo1v1spawnTeam1.position;
-            p2.transform.position = modo1v1spawnTeam2.position;
+            p1.transform.position = respawnJ1.position;
+            p2.transform.position = respawnJ2.position;
         }
         else
         {
@@ -1408,7 +1457,7 @@ public class GameManager : MonoBehaviour
                 p1.enabled = true;
                 p1.BloquearMovimiento = false;
                 p1.anim.SetTrigger("spawn");
-                p1.transform.position = modo1v1spawnTeam1.localPosition;
+                p1.transform.position = respawnJ1.localPosition;
             }
             else if (player == p2)
             {
@@ -1418,7 +1467,7 @@ public class GameManager : MonoBehaviour
                 p2.enabled = true;
                 p2.BloquearMovimiento = false;
                 p2.anim.SetTrigger("spawn");
-                p2.transform.position = modo1v1spawnTeam2.localPosition;
+                p2.transform.position = respawnJ2.localPosition;
             }
 
         }
@@ -1500,7 +1549,7 @@ public class GameManager : MonoBehaviour
         player.isInvulnerable = false;
         player.anim.SetTrigger("spawn");
     }
-    #endregion DEAD EVENT PLAYER MHS
+    #endregion DEAD EVENT PLAYER
 
     #region SPAWN DE ENEMIGOS
     [Header("Spawn Enemy Core")]
