@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -170,7 +169,8 @@ public class GameManager : MonoBehaviour
         //AudioManager.instance.PlaySound("");
         inGame = true;
         InicializarHUD();
-        IniciarPartida();
+        //IniciarPartida();
+        Invoke("IniciarPartida", 0.02f);
         InicializarTemporizador();
         //InicializarMapas();
         InicializarPuntaje();
@@ -304,22 +304,49 @@ public class GameManager : MonoBehaviour
 
         if (infoLobbyPlayers.Count == 2)
         {
+            int equipoJ1 = infoLobbyPlayers[0].equipo;
+            int equipoJ2 = infoLobbyPlayers[1].equipo;
+
+            Transform spawn1v1J1;
+            Transform spawn1v1J2;
+
+            if (equipoJ1 == 1)
+            {
+                spawn1v1J1 = modo1v1spawnTeam1;
+            }
+            else
+            {
+                spawn1v1J1 = modo1v1spawnTeam2;
+            }
+
+            if (equipoJ2 == 1)
+            {
+                spawn1v1J2 = modo1v1spawnTeam1;
+            }
+            else
+            {
+                spawn1v1J2 = modo1v1spawnTeam2;
+            }
+
             slotsHUD[0].gameObject.SetActive(true);
             slotsHUD[1].gameObject.SetActive(true);
 
-            p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam1, infoLobbyPlayers[0].gamepadId);
-            p1.equipo = infoLobbyPlayers[0].equipo;
+            p1 = SpawnJugador(infoLobbyPlayers[0].personaje, spawn1v1J1, infoLobbyPlayers[0].gamepadId);
+            p1.equipo = equipoJ1;
             p1.AsignarSlot(slotsHUD[0]);
             p1.playerHUD.Name = infoLobbyPlayers[0].personaje;
             p1.BloquearMovimiento = false;
             activePlayers.Add(p1);
 
-            p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam2, infoLobbyPlayers[1].gamepadId);
-            p2.equipo = infoLobbyPlayers[1].equipo;
+            p2 = SpawnJugador(infoLobbyPlayers[1].personaje, spawn1v1J2, infoLobbyPlayers[1].gamepadId);
+            p2.equipo = equipoJ2;
             p2.AsignarSlot(slotsHUD[1]);
             p2.playerHUD.Name = infoLobbyPlayers[1].personaje;
             p2.BloquearMovimiento = false;
             activePlayers.Add(p2);
+
+            
+            
         }
         else if (infoLobbyPlayers.Count == 4)
         {
@@ -362,6 +389,30 @@ public class GameManager : MonoBehaviour
             j.BloquearMovimiento = false;
         }
 
+    }
+
+    void InicializarSpawnJugadores()
+    {
+        if(infoLobbyPlayers.Count == 2)
+        {
+            if (p1.equipo == 1)
+            {
+                p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam1, infoLobbyPlayers[0].gamepadId);
+            }
+            else
+            {
+                p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam2, infoLobbyPlayers[0].gamepadId);
+            }
+
+            if (p2.equipo == 1)
+            {
+                p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam1, infoLobbyPlayers[1].gamepadId);
+            }
+            else
+            {
+                p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam2, infoLobbyPlayers[1].gamepadId);
+            }
+        }
     }
 
     private void InicializarJugadores()
