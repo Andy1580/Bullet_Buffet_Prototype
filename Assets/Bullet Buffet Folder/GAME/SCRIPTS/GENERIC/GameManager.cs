@@ -170,6 +170,7 @@ public class GameManager : MonoBehaviour
         inGame = true;
         InicializarHUD();
         //IniciarPartida();
+        InicializarSpawnsPoints();
         Invoke("IniciarPartida", 0.02f);
         InicializarTemporizador();
         //InicializarMapas();
@@ -438,6 +439,7 @@ public class GameManager : MonoBehaviour
             j.BloquearMovimiento = false;
         }
 
+        InicializarBodyJugadores();
     }
 
     void InicializarSpawnJugadores()
@@ -830,7 +832,7 @@ public class GameManager : MonoBehaviour
 
     #region JUGADORES
 
-    [Header("Spawn Points")]
+    [Header("Main Spawn Points")]
     [SerializeField] private Transform modo1v1spawnTeam1;
     [SerializeField] private Transform modo1v1spawnTeam2;
     [SerializeField] private Transform modo2v2spawnTeam1_1;
@@ -838,7 +840,29 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform modo2v2spawnTeam2_1;
     [SerializeField] private Transform modo2v2spawnTeam2_2;
 
+    private GameObject bodyP1;
+    private GameObject bodyP2;
+    private GameObject bodyP3;
+    private GameObject bodyP4;
+
     private static PlayerController p1, p2, p3, p4;
+
+    private void InicializarBodyJugadores()
+    {
+        if (infoLobbyPlayers.Count == 2)
+        {
+            bodyP1 = p1.transform.GetChild(0).gameObject;
+            bodyP2 = p2.transform.GetChild(0).gameObject;
+        }
+        else if (infoLobbyPlayers.Count == 4)
+        {
+            bodyP1 = p1.transform.GetChild(0).gameObject;
+            bodyP2 = p2.transform.GetChild(0).gameObject;
+            bodyP3 = p3.transform.GetChild(0).gameObject;
+            bodyP4 = p4.transform.GetChild(0).gameObject;
+        }
+
+    }
 
     private PlayerController SpawnJugador(string personaje, Transform spawnPoint, int gamepadId)
     {
@@ -866,6 +890,118 @@ public class GameManager : MonoBehaviour
         return null;
     }
     #endregion JUGADORES
+
+    #region SPAWN POSITIONS
+    [Header("Spawns Players for Map")]
+
+    [Header("Spawns Street MHS")]
+    [SerializeField] private Transform[] streetMHS;
+    [Header("Spawns Restaurant MHS")]
+    [SerializeField] private Transform[] restaurantMHS;
+    [Header("Spawns Dungueon MHS")]
+    [SerializeField] private Transform[] dungueonMHS;
+    [Header("Spawns Street MDS")]
+    [SerializeField] private Transform[] streetMDS;
+    [Header("Spawns Restaurant MDS")]
+    [SerializeField] private Transform[] restaurantMDS;
+    [Header("Spawns Dungueon MDS")]
+    [SerializeField] private Transform[] dungueonMDS;
+
+    [Header("Spawns Enemies for Map")]
+    [SerializeField] private Transform[] EnemyStreetMHS;
+    [SerializeField] private Transform[] EnemyRestaurantMHS;
+    [SerializeField] private Transform[] EnemyDungeonMHS;
+    [SerializeField] private Transform[] EnemyStreetMDS;
+    [SerializeField] private Transform[] EnemyRestaurantMDS;
+    [SerializeField] private Transform[] EnemyDungeonMDS;
+    private void InicializarSpawnsPoints()
+    {
+        if (boolMapaStreetMHS)
+        {
+            modo1v1spawnTeam1.position = streetMHS[0].position;
+            modo1v1spawnTeam2.position = streetMHS[1].position;
+            modo2v2spawnTeam1_1.position = streetMHS[2].position;
+            modo2v2spawnTeam1_2.position = streetMHS[3].position;
+            modo2v2spawnTeam2_1.position = streetMHS[4].position;
+            modo2v2spawnTeam2_2.position = streetMHS[5].position;
+
+            for(int i = 0; i < spawnPointsEnemies.Length; i++)
+            {
+                spawnPointsEnemies[i].position = EnemyStreetMHS[i].position;
+            }
+        }
+        else if (boolMapaRestaurantMHS)
+        {
+            modo1v1spawnTeam1.position = restaurantMHS[0].position;
+            modo1v1spawnTeam2.position = restaurantMHS[1].position;
+            modo2v2spawnTeam1_1.position = restaurantMHS[2].position;
+            modo2v2spawnTeam1_2.position = restaurantMHS[3].position;
+            modo2v2spawnTeam2_1.position = restaurantMHS[4].position;
+            modo2v2spawnTeam2_2.position = restaurantMHS[5].position;
+
+            for (int i = 0; i < spawnPointsEnemies.Length; i++)
+            {
+                spawnPointsEnemies[i].position = EnemyRestaurantMHS[i].position;
+            }
+        }
+        else if (boolMapaDungeonMHS)
+        {
+            modo1v1spawnTeam1.position = dungueonMHS[0].position;
+            modo1v1spawnTeam2.position = dungueonMHS[1].position;
+            modo2v2spawnTeam1_1.position = dungueonMHS[2].position;
+            modo2v2spawnTeam1_2.position = dungueonMHS[3].position;
+            modo2v2spawnTeam2_1.position = dungueonMHS[4].position;
+            modo2v2spawnTeam2_2.position = dungueonMHS[5].position;
+
+            for (int i = 0; i < spawnPointsEnemies.Length; i++)
+            {
+                spawnPointsEnemies[i].position = EnemyDungeonMHS[i].position;
+            }
+        }
+        else if (boolMapaStreetMDS)
+        {
+            modo1v1spawnTeam1.position = streetMDS[0].position;
+            modo1v1spawnTeam2.position = streetMDS[1].position;
+            modo2v2spawnTeam1_1.position = streetMDS[2].position;
+            modo2v2spawnTeam1_2.position = streetMDS[3].position;
+            modo2v2spawnTeam2_1.position = streetMDS[4].position;
+            modo2v2spawnTeam2_2.position = streetMDS[5].position;
+
+            for (int i = 0; i < spawnPointsEnemies.Length; i++)
+            {
+                spawnPointsEnemies[i].position = EnemyStreetMDS[i].position;
+            }
+        }
+        else if (boolMapaRestaurantMDS)
+        {
+            modo1v1spawnTeam1.position = restaurantMDS[0].position;
+            modo1v1spawnTeam2.position = restaurantMDS[1].position;
+            modo2v2spawnTeam1_1.position = restaurantMDS[2].position;
+            modo2v2spawnTeam1_2.position = restaurantMDS[3].position;
+            modo2v2spawnTeam2_1.position = restaurantMDS[4].position;
+            modo2v2spawnTeam2_2.position = restaurantMDS[5].position;
+
+            for (int i = 0; i < spawnPointsEnemies.Length; i++)
+            {
+                spawnPointsEnemies[i].position = EnemyRestaurantMDS[i].position;
+            }
+        }
+        else if (boolMapaDungeonMDS)
+        {
+            modo1v1spawnTeam1.position = dungueonMDS[0].position;
+            modo1v1spawnTeam2.position = dungueonMDS[1].position;
+            modo2v2spawnTeam1_1.position = dungueonMDS[2].position;
+            modo2v2spawnTeam1_2.position = dungueonMDS[3].position;
+            modo2v2spawnTeam2_1.position = dungueonMDS[4].position;
+            modo2v2spawnTeam2_2.position = dungueonMDS[5].position;
+
+            for (int i = 0; i < spawnPointsEnemies.Length; i++)
+            {
+                spawnPointsEnemies[i].position = EnemyDungeonMDS[i].position;
+            }
+        }
+    }
+    #endregion SPAWN POSITIONS
 
     #region CAMARA
     [Header("Camara Principal De Juego")]
@@ -1440,34 +1576,32 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RespawnearJugadorMDS(PlayerController player, float time)
     {
-        Debug.Log("Se respauneo el jugador");
+        Debug.Log("Se respauneo el jugador: " + player.name);
         yield return new WaitForSeconds(time);
-        player.gameObject.SetActive(false);
-        yield return new WaitForSeconds(time);
-        player.enabled = false;
+        player.transform.GetChild(0).gameObject.SetActive(false);
         yield return new WaitForSeconds(1.5f);
 
         if (infoLobbyPlayers.Count == 2)
         {
             if (player == p1)
             {
-                p1.gameObject.SetActive(true);
                 p1.Vida = 100;
-                p1.habilidadProgreso = 0;
-                p1.enabled = true;
+                p1.habilidadProgreso = 0f;
                 p1.BloquearMovimiento = false;
                 p1.anim.SetTrigger("spawn");
-                p1.transform.position = respawnJ1.localPosition;
+                p1.transform.position = respawnJ1.position;
+                p1.transform.GetChild(0).gameObject.SetActive(true);
+                p1.enabled = true;
             }
             else if (player == p2)
             {
-                p2.gameObject.SetActive(true);
                 p2.Vida = 100;
-                p2.habilidadProgreso = 0;
-                p2.enabled = true;
+                p2.habilidadProgreso = 0f;
                 p2.BloquearMovimiento = false;
                 p2.anim.SetTrigger("spawn");
-                p2.transform.position = respawnJ2.localPosition;
+                p2.transform.position = respawnJ2.position;
+                p2.transform.GetChild(0).gameObject.SetActive(true);
+                p2.enabled = true;
             }
 
         }
@@ -1554,7 +1688,7 @@ public class GameManager : MonoBehaviour
     #region SPAWN DE ENEMIGOS
     [Header("Spawn Enemy Core")]
     [SerializeField] private GameObject[] prefabsEnemigos;
-    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private Transform[] spawnPointsEnemies;
     [SerializeField] private int enemigosMaximosActivos = 4;
     [SerializeField] private float minSpawnTime = 3f; // Tiempo mínimo entre spawns
     [SerializeField] private float maxSpawnTime = 5f; // Tiempo máximo entre spawns
@@ -1622,7 +1756,7 @@ public class GameManager : MonoBehaviour
 
     private Transform GetRandomSpawnPoint()
     {
-        List<Transform> availablePoints = new List<Transform>(spawnPoints);
+        List<Transform> availablePoints = new List<Transform>(spawnPointsEnemies);
 
         // Eliminamos puntos de spawn ocupados
         foreach (GameObject enemy in enemigosInstanciados)
@@ -1645,8 +1779,8 @@ public class GameManager : MonoBehaviour
         if (enemigosInstanciados.Count < enemigosMaximosActivos)
         {
             // Generar un nuevo enemigo en un punto de spawn aleatorio
-            int spawnPointIndex = Random.Range(0, spawnPoints.Length);
-            Transform spawnPoint = spawnPoints[spawnPointIndex];
+            int spawnPointIndex = Random.Range(0, spawnPointsEnemies.Length);
+            Transform spawnPoint = spawnPointsEnemies[spawnPointIndex];
 
             // Seleccionar un enemigo aleatorio del array
             GameObject enemyPrefab = prefabsEnemigos[Random.Range(0, prefabsEnemigos.Length)];

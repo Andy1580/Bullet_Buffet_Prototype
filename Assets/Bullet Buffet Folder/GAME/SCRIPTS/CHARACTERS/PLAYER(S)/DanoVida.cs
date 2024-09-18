@@ -3,29 +3,48 @@ using UnityEngine;
 public class DañoVida : MonoBehaviour
 {
     [SerializeField] private int damage;
-    //[SerializeField] private float invulnerabilityDuration = 1.5f;
+    [SerializeField] private GameObject vfxImpactoJugador;
+    [SerializeField] private GameObject vfxImpactoObjeto;
 
+    private PlayerController jugadorImpactoBala;
+
+    public void Inicializar(PlayerController player)
+    {
+        jugadorImpactoBala = player;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.layer == 8)
         {
-            PlayerController pC = other.GetComponent<PlayerController>();
-            if (pC != null && !pC.isInvulnerable)
-            {
-                if (pC.Vida != 0)
-                {
-                    pC.Vida -= damage;
-                    pC.anim.SetTrigger("daño");
-                    Destroy(this.gameObject);
+            PlayerController jugador = other.GetComponent<PlayerController>();
 
-                }
-                else return;
-                //pC.StartCoroutine(ActivateInvulnerability(pC));
+            if(jugador.equipo == jugadorImpactoBala.equipo)
+            {
+                Debug.Log("Es del mismo equipo, no puedes hacerle daño");
+                Destroy(this.gameObject);
+                return;
             }
+            else if(jugador.equipo != jugadorImpactoBala.equipo)
+            {
+                if (!jugador.isInvulnerable)
+                {
+                    if (jugador.Vida != 0)
+                    {
+                        jugador.Vida -= damage;
+                        jugador.anim.SetTrigger("daño");
+                        Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                        Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                        Destroy(this.gameObject);
+
+                    }
+                    else return;
+                }
+            }
+            
         }
 
-        else if (other.CompareTag("Enemy"))
+        else if (other.gameObject.layer == 7) //Layer Enemy = 7
         {
             EnemyAI_Meele eM = other.GetComponent<EnemyAI_Meele>();
             EnemyAI_Flying eF = other.GetComponent<EnemyAI_Flying>();
@@ -44,16 +63,11 @@ public class DañoVida : MonoBehaviour
             }
         }
 
-        else if (other.CompareTag("Shield"))
+        else if (other.gameObject.layer == 0)
         {
+            Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+            Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
             Destroy(this.gameObject);
         }
     }
-
-    //IEnumerator ActivateInvulnerability(PlayerController pC)
-    //{
-    //    pC.isInvulnerable = true;
-    //    yield return new WaitForSeconds(invulnerabilityDuration);
-    //    pC.isInvulnerable = false;
-    //}
 }

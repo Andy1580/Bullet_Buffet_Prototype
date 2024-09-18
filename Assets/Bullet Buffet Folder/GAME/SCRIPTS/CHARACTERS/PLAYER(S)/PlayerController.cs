@@ -276,6 +276,8 @@ public class PlayerController : MonoBehaviour
             AudioManager.instance.PlaySound("disparojugador");
             Transform clon = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
             clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
+            DañoVida bullet = clon.GetComponent<DañoVida>();
+            bullet.Inicializar(this);
             Destroy(clon.gameObject, 3);
             cont = cooldown;
         }
@@ -519,7 +521,7 @@ public class PlayerController : MonoBehaviour
     public float habilidadProgreso;
 
 
-    void Start_Habilidad()
+    public void Start_Habilidad()
     {
         habilidadProgreso = 0;
         playerHUD.BarraDeHabilidad = (float)habilidadProgreso;

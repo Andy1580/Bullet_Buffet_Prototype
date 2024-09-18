@@ -318,7 +318,7 @@ public class LobbyManager : MonoBehaviour
 
             if (equipo.ContainsKey(gamepadId) && personaje.ContainsKey(gamepadId))
             {
-                Debug.Log($"Agregando información del jugador {gamepadId} con equipo {equipo[gamepadId]} y personaje {personaje[gamepadId]}");
+                Debug.Log($"Agregando información del jugadorImpactoBala {gamepadId} con equipo {equipo[gamepadId]} y personaje {personaje[gamepadId]}");
                 infoLobby.AddPlayerInfo(gamepadId, equipo[gamepadId], personaje[gamepadId]);
             }
             else
