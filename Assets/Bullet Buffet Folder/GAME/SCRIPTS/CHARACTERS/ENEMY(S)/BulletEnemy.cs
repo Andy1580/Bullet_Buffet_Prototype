@@ -6,7 +6,13 @@ public class BulletEnemy : MonoBehaviour
 {
     [SerializeField] private int damage;
     [SerializeField] private float velocidadBala = 10;
-    [SerializeField] private float vidaBala = 3;
+    [SerializeField] private float vidaBala = 4;
+    [SerializeField] private GameObject vfxImpactoJugador;
+
+    private void Start()
+    {
+        Destroy(this.gameObject, vidaBala);
+    }
 
     private void Update()
     {
@@ -21,8 +27,9 @@ public class BulletEnemy : MonoBehaviour
             if (!pC.isInvulnerable)
             {
                 pC.Vida -= damage;
-                //Debug.Log("vida restante: " + pC.Vida.ToString());
-                Destroy(this.gameObject, vidaBala);
+                Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                Destroy(this.gameObject);
             }
         }
         else if(other.gameObject.layer == 0)
