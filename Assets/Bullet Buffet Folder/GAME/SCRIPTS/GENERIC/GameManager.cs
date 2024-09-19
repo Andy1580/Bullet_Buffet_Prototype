@@ -791,7 +791,7 @@ public class GameManager : MonoBehaviour
                 if (modoHS)
                 {
                     panelTiempoAgotado.SetActive(true);
-                    TiempoAgotadoText.text = "¡SE AGOTO EL TIEMPO!";
+                    TiempoAgotadoText.text = "ï¿½SE AGOTO EL TIEMPO!";
                     Time.timeScale = 0;
 
                 }
@@ -802,11 +802,6 @@ public class GameManager : MonoBehaviour
 
             }
         }
-        else
-        {
-            return;
-        }
-
     }
 
     private void TimerEnded()
@@ -1022,11 +1017,39 @@ public class GameManager : MonoBehaviour
     //[Header("Pista")]
     //[SerializeField] private GameObject pistaPintable;
     //[SerializeField] private List<CuadroPintable> cuadrosPintables;
+    //BORRAR LISTAS
     private List<CuadroPintable> cuadrosTeam1;
     private List<CuadroPintable> cuadrosTeam2;
 
+    private static int _cuadrosEquipo1 = 0;
+    private static int _cuadrosEquipo2 = 0;
+
+    public static int CuadrosEquipo1
+    {
+        get => _cuadrosEquipo1;
+        set
+        {
+            _cuadrosEquipo1 = value;
+            Instance.puntajeTeam1MDS.text = value.ToString();
+        }
+    }
+
+    public static int CuadrosEquipo2
+    {
+        get => _cuadrosEquipo2;
+        set
+        {
+            _cuadrosEquipo2 = value;
+            Instance.puntajeTeam2MDS.text = value.ToString();
+        }
+    }
+
     void InicializarMDS()
     {
+        //Reiniciamos los contadores
+        CuadrosEquipo1 = 0;
+        CuadrosEquipo2 = 0;
+
         camaraObjeto = camaraPrincipal.gameObject;
         camaraObjeto.SetActive(true);
         panelMarcadorMDS.SetActive(true);
@@ -1034,51 +1057,27 @@ public class GameManager : MonoBehaviour
         cuadrosTeam2 = new List<CuadroPintable>();
     }
 
-    public void RegistrarCuadroPintado(CuadroPintable cuadro)
+    public static void CuadradoCambiado(CuadroPintable cuadro)
     {
-        //Verificamos que nombre nos llamo el cuadro
-        if (cuadro.currentTeam == 1)
+        //Equipo 1
+        if(cuadro.equipoActual == 1)
         {
-            //Si no se encuentra en la lista el cuadro mandado, lo agregamos
-            if (!cuadrosTeam1.Contains(cuadro))
-            {
-                puntosAGanarTeam1++;
-                puntajeTeam1MDS.text = puntosAGanarTeam1.ToString();
-                cuadrosTeam1.Add(cuadro);
-            }
+            //Aumentamos el puntaje
+            CuadrosEquipo1++;
 
+            //Si el cuadro ya estaba pintado por otro equipo, le restamos al otro equipo
+            if(cuadro.pintado) CuadrosEquipo2--;
         }
-        else if (cuadro.currentTeam == 2)
-        {
-            if (!cuadrosTeam2.Contains(cuadro))
-            {
-                puntosAGanarTeam2++;
-                puntajeTeam2MDS.text = puntosAGanarTeam2.ToString();
-                cuadrosTeam2.Add(cuadro);
-            }
-
-        }
+        //Equipo 2
         else
         {
-            Debug.LogError("No se registro ningun cuadro a ningun Jugador");
+            //Aumentamos el puntaje
+            CuadrosEquipo2++;
+
+            //Si el cuadro ya estaba pintado por otro equipo, le restamos al otro equipo
+            if(cuadro.pintado) CuadrosEquipo1--;
         }
 
-    }
-
-    public void RemoverCuadroPintado(CuadroPintable cuadro, int ownerTeam)
-    {
-        if (ownerTeam == 1 && cuadrosTeam1.Contains(cuadro))
-        {
-            puntosAGanarTeam1--;
-            puntajeTeam1MDS.text = puntosAGanarTeam1.ToString();
-            cuadrosTeam1.Remove(cuadro);
-        }
-        else if (ownerTeam == 2 && cuadrosTeam2.Contains(cuadro))
-        {
-            puntosAGanarTeam2--;
-            puntajeTeam2MDS.text = puntosAGanarTeam2.ToString();
-            cuadrosTeam2.Remove(cuadro);
-        }
     }
 
     //Metodo para verifica que lista tiene mas cuadros pintados cuanso acabe el tiempo
@@ -1126,7 +1125,7 @@ public class GameManager : MonoBehaviour
             else if (team1Count == 0 || team2Count == 0)
             {
                 panelTiempoAgotado.SetActive(true);
-                TiempoAgotadoText.text = "¡SE AGOTO EL TIEMPO!";
+                TiempoAgotadoText.text = "ï¿½SE AGOTO EL TIEMPO!";
 
                 foreach (PlayerController p in activePlayers)
                 {
@@ -1175,7 +1174,7 @@ public class GameManager : MonoBehaviour
             else if (team1Count == 0 || team2Count == 0)
             {
                 panelTiempoAgotado.SetActive(true);
-                TiempoAgotadoText.text = "¡SE AGOTO EL TIEMPO!";
+                TiempoAgotadoText.text = "ï¿½SE AGOTO EL TIEMPO!";
 
                 foreach (PlayerController p in activePlayers)
                 {
@@ -1199,12 +1198,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject mago1;
     [SerializeField] private GameObject mago2;
 
-    [Header("Cámara Stats MH")]
+    [Header("Cï¿½mara Stats MH")]
     [SerializeField] private Transform posicionCinematica;
     [SerializeField] private float velocidadMovCamara = 2f;
     private Animator camaraPrincipalAnimator;
 
-    private Vector3 originalCameraPosition; // Posición original de la cámara
+    private Vector3 originalCameraPosition; // Posiciï¿½n original de la cï¿½mara
 
     [Header("Hechizo")]
     [SerializeField] private GameObject hechizoPrefab;
@@ -1279,10 +1278,10 @@ public class GameManager : MonoBehaviour
     //        yield return null;
     //    }
 
-    //    // Asegurarse de que la posición final sea exacta.
+    //    // Asegurarse de que la posiciï¿½n final sea exacta.
     //    camaraTransform.position = targetPosition;
 
-    //    // Regresar la cámara a su posición original
+    //    // Regresar la cï¿½mara a su posiciï¿½n original
     //    StartCoroutine(RetornarCamara(3.0f));
     //}
 
@@ -1478,7 +1477,7 @@ public class GameManager : MonoBehaviour
 
     private void CambioDeRondaMHS()
     {
-        // Ajustamos el número de ronda
+        // Ajustamos el nï¿½mero de ronda
         numeroDeRonda++;
         rondaText.text = numeroDeRonda.ToString();
 
@@ -1486,8 +1485,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("CAMBIO DE RONDA");
             // Desactivamos los prefabs de los jugadores
-            p1.gameObject.SetActive(false);
-            p2.gameObject.SetActive(false);
+            p1.transform.GetChild(0).gameObject.SetActive(false);
+            p2.transform.GetChild(0).gameObject.SetActive(false);
 
 
 
@@ -1521,14 +1520,15 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Se reactivaron los jugadores");
             yield return new WaitForSeconds(2.25f);
-            p1.gameObject.SetActive(true);
-            p2.gameObject.SetActive(true);
-            p1.enabled = true;
-            p2.enabled = true;
+
             p1.Vida = 100;
             p2.Vida = 100;
             p1.anim.SetTrigger("spawn");
             p2.anim.SetTrigger("spawn");
+            p1.enabled = true;
+            p2.enabled = true;
+            p1.transform.GetChild(0).gameObject.SetActive(true);
+            p2.transform.GetChild(0).gameObject.SetActive(true);
             p1.BloquearMovimiento = false;
             p2.BloquearMovimiento = false;
             p1.muerto = false;
@@ -1690,8 +1690,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] prefabsEnemigos;
     [SerializeField] private Transform[] spawnPointsEnemies;
     [SerializeField] private int enemigosMaximosActivos = 4;
-    [SerializeField] private float minSpawnTime = 3f; // Tiempo mínimo entre spawns
-    [SerializeField] private float maxSpawnTime = 5f; // Tiempo máximo entre spawns
+    [SerializeField] private float minSpawnTime = 3f; // Tiempo mï¿½nimo entre spawns
+    [SerializeField] private float maxSpawnTime = 5f; // Tiempo mï¿½ximo entre spawns
     [SerializeField] private bool deadEnemy = false;
     [SerializeField] private GameObject vfxDisappearEnemy;
 
@@ -1725,12 +1725,12 @@ public class GameManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (enemigosInstanciados.Count >= enemigosMaximosActivos) return; // No spawnear más si se ha alcanzado el límite
+        if (enemigosInstanciados.Count >= enemigosMaximosActivos) return; // No spawnear mï¿½s si se ha alcanzado el lï¿½mite
 
         // Seleccionamos un enemigo aleatoriamente y lo agregamos al objeto
         GameObject enemyPrefab = prefabsEnemigos[Random.Range(0, prefabsEnemigos.Length)];
 
-        // Seleccionamos un punto de spawn aleatorio que no esté ocupado
+        // Seleccionamos un punto de spawn aleatorio que no estï¿½ ocupado
         Transform spawnPoint = GetRandomSpawnPoint();
         if (spawnPoint == null) return; // Si no hay puntos de spawn disponibles, no hacer nada
 
@@ -1790,7 +1790,7 @@ public class GameManager : MonoBehaviour
             enemigosInstanciados.Add(newEnemy);
         }
 
-        // Planificar la siguiente llamada a este método
+        // Planificar la siguiente llamada a este mï¿½todo
         Invoke("SpawnEnemyContinuously", Random.Range(minSpawnTime, maxSpawnTime));
     }
 

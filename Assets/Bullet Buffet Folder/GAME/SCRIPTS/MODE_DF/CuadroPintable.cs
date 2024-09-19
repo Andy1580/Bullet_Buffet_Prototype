@@ -1,24 +1,26 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class CuadroPintable : MonoBehaviour
 {
     private MeshRenderer meshRenderer;
     public Material material;
     private Color colorInicial;
-    public int currentTeam;
+    public int equipoActual = 0;
+    public bool pintado = false;
 
     private void Awake()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         meshRenderer = GetComponent<MeshRenderer>();
-        
+
         material = GetComponent<MeshRenderer>().material;
 
         colorInicial = material.color;
-        
+
 
     }
     private void Start()
@@ -36,7 +38,8 @@ public class CuadroPintable : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
-            currentTeam = 0;
+            pintado = false;
+            equipoActual = 0;
             material.color = colorInicial;
         }
     }
@@ -45,48 +48,27 @@ public class CuadroPintable : MonoBehaviour
     //y checamos si ya esta asignado a algun lista, sino esta lo asignamos
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.CompareTag("Player"))
-        //{
-        //    //Obtebemos su nombre y veificamos que no se haya asignado al "curentOwner"
-        //    PlayerController playerTeam = other.GetComponent<PlayerController>();
+        if (other.CompareTag("Player"))
+        {
+            //Obtebemos su nombre y veificamos que no se haya asignado al "curentOwner"
+            PlayerController player = other.GetComponent<PlayerController>();
 
-        //    if (playerTeam.equipo == 1 && currentTeam != 1)
-        //    {
-        //        if (currentTeam == 2)
-        //        {
-        //            GameManager.Instance.RemoverCuadroPintado(this, currentTeam);
-        //        }
-        //        CambiarPropietario(playerTeam.equipo);
-        //    }
-        //    else if (playerTeam.equipo == 2 && currentTeam != 2)
-        //    {
-        //        if (currentTeam == 1)
-        //        {
-        //            GameManager.Instance.RemoverCuadroPintado(this, currentTeam);
-        //        }
-        //        CambiarPropietario(playerTeam.equipo);
-        //    }
-        //}
+            //Si el que piso el cuadro es diferente del equipo del que ya estaba pintado ...
+            if(player.equipo != equipoActual)
+            {
+                //Cambiar el equipo
+                equipoActual = player.equipo;
+
+                //Lo pintamos
+                meshRenderer.material.color = player.equipo == 1 ? Color.red : Color.blue;
+
+                //Enviamos los cambios al GameManager
+                GameManager.CuadradoCambiado(this);
+
+                //Ahora decimos que ya esta pintado
+                pintado = true;
+            }
+        }
     }
 
-    //Una vez verificado lo anterior pasamos a pintar el cuadro usando el meshRenderer para cambiarle el color de la textur
-    //asignada al color especifico de cada jugadorImpactoBala y posterior a eso registrar el cuadro correspondiente al jugadorImpactoBala
-    private void CambiarPropietario(int newOwner)
-    {
-        currentTeam = newOwner;
-        if (newOwner == 1)
-        {
-            meshRenderer.material.color = Color.red;
-        }
-        else if (newOwner == 2)
-        {
-            meshRenderer.material.color = Color.blue;
-        }
-        else
-        {
-            Debug.LogError("MeshRender, no se encontro en " + gameObject.name);
-        }
-
-        GameManager.Instance.RegistrarCuadroPintado(this);
-    }
 }

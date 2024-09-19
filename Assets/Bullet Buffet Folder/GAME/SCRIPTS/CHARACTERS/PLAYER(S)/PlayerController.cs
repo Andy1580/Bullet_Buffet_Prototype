@@ -1,10 +1,15 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    private void Awake()
+    {
+        InicializarGamepad();
+    }
 
     private void Start()
     {
@@ -348,6 +353,14 @@ public class PlayerController : MonoBehaviour
 
     #region GAMEPAD
     [SerializeField] internal Gamepad _gamepad;
+
+    private PlayerInput _playerInput;
+
+    private void InicializarGamepad()
+    {
+        _playerInput = GetComponent<PlayerInput>();
+        _gamepad = _playerInput.devices.OfType<Gamepad>().FirstOrDefault();
+    }
     #endregion GAMEPAD
 
     #region Dash
@@ -426,6 +439,7 @@ public class PlayerController : MonoBehaviour
             if (value < salud)
             {
                 StartCoroutine(DañoEmisivo());
+                Vibration();
             }
 
             if (value <= 0)
@@ -695,5 +709,16 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         Debug.Log("El objeto " + gameObject.name + " ha sido destruido.");
+    }
+
+    private void Vibration()
+    {
+        _gamepad.SetMotorSpeeds(0.5f, 0.5f);
+        Invoke("StopVibration", 0.5f);
+    }
+
+    private void StopVibration()
+    {
+        _gamepad.SetMotorSpeeds(0f, 0f);
     }
 }

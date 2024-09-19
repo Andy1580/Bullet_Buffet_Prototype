@@ -15,7 +15,7 @@ public class DañoVida : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 8)
+        if (other.gameObject.layer == 8) //Layer Player = 8
         {
             PlayerController jugador = other.GetComponent<PlayerController>();
 
