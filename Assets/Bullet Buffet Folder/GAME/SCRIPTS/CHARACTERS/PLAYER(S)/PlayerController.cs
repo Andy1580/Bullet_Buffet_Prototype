@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!enDash && canDash)
         {
+            direccionDash = axis1.normalized;
             animator.SetTrigger("dash");
             animator.SetFloat("xdash", movement.x);
             animator.SetFloat("zdash", movement.z);
@@ -205,6 +206,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 movement = Vector3.zero;
     private Vector3 axis1 = Vector3.zero;
     private Vector3 axis2 = Vector3.zero;
+    private Vector3 direccionDash;
 
     [SerializeField] internal bool BloquearMovimiento = false;
 
@@ -220,17 +222,27 @@ public class PlayerController : MonoBehaviour
         if (BloquearMovimiento)
             return;
 
-        Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
-        circuloEquipo.transform.position = rotation;
-        transform.LookAt(rotation);
+        if (!enDash)
+        {
+
+            Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
+            circuloEquipo.transform.position = rotation;
+            transform.LookAt(rotation);
 
 
-        Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
-        movement.x = moveXZ.x;
-        movement.z = moveXZ.z;
+            Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
+            movement.x = moveXZ.x;
+            movement.z = moveXZ.z;
 
-        animator.SetFloat("xmov", movement.x);
-        animator.SetFloat("zmov", movement.z);
+            animator.SetFloat("xmov", movement.x);
+            animator.SetFloat("zmov", movement.z);
+
+        }
+        else
+        {
+            movement = direccionDash * fuerzaDash;
+        }
+
 
         //if (GameManager.EnPausa)
         //    return;
