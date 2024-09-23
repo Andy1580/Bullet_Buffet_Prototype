@@ -1,7 +1,9 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyAI_Meele : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class EnemyAI_Meele : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer renderer;
     [SerializeField] public Animator animator;
     [SerializeField] public GameObject vfxRespawn;
+    [SerializeField] private Image barraVida;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -32,6 +35,8 @@ public class EnemyAI_Meele : MonoBehaviour
 
         }
         BuscarJugadorCercano();
+
+        barraVida.color = Color.red;
     }
 
     void Update()
@@ -147,6 +152,7 @@ public class EnemyAI_Meele : MonoBehaviour
             if (value < vida)
             {
                 StartCoroutine(DañoEmisivo());
+                barraVida.fillAmount = (float)vida / maxVida;
             }
 
             if (value <= 0)
@@ -163,6 +169,8 @@ public class EnemyAI_Meele : MonoBehaviour
             {
                 vida = value;
             }
+
+            barraVida.fillAmount = (float)vida / maxVida;
         }
     }
 
