@@ -38,7 +38,7 @@ public class EnemyAI_Flying : MonoBehaviour
 
         }
 
-        barraVida.color = Color.red;
+        barraVida.color = Color.yellow;
     }
 
     void Update()
