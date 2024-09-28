@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    #region PLAYERCONTROLLER CORE
+
     private void Awake()
     {
         InicializarGamepad();
@@ -40,21 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         FixedUpdate_Habilidad();
     }
-
-    //private void SetupEquipo()
-    //{
-    //    jugadorText.text = "J" + gamepadIndex.ToString();
-    //    if (equipo == 1)
-    //    {
-    //        equipoRojo.gameObject.SetActive(true);
-    //        equipoAzul.gameObject.SetActive(false);
-    //    }
-    //    else if (equipo == 2)
-    //    {
-    //        equipoRojo.gameObject.SetActive(false);
-    //        equipoAzul.gameObject.SetActive(true);
-    //    }
-    //}
+    #endregion PLAYERCONTROLLER CORE
 
     #region INPUT
 
@@ -81,7 +69,8 @@ public class PlayerController : MonoBehaviour
             enDash = true;
             canDash = false;
             playerHUD.dashIcon.enabled = false;
-            StartCoroutine(DesactivarDash());
+            Invoke("FinalizarDash", 0.1f);
+            StartCoroutine(HabilitarDash());
         }
 
     }
@@ -142,23 +131,22 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            //Si no funciona correctamente, agregar el timetoshoot y booleanos necesarios
-            if (habilidadProgreso >= 0.97f)
+            if (habilidadProgreso >= 1f)
             {
-                ExplosiveBullet();
+                //ExplosiveBullet();
                 habilidadProgreso = 0;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
                 StartCoroutine(CargarHabilidad());
             }
+            /*
             else if (habilidadProgreso >= 0.47f)
             {
-                SuperShoot();
+                //SuperShoot();
                 habilidadProgreso = 0;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
                 StartCoroutine(CargarHabilidad());
             }
-
-            //playerHUD.UpdateHability(habilidadProgreso);
+            */
         }
     }
 
@@ -319,6 +307,7 @@ public class PlayerController : MonoBehaviour
     #region FUNCIONAMIENTO HABILIDADES
 
     #region SUPER SHOOT
+    /*
     [Header("Super Shoot")]
     [SerializeField] private GameObject bulletSSPrefab;
     [SerializeField] private Transform[] shootPoints;
@@ -335,9 +324,11 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+    */
     #endregion SUPER SHOOT
 
     #region EXPLOSIVE BULLET
+    /*
     [Header("Explosive Bullet")]
     [SerializeField] private GameObject balaExplosiva;
     [SerializeField] private Transform spawnBalaExplosiva;
@@ -345,27 +336,32 @@ public class PlayerController : MonoBehaviour
 
     void ExplosiveBullet()
     {
-        Debug.Log("Se instancio la bala explosiva");
         GameObject bala = Instantiate(balaExplosiva, spawnBalaExplosiva.position, spawnBalaExplosiva.rotation);
 
-        Invoke("DesactivarES", 0.25f);
+        Invoke("ResetearHabilidad", 0.25f);
     }
 
-    private void DesactivarES()
+    private void ResetearHabilidad()
     {
-        Debug.Log("Si se desactivo Explosive Shoot");
         hability = null;
         actualHability = hability;
-        BloquearMovimiento = false;
-
     }
+    */
     #endregion EXPLOSIVE BULLET
 
     #endregion FUNCIONAMIENTO HABILIDADES
 
     #region GAMEPAD
+    
     [SerializeField] internal Gamepad _gamepad;
 
+    [Header("Gamepad Core")]
+    [SerializeField] private float frecuenciaMaximaDaño = 0.5f;
+    [SerializeField] private float frecuenciaMinimaDaño = 0.5f;
+    [SerializeField] private float frecuenciaMaximaHabilidad = 0.2f;
+    [SerializeField] private float frecuenciaMinimaHabilidad = 0.2f;
+    [SerializeField] private float tiempoDeVibracionDaño = 0.5f;
+    [SerializeField] private float tiempoDeVibracionHabilidad = 0.1f;
     private PlayerInput _playerInput;
 
     private void InicializarGamepad()
@@ -380,9 +376,9 @@ public class PlayerController : MonoBehaviour
     [Header("Dash Stats")]
     [SerializeField] private bool enDash;
     [SerializeField] private bool canDash;
-    [SerializeField] private float fuerzaDash;
+    [SerializeField] private float fuerzaDash = 30;
     [SerializeField] private float cooldownDash = 5;
-    [SerializeField] private float tiempoDash = 0.25f;
+    [SerializeField] private float tiempoEnDash = 0.25f;
     [SerializeField] private float contadorDash = 5;
 
     void Start_Dash()
@@ -391,21 +387,22 @@ public class PlayerController : MonoBehaviour
         playerHUD.dashIcon.enabled = true;
         contadorDash = 5;
         playerHUD.dashCounter.text = contadorDash.ToString();
-        //GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
     }
 
-    IEnumerator DesactivarDash()
+    void FinalizarDash()
+    {
+        enDash = false;
+    }
+
+    IEnumerator HabilitarDash()
     {
         while (contadorDash > 0)
         {
             yield return new WaitForSeconds(1);
-            //contadorDashText.text = contadorDash.ToString();          
-            enDash = false;
             contadorDash--;
             playerHUD.dashCounter.text = contadorDash.ToString();
         }
-        //contadorDashText.text = contadorDash.ToString();
-        //GameManager.Instance.UpdateDashStatus(this, true, contadorDash);
+
         canDash = true;
         contadorDash = 5;
         playerHUD.dashCounter.text = contadorDash.ToString();
@@ -451,7 +448,7 @@ public class PlayerController : MonoBehaviour
             if (value < salud)
             {
                 StartCoroutine(DañoEmisivo());
-                Vibration();
+                DamageVibration(frecuenciaMinimaDaño, frecuenciaMaximaDaño);
             }
 
             if (value <= 0)
@@ -556,10 +553,13 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate_Habilidad()
     {
-        if (habilidadProgreso >= 0.97f)
+        if (habilidadProgreso >= 1f)
         {
-            playerHUD.explosiveShotIcon.enabled = true;
+            _gamepad.SetMotorSpeeds(frecuenciaMinimaHabilidad, frecuenciaMaximaHabilidad);
+            Invoke("StopVibration", tiempoDeVibracionHabilidad);
+            //playerHUD.explosiveShotIcon.enabled = true;
         }
+        /*
         else
         {
             playerHUD.explosiveShotIcon.enabled = false;
@@ -574,6 +574,7 @@ public class PlayerController : MonoBehaviour
         {
             playerHUD.coneShotIcon.enabled = false;
         }
+        */
     }
 
     private IEnumerator CargarHabilidad()
@@ -587,15 +588,13 @@ public class PlayerController : MonoBehaviour
                 yield break;
             }
 
-            habilidadProgreso += Time.deltaTime / cargaHabilidad; // Ajusta el tiempo de carga según sea necesario
+            habilidadProgreso += Time.deltaTime / cargaHabilidad;
             playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
-            //GameManager.Instance.UpdatePlayerAbility(this, habilidadProgreso);
 
             if (habilidadProgreso == 1f)
             {
                 habilidadProgreso = 1f;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso / cargaHabilidad;
-                // Habilidad está completamente cargada
             }
 
             yield return null;
@@ -694,6 +693,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject vfxRespanPlayer;
     #endregion VFX RESPAWN
 
+    #region EXTRAS
+
     void OnEnable()
     {
         // Reiniciamos el progreso de la habilidad
@@ -723,9 +724,9 @@ public class PlayerController : MonoBehaviour
         Debug.Log("El objeto " + gameObject.name + " ha sido destruido.");
     }
 
-    private void Vibration()
+    private void DamageVibration(float min, float max)
     {
-        _gamepad.SetMotorSpeeds(0.5f, 0.5f);
+        _gamepad.SetMotorSpeeds(min, max);
         Invoke("StopVibration", 0.5f);
     }
 
@@ -733,4 +734,5 @@ public class PlayerController : MonoBehaviour
     {
         _gamepad.SetMotorSpeeds(0f, 0f);
     }
+    #endregion EXTRAS
 }
