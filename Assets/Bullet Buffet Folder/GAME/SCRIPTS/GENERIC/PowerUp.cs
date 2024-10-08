@@ -14,11 +14,11 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.layer == 8)
         {
             PlayerController player = other.GetComponent<PlayerController>();
 
-            if (player != null && player.hability == null)
+            if (player.hability == null)
             {
                 player.SetHability(gameObject.name);
                 Instantiate(vfx,this.transform);

@@ -3480,7 +3480,7 @@ GameObject:
   - component: {fileID: 6587386509906615597}
   - component: {fileID: 5952163009087331899}
   - component: {fileID: 8788677273556833120}
-  - component: {fileID: 2955035043352047383}
+  - component: {fileID: 5682931097576806083}
   m_Layer: 8
   m_Name: KAI
   m_TagString: Player
@@ -3533,38 +3533,31 @@ MonoBehaviour:
   playerSpeed: 5
   smoothRotacion: 0.5
   BloquearMovimiento: 0
-  bulletSpeed: 1000
-  cooldown: 0.5
-  bulletPrefab: {fileID: 1403221019624339317, guid: 098dc0eff93c39d4c88e32b2bd02de90,
-    type: 3}
-  bulletSpawn: {fileID: 7768006098767679259}
-  bulletSSPrefab: {fileID: 3523335605187150095, guid: 136fa0ecea539b7479906456392c5a71,
-    type: 3}
-  shootPoints:
-  - {fileID: 8835917603433588659}
-  - {fileID: 8910679195393661989}
-  - {fileID: 8566222484283257748}
-  - {fileID: 1817547008389000501}
-  boolSS: 0
-  spreadSpeed: 10
-  balaExplosiva: {fileID: 3523335605187150095, guid: 0ecafa8e2c238f5439afc00a922715f2,
-    type: 3}
-  spawnBalaExplosiva: {fileID: 7768006098767679259}
-  boolEB: 0
+  "frecuenciaMaximaDa\xF1o": 0.5
+  "frecuenciaMinimaDa\xF1o": 0.5
+  frecuenciaMaximaHabilidad: 0.2
+  frecuenciaMinimaHabilidad: 0.2
+  "tiempoDeVibracionDa\xF1o": 0.5
+  tiempoDeVibracionHabilidad: 0.1
   enDash: 0
   canDash: 0
   fuerzaDash: 19
   cooldownDash: 5
-  tiempoDash: 0.2
+  tiempoEnDash: 0.25
   contadorDash: 5
+  vfxDash: {fileID: 0}
   maxSalud: 100
   renderer: {fileID: 5385320105783416825}
   tiempoEscudo: 5
   cooldownEscudo: 5
   escudo: {fileID: 8140589270472405130}
   contadorEscudo: 5
+  personaje: 
   cargaHabilidad: 10
   habilidadProgreso: 0
+  habilidadDisponible: 0
+  habilidadExplosion: {fileID: 0}
+  habilidadRayo: {fileID: 0}
   actualHability: None
   isInvunerableTime: 5
   isInvulnerable: 0
@@ -3601,8 +3594,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5098610925745965914}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 5682931097576806083}
+        m_TargetAssemblyTypeName: WeaponBase, Assembly-CSharp
         m_MethodName: Input_Disparo
         m_Mode: 0
         m_Arguments:
@@ -3807,27 +3800,29 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.94, z: 0}
---- !u!65 &2955035043352047383
-BoxCollider:
+--- !u!114 &5682931097576806083
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6514194934300768095}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 0.4654708, z: 1}
-  m_Center: {x: 0, y: 0.28246427, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eb72cbea09c37d42a55e48c5a80fd37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  "da\xF1o": 10
+  cadencia: 0.5
+  rango: 20
+  cantidadDeDisparos: 1
+  dispersion: 0.1
+  cantShoot: 0
+  bocaArma: {fileID: 7768006098767679259}
+  projectilePrefab: {fileID: 3523335605187150095, guid: 3c46011d3962a0f4191d6667437eb83b,
+    type: 3}
+  velocidadProyectil: 50
+  vidaBala: 0.5
 --- !u!1 &6614719424570852822
 GameObject:
   m_ObjectHideFlags: 0

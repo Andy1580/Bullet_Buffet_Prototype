@@ -46,7 +46,6 @@ public class PlayerHUD : MonoBehaviour
         set
         {
             healthBar.fillAmount = value;
-            print(value);
         }
     }
 

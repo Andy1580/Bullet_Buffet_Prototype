@@ -24,9 +24,10 @@ public class PlayerController : MonoBehaviour
         InicializarSSD();
         Start_Habilidad();
         Start_Equipos();
-        Start_Disparo();
+        //Start_Disparo();
 
         BloquearMovimiento = false;
+        personaje = this.gameObject.name;
 
         GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
         Destroy(clone, 1.5f);
@@ -35,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Update_Movimiento();
-        Update_Shoot();
+        //Update_Shoot();
     }
 
     private void FixedUpdate()
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!enDash && canDash)
         {
+            vfxDash.Play();
             direccionDash = axis1.normalized;
             animator.SetTrigger("dash");
             animator.SetFloat("xdash", movement.x);
@@ -84,13 +86,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Input_Disparo(InputAction.CallbackContext context)
-    {
-        if (canShoot)
-        {
-            BulletShoot();
-        }
-    }
+    //public void Input_Disparo(InputAction.CallbackContext context)
+    //{
+    //    if (canShoot)
+    //    {
+    //        BulletShoot();
+    //    }
+    //}
 
     public void Input_Pausa(InputAction.CallbackContext context)
     {
@@ -131,9 +133,11 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            if (habilidadProgreso >= 1f)
+            if (habilidadDisponible)
             {
                 //ExplosiveBullet();
+                ActivarHabilidad();
+                habilidadDisponible = false;
                 habilidadProgreso = 0;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
                 StartCoroutine(CargarHabilidad());
@@ -253,7 +257,7 @@ public class PlayerController : MonoBehaviour
     #endregion Movimiento & Rotacion
 
     #region Disparo
-
+    /*
     [Header("Shoot Stats")]
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float cooldown;
@@ -288,7 +292,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
+    */
     #endregion Disparo
 
     #region ANIMATOR
@@ -352,7 +356,7 @@ public class PlayerController : MonoBehaviour
     #endregion FUNCIONAMIENTO HABILIDADES
 
     #region GAMEPAD
-    
+
     [SerializeField] internal Gamepad _gamepad;
 
     [Header("Gamepad Core")]
@@ -380,6 +384,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cooldownDash = 5;
     [SerializeField] private float tiempoEnDash = 0.25f;
     [SerializeField] private float contadorDash = 5;
+    [SerializeField] private ParticleSystem vfxDash;
 
     void Start_Dash()
     {
@@ -425,7 +430,6 @@ public class PlayerController : MonoBehaviour
         playerHUD.BarraDeVida = (float)salud / maxSalud;
         //GameManager.Instance.UpdatePlayerHealth(this, salud, maxSalud);
         muerto = false;
-        Debug.Log("Nombre:" + this.gameObject.name + Vida);
 
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -448,7 +452,7 @@ public class PlayerController : MonoBehaviour
             if (value < salud)
             {
                 StartCoroutine(DañoEmisivo());
-                DamageVibration(frecuenciaMinimaDaño, frecuenciaMaximaDaño);
+                //DamageVibration(frecuenciaMinimaDaño, frecuenciaMaximaDaño);
             }
 
             if (value <= 0)
@@ -501,7 +505,7 @@ public class PlayerController : MonoBehaviour
     void ActivarEscudo()
     {
         canEscudo = false;
-        canShoot = false;
+        //canShoot = false;
         escudo.gameObject.SetActive(true);
         playerHUD.shieldIcon.enabled = false;
         diferenciaEscudo = transform.forward * 2;
@@ -513,7 +517,7 @@ public class PlayerController : MonoBehaviour
 
     void DesactivarEscudo()
     {
-        canShoot = true;
+        //canShoot = true;
         escudo.gameObject.SetActive(false);
         StartCoroutine(CooldawnEscudo());
     }
@@ -540,25 +544,35 @@ public class PlayerController : MonoBehaviour
     #region Habilidad
 
     [Header("Ability Stats")]
+    [SerializeField] private string personaje;
     [SerializeField] private float cargaHabilidad;
     public float habilidadProgreso;
-
+    public bool habilidadDisponible;
+    public HabilidadExplosion habilidadExplosion;
+    public HabilidadRayo habilidadRayo;
 
     public void Start_Habilidad()
     {
         habilidadProgreso = 0;
         playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
         StartCoroutine(CargarHabilidad());
+
+        habilidadDisponible = false;
     }
 
     void FixedUpdate_Habilidad()
     {
-        if (habilidadProgreso >= 1f)
-        {
-            _gamepad.SetMotorSpeeds(frecuenciaMinimaHabilidad, frecuenciaMaximaHabilidad);
-            Invoke("StopVibration", tiempoDeVibracionHabilidad);
-            //playerHUD.explosiveShotIcon.enabled = true;
-        }
+        //if (habilidadProgreso == 1f)
+        //{
+        //    habilidadDisponible = true;
+        //    //_gamepad.SetMotorSpeeds(frecuenciaMinimaHabilidad, frecuenciaMaximaHabilidad);
+        //    //Invoke("StopVibration", tiempoDeVibracionHabilidad);
+        //    //playerHUD.explosiveShotIcon.enabled = true;
+        //}
+        //else
+        //{
+        //    habilidadDisponible = false;
+        //}
         /*
         else
         {
@@ -591,10 +605,11 @@ public class PlayerController : MonoBehaviour
             habilidadProgreso += Time.deltaTime / cargaHabilidad;
             playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
 
-            if (habilidadProgreso == 1f)
+            if (habilidadProgreso >= 1f)
             {
                 habilidadProgreso = 1f;
-                playerHUD.BarraDeHabilidad = (float)habilidadProgreso / cargaHabilidad;
+                playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+                habilidadDisponible = true;
             }
 
             yield return null;
@@ -603,13 +618,44 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    void ActivarHabilidad()
+    {
+        switch (personaje)
+        {
+            case "SKYIE":
+                HabilidadSKYIE();
+                habilidadRayo = null;
+                break;
+            case "NOVA":
+                HabilidadNOVA();
+                habilidadExplosion = null;
+                break;
+        }
+    }
 
+    void HabilidadSKYIE()
+    {
+        Debug.Log(this.gameObject.name + "Activo la habilidad");
+        habilidadExplosion.ActivarHabilidad(this);
+        BloquearMovimiento = true;
 
+        Invoke("AbilitarMovimiento", 3.01f);
+    }
+
+    void HabilidadNOVA()
+    {
+        habilidadRayo.ActivarHabilidad();
+    }
+
+    void AbilitarMovimiento()
+    {
+        BloquearMovimiento = false;
+    }
     #endregion Habilidad
 
     #region POWER UP
     [Header("Power Up Core")]
-    [SerializeField] private string actualHability = "None";
+    [SerializeField] private string actualHability = null;
     internal string hability;
 
     void InicializarPowerUps()
@@ -704,8 +750,9 @@ public class PlayerController : MonoBehaviour
         canEscudo = true;
         actualHability = hability;
         muerto = false;
+        habilidadDisponible = false;
 
-        canShoot = true;
+        //canShoot = true;
         // Iniciamos la coroutine para cargar la habilidad
         StartCoroutine(CargarHabilidad());
 

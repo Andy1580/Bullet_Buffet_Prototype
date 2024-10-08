@@ -10,9 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1403221019624339317}
   - component: {fileID: 3159217417408910604}
-  - component: {fileID: 5528801384089553406}
   - component: {fileID: 344912536420169833}
-  - component: {fileID: -1959618643051088481}
   m_Layer: 0
   m_Name: BulletPlayerv2
   m_TagString: Untagged
@@ -44,27 +42,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3523335605187150095}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!135 &5528801384089553406
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3523335605187150095}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.6
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &344912536420169833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -92,19 +69,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-1959618643051088481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3523335605187150095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb697c84a465844196bce13e83e3f2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 7
 --- !u!1001 &4133495110279045056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -198,6 +162,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Void Tomato
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958617118590847030, guid: b7087716cd2f8b44b8056e395966ac8d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3279727257392426971, guid: b7087716cd2f8b44b8056e395966ac8d,
         type: 3}

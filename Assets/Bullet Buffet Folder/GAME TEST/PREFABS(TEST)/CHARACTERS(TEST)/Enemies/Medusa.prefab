@@ -2391,8 +2391,8 @@ GameObject:
   - component: {fileID: 1177155677610883976}
   - component: {fileID: 1217683810632389045}
   - component: {fileID: 5029541157466078914}
-  - component: {fileID: 6456328809492508455}
   - component: {fileID: 8876249306523118334}
+  - component: {fileID: 8781849109993377434}
   m_Layer: 7
   m_Name: Medusa
   m_TagString: Enemy
@@ -2443,6 +2443,11 @@ MonoBehaviour:
   vfxRespawn: {fileID: 6722383347070065150, guid: 5d4de737d88ded9459451f31340932d3,
     type: 3}
   barraVida: {fileID: 6543623993116673155}
+  nombre: 
+  objetosParaInstanciar: []
+  fuerzaSeparacion: 5
+  minimaSeparacion: 5
+  radioSeparacion: 2
 --- !u!195 &1217683810632389045
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2491,28 +2496,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!65 &6456328809492508455
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6443351982116186722}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.6296668, y: 4.116495, z: 1.3971329}
-  m_Center: {x: -0.06632495, y: -0.19501746, z: 0.0125284195}
+  m_CollisionDetection: 1
 --- !u!95 &8876249306523118334
 Animator:
   serializedVersion: 5
@@ -2534,6 +2518,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &8781849109993377434
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6443351982116186722}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6597026084798353086
 GameObject:
   m_ObjectHideFlags: 0

@@ -165,7 +165,6 @@ public class GameManager : MonoBehaviour
 
     void EscenaDeJuego()
     {
-        Debug.Log("Se activo metodo Escena de jueo");
         //AudioManager.instance.PlaySound("");
         inGame = true;
         InicializarHUD();
@@ -201,8 +200,6 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
-            Debug.Log("Se Resetiaron las variables");
-
             AudioManager.instance.PlaySound("1");
 
             //Booleanos Partida
@@ -295,7 +292,6 @@ public class GameManager : MonoBehaviour
 
     public void IniciarPartida()
     {
-        Debug.Log("Se inicio el metodo: IniciarPartida");
 
         if (infoLobbyPlayers == null)
             InicializarJugadores();
@@ -341,6 +337,7 @@ public class GameManager : MonoBehaviour
             p1.equipo = equipoJ1;
             p1.AsignarSlot(slotsHUD[0]);
             p1.playerHUD.Name = infoLobbyPlayers[0].personaje;
+            p1.gameObject.name = infoLobbyPlayers[0].personaje;
             p1.BloquearMovimiento = false;
             activePlayers.Add(p1);
 
@@ -348,6 +345,7 @@ public class GameManager : MonoBehaviour
             p2.equipo = equipoJ2;
             p2.AsignarSlot(slotsHUD[1]);
             p2.playerHUD.Name = infoLobbyPlayers[1].personaje;
+            p2.gameObject.name = infoLobbyPlayers[1].personaje;
             p2.BloquearMovimiento = false;
             activePlayers.Add(p2);
 
@@ -876,7 +874,6 @@ public class GameManager : MonoBehaviour
 
         if (prefabPersonaje != null)
         {
-            Debug.Log("Si se mando el SpawnJugador a IniciarPartida");
             PlayerController playerController = Instantiate(prefabPersonaje, spawnPoint.position, spawnPoint.rotation);
             playerController.gamepadIndex = LobbyManager.self.GetGamepadById(gamepadId); // Asignar el Gamepad
             return playerController;
@@ -920,7 +917,7 @@ public class GameManager : MonoBehaviour
             modo2v2spawnTeam2_1.position = streetMHS[4].position;
             modo2v2spawnTeam2_2.position = streetMHS[5].position;
 
-            for(int i = 0; i < spawnPointsEnemies.Length; i++)
+            for (int i = 0; i < spawnPointsEnemies.Length; i++)
             {
                 spawnPointsEnemies[i].position = EnemyStreetMHS[i].position;
             }
@@ -1060,13 +1057,13 @@ public class GameManager : MonoBehaviour
     public static void CuadradoCambiado(CuadroPintable cuadro)
     {
         //Equipo 1
-        if(cuadro.equipoActual == 1)
+        if (cuadro.equipoActual == 1)
         {
             //Aumentamos el puntaje
             CuadrosEquipo1++;
 
             //Si el cuadro ya estaba pintado por otro equipo, le restamos al otro equipo
-            if(cuadro.pintado) CuadrosEquipo2--;
+            if (cuadro.pintado) CuadrosEquipo2--;
         }
         //Equipo 2
         else
@@ -1075,7 +1072,7 @@ public class GameManager : MonoBehaviour
             CuadrosEquipo2++;
 
             //Si el cuadro ya estaba pintado por otro equipo, le restamos al otro equipo
-            if(cuadro.pintado) CuadrosEquipo1--;
+            if (cuadro.pintado) CuadrosEquipo1--;
         }
 
     }
@@ -1703,8 +1700,8 @@ public class GameManager : MonoBehaviour
 
         if (inGame && !deadEnemy)
         {
-            Debug.Log("Se inicio el Spawn de Enemigos");
-            print(deadEnemy);
+            //Debug.Log("Se inicio el Spawn de Enemigos");
+            //print(deadEnemy);
 
             if (isRunning)
             {

@@ -126,21 +126,20 @@ public class LobbyManager : MonoBehaviour
 
         if (Gamepad.all.Count == 2)
         {
-            print("Equipo 1: " + equipoControles[0]);
-            print("Equipo 2: " + equipoControles[1]);
+            //print("Equipo 1: " + equipoControles[0]);
+            //print("Equipo 2: " + equipoControles[1]);
 
 
             if (dicControles.ContainsKey(gamepad))
             {
                 int gamepadId = gamepad.deviceId;
                 equipo[gamepadId] = equipoSeleccionado;
-                Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
+                //Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
             }
 
             if (suma == 2)
             {
                 escogiendoEquipo = false;
-                print("escogiendoEquipo = false");
                 ActivarPanelSeleccionarPersonajes();
             }
         }
@@ -150,7 +149,7 @@ public class LobbyManager : MonoBehaviour
             {
                 int gamepadId = gamepad.deviceId;
                 equipo[gamepadId] = equipoSeleccionado;
-                Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
+                //Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
             }
 
             if (suma == 4)
@@ -186,13 +185,12 @@ public class LobbyManager : MonoBehaviour
                     personaje.Remove(gamepadId);
                     //characterImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del personaje
                 }
-                Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
+                //Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
             }
 
             if (resta == 2)
             {
                 escogiendoEquipo = true;
-                print("escogiendoEquipo = true");
                 ActivarPanelSeleccionarEquipo();
 
             }
@@ -212,13 +210,12 @@ public class LobbyManager : MonoBehaviour
                     personaje.Remove(gamepadId);
                     //characterImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del personaje
                 }
-                Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
+                //Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
             }
 
             if (resta == 4)
             {
                 escogiendoEquipo = true;
-                print("escogiendoEquipo = true");
                 ActivarPanelSeleccionarEquipo();
 
             }
@@ -231,7 +228,7 @@ public class LobbyManager : MonoBehaviour
         {
             int gamepadId = gamepad.deviceId;
             personaje[gamepadId] = personajeSeleccionado;
-            Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el personaje {personajeSeleccionado}");
+            //Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el personaje {personajeSeleccionado}");
         }
 
         if (Gamepad.all.Count == 2)
@@ -284,7 +281,7 @@ public class LobbyManager : MonoBehaviour
         if (!idToGamepad.ContainsKey(gamepadId))
         {
             idToGamepad[gamepadId] = gamepad;
-            Debug.Log($"Gamepad registrado: {gamepadId}");
+            //Debug.Log($"Gamepad registrado: {gamepadId}");
         }
     }
 
@@ -295,13 +292,13 @@ public class LobbyManager : MonoBehaviour
             return idToGamepad[gamepadId];
         }
 
-        Debug.LogWarning($"No se encontró el Gamepad con id {gamepadId}");
+        //Debug.LogWarning($"No se encontró el Gamepad con id {gamepadId}");
         return null;
     }
 
     public void RecopilarInformacion()
     {
-        Debug.Log("Iniciando recopilación de información...");
+        //Debug.Log("Iniciando recopilación de información...");
 
         if (equipo.Count < 2 && personaje.Count < 2)
         {
@@ -318,7 +315,7 @@ public class LobbyManager : MonoBehaviour
 
             if (equipo.ContainsKey(gamepadId) && personaje.ContainsKey(gamepadId))
             {
-                Debug.Log($"Agregando información del jugadorImpactoBala {gamepadId} con equipo {equipo[gamepadId]} y personaje {personaje[gamepadId]}");
+                //Debug.Log($"Agregando información del jugadorImpactoBala {gamepadId} con equipo {equipo[gamepadId]} y personaje {personaje[gamepadId]}");
                 infoLobby.AddPlayerInfo(gamepadId, equipo[gamepadId], personaje[gamepadId]);
             }
             else
@@ -328,7 +325,7 @@ public class LobbyManager : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(infoLobby);
-        Debug.Log("JSON generado: " + json);
+        //Debug.Log("JSON generado: " + json);
         AudioManager.instance.StopSound("menu");
         GameManager.Instance.RecibirInformacionLobby(json);
         

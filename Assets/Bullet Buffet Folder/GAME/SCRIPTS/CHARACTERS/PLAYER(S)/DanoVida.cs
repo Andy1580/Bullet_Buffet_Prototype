@@ -1,31 +1,29 @@
+using System;
 using UnityEngine;
 
 public class DañoVida : MonoBehaviour
 {
     [SerializeField] private int damage;
-    [SerializeField] private GameObject vfxImpactoJugador;
-    [SerializeField] private GameObject vfxImpactoObjeto;
+    private PlayerController propietario;
 
-    private PlayerController jugadorImpactoBala;
-
-    public void Inicializar(PlayerController player)
+    private void Awake()
     {
-        jugadorImpactoBala = player;
+        propietario = transform.parent.GetComponent<PlayerController>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        print("Colision con: " + other.gameObject.name);
+
         if (other.gameObject.layer == 8) //Layer Player = 8
         {
             PlayerController jugador = other.GetComponent<PlayerController>();
 
-            if(jugador.equipo == jugadorImpactoBala.equipo)
+            if(jugador.equipo == propietario.equipo)
             {
                 Debug.Log("Es del mismo equipo, no puedes hacerle daño");
-                Destroy(this.gameObject);
-                return;
             }
-            else if(jugador.equipo != jugadorImpactoBala.equipo)
+            else
             {
                 if (!jugador.isInvulnerable)
                 {
@@ -34,14 +32,13 @@ public class DañoVida : MonoBehaviour
                         jugador.Vida -= damage;
                         jugador.anim.SetTrigger("daño");
                         Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                        Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
-                        Destroy(this.gameObject);
+                        //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
 
                     }
                     else return;
                 }
             }
-            
+
         }
 
         else if (other.gameObject.layer == 7) //Layer Enemy = 7
@@ -53,21 +50,23 @@ public class DañoVida : MonoBehaviour
             {
                 eM.VidaEnemigo -= damage;
                 eM.animator.SetTrigger("daño");
-                Destroy(this.gameObject);
             }
             else if (eF != null)
             {
                 eF.VidaEnemigo -= damage;
                 eF.animator.SetTrigger("daño");
-                Destroy(this.gameObject);
             }
         }
 
         else if (other.gameObject.layer == 0)
         {
             Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-            Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
-            Destroy(this.gameObject);
+            //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
         }
+    }
+
+    private void OnDestroy()
+    {
+        Debug.LogWarning("Se destruyo el Collider de la Escopeta");
     }
 }

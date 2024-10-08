@@ -24,7 +24,7 @@ public class InfoLobby
             personaje = personaje
         });
         
-        Debug.Log($"PlayerInfo agregado: GamepadId {gamepad}, Equipo {equipo}, Personaje {personaje}");
+        //Debug.Log($"PlayerInfo agregado: GamepadId {gamepad}, Equipo {equipo}, Personaje {personaje}");
         
     }
 }

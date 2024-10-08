@@ -16,10 +16,17 @@ public class EnemyAI_Flying : MonoBehaviour
     [SerializeField] public Animator animator;
     [SerializeField] public GameObject vfxRespawn;
     [SerializeField] private Image barraVida;
+    [SerializeField] private string nombre;
+    [SerializeField] private GameObject[] objetosParaInstanciar;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
     private PlayerController jugadorObjetivo;
+    public float fuerzaSeparacion = 5f;
+    public float minimaSeparacion = 4f;
+    public float radioSeparacion = 2f;
+
+    Rigidbody rb;
 
     void Start()
     {
@@ -39,6 +46,10 @@ public class EnemyAI_Flying : MonoBehaviour
         }
 
         barraVida.color = Color.yellow;
+
+        rb = GetComponent<Rigidbody>();
+        SphereCollider sphereCollider = GetComponent<SphereCollider>();
+        sphereCollider.radius = radioSeparacion;
     }
 
     void Update()
@@ -199,7 +210,27 @@ public class EnemyAI_Flying : MonoBehaviour
 
     void DeadEvent()
     {
-        Destroy(gameObject);
+        switch(nombre)
+        {
+            case "Medusa Alfa":
+                InstanciarObjetoAleatorio();
+                break;
+        }
+
+        Destroy(gameObject, 0.05f);
+    }
+
+    void InstanciarObjetoAleatorio()
+    {
+        if (objetosParaInstanciar.Length > 0)
+        {
+            int randomIndex = Random.Range(0, objetosParaInstanciar.Length);
+            GameObject objetoSeleccionado = objetosParaInstanciar[randomIndex];
+
+
+
+            Instantiate(objetoSeleccionado, transform.position, transform.rotation);
+        }
     }
 
     IEnumerator PerseguirJugador()
@@ -236,5 +267,20 @@ public class EnemyAI_Flying : MonoBehaviour
         AudioManager.instance.PlaySound("disparomedusa");
         GameObject clone = Instantiate(balaPrefab, balaSpawn.position, balaSpawn.rotation);
         Destroy(clone, 8.0f);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.layer == 7)
+        {
+            Vector3 posicionComplice = other.transform.position - transform.position;
+            float distancia = posicionComplice.magnitude;
+
+            if(distancia < minimaSeparacion)
+            {
+                Vector3 separacionDireccion = -posicionComplice.normalized;
+                rb.AddForce(separacionDireccion * fuerzaSeparacion * Time.deltaTime, ForceMode.VelocityChange);
+            }
+        }
     }
 }

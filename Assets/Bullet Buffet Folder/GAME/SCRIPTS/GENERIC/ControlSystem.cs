@@ -95,7 +95,6 @@ public class ControlSystem : MonoBehaviour
                         {
                             if (LobbyManager.equipoControles[equipo - 1] <= 0)
                             {
-                                Debug.Log("1");
                                 equipoBloqueado = true;
                                 selectTm = false;
                                 selectCh = true;
@@ -107,13 +106,11 @@ public class ControlSystem : MonoBehaviour
                                 {
                                     LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
                                     LobbyManager.equipo1++;
-                                    Debug.Log("Te unes al equipo 1");
                                 }
                                 else if ((equipo == 2) && LobbyManager.equipo2 < Gamepad.all.Count / 2)
                                 {
                                     LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
                                     LobbyManager.equipo2++;
-                                    Debug.Log("Te unes al equipo 2");
                                 }
                                 else
                                 {
@@ -126,7 +123,6 @@ public class ControlSystem : MonoBehaviour
                         {
                             if (LobbyManager.equipoControles[equipo - 1] <= 1)
                             {
-                                Debug.Log("2");
                                 equipoBloqueado = true;
                                 selectTm = false;
                                 selectCh = true;
@@ -138,13 +134,11 @@ public class ControlSystem : MonoBehaviour
                                 {
                                     LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
                                     LobbyManager.equipo1++;
-                                    Debug.Log("Te unes al equipo 1");
                                 }                                   // 2                // 4/2 = 2
                                 else if ((equipo == 2) && LobbyManager.equipo2 < Gamepad.all.Count / 2)
                                 {
                                     LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
                                     LobbyManager.equipo2++;
-                                    Debug.Log("Te unes al equipo 2");
                                 }
                                 else
                                 {
@@ -152,10 +146,6 @@ public class ControlSystem : MonoBehaviour
                                 }
                             }
 
-                        }
-                        else
-                        {
-                            Debug.Log("3");
                         }
                     }
 
@@ -189,7 +179,6 @@ public class ControlSystem : MonoBehaviour
                     spritePersonaje.sprite = CheckSprite(selectedCharacter);
                     Gamepad currentGamepad = context.control.device as Gamepad;
                     loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
-                    Debug.Log("Escojio el personaje: " + selectedCharacter);
                 }
             }
 
