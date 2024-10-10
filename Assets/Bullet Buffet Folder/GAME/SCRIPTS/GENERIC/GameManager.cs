@@ -177,7 +177,6 @@ public class GameManager : MonoBehaviour
         //InicializarComponentesJugadores();
         InicializarPausa();
         InicializarCamara();
-        InstanciarPowerUp();
         Invoke("InicializarEnemySpawn", 5);
 
         if (modoHS)
@@ -1568,7 +1567,6 @@ public class GameManager : MonoBehaviour
         remainingTime = totalTime;
         yield return new WaitForSeconds(7f);
         InicializarEnemySpawn();
-        InstanciarPowerUp();
     }
 
     private IEnumerator RespawnearJugadorMDS(PlayerController player, float time)
@@ -1822,21 +1820,4 @@ public class GameManager : MonoBehaviour
     }
     #endregion SPAWN DE ENEMIGOS
 
-    #region POWER UP
-
-    [Header("POWER UPs CORE")]
-    [SerializeField] private GameObject poweUpVel;
-    [SerializeField] private GameObject poweUpInv;
-    [SerializeField] private Transform spawnPowerUp1;
-    [SerializeField] private Transform spawnPowerUp2;
-
-    void InstanciarPowerUp()
-    {
-        GameObject power1 = Instantiate(poweUpInv, spawnPowerUp1.position, spawnPowerUp1.rotation);
-        GameObject power2 = Instantiate(poweUpVel, spawnPowerUp2.position, spawnPowerUp2.rotation);
-
-        power1.name = poweUpInv.name;
-        power2.name = poweUpVel.name;
-    }
-    #endregion POWER UP
 }

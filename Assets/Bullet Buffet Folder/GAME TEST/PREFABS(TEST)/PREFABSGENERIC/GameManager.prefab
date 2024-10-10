@@ -8713,7 +8713,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 3
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -9652,7 +9652,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8857402594988847209
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20492,18 +20492,12 @@ MonoBehaviour:
   - {fileID: 7287031172453202720}
   - {fileID: 1530229236386665118}
   - {fileID: 6536160422286870764}
-  enemigosMaximosActivos: 2
+  enemigosMaximosActivos: 1
   minSpawnTime: 12
   maxSpawnTime: 17
   deadEnemy: 0
   vfxDisappearEnemy: {fileID: 8501132627541630109, guid: 59bfca0a48f2ed44caf242abbf007871,
     type: 3}
-  poweUpVel: {fileID: 6016782402393687215, guid: bc89e0576591b7745bdd50060ebfdc00,
-    type: 3}
-  poweUpInv: {fileID: 777215310296325672, guid: 2a25c7caa83baa140911483300377d18,
-    type: 3}
-  spawnPowerUp1: {fileID: 6861031653846425376}
-  spawnPowerUp2: {fileID: 490101917071371774}
 --- !u!1 &6101451270855339075
 GameObject:
   m_ObjectHideFlags: 0
@@ -26325,10 +26319,10 @@ RectTransform:
   - {fileID: 6001896644840195604}
   m_Father: {fileID: 1980066655208374642}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 540}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1196675321640479447
 CanvasRenderer:

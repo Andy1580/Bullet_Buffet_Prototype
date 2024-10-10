@@ -5,21 +5,16 @@ using Random = UnityEngine.Random;
 public class WeaponBase : MonoBehaviour
 {
     [Header("Atributos de Arma")]
-    public int daño = 10;       // Da�o por disparo
-    public float cadencia = 0.5f;    // Cadencia (tiempo entre disparos)
-    public float rango = 50f;        // Distancia m�xima del disparo
-    public int cantidadDeDisparos = 1;        // Cantidad de raycasts por disparo (1 para pistola, varios para escopeta)
-    public float dispersion = 0.1f;      // Dispersi�n (�ngulo de desviaci�n de los raycasts)
+    public float cadencia = 0.5f;  
+    public int cantidadDeDisparos = 1;        
+    public float dispersion = 0.1f;     
     public bool cantShoot;
-    public Transform bocaArma;      // Punto de salida del disparo (boca del arma)
-    //public GameObject vfxImpactoJugador;
-    //public GameObject vfxImpactoObjeto;
-    public GameObject projectilePrefab; // Prefab del proyectil visual
-    public float velocidadProyectil = 50f; // Velocidad del proyectil visual
-    //public float radioEsfera = 0.5f; // El radio de la esfera que simula el grosor del Raycast; // Velocidad del proyectil visual
+    public Transform bocaArma;      
+    public GameObject proyectilPrefab; 
+    public float velocidadProyectil = 50f; 
     public float vidaBala = 2f;
 
-    protected float siguienteDisparo = 0f; // Control del tiempo entre disparos
+    protected float siguienteDisparo = 0f;
 
     private void Start()
     {
@@ -31,62 +26,26 @@ public class WeaponBase : MonoBehaviour
         if (cantShoot)
         {
             Disparar();
-            //Fire();
         }
     }
 
     private void Disparar()
     {
-        Ray ray = new Ray(bocaArma.position, bocaArma.forward);
 
-        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
 
-        //if (Time.time < siguienteDisparo) return;
+        if (Time.time < siguienteDisparo) return;
+
         Vector3 spreadDirection = bocaArma.forward + new Vector3(Random.Range(-dispersion, dispersion), Random.Range(-dispersion, dispersion), 0);
 
-        //Imprimimos con que colisionamos
-        print("Disparo: " + hit.collider.gameObject.name);
-
-        //PLAYER
-        if (hit.collider.gameObject.layer == 8)
+        for (int i = 0; i < cantidadDeDisparos; i++)
         {
-            PlayerController jugador = hit.collider.GetComponent<PlayerController>();
-            jugador.Vida -= daño;
-        }
-        //ENEMIGO
-        else if (hit.collider.gameObject.layer == 7)
-        {
-            EnemyAI_Flying eF = hit.collider.GetComponent<EnemyAI_Flying>();
-            EnemyAI_Meele eM = hit.collider.GetComponent<EnemyAI_Meele>();
-
-            if (eF != null)
-            {
-                eF.VidaEnemigo -= daño;
-            }
-            else if (eM != null)
-            {
-                eM.VidaEnemigo -= daño;
-            }
-        }
-        //OTRA COSA
-        else if (hit.collider.gameObject.layer == 0)
-        {
-            //Instancias el VFX donde colisiono el Raycast
-            //Cambiar el VFX a cuando impacta con el Player o el Enemigo
-            //Instantiate(vfxImpactoObjeto, hit.point, Quaternion.identity);                       //bocaArma.rotation
+            Vector3 finalPoint = bocaArma.position + spreadDirection;
+            InstanciarProyectil(finalPoint);
         }
 
-        InstanciarProyectil(hit.point);
-
-        //siguienteDisparo = Time.time + cadencia;
-
-        //for (int i = 0; i < cantidadDeDisparos; i++)
-        //{
-            
-        //}
-        
+        siguienteDisparo = Time.time + cadencia;
     }
-
+    /*
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
@@ -155,9 +114,8 @@ public class WeaponBase : MonoBehaviour
     */
     void InstanciarProyectil(Vector3 objetivo)
     {
-        GameObject proyectil = Instantiate(projectilePrefab, bocaArma.position, Quaternion.identity);
+        GameObject proyectil = Instantiate(proyectilPrefab, bocaArma.position, Quaternion.identity);
 
-        // Calcula la direcci�n hacia el objetivo
         Vector3 direccion = (objetivo - bocaArma.position).normalized;
         proyectil.GetComponent<Rigidbody>().velocity = direccion * velocidadProyectil;
 

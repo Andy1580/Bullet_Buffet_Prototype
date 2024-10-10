@@ -4,7 +4,6 @@ public class InstanciarPowerUp : MonoBehaviour
 {
     [SerializeField] private GameObject[] objetosParaInstanciar;
 
-    private EnemyAI_Flying eF;
     /*
     void Start()
     {
@@ -35,12 +34,8 @@ public class InstanciarPowerUp : MonoBehaviour
         }
     }
     */
-    void Start()
-    {
-        InstanciarObjetoAleatorio();
-    }
 
-    void InstanciarObjetoAleatorio()
+    public void InstanciarObjetoAleatorio()
     {
         if (objetosParaInstanciar.Length > 0)
         {
@@ -54,6 +49,9 @@ public class InstanciarPowerUp : MonoBehaviour
 
             // Simplemente imprime el nombre
             Debug.Log("Objeto instanciado: " + objetoInstanciado.name);
+
         }
+            
+        Destroy(gameObject);
     }
 }

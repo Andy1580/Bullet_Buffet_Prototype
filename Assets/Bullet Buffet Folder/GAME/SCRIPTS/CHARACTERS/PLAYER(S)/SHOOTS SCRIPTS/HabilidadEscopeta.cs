@@ -1,13 +1,11 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class Shotgun : MonoBehaviour
+public class HabilidadEscopeta : MonoBehaviour
 {
     public GameObject vfxPrefab;
-    public Transform bocaArma;
+    public Transform bocaDeArma;
     public GameObject objetoDaño;
-
     public int numVFX = 6;
     public float dispersion = 0.8f;
     public float velocidadVfx = 20f;
@@ -21,44 +19,41 @@ public class Shotgun : MonoBehaviour
         objetoDaño.SetActive(false);
     }
 
-    public void Input_Disparo(InputAction.CallbackContext context)
+    public void ActivarHabilidad()
     {
-        if (cantShoot)
+        if(cantShoot)
         {
             Fire();
-            cantShoot = false;
         }
     }
 
     void Fire()
     {
+        cantShoot = false;
         objetoDaño.SetActive(true);
         StartCoroutine(DesactivarObjetoDeDaño());
-
-        FireVFX();
+        InstanciarVFX();
     }
 
     IEnumerator DesactivarObjetoDeDaño()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         objetoDaño.SetActive(false);
 
         cantShoot = true;
     }
 
-    void FireVFX()
+    void InstanciarVFX()
     {
         for (int i = 0; i < numVFX; i++)
         {
-            Vector3 direccionDeDispersion = ObtenerDispersion(bocaArma.forward, dispersion);
+            Vector3 direccionDeDispersion = ObtenerDispersion(bocaDeArma.forward, dispersion);
 
-            GameObject vfx = Instantiate(vfxPrefab, bocaArma.position, Quaternion.identity);
+            GameObject vfx = Instantiate(vfxPrefab, bocaDeArma.position, Quaternion.identity);
             Rigidbody vfxRb = vfx.GetComponent<Rigidbody>();
-            if (vfxRb != null)
-            {
-                vfxRb.velocity = direccionDeDispersion * velocidadVfx;
-            }
+
+            vfxRb.velocity = direccionDeDispersion * velocidadVfx;
 
             Destroy(vfx, vidaVfx);
         }

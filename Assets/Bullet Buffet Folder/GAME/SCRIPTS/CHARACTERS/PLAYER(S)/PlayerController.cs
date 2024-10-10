@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         //Start_Disparo();
 
         BloquearMovimiento = false;
+        BloquearRotacion = false;
         personaje = this.gameObject.name;
 
         GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
@@ -192,15 +193,17 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement Stats")]
     [SerializeField] internal float playerSpeed = 5f;
-    [SerializeField] private float smoothRotacion;
+    [SerializeField] private float smoothRotacion = 5f;
     private bool groundedPlayer;
     private CharacterController controller;
     private Vector3 movement = Vector3.zero;
     private Vector3 axis1 = Vector3.zero;
     private Vector3 axis2 = Vector3.zero;
     private Vector3 direccionDash;
+    private Vector3 ultimaDireccion = Vector3.forward;
 
     [SerializeField] internal bool BloquearMovimiento = false;
+    [SerializeField] internal bool BloquearRotacion = false;
 
     private void Start_Movimiento()
     {
@@ -216,12 +219,19 @@ public class PlayerController : MonoBehaviour
 
         if (!enDash)
         {
+            if(!BloquearRotacion)
+            {
+                if (axis2 != Vector3.zero)
+                {
+                    ultimaDireccion = axis2.normalized;
+                }
+                Quaternion targetRotation = Quaternion.LookRotation(ultimaDireccion);
 
-            Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
-            circuloEquipo.transform.position = rotation;
-            transform.LookAt(rotation);
-
-
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothRotacion * Time.deltaTime);
+                Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
+                circuloEquipo.transform.position = rotation;
+            }
+            
             Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
             movement.x = moveXZ.x;
             movement.z = moveXZ.z;
@@ -285,7 +295,7 @@ public class PlayerController : MonoBehaviour
             AudioManager.instance.PlaySound("disparojugador");
             Transform clon = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
             clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
-            DañoVida bullet = clon.GetComponent<DañoVida>();
+            DañoEscopeta bullet = clon.GetComponent<DañoEscopeta>();
             bullet.Inicializar(this);
             Destroy(clon.gameObject, 3);
             cont = cooldown;
@@ -548,8 +558,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cargaHabilidad;
     public float habilidadProgreso;
     public bool habilidadDisponible;
-    public HabilidadExplosion habilidadExplosion;
+    public HabilidadEnArea habilidadEnArea;
     public HabilidadRayo habilidadRayo;
+    public HabilidadEscopeta habilidadEscopeta;
+    public HabilidadSub habilidadSub;
 
     public void Start_Habilidad()
     {
@@ -625,31 +637,62 @@ public class PlayerController : MonoBehaviour
             case "SKYIE":
                 HabilidadSKYIE();
                 habilidadRayo = null;
+                habilidadEnArea = null;
+                habilidadSub = null;
                 break;
             case "NOVA":
                 HabilidadNOVA();
-                habilidadExplosion = null;
+                habilidadEnArea = null;
+                habilidadEscopeta = null;
+                habilidadSub = null;
+                break;
+            case "KAI":
+                HabilidadKAI();
+                habilidadEscopeta = null;
+                habilidadRayo = null;
+                habilidadEnArea = null;
+                break;
+            case "CRIM":
+                HabilidadCRIM();
+                habilidadEscopeta = null;
+                habilidadRayo = null;
+                habilidadSub = null;
                 break;
         }
     }
 
     void HabilidadSKYIE()
     {
-        Debug.Log(this.gameObject.name + "Activo la habilidad");
-        habilidadExplosion.ActivarHabilidad(this);
-        BloquearMovimiento = true;
-
-        Invoke("AbilitarMovimiento", 3.01f);
+        habilidadEscopeta.ActivarHabilidad();
     }
 
     void HabilidadNOVA()
     {
         habilidadRayo.ActivarHabilidad();
+        BloquearMovimiento = true;
+        BloquearRotacion = true;
+
+        Invoke("AbilitarMovimiento", 1.45f);
+    }
+
+    void HabilidadCRIM()
+    {
+        Debug.Log(this.gameObject.name + "Activo la habilidad");
+        habilidadEnArea.ActivarHabilidad(this);
+        BloquearMovimiento = true;
+
+        Invoke("AbilitarMovimiento", 1f);
+    }
+
+    void HabilidadKAI()
+    {
+        habilidadSub.ActivarHabilidad(this);
     }
 
     void AbilitarMovimiento()
     {
         BloquearMovimiento = false;
+        BloquearRotacion = false;
     }
     #endregion Habilidad
 
@@ -760,6 +803,7 @@ public class PlayerController : MonoBehaviour
         Start_Escudo();
 
         BloquearMovimiento = false;
+        BloquearRotacion = false;
 
         GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
         Destroy(clone, 1.5f);

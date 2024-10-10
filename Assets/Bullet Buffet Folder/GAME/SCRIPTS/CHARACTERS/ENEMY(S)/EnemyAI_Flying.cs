@@ -16,8 +16,8 @@ public class EnemyAI_Flying : MonoBehaviour
     [SerializeField] public Animator animator;
     [SerializeField] public GameObject vfxRespawn;
     [SerializeField] private Image barraVida;
-    [SerializeField] private string nombre;
     [SerializeField] private GameObject[] objetosParaInstanciar;
+    private string nombre;
 
     List<PlayerController> players;
     private NavMeshAgent agente;
@@ -27,6 +27,8 @@ public class EnemyAI_Flying : MonoBehaviour
     public float radioSeparacion = 2f;
 
     Rigidbody rb;
+
+    public InstanciarPowerUp powerUp;
 
     void Start()
     {
@@ -50,6 +52,9 @@ public class EnemyAI_Flying : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
         sphereCollider.radius = radioSeparacion;
+
+        nombre = this.gameObject.name.Replace("(Clone)", "");
+        this.gameObject.name = nombre;
     }
 
     void Update()
@@ -213,11 +218,11 @@ public class EnemyAI_Flying : MonoBehaviour
         switch(nombre)
         {
             case "Medusa Alfa":
-                InstanciarObjetoAleatorio();
+                powerUp.InstanciarObjetoAleatorio();
                 break;
+            case "Medusa":
+                Destroy(gameObject); break;
         }
-
-        Destroy(gameObject, 0.05f);
     }
 
     void InstanciarObjetoAleatorio()
