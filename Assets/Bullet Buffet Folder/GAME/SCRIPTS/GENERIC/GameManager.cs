@@ -119,13 +119,14 @@ public class GameManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
 
+
     }
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
 
-        InicializarMusica();
+        //InicializarMusica();
         InicializarJugadores();
         ResetiarVariables();
     }

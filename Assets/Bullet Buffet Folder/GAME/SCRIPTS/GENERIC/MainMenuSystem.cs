@@ -50,18 +50,6 @@ public class MainMenuSystem : MonoBehaviour
             gM = FindFirstObjectByType<GameManager>();
         }
 
-        //if (eventSystem == null)
-        //{
-        //    Debug.LogWarning("Nose encontro el Event System");
-        //    eventSystem = GameObject.Find("EventSystem");
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("Se encontro el Event System");
-        //}
-
-        //eventS = eventSystem.GetComponent<EventSystem>();
-
         play = false;
         panelInicio.SetActive(true);
         panelModos.SetActive(false);
@@ -81,28 +69,7 @@ public class MainMenuSystem : MonoBehaviour
         rondaActualText.text = "1";
         tiempoActualMDSText.text = "1:00";
         tiempoActualMHSText.text = "1:00";
-        //eventS.firstSelectedGameObject = bModes;
     }
-
-    private void Update()
-    {
-        //Update_CheckBooleans();
-    }
-
-    //private void Update_CheckBooleans()
-    //{
-    //    if (SceneManager.GetActiveScene().name != "ANDYMENUTEST")
-    //        return;
-
-    //    if (GameManager.modoHS && GameManager.boolMapaStreetMHS)
-    //    {
-    //        Invoke("CargarLobby", 0.25f);
-    //    }
-    //    else if (GameManager.modoDS && GameManager.boolMapaStreetMHS)
-    //    {
-    //        Invoke("CargarLobby", 0.25f);
-    //    }
-    //}
 
     public void GoToMenu()
     {
@@ -120,7 +87,6 @@ public class MainMenuSystem : MonoBehaviour
         panelMapasMHS.SetActive(false);
 
         AudioManager.instance.PlaySound("botonmenu");
-        //eventS.firstSelectedGameObject = bHechizos;
     }
 
     public void Back()
@@ -148,16 +114,12 @@ public class MainMenuSystem : MonoBehaviour
         cafeMDS.SetActive(false);
         ciudadMDS.SetActive(false);
         dungeonMDS.SetActive(false);
-
-        //rondaActualText.text = GameManager.Instance.puntosParaGanar.ToString();
-        //eventS.firstSelectedGameObject = bModes;
     }
 
     public void GoToSettings()
     {
         panelSetings.SetActive(true);
         panelModos.SetActive(false);
-        //panelInicio.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelMapasMHS.SetActive(false);
@@ -170,7 +132,6 @@ public class MainMenuSystem : MonoBehaviour
         panelSchemeControl.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
-        //panelInicio.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelMapasMHS.SetActive(false);
 
