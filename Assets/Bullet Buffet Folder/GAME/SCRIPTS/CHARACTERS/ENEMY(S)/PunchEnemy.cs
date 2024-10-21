@@ -8,16 +8,18 @@ public class PunchEnemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.layer == 8)
         {
-            PlayerController pC = other.GetComponent<PlayerController>();
-            if (pC != null && !pC.isInvulnerable)
+            PlayerController player = other.GetComponent<PlayerController>();
+            if (player != null)
             {
-                pC.Vida -= damage;
-                //Debug.Log("vida restante: " + pC.Vida.ToString());
+                if(!player.isInvulnerable || !player.muerto)
+                {
+                    player.Vida -= damage;
+                }
             }
         }
-        else if(other.CompareTag("Shield"))
+        else if(other.gameObject.layer == 0)
         {
             return;
         }

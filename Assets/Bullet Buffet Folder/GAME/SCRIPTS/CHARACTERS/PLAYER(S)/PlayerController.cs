@@ -306,14 +306,12 @@ public class PlayerController : MonoBehaviour
     #endregion Disparo
 
     #region ANIMATOR
-    private Animator animator;
-
-    internal Animator anim;
+    
+    internal Animator animator;
 
     void Start_Animator()
     {
         animator = GetComponent<Animator>();
-        anim = animator.GetComponent<Animator>();
         animator.SetTrigger("spawn");
     }
     #endregion ANIMATOR
@@ -448,9 +446,12 @@ public class PlayerController : MonoBehaviour
 
     void DeadEvent()
     {
+        Debug.Log("Murio: " + this.gameObject.name);
+        muerto = true;
+        BloquearMovimiento = true;
+        BloquearRotacion = true;
         animator.SetTrigger("muerto");
         AudioManager.instance.PlaySound("muertejugador");
-        muerto = true;
         GameManager.Instance.DeadPlayerEventMHS(this);
     }
 
@@ -490,6 +491,31 @@ public class PlayerController : MonoBehaviour
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
         yield return new WaitForSeconds(0.1f);
         renderer.material.SetColor("_EmissionColor", Color.black);
+    }
+
+    public void Revivir()
+    {
+        //Verificar se la vida vuelve a 100(visualmente), sino agregar: playerHUD.BarraDeVida = (float)salud / maxSalud;
+        Vida = 100;
+        animator.SetTrigger("spawn");
+        muerto = false;
+        isInvulnerable = false;
+        habilidadProgreso = 0f;
+        playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+        StartCoroutine(CargarHabilidad());
+
+        canEscudo = true;
+        hability = null;
+        actualHability = hability;
+        habilidadDisponible = false;
+        Start_Dash();
+        Start_Escudo();
+
+        BloquearMovimiento = false;
+        BloquearRotacion = false;
+
+        GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
+        Destroy(clone, 1.5f);
     }
     #endregion Vida
 
@@ -784,31 +810,32 @@ public class PlayerController : MonoBehaviour
 
     #region EXTRAS
 
-    void OnEnable()
-    {
-        // Reiniciamos el progreso de la habilidad
-        habilidadProgreso = 0f;
-        playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+    //void OnEnable()
+    //{
+    //    // Reiniciamos el progreso de la habilidad
+    //    habilidadProgreso = 0f;
+    //    playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
 
-        canEscudo = true;
-        actualHability = hability;
-        muerto = false;
-        habilidadDisponible = false;
+    //    canEscudo = true;
+    //    hability = null;
+    //    actualHability = hability;
+    //    muerto = false;
+    //    habilidadDisponible = false;
 
-        //canShoot = true;
-        // Iniciamos la coroutine para cargar la habilidad
-        StartCoroutine(CargarHabilidad());
+    //    //canShoot = true;
+    //    // Iniciamos la coroutine para cargar la habilidad
+    //    StartCoroutine(CargarHabilidad());
 
-        Start_Dash();
-        Start_Escudo();
+    //    Start_Dash();
+    //    Start_Escudo();
 
-        BloquearMovimiento = false;
-        BloquearRotacion = false;
+    //    BloquearMovimiento = false;
+    //    BloquearRotacion = false;
 
-        GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
-        Destroy(clone, 1.5f);
+    //    GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
+    //    Destroy(clone, 1.5f);
 
-    }
+    //}
 
     private void OnDestroy()
     {

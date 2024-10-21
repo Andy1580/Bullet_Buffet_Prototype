@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume * volumeGroup;
             s.source.pitch = s.pitch;
 
-            Debug.Log($"Sonido inicializado: {s.nombre}, Volumen: {s.source.volume}, Loop: {s.source.loop}");
+            //Debug.Log($"Sonido inicializado: {s.nombre}, Volumen: {s.source.volume}, Loop: {s.source.loop}");
         }
     }
 

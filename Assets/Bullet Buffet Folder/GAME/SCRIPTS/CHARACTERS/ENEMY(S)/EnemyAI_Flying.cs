@@ -225,19 +225,6 @@ public class EnemyAI_Flying : MonoBehaviour
         }
     }
 
-    void InstanciarObjetoAleatorio()
-    {
-        if (objetosParaInstanciar.Length > 0)
-        {
-            int randomIndex = Random.Range(0, objetosParaInstanciar.Length);
-            GameObject objetoSeleccionado = objetosParaInstanciar[randomIndex];
-
-
-
-            Instantiate(objetoSeleccionado, transform.position, transform.rotation);
-        }
-    }
-
     IEnumerator PerseguirJugador()
     {
     Inicio:

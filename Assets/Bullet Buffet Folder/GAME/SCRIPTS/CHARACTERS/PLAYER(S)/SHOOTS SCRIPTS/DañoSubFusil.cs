@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DañoSubFusil : MonoBehaviour
@@ -26,17 +24,12 @@ public class DañoSubFusil : MonoBehaviour
             }
             else
             {
-                if (!jugador.isInvulnerable)
+                if (!jugador.isInvulnerable || !jugador.muerto)
                 {
-                    if (jugador.Vida != 0)
-                    {
-                        jugador.Vida -= damage;
-                        jugador.anim.SetTrigger("daño");
-                        Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                        //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
-
-                    }
-                    else return;
+                    jugador.Vida -= damage;
+                    jugador.animator.SetTrigger("daño");
+                    //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                    //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
                 }
             }
 

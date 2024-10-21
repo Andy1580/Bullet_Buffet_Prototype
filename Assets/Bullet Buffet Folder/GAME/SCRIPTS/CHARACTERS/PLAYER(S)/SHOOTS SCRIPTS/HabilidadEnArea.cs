@@ -30,6 +30,7 @@ public class HabilidadEnArea : MonoBehaviour
             {
                 PlayerController player = collider.gameObject.GetComponent<PlayerController>();
 
+                if (player.muerto) return;
                 player.Vida -= daño;
             }
 

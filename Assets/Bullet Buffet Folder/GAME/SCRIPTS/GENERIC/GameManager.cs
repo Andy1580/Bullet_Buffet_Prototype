@@ -1295,6 +1295,7 @@ public class GameManager : MonoBehaviour
     #endregion MODO HECHIZOS SAZONADOS
 
     #region DEAD EVENT PLAYER
+    //En caso de fallar la muerte, volver a colocar los valores directamente en vez de solo llamar al metodo Revivir de dicho jugador
 
     //CharacterController chP1;
     //CharacterController chP2;
@@ -1323,12 +1324,10 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
-                        p1.muerto = true;
-                        p2.muerto = true;
-                        p1.enabled = false;
-                        p2.enabled = false;
                         p1.BloquearMovimiento = true;
+                        p1.BloquearRotacion = true;
                         p2.BloquearMovimiento = true;
+                        p2.BloquearRotacion = true;
                         Invoke("Mago2", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1340,12 +1339,10 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
-                        p1.muerto = true;
-                        p2.muerto = true;
-                        p1.enabled = false;
-                        p2.enabled = false;
                         p1.BloquearMovimiento = true;
+                        p1.BloquearRotacion = true;
                         p2.BloquearMovimiento = true;
+                        p2.BloquearRotacion = true;
                         Invoke("Mago1", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1409,43 +1406,11 @@ public class GameManager : MonoBehaviour
             }
 
         }
-        else if (modoDS)
+        else if (modoDS) //Si no funciona este metodo, regresarlo a if(por equipos), if(player == p1), etc.
         {
             if (infoLobbyPlayers.Count == 2)
             {
-                if (player.equipo == 1)
-                {
-                    if (player == p1)
-                    {
-                        p1.BloquearMovimiento = true;
-                        p1.enabled = false;
-                        StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
-
-                    }
-                    else
-                    {
-                        p2.BloquearMovimiento = true;
-                        p2.enabled = false;
-                        StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
-
-                    }
-                }
-                else if (player.equipo == 2)
-                {
-                    if (player == p1)
-                    {
-                        p1.BloquearMovimiento = true;
-                        p1.enabled = false;
-                        StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
-                    }
-                    else
-                    {
-                        p2.BloquearMovimiento = true;
-                        p2.enabled = false;
-                        StartCoroutine(RespawnearJugadorMDS(player, 4.0f));
-                    }
-
-                }
+                StartCoroutine(RespawnearJugadorMDS(player));
             }
             else if (infoLobbyPlayers.Count == 4)
             {
@@ -1453,13 +1418,13 @@ public class GameManager : MonoBehaviour
                 {
                     player.BloquearMovimiento = true;
                     player.enabled = false;
-                    StartCoroutine(RespawnearJugadorMDS(player, 5));
+                    StartCoroutine(RespawnearJugadorMDS(player));
                 }
                 else if (player.equipo == 2)
                 {
                     player.BloquearMovimiento = true;
                     player.enabled = false;
-                    StartCoroutine(RespawnearJugadorMDS(player, 5));
+                    StartCoroutine(RespawnearJugadorMDS(player));
                 }
             }
 
@@ -1518,18 +1483,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("Se reactivaron los jugadores");
             yield return new WaitForSeconds(2.25f);
 
-            p1.Vida = 100;
-            p2.Vida = 100;
-            p1.anim.SetTrigger("spawn");
-            p2.anim.SetTrigger("spawn");
-            p1.enabled = true;
-            p2.enabled = true;
+            p1.Revivir();
+            p2.Revivir();
             p1.transform.GetChild(0).gameObject.SetActive(true);
             p2.transform.GetChild(0).gameObject.SetActive(true);
-            p1.BloquearMovimiento = false;
-            p2.BloquearMovimiento = false;
-            p1.muerto = false;
-            p2.muerto = false;
 
         }
 
@@ -1549,10 +1506,6 @@ public class GameManager : MonoBehaviour
             p2.Vida = 100;
             p3.Vida = 100;
             p4.Vida = 100;
-            p1.anim.SetTrigger("spawn");
-            p2.anim.SetTrigger("spawn");
-            p3.anim.SetTrigger("spawn");
-            p4.anim.SetTrigger("spawn");
             p1.BloquearMovimiento = false;
             p2.BloquearMovimiento = false;
             p3.BloquearMovimiento = false;
@@ -1570,10 +1523,9 @@ public class GameManager : MonoBehaviour
         InicializarEnemySpawn();
     }
 
-    private IEnumerator RespawnearJugadorMDS(PlayerController player, float time)
+    private IEnumerator RespawnearJugadorMDS(PlayerController player)
     {
-        Debug.Log("Se respauneo el jugador: " + player.name);
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(4f);
         player.transform.GetChild(0).gameObject.SetActive(false);
         yield return new WaitForSeconds(1.5f);
 
@@ -1581,23 +1533,18 @@ public class GameManager : MonoBehaviour
         {
             if (player == p1)
             {
-                p1.Vida = 100;
-                p1.habilidadProgreso = 0f;
-                p1.BloquearMovimiento = false;
-                p1.anim.SetTrigger("spawn");
                 p1.transform.position = respawnJ1.position;
+                yield return new WaitForSeconds(3f);
+                p1.Revivir();
                 p1.transform.GetChild(0).gameObject.SetActive(true);
-                p1.enabled = true;
+                
             }
             else if (player == p2)
             {
-                p2.Vida = 100;
-                p2.habilidadProgreso = 0f;
-                p2.BloquearMovimiento = false;
-                p2.anim.SetTrigger("spawn");
                 p2.transform.position = respawnJ2.position;
+                yield return new WaitForSeconds(3f);
+                p2.Revivir();
                 p2.transform.GetChild(0).gameObject.SetActive(true);
-                p2.enabled = true;
             }
 
         }
@@ -1609,7 +1556,6 @@ public class GameManager : MonoBehaviour
                 p1.Vida = 100;
                 p1.habilidadProgreso = 0;
                 p1.enabled = true;
-                p1.anim.SetTrigger("spawn");
                 p1.transform.position = modo2v2spawnTeam1_1.localPosition;
             }
 
@@ -1619,7 +1565,6 @@ public class GameManager : MonoBehaviour
                 p2.Vida = 100;
                 p2.habilidadProgreso = 0;
                 p2.enabled = true;
-                p2.anim.SetTrigger("spawn");
                 p2.transform.position = modo2v2spawnTeam1_2.localPosition;
             }
 
@@ -1629,7 +1574,6 @@ public class GameManager : MonoBehaviour
                 p3.Vida = 100;
                 p3.habilidadProgreso = 0;
                 p3.enabled = true;
-                p3.anim.SetTrigger("spawn");
                 p3.transform.position = modo2v2spawnTeam2_1.localPosition;
             }
 
@@ -1639,45 +1583,11 @@ public class GameManager : MonoBehaviour
                 p4.Vida = 100;
                 p4.habilidadProgreso = 0;
                 p4.enabled = true;
-                p4.anim.SetTrigger("spawn");
                 p4.transform.position = modo2v2spawnTeam2_2.localPosition;
             }
         }
 
         yield return new WaitForSeconds(6.0f);
-    }
-
-
-    //IEnumerator ReactivacionMDS(float time)
-    //{
-    //    if(infoLobbyPlayers.Count == 2)
-    //    {
-
-    //    }
-    //    yield return null;
-    //    yield return new WaitForSeconds(6.0f);
-    //    player.gameObject.SetActive(false);
-    //    player.transform.position = spawnPoint.position;
-    //    ResetearJugador(player);
-    //    player.gameObject.SetActive(true);
-    //    yield return new WaitForSeconds(time);
-    //}
-
-    private void BloquearMovimientoJugadores()
-    {
-        Debug.Log("Se bloquearon los movimientos de los jugadores");
-        p1.BloquearMovimiento = true;
-        p2.BloquearMovimiento = true;
-        p3.BloquearMovimiento = true;
-        p4.BloquearMovimiento = true;
-    }
-
-    private void ResetearJugador(PlayerController player)
-    {
-        player.Vida = 100;
-        player.enabled = true;
-        player.isInvulnerable = false;
-        player.anim.SetTrigger("spawn");
     }
     #endregion DEAD EVENT PLAYER
 

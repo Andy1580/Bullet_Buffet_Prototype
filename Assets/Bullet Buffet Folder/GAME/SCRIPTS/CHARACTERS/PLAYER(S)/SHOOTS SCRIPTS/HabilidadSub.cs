@@ -39,6 +39,7 @@ public class HabilidadSub : MonoBehaviour
 
                     if (player != null)
                     {
+                        if (player.muerto) yield return null;
                         player.Vida -= daño;
                     }
                 }

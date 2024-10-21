@@ -24,18 +24,14 @@ public class DañoEscopeta : MonoBehaviour
             }
             else
             {
-                if (!jugador.isInvulnerable)
+                if (!jugador.isInvulnerable || !jugador.muerto)
                 {
-                    if (jugador.Vida != 0)
-                    {
-                        jugador.Vida -= daño;
-                        //jugador.anim.SetTrigger("daño");
-                        //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                        //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
-
-                    }
-                    else return;
+                    jugador.Vida -= daño;
+                    jugador.animator.SetTrigger("daño");
+                    //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                    //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
                 }
+                else return;
             }
 
         }
@@ -57,11 +53,12 @@ public class DañoEscopeta : MonoBehaviour
             }
         }
 
-        //else if (other.gameObject.layer == 0)
-        //{
-        //    Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-        //    //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
-        //}
+        else if (other.gameObject.layer == 0)
+        {
+            return;
+            //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+            //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
+        }
     }
 
     private void OnDestroy()
