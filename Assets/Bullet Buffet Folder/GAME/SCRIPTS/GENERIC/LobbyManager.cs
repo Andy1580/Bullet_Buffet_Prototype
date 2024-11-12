@@ -1,20 +1,30 @@
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class LobbyManager : MonoBehaviour
 {
+
+
+    public static List<ControlSystem> listaCS = new List<ControlSystem>();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     public static LobbyManager self;
 
     private PlayerInput[] inputs;
     [HideInInspector] public static Dictionary<Gamepad, PlayerInput> dicControles = new Dictionary<Gamepad, PlayerInput>();
+    private static List<ControlSystem> listaCsEquipo1 = new List<ControlSystem>();
+    private static List<ControlSystem> listaCsEquipo2 = new List<ControlSystem>();
 
     [SerializeField] private Canvas canvas;
     public static Canvas Canvas => self.canvas;
 
-    [HideInInspector] public static Dictionary<int, int> equipo = new Dictionary<int, int>(); // gamepadId -> equipo
+    [HideInInspector] public static Dictionary<int, int> equipo = new Dictionary<int, int>(); // gamepadId -> equipoJugador
     [HideInInspector] public static Dictionary<int, string> personaje = new Dictionary<int, string>(); // gamepadId -> personaje
 
     [SerializeField] private GameObject panelSelectTeam;
@@ -29,8 +39,16 @@ public class LobbyManager : MonoBehaviour
     public static int equipo1 = 0;
     public static int equipo2 = 0;
 
+    //Variables heredadas del ControlSystem
+    public List<RectTransform> slotsEquipo1;
+    public List<RectTransform> slotsEquipo2;
+    public RectTransform[] posicionesSlotsEquipo1;
+    public RectTransform[] posicionesSlotsEquipo2;
 
-    // Nuevas variables para imágenes
+    [SerializeField] private List<TMP_Text> textosEquipo1;
+    [SerializeField] private List<TMP_Text> textosEquipo2;
+
+    // Nuevas variables para imï¿½genes
     //[SerializeField] private Image[] teamImages;
     //[SerializeField] private Image[] characterImages;
 
@@ -42,23 +60,36 @@ public class LobbyManager : MonoBehaviour
         Awake_DesactivarControles();
         Awake_AsignarControles();
         InputSystem.onDeviceChange += CambiosEnControl;
+
+        Awake_AcomodarSlots();
     }
 
     private void Start()
     {
-        panelSelectTeam.SetActive(true);
-        panelSelectCh.SetActive(false);
-        botonJugar.SetActive(false);
-        tiras.SetActive(false);
+        if(SceneManager.GetActiveScene().name == "LOBBY")
+        {
+            panelSelectTeam.SetActive(true);
+            panelSelectCh.SetActive(false);
+            botonJugar.SetActive(false);
+            tiras.SetActive(false);
 
-        escogiendoEquipo = true;
-        equipoControles = new int[equipoControles.Length];
+            escogiendoEquipo = true;
+            equipoControles = new int[equipoControles.Length];
 
-        equipo1 = 0;
-        equipo2 = 0;
+            equipo1 = 0;
+            equipo2 = 0;
 
-        equipo = new Dictionary<int, int>();
-        personaje = new Dictionary<int, string>();  
+            equipo = new Dictionary<int, int>();
+            personaje = new Dictionary<int, string>();
+        }
+        else
+        {
+            panelSelectTeam.SetActive(false);
+            panelSelectCh.SetActive(false);
+            botonJugar.SetActive(false);
+            tiras.SetActive(false);
+        }
+        
     }
 
     private void MakeSingleton()
@@ -107,6 +138,7 @@ public class LobbyManager : MonoBehaviour
                     input.gameObject.SetActive(true);
                     dicControles[gamepad] = input;
                     RegistrarGamepad(gamepad);
+                    Awake_AcomodarSlots();
                     break;
                 }
             }
@@ -115,6 +147,51 @@ public class LobbyManager : MonoBehaviour
         {
             dicControles[gamepad].gameObject.SetActive(false);
             dicControles.Remove(gamepad);
+            Awake_AcomodarSlots();
+        }
+    }
+
+    private void Awake_AcomodarSlots()
+    {
+        foreach (RectTransform slot in slotsEquipo1)
+        {
+            slot.gameObject.SetActive(false);
+        }
+
+        foreach (RectTransform slot in slotsEquipo2)
+        {
+            slot.gameObject.SetActive(false);
+        }
+
+        foreach (RectTransform slot in posicionesSlotsEquipo1)
+        {
+            slot.gameObject.SetActive(false);
+        }
+
+        foreach (RectTransform slot in posicionesSlotsEquipo2)
+        {
+            slot.gameObject.SetActive(false);
+        }
+
+        int gamepadCount = Gamepad.all.Count;
+
+        if (gamepadCount == 2)
+        {
+            posicionesSlotsEquipo1[1].gameObject.SetActive(true);
+            posicionesSlotsEquipo2[0].gameObject.SetActive(true);
+
+            slotsEquipo1[0].position = posicionesSlotsEquipo1[1].position;
+            slotsEquipo2[0].position = posicionesSlotsEquipo2[0].position;
+        }
+        else if (gamepadCount == 4)
+        {
+            foreach (RectTransform slot in posicionesSlotsEquipo1) slot.gameObject.SetActive(true);
+            foreach (RectTransform slot in posicionesSlotsEquipo2) slot.gameObject.SetActive(true);
+
+            slotsEquipo1[0].position = posicionesSlotsEquipo1[0].position;
+            slotsEquipo1[1].position = posicionesSlotsEquipo1[1].position;
+            slotsEquipo2[0].position = posicionesSlotsEquipo2[0].position;
+            slotsEquipo2[1].position = posicionesSlotsEquipo2[1].position;
         }
     }
 
@@ -126,100 +203,120 @@ public class LobbyManager : MonoBehaviour
 
         if (Gamepad.all.Count == 2)
         {
-            //print("Equipo 1: " + equipoControles[0]);
-            //print("Equipo 2: " + equipoControles[1]);
-
-
-            if (dicControles.ContainsKey(gamepad))
-            {
-                int gamepadId = gamepad.deviceId;
-                equipo[gamepadId] = equipoSeleccionado;
-                //Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
-            }
-
             if (suma == 2)
             {
+                AsignarPunterosYActivarPanel();
                 escogiendoEquipo = false;
-                ActivarPanelSeleccionarPersonajes();
             }
         }
         else if (Gamepad.all.Count == 4)
         {
-            if (dicControles.ContainsKey(gamepad))
-            {
-                int gamepadId = gamepad.deviceId;
-                equipo[gamepadId] = equipoSeleccionado;
-                //Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el equipo {equipoSeleccionado}");
-            }
-
             if (suma == 4)
             {
+                AsignarPunterosYActivarPanel();
                 escogiendoEquipo = false;
-                ActivarPanelSeleccionarPersonajes();
-
-
             }
         }
 
     }
 
-    public static void RechazarEquipo(Gamepad gamepad, int equipoRechazado)
+    private static void AsignarPunterosYActivarPanel()
     {
-        equipoControles[equipoRechazado - 1]--;
+        // Activar slots segÃºn la cantidad de GamePads conectados
+        int gamepadCount = Gamepad.all.Count;
 
-        int resta = equipoControles[0] - equipoControles[1] - equipoControles[2] - equipoControles[3];
-
-        if (Gamepad.all.Count == 2)
+        if (gamepadCount == 2)
         {
-
-            if (dicControles.ContainsKey(gamepad))
+            // Solo activamos el primer slot de cada equipo
+            self.slotsEquipo1[0].gameObject.SetActive(true);
+            self.slotsEquipo2[0].gameObject.SetActive(true);
+        }
+        else if (gamepadCount == 4)
+        {
+            // Activamos todos los slots de ambos equipos
+            foreach (RectTransform slot in self.slotsEquipo1)
             {
-                int gamepadId = gamepad.deviceId;
-                if (equipo.ContainsKey(gamepadId))
-                {
-                    equipo.Remove(gamepadId);
-                    //teamImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del equipo
-                }
-                if (personaje.ContainsKey(gamepadId))
-                {
-                    personaje.Remove(gamepadId);
-                    //characterImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del personaje
-                }
-                //Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
+                slot.gameObject.SetActive(true);
             }
 
-            if (resta == 2)
+            foreach (RectTransform slot in self.slotsEquipo2)
             {
-                escogiendoEquipo = true;
-                ActivarPanelSeleccionarEquipo();
-
+                slot.gameObject.SetActive(true);
             }
         }
-        else if (Gamepad.all.Count == 4)
+
+        int i = 0;
+
+        // AÃ±adir los ControlSystem a los equipos correspondientes y posicionar punteros
+        foreach (var par in dicControles)
         {
-            if (dicControles.ContainsKey(gamepad))
-            {
-                int gamepadId = gamepad.deviceId;
-                if (equipo.ContainsKey(gamepadId))
-                {
-                    equipo.Remove(gamepadId);
-                    //teamImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del equipo
-                }
-                if (personaje.ContainsKey(gamepadId))
-                {
-                    personaje.Remove(gamepadId);
-                    //characterImages[gamepadId - 1].gameObject.SetActive(false); // Desactivar imagen del personaje
-                }
-                //Debug.Log($"Gamepad {gamepad.deviceId} ha rechazado el equipo/personaje");
-            }
+            ControlSystem cs = par.Value.GetComponent<ControlSystem>();
+            cs.gamepadID = par.Key.deviceId;
+            cs.originalID = i++;
 
-            if (resta == 4)
-            {
-                escogiendoEquipo = true;
-                ActivarPanelSeleccionarEquipo();
+            listaCS.Add(cs);  
 
+            if (cs.equipoJugador == 1) listaCsEquipo1.Add(cs);
+            else listaCsEquipo2.Add(cs);
+        }
+
+        // Posicionar y activar los punteros de los jugadores en sus slots respectivos
+        self.PosicionarYActivarPunteros();
+        ActivarPanelSeleccionarPersonajes();
+    }
+
+    private void PosicionarYActivarPunteros()
+    {
+        for (int i = 0; i < listaCsEquipo1.Count; i++)
+        {
+            MoverPuntero(listaCsEquipo1[i], slotsEquipo1[i], textosEquipo1[i]);
+        }
+
+        for (int i = 0; i < listaCsEquipo2.Count; i++)
+        {
+            MoverPuntero(listaCsEquipo2[i], slotsEquipo2[i], textosEquipo2[i]);
+        }
+    }
+
+    private void MoverPuntero(ControlSystem cs, RectTransform slot, TMP_Text textoSlot)
+    {
+        cs.puntero.gameObject.SetActive(true);
+        cs.puntero.position = slot.position;
+
+        textoSlot.text = cs.jugadorNickName;
+        cs.spritePersonaje = slot.GetChild(1).GetComponent<Image>();
+
+        Debug.Log($"Puntero del jugador {cs.jugadorNickName} se moviÃ³ al slot {slot.name}");
+    }
+
+    public static void RechazarEquipo()
+    {
+        // Limpia el arreglo equipoControles, establece todos los elementos en 0
+        Array.Clear(equipoControles, 0, equipoControles.Length);
+        print(equipoControles.Length);
+
+        equipo1 = 0;
+        equipo2 = 0;
+
+        listaCsEquipo1.Clear();
+        listaCsEquipo2.Clear();
+
+        // Limpiar el diccionario de equipo y personaje si es necesario
+        equipo.Clear();
+        personaje.Clear();
+
+        // Ciclar a travÃ©s de todos los `ControlSystem` y resetear variables
+        foreach (var par in dicControles)
+        {
+            ControlSystem cs = par.Value.GetComponent<ControlSystem>();
+            if (cs != null)
+            {
+                cs.ResetearVariables();
             }
         }
+
+        escogiendoEquipo = true;
+        ActivarPanelSeleccionarEquipo();
     }
 
     public void SeleccionarPersonaje(Gamepad gamepad, string personajeSeleccionado)
@@ -228,7 +325,7 @@ public class LobbyManager : MonoBehaviour
         {
             int gamepadId = gamepad.deviceId;
             personaje[gamepadId] = personajeSeleccionado;
-            //Debug.Log($"Gamepad {gamepad.deviceId} seleccionó el personaje {personajeSeleccionado}");
+            //Debug.Log($"Gamepad {gamepad.deviceId} seleccionï¿½ el personaje {personajeSeleccionado}");
         }
 
         if (Gamepad.all.Count == 2)
@@ -273,7 +370,7 @@ public class LobbyManager : MonoBehaviour
         self.panelSelectCh.SetActive(false);
     }
 
-    [HideInInspector] public Dictionary<int, Gamepad> idToGamepad = new Dictionary<int, Gamepad>();
+    [HideInInspector] public static Dictionary<int, Gamepad> idToGamepad = new Dictionary<int, Gamepad>();
 
     public void RegistrarGamepad(Gamepad gamepad)
     {
@@ -281,7 +378,11 @@ public class LobbyManager : MonoBehaviour
         if (!idToGamepad.ContainsKey(gamepadId))
         {
             idToGamepad[gamepadId] = gamepad;
-            //Debug.Log($"Gamepad registrado: {gamepadId}");
+            Debug.Log($"Gamepad registrado correctamente: {gamepadId} para {gamepad}");
+        }
+        else
+        {
+            Debug.LogWarning($"El Gamepad con id {gamepadId} ya estaba registrado.");
         }
     }
 
@@ -289,16 +390,19 @@ public class LobbyManager : MonoBehaviour
     {
         if (idToGamepad.ContainsKey(gamepadId))
         {
+            Debug.Log($"GetGamepadById: Se encontrÃ³ el Gamepad con id {gamepadId}");
             return idToGamepad[gamepadId];
         }
 
-        //Debug.LogWarning($"No se encontró el Gamepad con id {gamepadId}");
+        Debug.LogWarning($"GetGamepadById: No se encontrÃ³ el Gamepad con id {gamepadId}");
         return null;
     }
 
     public void RecopilarInformacion()
     {
-        //Debug.Log("Iniciando recopilación de información...");
+        IniciarPartida();
+        //GuardarInformacionJugadores();
+        //Debug.Log("Iniciando recopilaciï¿½n de informaciï¿½n...");
 
         if (equipo.Count < 2 && personaje.Count < 2)
         {
@@ -306,6 +410,10 @@ public class LobbyManager : MonoBehaviour
             return;
         }
 
+
+
+
+        return;
         InfoLobby infoLobby = new InfoLobby();
 
         foreach (var control in dicControles)
@@ -315,12 +423,12 @@ public class LobbyManager : MonoBehaviour
 
             if (equipo.ContainsKey(gamepadId) && personaje.ContainsKey(gamepadId))
             {
-                //Debug.Log($"Agregando información del jugadorImpactoBala {gamepadId} con equipo {equipo[gamepadId]} y personaje {personaje[gamepadId]}");
+                //Debug.Log($"Agregando informaciï¿½n del jugadorImpactoBala {gamepadId} con equipoJugador {equipoJugador[gamepadId]} y personaje {personaje[gamepadId]}");
                 infoLobby.AddPlayerInfo(gamepadId, equipo[gamepadId], personaje[gamepadId]);
             }
             else
             {
-                Debug.LogWarning($"Falta información para el gamepad {gamepadId}");
+                Debug.LogWarning($"Falta informaciï¿½n para el gamepad {gamepadId}");
             }
         }
 
@@ -328,8 +436,96 @@ public class LobbyManager : MonoBehaviour
         //Debug.Log("JSON generado: " + json);
         AudioManager.instance.StopSound("menu");
         GameManager.Instance.RecibirInformacionLobby(json);
-        
+
     }
 
 
+    public void IniciarPartida()
+    {
+        //Obtenemos el numero de jugadores
+        int nJugadores = listaCsEquipo1.Count + listaCsEquipo2.Count;
+
+        PlayerPrefs.SetInt("nJugadores", nJugadores);
+
+        // Convertir Gamepad.all a una lista para poder usar FindIndex
+        List<Gamepad> gamepadList = new List<Gamepad>(Gamepad.all);
+
+        //Si son 2 JUGADORES
+        if (nJugadores == 2)
+        {
+            //Obtener los Control System
+            ControlSystem c1 = listaCS[0];
+            ControlSystem c2 = listaCS[1];
+
+            PlayerPrefs.SetInt("P1_GID", c1.gamepadID);
+            PlayerPrefs.SetString("P1_Personaje", c1.selectedCharacter);
+            PlayerPrefs.SetInt("P1_Equipo", c1.equipoJugador);
+
+            PlayerPrefs.SetInt("P2_GID", c2.gamepadID);
+            PlayerPrefs.SetString("P2_Personaje", c2.selectedCharacter);
+            PlayerPrefs.SetInt("P2_Equipo", c2.equipoJugador);
+
+        }
+        //Si son 4 JUGADORES
+        else
+        {
+            //Obtener los Control System
+            ControlSystem c1 = listaCS[0];
+            ControlSystem c2 = listaCS[1];
+            ControlSystem c3 = listaCS[2];
+            ControlSystem c4 = listaCS[3];
+
+            PlayerPrefs.SetInt("P1_GID", c1.gamepadID);
+            PlayerPrefs.SetString("P1_Personaje", c1.selectedCharacter);
+            PlayerPrefs.SetInt("P1_Equipo", c1.equipoJugador);
+
+            PlayerPrefs.SetInt("P2_GID", c2.gamepadID);
+            PlayerPrefs.SetString("P2_Personaje", c2.selectedCharacter);
+            PlayerPrefs.SetInt("P2_Equipo", c2.equipoJugador);
+
+            PlayerPrefs.SetInt("P3_GID", c3.gamepadID);
+            PlayerPrefs.SetString("P3_Personaje", c3.selectedCharacter);
+            PlayerPrefs.SetInt("P3_Equipo", c3.equipoJugador);
+
+            PlayerPrefs.SetInt("P4_GID", c4.gamepadID);
+            PlayerPrefs.SetString("P4_Personaje", c4.selectedCharacter);
+            PlayerPrefs.SetInt("P4_Equipo", c4.equipoJugador);
+        }
+
+        PlayerPrefs.Save();
+
+        GameManager.Instance.CargarEscenaProfe();
+    }
+
+    public void GuardarInformacionJugadores()
+    {
+        int nJugadores = listaCsEquipo1.Count + listaCsEquipo2.Count;
+        PlayerPrefs.SetInt("nJugadores", nJugadores);
+
+        if (nJugadores == 2)
+        {
+            GuardarJugador(1, listaCsEquipo1[0]);
+            GuardarJugador(2, listaCsEquipo2[0]);
+        }
+        else if (nJugadores == 4)
+        {
+            GuardarJugador(1, listaCsEquipo1[0]);
+            GuardarJugador(2, listaCsEquipo1[1]);
+            GuardarJugador(3, listaCsEquipo2[0]);
+            GuardarJugador(4, listaCsEquipo2[1]);
+        }
+
+        //// Transferir el diccionario de gamepads de LobbyManager al GameManager
+        //GameManager.idDeGamepad = new Dictionary<int, Gamepad>(idToGamepad);
+
+        PlayerPrefs.Save();
+        GameManager.Instance.CargarEscenaProfe();
+    }
+
+    private void GuardarJugador(int playerIndex, ControlSystem controlSystem)
+    {
+        PlayerPrefs.SetInt($"P{playerIndex}_GID", controlSystem.gamepadID);
+        PlayerPrefs.SetString($"P{playerIndex}_Personaje", controlSystem.selectedCharacter);
+        PlayerPrefs.SetInt($"P{playerIndex}_Equipo", controlSystem.equipoJugador);
+    }
 }

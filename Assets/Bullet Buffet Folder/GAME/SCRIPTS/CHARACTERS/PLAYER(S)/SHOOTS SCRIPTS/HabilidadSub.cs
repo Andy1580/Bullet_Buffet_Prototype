@@ -1,16 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class HabilidadSub : MonoBehaviour
 {
     private PlayerController jugadorInvocador;
-    [SerializeField] private float areaDaño = 5f;       
-    [SerializeField] private int daño = 10;          
-    [SerializeField] private float duracionHabilidad = 3f;  
-    [SerializeField] private float intervaloDaño = 0.5f;    
-    [SerializeField] private LayerMask capas;    
+    [SerializeField] private float areaDaño = 5f;
+    [SerializeField] private int daño = 10;
+    [SerializeField] private float duracionHabilidad = 3f;
+    [SerializeField] private float intervaloDaño = 0.5f;
+    [SerializeField] private LayerMask capas;
 
     public void ActivarHabilidad(PlayerController jugador)
     {
@@ -37,24 +35,28 @@ public class HabilidadSub : MonoBehaviour
                 {
                     PlayerController player = collider.gameObject.GetComponent<PlayerController>();
 
-                    if (player != null)
+                    if (player.equipo == jugadorInvocador.equipo) continue;
+
+                    if (player != null && !player.muerto)
                     {
-                        if (player.muerto) yield return null;
-                        player.Vida -= daño;
+                        if (!player.isInvulnerable)
+                        {
+                            player.Vida -= daño;
+                        }
                     }
                 }
 
-                if(collider.gameObject.layer == 7) // layer 7 = Enemy
+                if (collider.gameObject.layer == 7) // layer 7 = Enemy
                 {
                     EnemyAI_Flying eF = collider.gameObject.GetComponent<EnemyAI_Flying>();
                     EnemyAI_Meele eM = collider.gameObject.GetComponent<EnemyAI_Meele>();
 
-                    if(eM != null)
+                    if (eM != null)
                     {
                         eM.VidaEnemigo -= daño;
                     }
-                    
-                    if(eF != null)
+
+                    if (eF != null)
                     {
                         eF.VidaEnemigo -= daño;
                     }

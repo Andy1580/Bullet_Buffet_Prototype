@@ -20,7 +20,7 @@ public class DañoEscopeta : MonoBehaviour
 
             if(jugador.equipo == propietario.equipo)
             {
-                Debug.Log("Es del mismo equipo, no puedes hacerle daño");
+                Debug.Log("Es del mismo equipoJugador, no puedes hacerle daño");
             }
             else
             {

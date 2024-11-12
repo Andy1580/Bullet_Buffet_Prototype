@@ -53,10 +53,10 @@ public class CuadroPintable : MonoBehaviour
             //Obtebemos su nombre y veificamos que no se haya asignado al "curentOwner"
             PlayerController player = other.GetComponent<PlayerController>();
 
-            //Si el que piso el cuadro es diferente del equipo del que ya estaba pintado ...
+            //Si el que piso el cuadro es diferente del equipoJugador del que ya estaba pintado ...
             if(player.equipo != equipoActual)
             {
-                //Cambiar el equipo
+                //Cambiar el equipoJugador
                 equipoActual = player.equipo;
 
                 //Lo pintamos

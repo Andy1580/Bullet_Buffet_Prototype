@@ -2,16 +2,12 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     #region PLAYERCONTROLLER CORE
-
-    private void Awake()
-    {
-        InicializarGamepad();
-    }
 
     private void Start()
     {
@@ -25,9 +21,6 @@ public class PlayerController : MonoBehaviour
         Start_Habilidad();
         Start_Equipos();
         //Start_Disparo();
-
-        BloquearMovimiento = false;
-        BloquearRotacion = false;
         personaje = this.gameObject.name;
 
         GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
@@ -159,11 +152,15 @@ public class PlayerController : MonoBehaviour
 
     #region SLOT JUGADOR
 
-    [HideInInspector] public PlayerHUD playerHUD;
+    private PlayerHUD playerHUD;
 
-    public void AsignarSlot(PlayerHUD playerHUD)
+    public PlayerHUD PlayerHUD
     {
-        this.playerHUD = playerHUD;
+        set
+        {
+            playerHUD = value;
+            playerHUD.gameObject.SetActive(true);
+        }
     }
     #endregion SLOT JUGADOR
 
@@ -184,10 +181,6 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion EQUIPOS
-
-    #region GAMEPAD
-    [SerializeField] internal Gamepad gamepadIndex;
-    #endregion GAMEPAD
 
     #region Movimiento & Rotacion
 
@@ -215,11 +208,16 @@ public class PlayerController : MonoBehaviour
 
 
         if (BloquearMovimiento)
+        {
+            movement = Vector3.zero;
+            animator.SetFloat("xmov", movement.x);
+            animator.SetFloat("zmov", movement.z);
             return;
+        }
 
         if (!enDash)
         {
-            if(!BloquearRotacion)
+            if (!BloquearRotacion)
             {
                 if (axis2 != Vector3.zero)
                 {
@@ -231,7 +229,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 rotation = transform.position + axis2 * smoothRotacion * Time.deltaTime;
                 circuloEquipo.transform.position = rotation;
             }
-            
+
             Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
             movement.x = moveXZ.x;
             movement.z = moveXZ.z;
@@ -244,7 +242,6 @@ public class PlayerController : MonoBehaviour
         {
             movement = direccionDash * fuerzaDash;
         }
-
 
         //if (GameManager.EnPausa)
         //    return;
@@ -295,7 +292,7 @@ public class PlayerController : MonoBehaviour
             AudioManager.instance.PlaySound("disparojugador");
             Transform clon = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
             clon.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
-            DaÒoEscopeta bullet = clon.GetComponent<DaÒoEscopeta>();
+            DaÔøΩoEscopeta bullet = clon.GetComponent<DaÔøΩoEscopeta>();
             bullet.Inicializar(this);
             Destroy(clon.gameObject, 3);
             cont = cooldown;
@@ -306,13 +303,12 @@ public class PlayerController : MonoBehaviour
     #endregion Disparo
 
     #region ANIMATOR
-    
+
     internal Animator animator;
 
     void Start_Animator()
     {
         animator = GetComponent<Animator>();
-        animator.SetTrigger("spawn");
     }
     #endregion ANIMATOR
 
@@ -368,18 +364,78 @@ public class PlayerController : MonoBehaviour
     [SerializeField] internal Gamepad _gamepad;
 
     [Header("Gamepad Core")]
-    [SerializeField] private float frecuenciaMaximaDaÒo = 0.5f;
-    [SerializeField] private float frecuenciaMinimaDaÒo = 0.5f;
+    [SerializeField] private float frecuenciaMaximaDa√±o = 0.5f;
+    [SerializeField] private float frecuenciaMinimaDa√±o = 0.5f;
     [SerializeField] private float frecuenciaMaximaHabilidad = 0.2f;
     [SerializeField] private float frecuenciaMinimaHabilidad = 0.2f;
-    [SerializeField] private float tiempoDeVibracionDaÒo = 0.5f;
+    [SerializeField] private float tiempoDeVibracionDa√±o = 0.5f;
     [SerializeField] private float tiempoDeVibracionHabilidad = 0.1f;
     private PlayerInput _playerInput;
 
-    private void InicializarGamepad()
+    private void AsignarGamepad(int gamepadId)
     {
+        // Encontrar y asignar el Gamepad
+        _gamepad = Gamepad.all.FirstOrDefault(gp => gp.deviceId == gamepadId);
+        print("Este personaje " + this.name + " lo controla el gamepad: " + _gamepad);
+        if (_gamepad != null)
+        {
+            _playerInput = GetComponent<PlayerInput>();
+            if (_playerInput != null)
+            {
+                _playerInput.user.UnpairDevices();  // Eliminar dispositivos previamente emparejados
+                InputUser.PerformPairingWithDevice(_gamepad, _playerInput.user);
+                Debug.Log($"Gamepad emparejado correctamente con el jugador {gameObject.name}");
+            }
+        }
+    }
+
+    public void MovePositionToRespawn(Transform respawn)
+    {
+        transform.position = respawn.position;
+        transform.rotation = respawn.rotation;
+        Debug.Log($"{name} movido a respawn en {respawn.position}");
+    }
+
+    public void SetGamepad(Gamepad gamepad)
+    {
+        if (gamepad == null)
+        {
+            Debug.LogWarning("SetGamepad: No se ha asignado un gamepad v√°lido para este jugador.");
+            return;
+        }
+
+        _gamepad = gamepad; // Asignamos el Gamepad recibido
+
+        // Obtener el componente PlayerInput y asegurarnos de que est√© inicializado
         _playerInput = GetComponent<PlayerInput>();
-        _gamepad = _playerInput.devices.OfType<Gamepad>().FirstOrDefault();
+        if (_playerInput != null)
+        {
+            // Desvinculamos cualquier dispositivo actual emparejado con el usuario
+            if (_playerInput.user.valid)
+            {
+                _playerInput.user.UnpairDevices();
+            }
+
+            // Emparejamos el Gamepad actual con un nuevo InputUser usando el m√©todo est√°tico
+            InputUser.PerformPairingWithDevice(_gamepad, _playerInput.user);
+            Debug.Log($"SetGamepad: Gamepad {gamepad.deviceId} emparejado con el usuario del PlayerInput.");
+
+            // Cambiamos al esquema de control "Controller" (aseg√∫rate de que est√© configurado en tu InputActions)
+            var controlScheme = _playerInput.actions.FindControlScheme("Controller");
+            if (controlScheme != null)
+            {
+                _playerInput.SwitchCurrentControlScheme("Controller", new[] { gamepad });
+                Debug.Log($"SetGamepad: Control scheme cambiado a 'Controller' para Gamepad {gamepad.deviceId}");
+            }
+            else
+            {
+                Debug.LogWarning("SetGamepad: El esquema de control 'Controller' no fue encontrado.");
+            }
+        }
+        else
+        {
+            Debug.LogError("SetGamepad: PlayerInput no encontrado en el objeto de PlayerController.");
+        }
     }
     #endregion GAMEPAD
 
@@ -462,8 +518,8 @@ public class PlayerController : MonoBehaviour
         {
             if (value < salud)
             {
-                StartCoroutine(DaÒoEmisivo());
-                //DamageVibration(frecuenciaMinimaDaÒo, frecuenciaMaximaDaÒo);
+                StartCoroutine(Da√±oEmisivo());
+                //DamageVibration(frecuenciaMinimaDaÔøΩo, frecuenciaMaximaDaÔøΩo);
             }
 
             if (value <= 0)
@@ -486,7 +542,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private IEnumerator DaÒoEmisivo()
+    private IEnumerator Da√±oEmisivo()
     {
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
         yield return new WaitForSeconds(0.1f);
@@ -510,9 +566,6 @@ public class PlayerController : MonoBehaviour
         habilidadDisponible = false;
         Start_Dash();
         Start_Escudo();
-
-        BloquearMovimiento = false;
-        BloquearRotacion = false;
 
         GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
         Destroy(clone, 1.5f);
@@ -698,7 +751,7 @@ public class PlayerController : MonoBehaviour
         BloquearMovimiento = true;
         BloquearRotacion = true;
 
-        Invoke("AbilitarMovimiento", 1.45f);
+        Invoke("HabilitarMovimiento", 1.45f);
     }
 
     void HabilidadCRIM()
@@ -707,7 +760,7 @@ public class PlayerController : MonoBehaviour
         habilidadEnArea.ActivarHabilidad(this);
         BloquearMovimiento = true;
 
-        Invoke("AbilitarMovimiento", 1f);
+        Invoke("HabilitarMovimiento", 1f);
     }
 
     void HabilidadKAI()
@@ -715,10 +768,16 @@ public class PlayerController : MonoBehaviour
         habilidadSub.ActivarHabilidad(this);
     }
 
-    void AbilitarMovimiento()
+    public void HabilitarMovimiento()
     {
         BloquearMovimiento = false;
         BloquearRotacion = false;
+    }
+
+    public void DeshabilitarMovimiento()
+    {
+        BloquearMovimiento = true;
+        BloquearRotacion = true;
     }
     #endregion Habilidad
 
@@ -853,4 +912,21 @@ public class PlayerController : MonoBehaviour
         _gamepad.SetMotorSpeeds(0f, 0f);
     }
     #endregion EXTRAS
+
+    private Jugador _jugador;
+
+    public Jugador Jugador
+    {
+        get => _jugador;
+        set
+        {
+            _jugador = value;
+            equipo = _jugador.equipo;
+            playerHUD.name = _jugador.personaje;
+            //gameObject.name = equipo + " - " + _jugador.personaje;
+
+            // Llama a AsignarGamepad y fuerza el emparejamiento aislado
+            AsignarGamepad(_jugador.gamepadId);
+        }
+    }
 }

@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public bool inGame;
-
-    #region LOBBY
 
     #region RECIBIR INFORMACION
 
@@ -22,7 +21,13 @@ public class GameManager : MonoBehaviour
         //ActivarHUD();
 
 
-        CargarEscena();
+        //CargarEscena();
+        //Invoke("CargarEscena", 0.5f);
+    }
+
+    public void CargarEscenaProfe()
+    {
+        Invoke("CargarEscena", 0.5f);
     }
 
     #endregion RECIBIR INFORMACION
@@ -42,14 +47,11 @@ public class GameManager : MonoBehaviour
 
     #endregion HUD
 
-    #endregion LOBBY
-
     #region CARGAR ESCENA
 
     private void CargarEscena()
     {
         //EscenaDeJuego();
-        Invoke("EscenaDeJuego", 0.01f);
 
         if (boolMapaStreetMHS)
         {
@@ -75,11 +77,8 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("MapaDungeonMDS");
         }
-        else
-        {
-            return;
-        }
 
+        Invoke("EscenaDeJuego", 1f);
     }
     #endregion CARGAR ESCENA
 
@@ -127,7 +126,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         //InicializarMusica();
-        InicializarJugadores();
+        //InicializarJugadores();
         ResetiarVariables();
     }
 
@@ -171,7 +170,8 @@ public class GameManager : MonoBehaviour
         InicializarHUD();
         //IniciarPartida();
         InicializarSpawnsPoints();
-        Invoke("IniciarPartida", 0.02f);
+        //Invoke("IniciarPartida", 0.02f); PROFE
+        Invoke("IniciarPartidaProfe", 0.05f);
         InicializarTemporizador();
         //InicializarMapas();
         InicializarPuntaje();
@@ -201,6 +201,9 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
             AudioManager.instance.PlaySound("1");
+
+            ////Resetear Diccionario de Gamepads
+            //if(idDeGamepad == null) idDeGamepad = new Dictionary<int, Gamepad>();
 
             //Booleanos Partida
             modoHS = false;
@@ -289,178 +292,298 @@ public class GameManager : MonoBehaviour
 
     private Transform respawnJ1;
     private Transform respawnJ2;
+    private Transform respawnJ3;
+    private Transform respawnJ4;
 
-    public void IniciarPartida()
+    private List<PlayerController> equipo1 = new List<PlayerController>();
+    private List<PlayerController> equipo2 = new List<PlayerController>();
+
+    private PlayerController[,] equipos;
+
+    [SerializeField] private int nJugadores;
+
+    public bool juegoIniciado = false;
+
+    //List<Jugador> jugadores = new List<Jugador>();
+
+    List<Jugador> jugadoresEquipo1 = new List<Jugador>();
+    List<Jugador> jugadoresEquipo2 = new List<Jugador>();
+
+    //[HideInInspector] public static Dictionary<int, Gamepad> idDeGamepad;
+
+    // Listas de respawns por equipo
+    private List<Transform> respawnsEquipo1;
+    private List<Transform> respawnsEquipo2;
+
+    public void IniciarPartidaProfe()
     {
+        nJugadores = PlayerPrefs.GetInt("nJugadores");
 
-        if (infoLobbyPlayers == null)
-            InicializarJugadores();
+        // Asignación de puntos de respawn según equipos (modos de 2v2)
+        respawnJ1 = modo2v2spawnTeam1_1;
+        respawnJ2 = modo2v2spawnTeam1_2;
+        respawnJ3 = modo2v2spawnTeam2_1;
+        respawnJ4 = modo2v2spawnTeam2_2;
 
-        slotsHUD[0].gameObject.SetActive(false);
-        slotsHUD[1].gameObject.SetActive(false);
-        slotsHUD[2].gameObject.SetActive(false);
-        slotsHUD[3].gameObject.SetActive(false);
-
-        if (infoLobbyPlayers.Count == 2)
+        // Cargar jugadores desde PlayerPrefs y dividirlos en equipos
+        for (int i = 1; i <= nJugadores; i++)
         {
-            int equipoJ1 = infoLobbyPlayers[0].equipo;
-            int equipoJ2 = infoLobbyPlayers[1].equipo;
+            Jugador jugador = CrearJugadorDesdePrefs(i);
 
-            Transform spawn1v1J1;
-            Transform spawn1v1J2;
-
-            if (equipoJ1 == 1)
-            {
-                spawn1v1J1 = modo1v1spawnTeam1;
-            }
-            else
-            {
-                spawn1v1J1 = modo1v1spawnTeam2;
-            }
-
-            if (equipoJ2 == 1)
-            {
-                spawn1v1J2 = modo1v1spawnTeam1;
-            }
-            else
-            {
-                spawn1v1J2 = modo1v1spawnTeam2;
-            }
-
-            respawnJ1 = spawn1v1J1;
-            respawnJ2 = spawn1v1J2;
-
-            slotsHUD[0].gameObject.SetActive(true);
-            slotsHUD[1].gameObject.SetActive(true);
-
-            p1 = SpawnJugador(infoLobbyPlayers[0].personaje, spawn1v1J1, infoLobbyPlayers[0].gamepadId);
-            p1.equipo = equipoJ1;
-            p1.AsignarSlot(slotsHUD[0]);
-            p1.playerHUD.Name = infoLobbyPlayers[0].personaje;
-            p1.gameObject.name = infoLobbyPlayers[0].personaje;
-            p1.BloquearMovimiento = false;
-            activePlayers.Add(p1);
-
-            p2 = SpawnJugador(infoLobbyPlayers[1].personaje, spawn1v1J2, infoLobbyPlayers[1].gamepadId);
-            p2.equipo = equipoJ2;
-            p2.AsignarSlot(slotsHUD[1]);
-            p2.playerHUD.Name = infoLobbyPlayers[1].personaje;
-            p2.gameObject.name = infoLobbyPlayers[1].personaje;
-            p2.BloquearMovimiento = false;
-            activePlayers.Add(p2);
-
-
-
-        }
-        else if (infoLobbyPlayers.Count == 4)
-        {
-            //int equipoJ1 = infoLobbyPlayers[0].equipo;
-            //int equipoJ2 = infoLobbyPlayers[1].equipo;
-            //int equipoJ3 = infoLobbyPlayers[2].equipo;
-            //int equipoJ4 = infoLobbyPlayers[3].equipo;
-
-            //Transform spawn2v2J1;
-            //Transform spawn2v2J2;
-            //Transform spawn2v2J3;
-            //Transform spawn2v2J4;
-
-            //if (equipoJ1 == 1)
-            //{
-            //    spawn2v2J1 = modo2v2spawnTeam1_1;
-            //}
-            //else
-            //{
-            //    spawn2v2J1 = modo2v2spawnTeam2_1;
-            //}
-
-            //if (equipoJ2 == 1)
-            //{
-            //    spawn2v2J2 = modo2v2spawnTeam1_1;
-            //}
-            //else
-            //{
-            //    spawn2v2J1 = modo2v2spawnTeam2_1;
-            //}
-
-            //if (equipoJ3 == 1)
-            //{
-
-            //}
-
-            //List<int> equipo1 = new List<int>();
-            //List<int> equipo2 = new List<int>();
-
-            //foreach (var i in infoLobbyPlayers)
-            //{
-            //    if (i.equipo == 1)
-            //    {
-            //        equipo1.Add(i.equipo);
-            //    }
-            //}
-
-            slotsHUD[0].gameObject.SetActive(true);
-            slotsHUD[1].gameObject.SetActive(true);
-            slotsHUD[2].gameObject.SetActive(true);
-            slotsHUD[3].gameObject.SetActive(true);
-
-            p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo2v2spawnTeam1_1, infoLobbyPlayers[0].gamepadId);
-            p1.equipo = infoLobbyPlayers[0].equipo;
-            p1.AsignarSlot(slotsHUD[0]);
-            p1.playerHUD.Name = infoLobbyPlayers[0].personaje;
-            p1.BloquearMovimiento = false;
-            activePlayers.Add(p1);
-
-            p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo2v2spawnTeam1_2, infoLobbyPlayers[1].gamepadId);
-            p2.equipo = infoLobbyPlayers[1].equipo;
-            p2.AsignarSlot(slotsHUD[1]);
-            p2.playerHUD.Name = infoLobbyPlayers[1].personaje;
-            p2.BloquearMovimiento = false;
-            activePlayers.Add(p2);
-
-            p3 = SpawnJugador(infoLobbyPlayers[2].personaje, modo2v2spawnTeam2_1, infoLobbyPlayers[2].gamepadId);
-            p3.equipo = infoLobbyPlayers[2].equipo;
-            p3.AsignarSlot(slotsHUD[2]);
-            p3.playerHUD.Name = infoLobbyPlayers[2].personaje;
-            p3.BloquearMovimiento = false;
-            activePlayers.Add(p3);
-
-            p4 = SpawnJugador(infoLobbyPlayers[3].personaje, modo2v2spawnTeam2_2, infoLobbyPlayers[3].gamepadId);
-            p4.equipo = infoLobbyPlayers[3].equipo;
-            p4.AsignarSlot(slotsHUD[3]);
-            p4.playerHUD.Name = infoLobbyPlayers[3].personaje;
-            p4.BloquearMovimiento = false;
-            activePlayers.Add(p4);
+            // Añadir a la lista correspondiente según el equipo
+            if (jugador.equipo == 1)
+                jugadoresEquipo1.Add(jugador);
+            else if (jugador.equipo == 2)
+                jugadoresEquipo2.Add(jugador);
         }
 
-        foreach (PlayerController j in activePlayers)
+        // Instanciar jugadores y asignarles los respawn adecuados
+        if (nJugadores == 2)
         {
-            j.BloquearMovimiento = false;
-        }
+            // Asignación de puntos de respawn según equipos (modos de 2v2)
+            respawnJ1 = modo1v1spawnTeam1;
+            respawnJ2 = modo1v1spawnTeam2;
 
-        InicializarBodyJugadores();
+            // Para 2 jugadores, un jugador por equipo
+            if (jugadoresEquipo1.Count > 0) InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1);
+            if (jugadoresEquipo2.Count > 0) InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ3);
+        }
+        else if (nJugadores == 4)
+        {
+            // Asignación de puntos de respawn según equipos (modos de 2v2)
+            respawnJ1 = modo2v2spawnTeam1_1;
+            respawnJ2 = modo2v2spawnTeam1_2;
+            respawnJ3 = modo2v2spawnTeam2_1;
+            respawnJ4 = modo2v2spawnTeam2_2;
+
+            // Para 4 jugadores, 2 jugadores por equipo
+            if (jugadoresEquipo1.Count > 0) InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1);
+            if (jugadoresEquipo1.Count > 1) InstanciarJugadorProfe(jugadoresEquipo1[1], respawnJ2);
+
+            if (jugadoresEquipo2.Count > 0) InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ3);
+            if (jugadoresEquipo2.Count > 1) InstanciarJugadorProfe(jugadoresEquipo2[1], respawnJ4);
+        }
     }
 
-    void InicializarSpawnJugadores()
+
+    private Jugador CrearJugadorDesdePrefs(int playerIndex)
     {
-        if (infoLobbyPlayers.Count == 2)
+        int gamepadId = PlayerPrefs.GetInt($"P{playerIndex}_GID");
+        string personaje = PlayerPrefs.GetString($"P{playerIndex}_Personaje");
+        int equipo = PlayerPrefs.GetInt($"P{playerIndex}_Equipo");
+
+        return new Jugador(playerIndex - 1, gamepadId, personaje, equipo);
+    }
+    /*
+    public void IniciarPartidaProfe()
+    {
+        if (juegoIniciado) return;
+        juegoIniciado = true;
+
+        nJugadores = PlayerPrefs.GetInt("nJugadores");
+
+        //Si son 2 jugadores
+        if (nJugadores == 2)
         {
-            if (p1.equipo == 1)
+            //Respawns
+            respawnJ1 = modo1v1spawnTeam1;
+            respawnJ2 = modo1v1spawnTeam2;
+
+            //Obtener datos
+            int indexC1 = PlayerPrefs.GetInt("P1_G_Index");
+            int indexC2 = PlayerPrefs.GetInt("P2_G_Index");
+
+            // Recuperar Gamepad usando el índice
+            Gamepad gamepadC1 = Gamepad.all[indexC1];
+            Gamepad gamepadC2 = Gamepad.all[indexC2];
+
+            Jugador j1 = new Jugador(0, gamepadC1.deviceId, PlayerPrefs.GetString("P1_Personaje"), 1);
+            Jugador j2 = new Jugador(1, gamepadC2.deviceId, PlayerPrefs.GetString("P2_Personaje"), 2);
+
+            //Instanciar y Guardar
+            equipos = new PlayerController[,]
             {
-                p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam1, infoLobbyPlayers[0].gamepadId);
+                {InstanciarJugadorProfe(j1,respawnJ1)},
+                {InstanciarJugadorProfe(j2,respawnJ2)},
+            };
+        }
+        else
+        {
+            //Respawns
+            respawnJ1 = modo2v2spawnTeam1_1;
+            respawnJ2 = modo2v2spawnTeam1_2;
+            respawnJ3 = modo2v2spawnTeam2_1;
+            respawnJ4 = modo2v2spawnTeam2_2;
+
+            //Obtener datos
+            Jugador j1 = new Jugador(0, PlayerPrefs.GetInt("P1_GID"), PlayerPrefs.GetString("P1_Personaje"), 1);
+            Jugador j2 = new Jugador(1, PlayerPrefs.GetInt("P2_GID"), PlayerPrefs.GetString("P2_Personaje"), 1);
+            Jugador j3 = new Jugador(2, PlayerPrefs.GetInt("P3_GID"), PlayerPrefs.GetString("P3_Personaje"), 2);
+            Jugador j4 = new Jugador(3, PlayerPrefs.GetInt("P4_GID"), PlayerPrefs.GetString("P4_Personaje"), 2);
+
+            //Instanciar y Guardar
+            equipos = new PlayerController[,]
+            {
+                {InstanciarJugadorProfe(j1,respawnJ1), InstanciarJugadorProfe(j2,respawnJ2)},
+                {InstanciarJugadorProfe(j3,respawnJ3), InstanciarJugadorProfe(j4,respawnJ4)},
+            };
+        }
+
+    }
+    */
+
+    /*
+        public void IniciarPartida()
+        {
+
+            if (infoLobbyPlayers == null)
+                InicializarJugadores();
+
+            slotsHUD[0].gameObject.SetActive(false);
+            slotsHUD[1].gameObject.SetActive(false);
+            slotsHUD[2].gameObject.SetActive(false);
+            slotsHUD[3].gameObject.SetActive(false);
+
+            if (infoLobbyPlayers.Count == 2)
+            {
+                int equipoJ1 = infoLobbyPlayers[0].equipoJugador;
+                int equipoJ2 = infoLobbyPlayers[1].equipoJugador;
+
+                Transform spawn1v1J1;
+                Transform spawn1v1J2;
+
+                if (equipoJ1 == 1)
+                {
+                    spawn1v1J1 = modo1v1spawnTeam1;
+                }
+                else
+                {
+                    spawn1v1J1 = modo1v1spawnTeam2;
+                }
+
+                if (equipoJ2 == 1)
+                {
+                    spawn1v1J2 = modo1v1spawnTeam1;
+                }
+                else
+                {
+                    spawn1v1J2 = modo1v1spawnTeam2;
+                }
+
+                respawnJ1 = spawn1v1J1;
+                respawnJ2 = spawn1v1J2;
+
+                slotsHUD[0].gameObject.SetActive(true);
+                slotsHUD[1].gameObject.SetActive(true);
+
+                p1 = SpawnJugador(infoLobbyPlayers[0].personaje, spawn1v1J1, infoLobbyPlayers[0].gamepadId);
+                p1.equipoJugador = equipoJ1;
+                p1.AsignarSlot(slotsHUD[0]);
+                p1.playerHUD.Name = infoLobbyPlayers[0].personaje;
+                p1.gameObject.name = infoLobbyPlayers[0].personaje;
+                activePlayers.Add(p1);
+
+                p2 = SpawnJugador(infoLobbyPlayers[1].personaje, spawn1v1J2, infoLobbyPlayers[1].gamepadId);
+                p2.equipoJugador = equipoJ2;
+                p2.AsignarSlot(slotsHUD[1]);
+                p2.playerHUD.Name = infoLobbyPlayers[1].personaje;
+                p2.gameObject.name = infoLobbyPlayers[1].personaje;
+                activePlayers.Add(p2);
+
+                foreach(PlayerController player in activePlayers)
+                {
+                    player.DeshabilitarMovimiento();
+                }
+
+                Invoke("HabilitarMovimientoInicialJugadores", 2f);
             }
-            else
+            else if (infoLobbyPlayers.Count == 4)
             {
-                p1 = SpawnJugador(infoLobbyPlayers[0].personaje, modo1v1spawnTeam2, infoLobbyPlayers[0].gamepadId);
+                p1.equipoJugador = infoLobbyPlayers[0].equipoJugador;
+                p2.equipoJugador = infoLobbyPlayers[1].equipoJugador;
+                p3.equipoJugador = infoLobbyPlayers[2].equipoJugador;
+                p4.equipoJugador = infoLobbyPlayers[3].equipoJugador;
+
+                activePlayers.Add(p1);
+                activePlayers.Add(p2);
+                activePlayers.Add(p3);
+                activePlayers.Add(p4);
+
+                foreach (PlayerController player in activePlayers)
+                {
+                    if (player.equipoJugador == 1)
+                    {
+                        equipo1.Add(player);
+                    }
+                    else
+                    {
+                        equipo2.Add(player);
+                    }
+                }
+
+                //spawn izq
+                equipo1[0].transform.position = respawnJ1.position;
+                equipo1[1].transform.position = respawnJ2.position;
+
+                //spawns der
+                equipo2[0].transform.position = respawnJ3.position;
+                equipo2[1].transform.position = respawnJ4.position;
+
+                respawnJ1 = modo2v2spawnTeam1_1;
+                respawnJ2 = modo2v2spawnTeam1_2;
+                respawnJ3 = modo2v2spawnTeam2_1;
+                respawnJ4 = modo2v2spawnTeam2_2;
+
+                slotsHUD[0].gameObject.SetActive(true);
+                slotsHUD[1].gameObject.SetActive(true);
+                slotsHUD[2].gameObject.SetActive(true);
+                slotsHUD[3].gameObject.SetActive(true);
+
+                //aqui me atore xd
+                p1 = SpawnJugador(equipo1[0].name, respawnJ1, infoLobbyPlayers[0].gamepadId);
+                p1.AsignarSlot(slotsHUD[0]);
+                p1.playerHUD.Name = infoLobbyPlayers[0].personaje;
+
+                p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo2v2spawnTeam1_2, infoLobbyPlayers[1].gamepadId);
+                p2.AsignarSlot(slotsHUD[1]);
+                p2.playerHUD.Name = infoLobbyPlayers[1].personaje;
+                p2.BloquearMovimiento = false;
+
+                p3 = SpawnJugador(infoLobbyPlayers[2].personaje, modo2v2spawnTeam2_1, infoLobbyPlayers[2].gamepadId);
+                p3.AsignarSlot(slotsHUD[2]);
+                p3.playerHUD.Name = infoLobbyPlayers[2].personaje;
+                p3.BloquearMovimiento = false;
+
+                p4 = SpawnJugador(infoLobbyPlayers[3].personaje, modo2v2spawnTeam2_2, infoLobbyPlayers[3].gamepadId);
+                p4.AsignarSlot(slotsHUD[3]);
+                p4.playerHUD.Name = infoLobbyPlayers[3].personaje;
+                p4.BloquearMovimiento = false;
+
+                foreach (PlayerController player in activePlayers)
+                {
+                    player.DeshabilitarMovimiento();
+                }
+
+                Invoke("HabilitarMovimientoInicialJugadores", 2f);
             }
 
-            if (p2.equipo == 1)
-            {
-                p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam1, infoLobbyPlayers[1].gamepadId);
-            }
-            else
-            {
-                p2 = SpawnJugador(infoLobbyPlayers[1].personaje, modo1v1spawnTeam2, infoLobbyPlayers[1].gamepadId);
-            }
+            //InicializarBodyJugadores();
+        }*/
+
+
+    void HabilitarMovimientoJugadores()
+    {
+        foreach (PlayerController player in activePlayers)
+        {
+            player.HabilitarMovimiento();
+        }
+    }
+
+    void DeshabilitarMovimientoJugadores()
+    {
+        foreach(PlayerController player in activePlayers)
+        {
+            player.DeshabilitarMovimiento();
         }
     }
 
@@ -665,7 +788,7 @@ public class GameManager : MonoBehaviour
     {
         if (inGame)
         {
-            if (infoLobbyPlayers.Count == 2)
+            if (nJugadores == 2)
             {
                 if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
                 {
@@ -691,8 +814,7 @@ public class GameManager : MonoBehaviour
                     Invoke("DetenerTiempo", 0.80f);
                 }
             }
-
-            else if (infoLobbyPlayers.Count == 4)
+            else
             {
                 if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
                 {
@@ -724,7 +846,6 @@ public class GameManager : MonoBehaviour
             }
 
         }
-        else return;
 
     }
 
@@ -833,13 +954,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform modo2v2spawnTeam2_1;
     [SerializeField] private Transform modo2v2spawnTeam2_2;
 
-    private GameObject bodyP1;
-    private GameObject bodyP2;
-    private GameObject bodyP3;
-    private GameObject bodyP4;
+    //private GameObject bodyP1;
+    //private GameObject bodyP2;
+    //private GameObject bodyP3;
+    //private GameObject bodyP4;
 
     private static PlayerController p1, p2, p3, p4;
-
+    /*
     private void InicializarBodyJugadores()
     {
         if (infoLobbyPlayers.Count == 2)
@@ -856,7 +977,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
+    */
     private PlayerController SpawnJugador(string personaje, Transform spawnPoint, int gamepadId)
     {
         PlayerController prefabPersonaje = null;
@@ -875,11 +996,78 @@ public class GameManager : MonoBehaviour
         if (prefabPersonaje != null)
         {
             PlayerController playerController = Instantiate(prefabPersonaje, spawnPoint.position, spawnPoint.rotation);
-            playerController.gamepadIndex = LobbyManager.self.GetGamepadById(gamepadId); // Asignar el Gamepad
+            //playerController.gamepadIndex = LobbyManager.self.GetGamepadById(gamepadId); // Asignar el Gamepad
             return playerController;
         }
 
         return null;
+    }
+    /*
+    public PlayerController InstanciarJugadorProfe(Jugador jugador, Transform spawnPoint)
+    {
+        PlayerController prefabPersonaje = null;
+
+        switch (jugador.personaje)
+        {
+            case "CRIM": prefabPersonaje = pfCRIM; break;
+            case "KAI": prefabPersonaje = pfKAI; break;
+            case "NOVA": prefabPersonaje = pfNOVA; break;
+            case "SKYIE": prefabPersonaje = pfSKYIE; break;
+        }
+
+        print("SE INSTANCIA: " + jugador.personaje);
+        PlayerController pc = Instantiate(prefabPersonaje, spawnPoint.position, spawnPoint.rotation);
+        Gamepad gamepad = LobbyManager.self.GetGamepadById(jugador.gamepadId); // Asignar el Gamepad
+
+        if (gamepad != null)
+        {
+            pc.SetGamepad(gamepad);  // Asignar el Gamepad
+        }
+        else
+        {
+            Debug.LogError($"No se encontró un Gamepad con el ID {jugador.gamepadId} para el jugador {jugador.personaje}");
+        }
+
+        pc.PlayerHUD = slotsHUD[jugador.indice];
+        pc.Jugador = jugador;
+        pc.equipo = jugador.equipo;
+        activePlayers.Add(pc);
+        return pc;
+    }
+
+    #endregion JUGADORES
+    */
+
+    public PlayerController InstanciarJugadorProfe(Jugador jugador, Transform spawnPoint)
+    {
+        PlayerController prefabPersonaje = ObtenerPrefabPersonaje(jugador.personaje);
+        PlayerController pc = Instantiate(prefabPersonaje, spawnPoint.position, spawnPoint.rotation);
+        print("SE INSTANCIA: " + jugador.personaje);
+
+        // Configurar HUD y equipo del jugador
+        pc.PlayerHUD = slotsHUD[jugador.indice];
+        pc.Jugador = jugador;  // Esto activa automáticamente la asignación del Gamepad
+        pc.equipo = jugador.equipo;
+        pc.gameObject.name = jugador.personaje;
+
+        // Asegurarse de que el PlayerInput esté configurado de forma aislada
+        pc.GetComponent<PlayerInput>().user.UnpairDevices();
+        pc.GetComponent<PlayerInput>().SwitchCurrentControlScheme("Controller", new[] { pc._gamepad });
+
+        activePlayers.Add(pc);
+        return pc;
+    }
+
+    private PlayerController ObtenerPrefabPersonaje(string personaje)
+    {
+        switch (personaje)
+        {
+            case "CRIM": return pfCRIM;
+            case "KAI": return pfKAI;
+            case "NOVA": return pfNOVA;
+            case "SKYIE": return pfSKYIE;
+            default: return null;
+        }
     }
     #endregion JUGADORES
 
@@ -1062,7 +1250,7 @@ public class GameManager : MonoBehaviour
             //Aumentamos el puntaje
             CuadrosEquipo1++;
 
-            //Si el cuadro ya estaba pintado por otro equipo, le restamos al otro equipo
+            //Si el cuadro ya estaba pintado por otro equipoJugador, le restamos al otro equipoJugador
             if (cuadro.pintado) CuadrosEquipo2--;
         }
         //Equipo 2
@@ -1071,7 +1259,7 @@ public class GameManager : MonoBehaviour
             //Aumentamos el puntaje
             CuadrosEquipo2++;
 
-            //Si el cuadro ya estaba pintado por otro equipo, le restamos al otro equipo
+            //Si el cuadro ya estaba pintado por otro equipoJugador, le restamos al otro equipoJugador
             if (cuadro.pintado) CuadrosEquipo1--;
         }
 
@@ -1314,7 +1502,7 @@ public class GameManager : MonoBehaviour
 
             if (puntosAGanarTeam1 != puntosParaGanar && puntosAGanarTeam2 != puntosParaGanar)
             {
-                if (infoLobbyPlayers.Count == 2)
+                if (nJugadores == 2)
                 {
                     if (player.equipo == 1 && isRunning)
                     {
@@ -1324,10 +1512,7 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
-                        p1.BloquearMovimiento = true;
-                        p1.BloquearRotacion = true;
-                        p2.BloquearMovimiento = true;
-                        p2.BloquearRotacion = true;
+                        DeshabilitarMovimientoJugadores();
                         Invoke("Mago2", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1339,16 +1524,13 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
-                        p1.BloquearMovimiento = true;
-                        p1.BloquearRotacion = true;
-                        p2.BloquearMovimiento = true;
-                        p2.BloquearRotacion = true;
+                        DeshabilitarMovimientoJugadores();
                         Invoke("Mago1", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
                 }
 
-                else if (infoLobbyPlayers.Count == 4)
+                else if (nJugadores == 4)
                 {
                     if (player.equipo == 1 && isRunning)
                     {
@@ -1358,18 +1540,14 @@ public class GameManager : MonoBehaviour
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
-                        p1.muerto = true;
-                        p2.muerto = true;
-                        p3.muerto = true;
-                        p4.muerto = true;
-                        p1.enabled = false;
-                        p2.enabled = false;
-                        p3.enabled = false;
-                        p4.enabled = false;
                         p1.BloquearMovimiento = true;
                         p2.BloquearMovimiento = true;
                         p3.BloquearMovimiento = true;
                         p4.BloquearMovimiento = true;
+                        p1.BloquearRotacion = true;
+                        p2.BloquearRotacion = true;
+                        p3.BloquearRotacion = true;
+                        p4.BloquearRotacion = true;
                         Invoke("Mago2", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1414,18 +1592,7 @@ public class GameManager : MonoBehaviour
             }
             else if (infoLobbyPlayers.Count == 4)
             {
-                if (player.equipo == 1)
-                {
-                    player.BloquearMovimiento = true;
-                    player.enabled = false;
-                    StartCoroutine(RespawnearJugadorMDS(player));
-                }
-                else if (player.equipo == 2)
-                {
-                    player.BloquearMovimiento = true;
-                    player.enabled = false;
-                    StartCoroutine(RespawnearJugadorMDS(player));
-                }
+                StartCoroutine(RespawnearJugadorMDS(player));
             }
 
         }
@@ -1450,25 +1617,31 @@ public class GameManager : MonoBehaviour
             p1.transform.GetChild(0).gameObject.SetActive(false);
             p2.transform.GetChild(0).gameObject.SetActive(false);
 
+            foreach(PlayerController player in activePlayers)
+            {
+                player.transform.GetChild(0).gameObject.SetActive(false);
+            }
 
-
-            // Los movemos a sus posiciones iniciales
+            // Los movemos a sus posicionesWin iniciales
             p1.transform.position = respawnJ1.position;
             p2.transform.position = respawnJ2.position;
         }
         else
         {
-            // Desactivamos los prefabs de los jugadores
-            p1.gameObject.SetActive(false);
-            p2.gameObject.SetActive(false);
-            p3.gameObject.SetActive(false);
-            p4.gameObject.SetActive(false);
+            p1.transform.GetChild(0).gameObject.SetActive(false);
+            p2.transform.GetChild(0).gameObject.SetActive(false);
+            p3.transform.GetChild(0).gameObject.SetActive(false);
+            p4.transform.GetChild(0).gameObject.SetActive(false);
 
-            // Los movemos a sus posiciones iniciales
-            p1.transform.position = modo2v2spawnTeam1_1.position;
-            p2.transform.position = modo2v2spawnTeam1_2.position;
-            p3.transform.position = modo2v2spawnTeam2_1.position;
-            p4.transform.position = modo2v2spawnTeam2_2.position;
+            // Los movemos a sus posicionesWin iniciales
+            //p1.transform.position = modo2v2spawnTeam1_1.position;
+            //p2.transform.position = modo2v2spawnTeam1_2.position;
+            //p3.transform.position = modo2v2spawnTeam2_1.position;
+            //p4.transform.position = modo2v2spawnTeam2_2.position;
+            equipo1[0].transform.position = respawnJ1.position;
+            equipo1[1].transform.position = respawnJ2.position;
+            equipo2[0].transform.position = respawnJ3.position;
+            equipo2[1].transform.position = respawnJ4.position;
         }
 
 
@@ -1536,8 +1709,9 @@ public class GameManager : MonoBehaviour
                 p1.transform.position = respawnJ1.position;
                 yield return new WaitForSeconds(3f);
                 p1.Revivir();
+                p1.HabilitarMovimiento();
                 p1.transform.GetChild(0).gameObject.SetActive(true);
-                
+
             }
             else if (player == p2)
             {
@@ -1732,3 +1906,4 @@ public class GameManager : MonoBehaviour
     #endregion SPAWN DE ENEMIGOS
 
 }
+

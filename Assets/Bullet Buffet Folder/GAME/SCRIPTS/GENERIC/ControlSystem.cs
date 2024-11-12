@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -6,21 +8,55 @@ public class ControlSystem : MonoBehaviour
 {
     [SerializeField] private Animator c_Animator;
     [SerializeField] private LobbyManager loby;
-    public int equipo = 0;
+    public int equipoJugador = 0;
     public string selectedCharacter;
+    public int gamepadID;
+    public int originalID;
 
-    [SerializeField] private RectTransform puntero;
-    [SerializeField] private RectTransform slot;
-    [SerializeField] private Image spritePersonaje;
+    [SerializeField] public RectTransform puntero;
+    [SerializeField] public Image spritePersonaje;
     [SerializeField] private Image controlImg;
     private bool equipoBloqueado = false;
 
     public bool selectTm;
     public bool selectCh;
 
+    public List<RectTransform> slotsEquipo1;
+    public List<RectTransform> slotsEquipo2;
+
+    public RectTransform[] posisionesSlotsEquipo1;
+    public RectTransform[] posisionesSlotsEquipo2;
+
+    public string jugadorNickName;
+
+    // Agregar una lista de TMP_Text para los textos de los slots
+    [SerializeField] private List<TMP_Text> textosEquipo1; // Textos para el equipo 1
+    [SerializeField] private List<TMP_Text> textosEquipo2; // Textos para el equipo 2
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        /*
+        foreach (RectTransform slot in slotsEquipo1)
+        {
+            slot.gameObject.SetActive(false);
+        }
+
+        foreach (RectTransform slot in slotsEquipo2)
+        {
+            slot.gameObject.SetActive(false);
+        }
+
+        foreach (RectTransform slot in posisionesSlotsEquipo1)
+        {
+            slot.gameObject.SetActive(false);
+        }
+
+        foreach (RectTransform slot in posisionesSlotsEquipo2)
+        {
+            slot.gameObject.SetActive(false);
+        }
+        */
     }
 
     private void Start()
@@ -28,14 +64,14 @@ public class ControlSystem : MonoBehaviour
         selectTm = true;
         selectCh = false;
 
-        puntero.gameObject.SetActive(false);
-        puntero.gameObject.transform.position = slot.position;
+        //puntero.gameObject.SetActive(false);
+        //puntero.gameObject.transform.position = slot.position;
 
         c_Animator.SetInteger("Posicion", 0);
 
         controlImg.color = new Color(1, 1, 1, 0.6f);
         equipoBloqueado = false;
-        equipo = 0;
+        equipoJugador = 0;
         //spritePersonaje.sprite = spritePersonaje.sprite;
 
     }
@@ -49,7 +85,90 @@ public class ControlSystem : MonoBehaviour
     {
         //spritePersonaje.sprite = CheckSprite(selectedCharacter);
     }
+    /*
+    public void AsignarEquipo(int gamepadId, int equipo)
+    {
+        equipoJugador = equipo;
 
+        int equipo1Index = 0;
+        int equipo2Index = 0;
+
+        int gamepadCount = Gamepad.all.Count;
+
+        if (gamepadCount == 2)
+        {
+            slotsEquipo1[0].gameObject.SetActive(true);
+            slotsEquipo2[0].gameObject.SetActive(true);
+            AcomodarSlots();
+        }
+        else
+        {
+            foreach (RectTransform slot in slotsEquipo1)
+            {
+                slot.gameObject.SetActive(true);
+            }
+
+            foreach (RectTransform slot in slotsEquipo2)
+            {
+                slot.gameObject.SetActive(true);
+            }
+            AcomodarSlots();
+        }
+
+        // Mover el puntero a la posiciï¿½n del slot correspondiente
+        if (equipoJugador == 1 && equipo1Index < slotsEquipo1.Count)
+        {
+            //RectTransform posicionSlot = slotsEquipo1[equipo1Index].GetChild(2).GetComponent<RectTransform>();
+            MoverPuntero(slotsEquipo1[equipo1Index], textosEquipo1[equipo1Index], jugadorNickName);
+            equipo1Index++;
+            spritePersonaje = slotsEquipo1[equipo1Index].GetChild(1).GetComponent<Image>();
+            
+        }
+        else if (equipoJugador == 2 && equipo2Index < slotsEquipo2.Count)
+        {
+            MoverPuntero(slotsEquipo2[equipo2Index], textosEquipo2[equipo2Index], jugadorNickName);
+            equipo2Index++;
+            spritePersonaje = slotsEquipo2[equipo2Index].GetChild(1).GetComponent<Image>();
+            
+        }
+    }
+
+    void AcomodarSlots()
+    {
+        int gamepadsCount = Gamepad.all.Count;
+
+        if (gamepadsCount == 2)
+        {
+            posisionesSlotsEquipo1[1].gameObject.SetActive(true);
+            posisionesSlotsEquipo2[0].gameObject.SetActive(true);
+
+            slotsEquipo1[0].position = posisionesSlotsEquipo1[1].position;
+            slotsEquipo2[0].position = posisionesSlotsEquipo2[0].position;
+        }
+        else
+        {
+            posisionesSlotsEquipo1[0].gameObject.SetActive(true);
+            posisionesSlotsEquipo1[1].gameObject.SetActive(true);
+            posisionesSlotsEquipo2[0].gameObject.SetActive(true);
+            posisionesSlotsEquipo2[1].gameObject.SetActive(true);
+
+            slotsEquipo1[0].position = posisionesSlotsEquipo1[0].position;
+            slotsEquipo1[1].position = posisionesSlotsEquipo1[1].position;
+
+            slotsEquipo2[0].position = posisionesSlotsEquipo2[0].position;
+            slotsEquipo2[1].position = posisionesSlotsEquipo2[1].position;
+        }
+    }
+
+    private void MoverPuntero(RectTransform slot, TMP_Text textoSlot, string nombreJugador)
+    {
+        puntero.gameObject.SetActive(true);
+        puntero.gameObject.transform.position = slot.position;
+
+        textoSlot.text = nombreJugador;
+        Debug.Log($"Puntero {puntero.name} se movio a la posiciï¿½n del slot {slot.name}");
+    }
+    */
     #region INPUT
     public void Input_ControlMovimiento(InputAction.CallbackContext context)
     {
@@ -60,13 +179,13 @@ public class ControlSystem : MonoBehaviour
             if (v2.x < -0.5f) //Izq
             {
                 c_Animator.SetInteger("Posicion", -1);
-                equipo = 1; //Equipo Rojo;
+                equipoJugador = 1; //Equipo Rojo;
 
             }
             else if (v2.x > 0.5f) //Der
             {
                 c_Animator.SetInteger("Posicion", 1);
-                equipo = 2; //Equipo Azul
+                equipoJugador = 2; //Equipo Azul
 
             }
         }
@@ -83,75 +202,29 @@ public class ControlSystem : MonoBehaviour
     {
         if (context.performed)
         {
-            if (LobbyManager.escogiendoEquipo)
+            if (LobbyManager.escogiendoEquipo && !equipoBloqueado && selectTm && equipoJugador != 0)
             {
-                if (!equipoBloqueado)
+                int jugadoresPermitidos = (Gamepad.all.Count == 2) ? 1 : 2;
+
+                if (LobbyManager.equipoControles[equipoJugador - 1] < jugadoresPermitidos)
                 {
-                    if (selectTm && equipo != 0)
-                    {
-                        //AudioManager.instance.PlaySound("botonmenu");
+                    equipoBloqueado = true;
+                    selectTm = false;
+                    selectCh = true;
 
-                        if (Gamepad.all.Count == 2)
-                        {
-                            if (LobbyManager.equipoControles[equipo - 1] <= 0)
-                            {
-                                equipoBloqueado = true;
-                                selectTm = false;
-                                selectCh = true;
-                                Gamepad currentGamepad = context.control.device as Gamepad;
-                                puntero.gameObject.SetActive(true);
-                                controlImg.color = Color.white;
+                    Gamepad currentGamepad = context.control.device as Gamepad;
+                    puntero.gameObject.SetActive(true);
+                    controlImg.color = Color.white;
 
-                                if (equipo == 1 && LobbyManager.equipo1 < Gamepad.all.Count / 2)
-                                {
-                                    LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
-                                    LobbyManager.equipo1++;
-                                }
-                                else if ((equipo == 2) && LobbyManager.equipo2 < Gamepad.all.Count / 2)
-                                {
-                                    LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
-                                    LobbyManager.equipo2++;
-                                }
-                                else
-                                {
-                                    Debug.Log("No hay espacio en el equipo " + equipo);
-                                }
-                            }
-
-                        }
-                        else if (Gamepad.all.Count == 4)
-                        {
-                            if (LobbyManager.equipoControles[equipo - 1] <= 1)
-                            {
-                                equipoBloqueado = true;
-                                selectTm = false;
-                                selectCh = true;
-                                Gamepad currentGamepad = context.control.device as Gamepad;
-                                //LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
-                                puntero.gameObject.SetActive(true);
-                                controlImg.color = Color.white;
-                                if (equipo == 1 && LobbyManager.equipo1 < Gamepad.all.Count / 2)
-                                {
-                                    LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
-                                    LobbyManager.equipo1++;
-                                }                                   // 2                // 4/2 = 2
-                                else if ((equipo == 2) && LobbyManager.equipo2 < Gamepad.all.Count / 2)
-                                {
-                                    LobbyManager.SeleccionarEquipo(currentGamepad, equipo);
-                                    LobbyManager.equipo2++;
-                                }
-                                else
-                                {
-                                    Debug.Log("No hay espacio en el equipo " + equipo);
-                                }
-                            }
-
-                        }
-                    }
-
+                    // Asignar al equipo y actualizar contadores
+                    LobbyManager.SeleccionarEquipo(currentGamepad, equipoJugador);
+                    Debug.Log($"El jugador {this.name} seleccionÃ³ el equipo {equipoJugador}");
+                }
+                else
+                {
+                    Debug.Log("No hay espacio en el equipo " + equipoJugador);
                 }
             }
-
 
             if (selectCh && selectedCharacter != null)
             {
@@ -179,9 +252,9 @@ public class ControlSystem : MonoBehaviour
                     spritePersonaje.sprite = CheckSprite(selectedCharacter);
                     Gamepad currentGamepad = context.control.device as Gamepad;
                     loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
+                    Debug.Log($"El {this.gameObject.name} a escogido al personaje {selectedCharacter}");
                 }
             }
-
 
         }
     }
@@ -190,43 +263,20 @@ public class ControlSystem : MonoBehaviour
     {
         if (context.performed)
         {
-            if (Gamepad.all.Count == 2 || Gamepad.all.Count == 4)
-            {
-                if (LobbyManager.equipoControles[equipo - 1] > 0)
-                {
-                    Gamepad currentGamepad = context.control.device as Gamepad;
-                    if (equipo == 1)
-                    {
-                        LobbyManager.RechazarEquipo(currentGamepad, equipo);
-                        LobbyManager.equipo1--;
-                        Debug.Log("Te sales del equipo 1 y ahora queda " + LobbyManager.equipo1 + " espacios en el equipo 1");
-                    }
-                    else if (equipo == 2)
-                    {
-                        LobbyManager.RechazarEquipo(currentGamepad, equipo);
-                        LobbyManager.equipo2--;
-                        Debug.Log("Te sales del equipo 2 y ahora queda " + LobbyManager.equipo2 + " espacios en el equipo 2");
-                    }
-                    else
-                    {
-                        // No estas en ningun equipo
-                        Debug.Log("No estas en ningun equipo");
-                    }
-                    equipo = 0;
-                    equipoBloqueado = false;
-                    selectTm = true;
-                    selectCh = false;
-                    puntero.gameObject.SetActive(false);
-                    puntero.gameObject.transform.position = slot.position;
-                    selectedCharacter = null;
-                    c_Animator.SetInteger("Posicion", 0);
-                    controlImg.color = new Color(1, 1, 1, 0.6f);
-                    //equipo = 0;
-                    LobbyManager.ActivarPanelSeleccionarEquipo();
-                }
-            }
-
+            LobbyManager.RechazarEquipo();
         }
+    }
+
+    public void ResetearVariables()
+    {
+        equipoJugador = 0;
+        equipoBloqueado = false;
+        selectTm = true;
+        selectCh = false;
+        puntero.gameObject.SetActive(false);
+        selectedCharacter = null;
+        c_Animator.SetInteger("Posicion", 0);
+        controlImg.color = new Color(1, 1, 1, 0.6f);
     }
 
     private Sprite CheckSprite(string personaje)
@@ -259,14 +309,14 @@ public class ControlSystem : MonoBehaviour
     public Vector2 limon;
     public Vector2 aguacate;
 
-    public Vector2 canvasTamaño;
+    public Vector2 canvasTamaÃ±o;
     void Update_Puntero()
     {
         //if (puntero.localPosition.x > -928f)//Falto terminar...
         puntero.localPosition += axis * (Time.deltaTime * velocidadPuntero);
         limon = puntero.localPosition;
         aguacate = puntero.anchoredPosition;
-        canvasTamaño = LobbyManager.Canvas.GetComponent<RectTransform>().sizeDelta;
+        canvasTamaÃ±o = LobbyManager.Canvas.GetComponent<RectTransform>().sizeDelta;
     }
 
     #endregion PUNTERO

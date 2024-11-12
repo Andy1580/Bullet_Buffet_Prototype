@@ -6,7 +6,7 @@ public class DañoBalaJugador : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Colision con: " + other.gameObject.name);
+        //print("Colision con: " + other.gameObject.name);
 
         if (other.gameObject.layer == 8) //Layer Player = 8
         {

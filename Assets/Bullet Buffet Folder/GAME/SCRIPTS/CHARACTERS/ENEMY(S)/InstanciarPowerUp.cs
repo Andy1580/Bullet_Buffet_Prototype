@@ -20,7 +20,7 @@ public class InstanciarPowerUp : MonoBehaviour
             Debug.Log("Objeto instanciado: " + objetoInstanciado.name);
 
         }
-            
+
         Destroy(gameObject);
     }
 }

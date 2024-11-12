@@ -3651,6 +3651,7 @@ GameObject:
   - component: {fileID: 5952163009087331899}
   - component: {fileID: 8788677273556833120}
   - component: {fileID: 7913862991583429418}
+  - component: {fileID: 7487732762909552418}
   m_Layer: 8
   m_Name: NOVA
   m_TagString: Player
@@ -3699,7 +3700,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662857b2ce4717a4c81a5ea55c21c83b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHUD: {fileID: 0}
   equipo: 0
   circuloEquipo: {fileID: 3576818111683409817}
   playerSpeed: 5
@@ -3980,7 +3980,7 @@ CharacterController:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -4017,6 +4017,27 @@ MonoBehaviour:
     m_Bits: 384
   rayVFX: {fileID: 6085169024745271040, guid: c77a88a5e51ca40428384c488f66ab3c, type: 3}
   duracionHabilidad: 3
+--- !u!65 &7487732762909552418
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6514194934300768095}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &6607257457292635127
 GameObject:
   m_ObjectHideFlags: 0

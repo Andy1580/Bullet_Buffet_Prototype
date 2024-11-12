@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 81f714daf7144784b8a2f42f1cd30927, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1824857, g: 0.22819698, b: 0.30724367, a: 1}
+  m_IndirectSpecularColor: {r: 0.31311703, g: 0.3205921, b: 0.42568278, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1392,7 +1392,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!23 &70248148090490811
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2572,8 +2573,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 3.61
+  m_Color: {r: 1, g: 0.9473899, b: 0.5801887, a: 1}
+  m_Intensity: 1.51
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2617,7 +2618,7 @@ Light:
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
   m_ColorTemperature: 15298
-  m_UseColorTemperature: 1
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -3218,7 +3219,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &149636219633588518
 Transform:
   m_ObjectHideFlags: 0
@@ -3374,7 +3376,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!23 &155130967644692169
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3915,10 +3918,10 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 0.7696745, b: 0.495283, a: 1}
-  m_Intensity: 3206.1
-  m_Range: 32.76295
-  m_SpotAngle: 106.86302
-  m_InnerSpotAngle: 82.71363
+  m_Intensity: 1869
+  m_Range: 43.717957
+  m_SpotAngle: 165.62509
+  m_InnerSpotAngle: 83.50999
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -4186,7 +4189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &198979600442983856
 Transform:
   m_ObjectHideFlags: 0
@@ -4699,7 +4703,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!65 &229192014382350135
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5933,7 +5938,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &286149410234352379
 GameObject:
   m_ObjectHideFlags: 0
@@ -6384,7 +6390,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &300809107519574930
 Transform:
   m_ObjectHideFlags: 0
@@ -10496,7 +10503,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &483947720421848999
 Transform:
   m_ObjectHideFlags: 0
@@ -11018,7 +11026,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &508731472798598840
 GameObject:
   m_ObjectHideFlags: 0
@@ -11915,7 +11924,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &550907339922683852
 GameObject:
   m_ObjectHideFlags: 0
@@ -14976,7 +14986,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!95 &703949138942595370
 Animator:
   serializedVersion: 5
@@ -15247,7 +15258,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &714928686486543998
 Transform:
   m_ObjectHideFlags: 0
@@ -15501,7 +15513,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!33 &729149152788320928
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -15757,7 +15770,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &743599908710867110
 Transform:
   m_ObjectHideFlags: 0
@@ -16457,7 +16471,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &785751431656504479
 Transform:
   m_ObjectHideFlags: 0
@@ -16947,7 +16962,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &810930724651636067
 Transform:
   m_ObjectHideFlags: 0
@@ -17960,7 +17976,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &848300364099285697
 GameObject:
   m_ObjectHideFlags: 0
@@ -19679,7 +19696,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &945511422191617303
 GameObject:
   m_ObjectHideFlags: 0
@@ -19805,7 +19823,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &953120055704449414
 GameObject:
   m_ObjectHideFlags: 0
@@ -25067,7 +25086,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!65 &1233953445352510859
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25240,7 +25260,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &1238944486727872249
 GameObject:
   m_ObjectHideFlags: 0
@@ -27676,7 +27697,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &1369776660133022022
 GameObject:
   m_ObjectHideFlags: 0
@@ -28361,7 +28383,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &1408562055689482425
 Transform:
   m_ObjectHideFlags: 0
@@ -29302,7 +29325,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &1463806138380834614
 Transform:
   m_ObjectHideFlags: 0
@@ -30193,7 +30217,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &1514036761618659910
 Transform:
   m_ObjectHideFlags: 0
@@ -31453,7 +31478,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &1599797395447824824
 GameObject:
   m_ObjectHideFlags: 0
@@ -31928,7 +31954,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!23 &1621873546884550252
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -33773,7 +33800,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!65 &1713018717016566717
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34186,7 +34214,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &1725708437676950198
 GameObject:
   m_ObjectHideFlags: 0
@@ -34586,7 +34615,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!65 &1747134887218451311
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -35660,7 +35690,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &1800931295510846632
 GameObject:
   m_ObjectHideFlags: 0
@@ -36142,7 +36173,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &1833187268547421674
 Transform:
   m_ObjectHideFlags: 0
@@ -37852,7 +37884,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &1929402278284706745
 Transform:
   m_ObjectHideFlags: 0
@@ -38426,7 +38459,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &1951649605549327105
 Transform:
   m_ObjectHideFlags: 0
@@ -39027,7 +39061,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!65 &1984945906420537433
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39317,7 +39352,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &1998502949332648100
 GameObject:
   m_ObjectHideFlags: 0
@@ -40539,7 +40575,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2051459399796732366
 Transform:
   m_ObjectHideFlags: 0
@@ -46226,7 +46263,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2109817356867141548
 Transform:
   m_ObjectHideFlags: 0
@@ -50102,7 +50140,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &2313197618889033603
 GameObject:
   m_ObjectHideFlags: 0
@@ -51584,7 +51623,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &2392421272207364265
 GameObject:
   m_ObjectHideFlags: 0
@@ -51775,7 +51815,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &2402875569541812219
 GameObject:
   m_ObjectHideFlags: 0
@@ -55133,7 +55174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2571077179222127170
 Transform:
   m_ObjectHideFlags: 0
@@ -55271,7 +55313,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2575667213618771038
 Transform:
   m_ObjectHideFlags: 0
@@ -55384,7 +55427,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2585787493190139224
 Transform:
   m_ObjectHideFlags: 0
@@ -56053,7 +56097,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &2620582378707481331
 GameObject:
   m_ObjectHideFlags: 0
@@ -56380,7 +56425,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2631763897090080419
 Transform:
   m_ObjectHideFlags: 0
@@ -58063,7 +58109,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2705478321628677181
 Transform:
   m_ObjectHideFlags: 0
@@ -58816,7 +58863,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &2746825146406035194
 GameObject:
   m_ObjectHideFlags: 0
@@ -59089,7 +59137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2762033162717053475
 Transform:
   m_ObjectHideFlags: 0
@@ -63493,7 +63542,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &2989981187501308161
 Transform:
   m_ObjectHideFlags: 0
@@ -64084,7 +64134,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3013041576857697859
 GameObject:
   m_ObjectHideFlags: 0
@@ -64162,7 +64213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3021495873384143554
 GameObject:
   m_ObjectHideFlags: 0
@@ -64873,7 +64925,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!137 &3068408010541089869
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -65470,7 +65523,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3114209364031800031
 GameObject:
   m_ObjectHideFlags: 0
@@ -67467,7 +67521,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3215481898079914686
 Transform:
   m_ObjectHideFlags: 0
@@ -67704,7 +67759,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3228962972000361270
 Transform:
   m_ObjectHideFlags: 0
@@ -67822,7 +67878,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3238464662375652110
 Transform:
   m_ObjectHideFlags: 0
@@ -68388,7 +68445,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3259672447791306129
 GameObject:
   m_ObjectHideFlags: 0
@@ -71344,7 +71402,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3418287225974321273
 Transform:
   m_ObjectHideFlags: 0
@@ -71747,7 +71806,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3439432583604690623
 Transform:
   m_ObjectHideFlags: 0
@@ -72377,7 +72437,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3473546896033733576
 Transform:
   m_ObjectHideFlags: 0
@@ -72689,7 +72750,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3491662171711012602
 Transform:
   m_ObjectHideFlags: 0
@@ -73716,7 +73778,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!33 &3550025976115912833
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -74053,7 +74116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!33 &3564272068578538885
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -75428,7 +75492,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3651122718014837406
 Transform:
   m_ObjectHideFlags: 0
@@ -76604,7 +76669,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3713343326193570562
 GameObject:
   m_ObjectHideFlags: 0
@@ -76674,7 +76740,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3719779224939524232
 Transform:
   m_ObjectHideFlags: 0
@@ -77207,7 +77274,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3748775038945169565
 GameObject:
   m_ObjectHideFlags: 0
@@ -77832,7 +77900,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3779779477013366279
 Transform:
   m_ObjectHideFlags: 0
@@ -77923,7 +77992,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3788766028025813299
 GameObject:
   m_ObjectHideFlags: 0
@@ -78485,7 +78555,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3818026706245532633
 GameObject:
   m_ObjectHideFlags: 0
@@ -78750,7 +78821,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!108 &3833015966303348650
 Light:
   m_ObjectHideFlags: 0
@@ -79195,7 +79267,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &3848267485152904141
 Transform:
   m_ObjectHideFlags: 0
@@ -80732,7 +80805,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &3925407164397670157
 GameObject:
   m_ObjectHideFlags: 0
@@ -84483,7 +84557,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &4130005838759960616
 Transform:
   m_ObjectHideFlags: 0
@@ -85092,7 +85167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &4158958351624126097
 Transform:
   m_ObjectHideFlags: 0
@@ -86267,7 +86343,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!23 &4214179205972174317
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -89503,7 +89580,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &4368606266827465797
 Transform:
   m_ObjectHideFlags: 0
@@ -89656,7 +89734,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &4376815722990773078
 Transform:
   m_ObjectHideFlags: 0
@@ -91068,7 +91147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &4452532097958661901
 Transform:
   m_ObjectHideFlags: 0
@@ -91953,7 +92033,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &4503977677066659158
 GameObject:
   m_ObjectHideFlags: 0
@@ -93608,7 +93689,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &4583745656065789198
 GameObject:
   m_ObjectHideFlags: 0
@@ -94287,7 +94369,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!33 &4619574188845370732
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -95617,7 +95700,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &4697321939632286133
 GameObject:
   m_ObjectHideFlags: 0
@@ -95972,7 +96056,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &4716445927540212217
 GameObject:
   m_ObjectHideFlags: 0
@@ -99175,7 +99260,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &4876143957356211085
 GameObject:
   m_ObjectHideFlags: 0
@@ -99472,7 +99558,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &4889381772096584249
 Transform:
   m_ObjectHideFlags: 0
@@ -99773,7 +99860,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &4903243027969904561
 Transform:
   m_ObjectHideFlags: 0
@@ -104160,7 +104248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5124273457700616819
 GameObject:
   m_ObjectHideFlags: 0
@@ -104206,7 +104295,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5126153690228231326
 GameObject:
   m_ObjectHideFlags: 0
@@ -104909,7 +104999,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &5165384588563632174
 Transform:
   m_ObjectHideFlags: 0
@@ -105733,7 +105824,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5208654525760514072
 GameObject:
   m_ObjectHideFlags: 0
@@ -106443,7 +106535,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5244954973926614150
 GameObject:
   m_ObjectHideFlags: 0
@@ -107796,7 +107889,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5312013769875569853
 GameObject:
   m_ObjectHideFlags: 0
@@ -108566,7 +108660,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &5375812720501173041
 Transform:
   m_ObjectHideFlags: 0
@@ -109598,7 +109693,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5428585159096139946
 GameObject:
   m_ObjectHideFlags: 0
@@ -110916,7 +111012,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5494824600110385302
 GameObject:
   m_ObjectHideFlags: 0
@@ -111703,7 +111800,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &5529703785039904204
 Transform:
   m_ObjectHideFlags: 0
@@ -111916,7 +112014,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5546951443445950922
 GameObject:
   m_ObjectHideFlags: 0
@@ -113575,7 +113674,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &5622017700008500376
 Transform:
   m_ObjectHideFlags: 0
@@ -116428,7 +116528,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &5778803737806021912
 Transform:
   m_ObjectHideFlags: 0
@@ -117196,7 +117297,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5808741095539856447
 GameObject:
   m_ObjectHideFlags: 0
@@ -118000,7 +118102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!65 &5853181261326460800
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -119588,7 +119691,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5953203632768519013
 GameObject:
   m_ObjectHideFlags: 0
@@ -120227,7 +120331,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &5985497214007347346
 GameObject:
   m_ObjectHideFlags: 0
@@ -120526,7 +120631,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!23 &6002690087257774501
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -120662,7 +120768,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!114 &6006717641848888467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120676,7 +120783,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &6012022419683883343
 GameObject:
   m_ObjectHideFlags: 0
@@ -120743,7 +120851,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!114 &6016072548973614744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120757,7 +120866,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &6017264977556060794
 Transform:
   m_ObjectHideFlags: 0
@@ -120787,7 +120897,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &6019276886955553082
 Transform:
   m_ObjectHideFlags: 0
@@ -120948,7 +121059,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &6029986430645434320
 GameObject:
   m_ObjectHideFlags: 0
@@ -121674,7 +121786,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &6063561862942891641
 Transform:
   m_ObjectHideFlags: 0
@@ -122763,7 +122876,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &6116323594906736885
 Transform:
   m_ObjectHideFlags: 0
@@ -123630,7 +123744,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &6162842914769459504
 GameObject:
   m_ObjectHideFlags: 0
@@ -126027,7 +126142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &6301065162241004365
 Transform:
   m_ObjectHideFlags: 0
@@ -126281,7 +126397,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!65 &6315932714185603181
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -127369,7 +127486,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &6370259453631005718
 Transform:
   m_ObjectHideFlags: 0
@@ -127715,7 +127833,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &6387318926423374288
 GameObject:
   m_ObjectHideFlags: 0
@@ -133068,7 +133187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &6688134087411792658
 GameObject:
   m_ObjectHideFlags: 0
@@ -135522,7 +135642,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &6833644390274077655
 GameObject:
   m_ObjectHideFlags: 0
@@ -136013,7 +136134,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &6860689980502724047
 Transform:
   m_ObjectHideFlags: 0
@@ -138156,7 +138278,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &6969314560177216748
 GameObject:
   m_ObjectHideFlags: 0
@@ -139528,7 +139651,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &7025775116444131994
 Transform:
   m_ObjectHideFlags: 0
@@ -141332,7 +141456,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &7120846364402511939
 GameObject:
   m_ObjectHideFlags: 0
@@ -144452,7 +144577,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &7277126099129490681
 GameObject:
   m_ObjectHideFlags: 0
@@ -145265,7 +145391,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &7322183273399446995
 GameObject:
   m_ObjectHideFlags: 0
@@ -145343,7 +145470,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &7325137757443780594
 Transform:
   m_ObjectHideFlags: 0
@@ -147329,7 +147457,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &7434080832299885037
 Transform:
   m_ObjectHideFlags: 0
@@ -149540,7 +149669,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &7559244303373301941
 Transform:
   m_ObjectHideFlags: 0
@@ -150365,7 +150495,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &7598088316797045626
 GameObject:
   m_ObjectHideFlags: 0
@@ -151583,7 +151714,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &7685619145061796525
 GameObject:
   m_ObjectHideFlags: 0
@@ -151829,7 +151961,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &7700304848595975188
 GameObject:
   m_ObjectHideFlags: 0
@@ -152252,7 +152385,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!23 &7724268955201182018
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -153879,7 +154013,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!114 &7810790781964754497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153893,7 +154028,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &7811905794656704955
 GameObject:
   m_ObjectHideFlags: 0
@@ -162332,7 +162468,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &8249185325341069308
 Transform:
   m_ObjectHideFlags: 0
@@ -163212,7 +163349,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &8288094764997254470
 Transform:
   m_ObjectHideFlags: 0
@@ -166252,7 +166390,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &8458746840289854357
 Transform:
   m_ObjectHideFlags: 0
@@ -167146,7 +167285,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &8502277962318674294
 GameObject:
   m_ObjectHideFlags: 0
@@ -167560,7 +167700,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!65 &8517723033283694284
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -170212,7 +170353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!33 &8651644959229953313
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -172471,7 +172613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &8754484015726975656
 GameObject:
   m_ObjectHideFlags: 0
@@ -172691,7 +172834,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &8766466113999270114
 Transform:
   m_ObjectHideFlags: 0
@@ -172789,7 +172933,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!23 &8774169337474742149
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -173152,7 +173297,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &8788630717552139657
 GameObject:
   m_ObjectHideFlags: 0
@@ -174741,7 +174887,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &8888515722364846815
 Transform:
   m_ObjectHideFlags: 0
@@ -176084,7 +176231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &8979408777850649377
 GameObject:
   m_ObjectHideFlags: 0
@@ -176192,7 +176340,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &8985412981173651473
 Transform:
   m_ObjectHideFlags: 0
@@ -177576,7 +177725,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!4 &9069623855934408007
 Transform:
   m_ObjectHideFlags: 0
@@ -178166,7 +178316,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!1 &9102473861025058328
 GameObject:
   m_ObjectHideFlags: 0
@@ -179919,7 +180070,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 0}
-  currentTeam: 0
+  equipoActual: 0
+  pintado: 0
 --- !u!23 &9185549181462081436
 MeshRenderer:
   m_ObjectHideFlags: 0

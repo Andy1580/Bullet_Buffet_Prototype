@@ -43,11 +43,11 @@ public class NextLevel : MonoBehaviour
     private void Start()
     {
         playerReference1 = GameObject.FindGameObjectWithTag("Player1");
-        
+
         map2.SetActive(false);
 
         spawnPlayer1 = spawn1.position - playerReference1.transform.position;
-        
+
         portalCol = portal.GetComponent<SphereCollider>();
 
         panelVictoria.SetActive(false);

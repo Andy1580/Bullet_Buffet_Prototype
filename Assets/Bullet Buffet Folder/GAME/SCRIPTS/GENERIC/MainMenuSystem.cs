@@ -1,12 +1,15 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuSystem : MonoBehaviour
 {
     [Header("Main Menu Core")]
-    [SerializeField] private GameObject panelMenu;
     [SerializeField] private GameObject panelInicio;
+    [SerializeField] private GameObject panelMenuPrincipal;
     [SerializeField] private GameObject panelModos;
     [SerializeField] private GameObject panelMapasMHS;
     [SerializeField] private GameObject panelMapasMDS;
@@ -29,29 +32,40 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private TMP_Text tiempoActualMDSText;
     [SerializeField] private TMP_Text tiempoActualMHSText;
 
+    [SerializeField] private Button botonJugarMenu;
+    [SerializeField] private Button botonInicio;
+    [SerializeField] private Button botonModos;
+    [SerializeField] private Button botonPantallaCompleta;
+    [SerializeField] private Button botonMHSCalle;
+    [SerializeField] private Button botonMDSCalle;
+
     //[SerializeField] private GameObject eventSystem;
     //private EventSystem eventS;
 
     private bool play;
 
-    private bool startGame;
+    private static bool panelInicioActivado = false;
 
-    GameManager gM;
+    private DefaultInputActions inputActions;
 
     private void Awake()
     {
-        DontDestroyOnLoad(panelMenu);
+        panelMenuPrincipal.SetActive(true);
+        inputActions = new DefaultInputActions();
     }
 
     private void Start()
     {
-        if (gM == null)
+        if (panelInicioActivado)
         {
-            gM = FindFirstObjectByType<GameManager>();
+            panelInicio.SetActive(false);
+        }
+        else
+        {
+            panelInicio.SetActive(true);
         }
 
         play = false;
-        panelInicio.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
         panelMapasMHS.SetActive(false);
@@ -73,25 +87,32 @@ public class MainMenuSystem : MonoBehaviour
 
     public void GoToMenu()
     {
-        panelMenu.SetActive(false);
-        panelInicio.SetActive(true);
+        //pequeña animacion de cargado
+        Invoke("DesactivarPanelInicio", 0.25f);
+    }
+
+    void DesactivarPanelInicio()
+    {
+        panelInicio.SetActive(false);
+        panelInicioActivado = true;
+        EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
     }
 
     public void GoToModos()
     {
         panelModos.SetActive(true);
         panelSetings.SetActive(false);
-        panelInicio.SetActive(false);
+        panelMenuPrincipal.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelMapasMHS.SetActive(false);
-
+        EventSystem.current.SetSelectedGameObject(botonModos.gameObject);
         AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void Back()
     {
-        panelInicio.SetActive(true);
+        panelMenuPrincipal.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
         panelConfimarSalir.SetActive(false);
@@ -114,6 +135,8 @@ public class MainMenuSystem : MonoBehaviour
         cafeMDS.SetActive(false);
         ciudadMDS.SetActive(false);
         dungeonMDS.SetActive(false);
+
+        EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
     }
 
     public void GoToSettings()
@@ -125,6 +148,8 @@ public class MainMenuSystem : MonoBehaviour
         panelMapasMHS.SetActive(false);
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        EventSystem.current.SetSelectedGameObject(botonPantallaCompleta.gameObject);
     }
 
     public void GoToSchemeControl()
@@ -136,6 +161,8 @@ public class MainMenuSystem : MonoBehaviour
         panelMapasMHS.SetActive(false);
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        //Preguntar como darle a entender al EventSystem que este panel esta activo para mandar a llamarlo solo presionando el boton de Cancel del ActionAsset Default.
     }
 
     public void ModoHechizosSazonados()
@@ -145,11 +172,13 @@ public class MainMenuSystem : MonoBehaviour
         panelMapasMHS.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
-        panelInicio.SetActive(false);
+        panelMenuPrincipal.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        EventSystem.current.SetSelectedGameObject(botonMHSCalle.gameObject);
     }
 
     public void ModoDueloDeSalsas()
@@ -159,11 +188,13 @@ public class MainMenuSystem : MonoBehaviour
         panelMapasMDS.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
-        panelInicio.SetActive(false);
+        panelMenuPrincipal.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelSchemeControl.SetActive(false);
 
         AudioManager.instance.PlaySound("botonmenu");
+
+        EventSystem.current.SetSelectedGameObject(botonMDSCalle.gameObject);
     }
 
     public void MapaStreetMHS()
@@ -503,7 +534,7 @@ public class MainMenuSystem : MonoBehaviour
         panelConfimarSalir.SetActive(true);
         panelModos.SetActive(false);
         panelSetings.SetActive(false);
-        panelInicio.SetActive(false);
+        panelMenuPrincipal.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelMapasMHS.SetActive(false);
 

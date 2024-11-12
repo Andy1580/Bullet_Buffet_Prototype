@@ -36,7 +36,7 @@ public class HabilidadRayo : MonoBehaviour
 
     void FireRay()
     {
-        
+
         Ray ray = new Ray(origenRayCast.position, origenRayCast.forward);
         RaycastHit[] hit = Physics.RaycastAll(ray, distanciaMaxima, capas);
 
@@ -99,9 +99,10 @@ public class HabilidadRayo : MonoBehaviour
 
             if (player != null)
             {
-                if (player.muerto) return;
-
-                player.Vida -= daño;
+                if (!player.muerto)
+                {
+                    player.Vida -= daño;
+                }
             }
 
             if (eF != null)

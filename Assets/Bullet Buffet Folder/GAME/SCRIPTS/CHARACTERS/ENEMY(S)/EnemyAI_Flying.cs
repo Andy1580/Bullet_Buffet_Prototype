@@ -21,7 +21,7 @@ public class EnemyAI_Flying : MonoBehaviour
 
     List<PlayerController> players;
     private NavMeshAgent agente;
-    private PlayerController jugadorObjetivo;
+    [SerializeField] private PlayerController jugadorObjetivo;
     public float fuerzaSeparacion = 5f;
     public float minimaSeparacion = 4f;
     public float radioSeparacion = 2f;
@@ -30,13 +30,21 @@ public class EnemyAI_Flying : MonoBehaviour
 
     public InstanciarPowerUp powerUp;
 
+    private void Awake()
+    {
+        nombre = this.gameObject.name.Replace("(Clone)", "");
+        this.gameObject.name = nombre;
+
+        players = GameManager.activePlayers;
+    }
+
     void Start()
     {
         agente = GetComponent<NavMeshAgent>();
         agente.stoppingDistance = distanciaMinima;
         vida = maxVida;
 
-        
+
 
         GameObject clone = Instantiate(vfxRespawn, transform.position, transform.rotation);
         Destroy(clone, 1.5f);
@@ -52,9 +60,6 @@ public class EnemyAI_Flying : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
         sphereCollider.radius = radioSeparacion;
-
-        nombre = this.gameObject.name.Replace("(Clone)", "");
-        this.gameObject.name = nombre;
     }
 
     void Update()
@@ -102,7 +107,6 @@ public class EnemyAI_Flying : MonoBehaviour
 
     private void BuscarJugadorCercano()
     {
-        players = GameManager.activePlayers;
         float closestDistance = Mathf.Infinity;
         PlayerController closestPlayer = null;
 
@@ -184,7 +188,7 @@ public class EnemyAI_Flying : MonoBehaviour
         {
             if (value < vida)
             {
-                StartCoroutine(DañoEmisivo());
+                StartCoroutine(DaÃ±oEmisivo());
                 barraVida.fillAmount = (float)vida / maxVida;
             }
 
@@ -206,7 +210,7 @@ public class EnemyAI_Flying : MonoBehaviour
         }
     }
 
-    private IEnumerator DañoEmisivo()
+    private IEnumerator DaÃ±oEmisivo()
     {
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
         yield return new WaitForSeconds(0.1f);
@@ -215,7 +219,7 @@ public class EnemyAI_Flying : MonoBehaviour
 
     void DeadEvent()
     {
-        switch(nombre)
+        switch (nombre)
         {
             case "Medusa Alfa":
                 powerUp.InstanciarObjetoAleatorio();
@@ -244,7 +248,6 @@ public class EnemyAI_Flying : MonoBehaviour
         {
             transform.LookAt(jugadorObjetivo.transform.position);
             animator.SetBool("ataque", true);
-            Invoke("Ataque", 0.30f);
         }
         else
         {
@@ -254,7 +257,7 @@ public class EnemyAI_Flying : MonoBehaviour
         goto Inicio;
     }
 
-    void Ataque()
+    public void Ataque()
     {
         AudioManager.instance.PlaySound("disparomedusa");
         GameObject clone = Instantiate(balaPrefab, balaSpawn.position, balaSpawn.rotation);
@@ -263,12 +266,12 @@ public class EnemyAI_Flying : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.layer == 7)
+        if (other.gameObject.layer == 7)
         {
             Vector3 posicionComplice = other.transform.position - transform.position;
             float distancia = posicionComplice.magnitude;
 
-            if(distancia < minimaSeparacion)
+            if (distancia < minimaSeparacion)
             {
                 Vector3 separacionDireccion = -posicionComplice.normalized;
                 rb.AddForce(separacionDireccion * fuerzaSeparacion * Time.deltaTime, ForceMode.VelocityChange);
