@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,7 +29,8 @@ public class GameManager : MonoBehaviour
 
     public void CargarEscenaProfe()
     {
-        Invoke("CargarEscena", 0.5f);
+        StartCoroutine(Transicion());
+        Invoke("CargarEscena", 1f);
     }
 
     #endregion RECIBIR INFORMACION
@@ -92,10 +95,11 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.StopSound("hechizos");
             AudioManager.instance.StopSound("duelo");
         }
-        else if (inGame)
+        else if ((SceneManager.GetActiveScene().name != "ANDYMENUTEST" && inGame))
         {
             if (modoHS)
             {
+                Debug.LogWarning("Se detuvo la musica del menu");
                 AudioManager.instance.StopSound("menu");
                 AudioManager.instance.PlaySound("hechizos");
             }
@@ -118,16 +122,16 @@ public class GameManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.None;
 
         //InicializarMusica();
         //InicializarJugadores();
-        ResetiarVariables();
+        InicializarTransicion();
     }
 
     private void Update()
@@ -152,9 +156,24 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
     }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus)
+        {
+            // Cuando la aplicación recupera el foco, asegúrate de que el cursor esté oculto y bloqueado
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            if (inGame && ultimoBotonSeleccionado != null)
+            {
+                EventSystem.current.SetSelectedGameObject(ultimoBotonSeleccionado);
+            }
+        }
+    }
     #endregion GAME MANAGER
 
-    #region CARGAR ESCENA
+    #region ESCENA JUEGO
 
     //En este metodo se pone todo lo que quieras que pase al cargar una escena
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -167,17 +186,17 @@ public class GameManager : MonoBehaviour
     {
         //AudioManager.instance.PlaySound("");
         inGame = true;
+        InicializarCamara();
+        InicializarMusica();
         InicializarHUD();
         //IniciarPartida();
         InicializarSpawnsPoints();
         //Invoke("IniciarPartida", 0.02f); PROFE
         Invoke("IniciarPartidaProfe", 0.05f);
-        InicializarTemporizador();
         //InicializarMapas();
         InicializarPuntaje();
         //InicializarComponentesJugadores();
         InicializarPausa();
-        InicializarCamara();
         Invoke("InicializarEnemySpawn", 5);
 
         if (modoHS)
@@ -192,18 +211,21 @@ public class GameManager : MonoBehaviour
             //Aqui ira todo lo que necesita el MDS
             InicializarMDS();
             InicializarMarcadorMDS();
+            InicializarTemporizador();
             //pistaPintable.SetActive(true);
         }
     }
 
     public void ResetiarVariables()
     {
-        if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
+        if (SceneManager.GetActiveScene().name == "ANDYMENUTEST" || SceneManager.GetActiveScene().name == "TESTVICTORY2")
         {
-            AudioManager.instance.PlaySound("1");
 
             ////Resetear Diccionario de Gamepads
             //if(idDeGamepad == null) idDeGamepad = new Dictionary<int, Gamepad>();
+
+            equipo1Ganado = false;
+            equipo2Ganado = false;
 
             //Booleanos Partida
             modoHS = false;
@@ -219,14 +241,19 @@ public class GameManager : MonoBehaviour
             totalTime = 60;
             remainingTime = totalTime;
             isRunning = false;
+
+            if(panelTiempoAgotado != null)
             panelTiempoAgotado.SetActive(false);
+
+            if(panelTemporizador != null)
             panelTemporizador.SetActive(false);
 
             //Puntaje
             puntosParaGanar = 1;
 
             //Paneles de condicion de Victoria
-            panelVictoria.SetActive(false);
+            if(panelFinish != null)
+            panelFinish.SetActive(false);
 
             //Mapas
             //mapaStreetMHS.SetActive(false);
@@ -238,21 +265,34 @@ public class GameManager : MonoBehaviour
 
 
             //Modo Hechizos Sazonados
+            if(magosPrincipales != null)
             magosPrincipales.SetActive(false);
+
+            if(panelMarcadorMHS != null)
             panelMarcadorMHS.SetActive(false);
+
+            if(camaraObjeto != null)
             camaraObjeto.SetActive(false);
+
             puntosAGanarTeam1 = puntajeInicial;
             puntosAGanarTeam2 = puntajeInicial;
 
             //Modo Duelo De Salsas
             //pistaPintable.SetActive(false);
+            if(panelMarcadorMDS != null)
             panelMarcadorMDS.SetActive(false);
-            camaraObjeto.SetActive(false);
 
             //Pausa
+            if(panelPausa != null)
             panelPausa.SetActive(false);
+
+            if(panelControles != null)
             panelControles.SetActive(false);
+
+            if(panelConfiguracion != null)
             panelConfiguracion.SetActive(false);
+
+            if(panelConfirmacionSalida != null)
             panelConfirmacionSalida.SetActive(false);
 
             //Jugadores
@@ -264,6 +304,7 @@ public class GameManager : MonoBehaviour
             DestruirEnemigosActivos();
 
             //Cerrar el HUD
+            if(panelHUDs != null)
             panelHUDs.SetActive(false);
 
             //Booleano para juego
@@ -274,7 +315,7 @@ public class GameManager : MonoBehaviour
         }
         else return;
     }
-    #endregion CARGAR ESCENA
+    #endregion ESCENA JUEGO
 
     #region PARTIDA
     public bool _modoHS = modoHS;
@@ -300,9 +341,7 @@ public class GameManager : MonoBehaviour
 
     private PlayerController[,] equipos;
 
-    [SerializeField] private int nJugadores;
-
-    public bool juegoIniciado = false;
+    [SerializeField] public int nJugadores;
 
     //List<Jugador> jugadores = new List<Jugador>();
 
@@ -318,12 +357,6 @@ public class GameManager : MonoBehaviour
     public void IniciarPartidaProfe()
     {
         nJugadores = PlayerPrefs.GetInt("nJugadores");
-
-        // Asignación de puntos de respawn según equipos (modos de 2v2)
-        respawnJ1 = modo2v2spawnTeam1_1;
-        respawnJ2 = modo2v2spawnTeam1_2;
-        respawnJ3 = modo2v2spawnTeam2_1;
-        respawnJ4 = modo2v2spawnTeam2_2;
 
         // Cargar jugadores desde PlayerPrefs y dividirlos en equipos
         for (int i = 1; i <= nJugadores; i++)
@@ -346,7 +379,12 @@ public class GameManager : MonoBehaviour
 
             // Para 2 jugadores, un jugador por equipo
             if (jugadoresEquipo1.Count > 0) InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1);
-            if (jugadoresEquipo2.Count > 0) InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ3);
+            if (jugadoresEquipo2.Count > 0) InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ2);
+
+            DeshabilitarMovimientoJugadores();
+            DeshabilitarDisparo();
+            Invoke("HabilitarMovimientoJugadores", 1f);
+            Invoke("HabilitarDisparo", 1f);
         }
         else if (nJugadores == 4)
         {
@@ -362,6 +400,11 @@ public class GameManager : MonoBehaviour
 
             if (jugadoresEquipo2.Count > 0) InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ3);
             if (jugadoresEquipo2.Count > 1) InstanciarJugadorProfe(jugadoresEquipo2[1], respawnJ4);
+
+            DeshabilitarMovimientoJugadores();
+            DeshabilitarDisparo();
+            Invoke("HabilitarMovimientoJugadores", 1f);
+            Invoke("HabilitarDisparo", 1f);
         }
     }
 
@@ -581,9 +624,25 @@ public class GameManager : MonoBehaviour
 
     void DeshabilitarMovimientoJugadores()
     {
-        foreach(PlayerController player in activePlayers)
+        foreach (PlayerController player in activePlayers)
         {
             player.DeshabilitarMovimiento();
+        }
+    }
+
+    void HabilitarDisparo()
+    {
+        foreach (PlayerController player in activePlayers)
+        {
+            player.muerto = false;
+        }
+    }
+
+    void DeshabilitarDisparo()
+    {
+        foreach (PlayerController player in activePlayers)
+        {
+            player.muerto = true;
         }
     }
 
@@ -652,7 +711,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject panelControles;
     [SerializeField] private GameObject panelConfiguracion;
     [SerializeField] private GameObject panelConfirmacionSalida;
+    [SerializeField] private Button botonContinuar;
+    [SerializeField] private Button botonConfiguracion;
+    [SerializeField] private Toggle togglePantallaCompleta;
+    [SerializeField] private static Button botonContinuarStatic;
     [SerializeField] private static GameObject panelStaticPausa;
+
+    private static GameObject ultimoBotonSeleccionadoStatic;
+    private GameObject ultimoBotonSeleccionado;
 
     private static bool enPausa;
     public static bool EnPausa => enPausa;
@@ -660,39 +726,65 @@ public class GameManager : MonoBehaviour
     void InicializarPausa()
     {
         panelStaticPausa = panelPausa;
+        botonContinuarStatic = botonContinuar;
+        ultimoBotonSeleccionadoStatic = botonContinuarStatic.gameObject;
         panelPausa.SetActive(false);
         panelControles.SetActive(false);
         panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
+        InputManager.Instance.SetActivePanel(null, Back);
     }
 
     public static void Pausa(PlayerController player)
     {
-        //Se invierten entre ellos
+        //// Bloquear si la pausa está activa y el jugador que intenta pausar no es el `activePlayerController`
+        //if (enPausa && activePlayerController != player)
+        //    return;
+
         enPausa = !enPausa;
 
         if (enPausa)
         {
+            //// Guardar el controlador que activó la pausa
+            //activePlayerController = player;
+
+            // Pausar el tiempo y activar el panel de pausa
             Time.timeScale = 0;
             panelStaticPausa.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(botonContinuarStatic.gameObject);
 
+            ultimoBotonSeleccionadoStatic = botonContinuarStatic.gameObject;
+
+            //// Asignar el control de navegación solo al Gamepad del jugador que activó la pausa
+            //InputManager.Instance.SetExclusiveGamepad(activePlayerController._gamepad);
+
+            // Cambiar el esquema de todos los jugadores a "UI Pausa"
             foreach (PlayerController j in activePlayers)
             {
-                j.BloquearMovimiento = true;
+                j.DeshabilitarMovimiento();
+                //j.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI Pausa");
+                //Debug.Log("Switched to UI Pausa for player: " + j.name);
             }
         }
         else
         {
+            // Reanudar el tiempo y cerrar el panel de pausa
             Time.timeScale = 1;
             panelStaticPausa.SetActive(false);
 
+            //// Limpiar la exclusividad del Gamepad en InputManager
+            //InputManager.Instance.ClearExclusiveGamepad();
+            //Debug.Log("Removing exclusivity");
+
+            // Restaurar el esquema de control de todos los jugadores a "Player"
             foreach (PlayerController j in activePlayers)
             {
-                j.BloquearMovimiento = false;
+                j.HabilitarMovimiento();
+                //j.GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+                //Debug.Log("Switched to Player for player: " + j.name);
             }
 
         }
-
     }
 
     public void Resumir()
@@ -701,22 +793,31 @@ public class GameManager : MonoBehaviour
         panelControles.SetActive(false);
         panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
+        AudioManager.instance.PlaySound("botonmenu");
+        //Pausa(null);
 
+        // Llamamos a Pausa con la referencia al controlador original
         Pausa(null);
     }
+
 
     public void Controles()
     {
         panelControles.SetActive(true);
         panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void Configuracion()
     {
+        InputManager.Instance.SetActivePanel(null, null);
         panelConfiguracion.SetActive(true);
         panelControles.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
+        AudioManager.instance.PlaySound("botonmenu");
+        EventSystem.current.SetSelectedGameObject(togglePantallaCompleta.gameObject);
+        ultimoBotonSeleccionadoStatic = togglePantallaCompleta.gameObject;
     }
 
     public void ConfirmarSalida()
@@ -724,6 +825,8 @@ public class GameManager : MonoBehaviour
         panelConfirmacionSalida.SetActive(true);
         panelControles.SetActive(false);
         panelConfiguracion.SetActive(false);
+
+        InputManager.Instance.SetActivePanel(Salir, Back);
     }
 
     public void Salir()
@@ -734,20 +837,129 @@ public class GameManager : MonoBehaviour
 
     public void Back()
     {
-        panelControles.SetActive(false);
-        panelConfiguracion.SetActive(false);
-        panelConfirmacionSalida.SetActive(false);
+        if (panelConfirmacionSalida.activeSelf)
+        {
+            panelConfirmacionSalida.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(botonContinuar.gameObject);
+            ultimoBotonSeleccionadoStatic = botonContinuar.gameObject;
+        }
+        else if (panelControles.activeSelf)
+        {
+            panelControles.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(botonContinuar.gameObject);
+            ultimoBotonSeleccionadoStatic = botonContinuar.gameObject;
+        }
+        else if (panelConfiguracion.activeSelf)
+        {
+            panelConfiguracion.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(botonContinuar.gameObject);
+            ultimoBotonSeleccionadoStatic = botonContinuar.gameObject;
+        }
+        else
+        {
+            Resumir();
+        }
+
+        AudioManager.instance.PlaySound("botonmenu");
+    }
+
+    public void ResetearInputGM()
+    {
+        InputManager.Instance.SetActivePanel(null, Back);
     }
     #endregion PAUSA
 
+    #region VICTORIA
+
+    private bool equipo1Ganado = false;
+    private bool equipo2Ganado = false;
+
+    void InicializarVictoria()
+    {
+
+    }
+
+    void ProcesarVictoriaEquipo(int equipoGanador)
+    {
+        deadEnemy = true;
+        DestruirEnemigosActivos();
+        DeshabilitarMovimientoJugadores();
+
+        // Realizar acciones específicas para el equipo ganador
+        Invoke("AbrirPanelFinish", 4f);
+        Invoke("IniciarCorutinaTransicion", 7f);
+
+        if (equipoGanador == 1)
+            Invoke("EnviarTeam1", 8f);
+        else if (equipoGanador == 2)
+            Invoke("EnviarTeam2", 8f);
+    }
+
+    private void EnviarTeam1()
+    {
+        GuardarJugadoresPorEquipo(1); // Guarda el equipo 1 como ganador
+        Debug.Log("Se envio en team 1");
+    }
+
+    private void EnviarTeam2()
+    {
+        GuardarJugadoresPorEquipo(2); // Guarda el equipo 2 como ganador
+        Debug.Log("Se envio en team 2");
+    }
+
+    private void GuardarJugadoresPorEquipo(int equipoGanador)
+    {
+        // Guardar el equipo ganador en PlayerPrefs
+        PlayerPrefs.SetInt("EquipoGanador", equipoGanador);
+
+        // Guardar jugadores de cada equipo
+        for (int i = 0; i < activePlayers.Count; i++)
+        {
+            var player = activePlayers[i];
+            if (player == null) continue;
+
+            PlayerPrefs.SetInt("Jugador_" + i + "_Equipo", activePlayers[i].equipo);
+            PlayerPrefs.SetString("Jugador_" + i + "_Personaje", activePlayers[i].name);
+        }
+
+        PlayerPrefs.SetInt("TotalJugadores", activePlayers.Count); // Guarda el total de jugadores
+        PlayerPrefs.Save();
+
+        // Cargar la escena de victoria
+        Debug.Log("Se cargo escena de Victoria");
+        Time.timeScale = 1;
+        SceneManager.LoadScene("TESTVICTORY2");
+    }
+    #endregion VICTORIA
+
+    #region TRANSICION ESCENA
+    [Header("Transicion Core")]
+    [SerializeField] public GameObject panelTransicion;
+    [SerializeField] private float timeTransition = 1f;
+    private Animator animTransition;
+
+    void InicializarTransicion()
+    {
+        animTransition = panelTransicion.GetComponent<Animator>();
+    }
+
+    public IEnumerator Transicion()
+    {
+        yield return new WaitForSeconds(0.5f);
+        animTransition.SetTrigger("fadeIn");
+        yield return new WaitForSeconds(timeTransition);
+        animTransition.SetTrigger("fadeOut");
+    }
+    #endregion TRANSICION ESCENA
+
     #region PUNTAJE
     [Header("Puntaje Core")]
-    [SerializeField] private GameObject panelVictoria;
-    [SerializeField] private TMP_Text playerWinText;
+    [SerializeField] private GameObject panelFinish;
     [SerializeField] private int puntosAGanarTeam1;
     [SerializeField] private int puntosAGanarTeam2;
     [SerializeField] public int puntosParaGanar;
     private int puntajeInicial = 0;
+    private Animator finishAnimator;
 
     [Header("Puntaje MHS")]
     [SerializeField] private TMP_Text puntajeTeam1MHS;
@@ -766,6 +978,8 @@ public class GameManager : MonoBehaviour
 
         puntosAGanarTeam1 = puntajeInicial;
         puntosAGanarTeam2 = puntajeInicial;
+
+        //finishAnimator = panelFinish.GetComponent<Animator>();
     }
     #endregion PUNTAJE
 
@@ -778,7 +992,7 @@ public class GameManager : MonoBehaviour
 
     void InicializarMarcadorMHS()
     {
-        panelVictoria.SetActive(false);
+        panelFinish.SetActive(false);
         panelMarcadorMHS.SetActive(true);
         numeroDeRonda = rondaInicial;
         rondaText.text = numeroDeRonda.ToString();
@@ -786,67 +1000,52 @@ public class GameManager : MonoBehaviour
 
     void Update_Marcador_MHS()
     {
-        if (inGame)
+        if (inGame && modoHS)
         {
             if (nJugadores == 2)
             {
-                if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
+                if (!equipo1Ganado && puntosAGanarTeam1 >= puntosParaGanar)
                 {
-                    isRunning = false;
-                    deadEnemy = true;
-                    DestruirEnemigosActivos();
-                    panelVictoria.SetActive(true);
-                    playerWinText.text = "Team 1";
-                    p1.enabled = false;
-                    p2.enabled = false;
-                    Invoke("DetenerTiempo", 0.80f);
+                    equipo1Ganado = true; // Aseguramos que esta condición se ejecute una sola vez
+                    ProcesarVictoriaEquipo(1);
                 }
-
-                else if (puntosAGanarTeam2 >= puntosParaGanar && isRunning)
+                else if (!equipo2Ganado && puntosAGanarTeam2 >= puntosParaGanar)
                 {
-                    isRunning = false;
-                    deadEnemy = true;
-                    DestruirEnemigosActivos();
-                    panelVictoria.SetActive(true);
-                    playerWinText.text = "Team 2";
-                    p1.enabled = false;
-                    p2.enabled = false;
-                    Invoke("DetenerTiempo", 0.80f);
+                    equipo2Ganado = true; // Aseguramos que esta condición se ejecute una sola vez
+                    ProcesarVictoriaEquipo(2);
                 }
             }
             else
             {
-                if (puntosAGanarTeam1 >= puntosParaGanar && isRunning)
+                if (!equipo1Ganado && puntosAGanarTeam1 >= puntosParaGanar)
                 {
-                    isRunning = false;
-                    deadEnemy = true;
-                    DestruirEnemigosActivos();
-                    panelVictoria.SetActive(true);
-                    playerWinText.text = "Team 1";
-                    p1.enabled = false;
-                    p2.enabled = false;
-                    p3.enabled = false;
-                    p4.enabled = false;
-                    Invoke("DetenerTiempo", 0.80f);
+                    equipo1Ganado = true;
+                    ProcesarVictoriaEquipo(1);
                 }
-
-                else if (puntosAGanarTeam2 >= puntosParaGanar && isRunning)
+                else if (!equipo2Ganado && puntosAGanarTeam2 >= puntosParaGanar)
                 {
-                    isRunning = false;
-                    deadEnemy = true;
-                    DestruirEnemigosActivos();
-                    panelVictoria.SetActive(true);
-                    playerWinText.text = "Team 2";
-                    p1.enabled = false;
-                    p2.enabled = false;
-                    p3.enabled = false;
-                    p4.enabled = false;
-                    Invoke("DetenerTiempo", 0.80f);
+                    equipo2Ganado = true;
+                    ProcesarVictoriaEquipo(2);
                 }
             }
-
         }
 
+    }
+
+    void AbrirPanelFinish()
+    {
+        panelFinish.SetActive(true);
+    }
+
+    public void IniciarCorutinaTransicion()
+    {
+        StartCoroutine(Transicion());
+    }
+
+    void DetenerMusica()
+    {
+        AudioManager.instance.StopSound("hechizos");
+        AudioManager.instance.StopSound("duelo");
     }
 
     void DetenerTiempo()
@@ -861,7 +1060,6 @@ public class GameManager : MonoBehaviour
 
     void InicializarMarcadorMDS()
     {
-        panelVictoria.SetActive(false);
         panelMarcadorMDS.SetActive(true);
     }
     #endregion MARCADOR MDS
@@ -874,53 +1072,38 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text TiempoAgotadoText;
 
-    public static float remainingTime;
+    public float remainingTime;
     private bool isRunning = false;
 
     private void InicializarTemporizador()
     {
         panelTemporizador.SetActive(true);
         panelTiempoAgotado.SetActive(false);
+
         remainingTime = totalTime;
+        InicializarTimerText();
+
         isRunning = true;
-
-        int minutes = Mathf.FloorToInt(remainingTime / 60);
-        int seconds = Mathf.FloorToInt(remainingTime % 60);
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-
-        //Start_TimerText();
     }
 
     private void FixUpdate_Temporizador()
     {
-        if (inGame)
+        if (inGame && modoDS && isRunning)
         {
-            if (isRunning)
-            {
-                timerText.text = remainingTime.ToString();
-                remainingTime -= Time.fixedDeltaTime;
-            }
+            //timerText.text = remainingTime.ToString();
+            remainingTime -= Time.fixedDeltaTime;
+
+            InicializarTimerText();
 
             if (remainingTime <= 0)
             {
                 isRunning = false;
-                timerText.text = "00:00";
                 TimerEnded();
-
-                if (modoHS)
-                {
-                    panelTiempoAgotado.SetActive(true);
-                    TiempoAgotadoText.text = "�SE AGOTO EL TIEMPO!";
-                    Time.timeScale = 0;
-
-                }
-                else if (modoDS)
-                {
-                    TiempoAgotadoMDS();
-                }
-
+                TiempoAgotadoMDS();
             }
+
         }
+        else return;
     }
 
     private void TimerEnded()
@@ -928,10 +1111,11 @@ public class GameManager : MonoBehaviour
         timerText.text = "00:00";
     }
 
-    private void Start_TimerText()
+    private void InicializarTimerText()
     {
         int minutes = Mathf.FloorToInt(remainingTime / 60);
         int seconds = Mathf.FloorToInt(remainingTime % 60);
+
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
     #endregion TEMPORIZADOR
@@ -1049,6 +1233,7 @@ public class GameManager : MonoBehaviour
         pc.Jugador = jugador;  // Esto activa automáticamente la asignación del Gamepad
         pc.equipo = jugador.equipo;
         pc.gameObject.name = jugador.personaje;
+        jugador.controlador = pc;
 
         // Asegurarse de que el PlayerInput esté configurado de forma aislada
         pc.GetComponent<PlayerInput>().user.UnpairDevices();
@@ -1238,8 +1423,8 @@ public class GameManager : MonoBehaviour
         camaraObjeto = camaraPrincipal.gameObject;
         camaraObjeto.SetActive(true);
         panelMarcadorMDS.SetActive(true);
-        cuadrosTeam1 = new List<CuadroPintable>();
-        cuadrosTeam2 = new List<CuadroPintable>();
+        //cuadrosTeam1 = new List<CuadroPintable>();
+        //cuadrosTeam2 = new List<CuadroPintable>();
     }
 
     public static void CuadradoCambiado(CuadroPintable cuadro)
@@ -1268,110 +1453,65 @@ public class GameManager : MonoBehaviour
     //Metodo para verifica que lista tiene mas cuadros pintados cuanso acabe el tiempo
     private void TiempoAgotadoMDS()
     {
-        int team1Count = cuadrosTeam1.Count;
-        int team2Count = cuadrosTeam2.Count;
+        int team1Count = _cuadrosEquipo1;
+        int team2Count = _cuadrosEquipo2;
 
-        if (infoLobbyPlayers.Count == 2)
+        if (nJugadores == 2)
         {
             deadEnemy = true;
-            isRunning = false;
             DestruirEnemigosActivos();
 
-            if (team1Count > team2Count)
+            if (!equipo1Ganado && team1Count > team2Count)
             {
-                panelVictoria.SetActive(true);
-                playerWinText.text = "Team: 1";
-
-                foreach (PlayerController p in activePlayers)
-                {
-                    if (p != null)
-                    {
-                        p.BloquearMovimiento = true;
-                    }
-                }
-
-                Time.timeScale = 0;
+                equipo1Ganado = true;
+                ProcesarVictoriaEquipo(1);
             }
-            else if (team2Count > team1Count)
+            else if (!equipo2Ganado && team2Count > team1Count)
             {
-                panelVictoria.SetActive(true);
-                playerWinText.text = "Team: 2";
-
-                foreach (PlayerController p in activePlayers)
-                {
-                    if (p != null)
-                    {
-                        p.BloquearMovimiento = true;
-                    }
-                }
-
-                Time.timeScale = 0;
+                equipo1Ganado = true;
+                ProcesarVictoriaEquipo(2);
             }
-            else if (team1Count == 0 || team2Count == 0)
+            else if (team1Count == 0 || team2Count == 0 || team1Count == team2Count)
             {
-                panelTiempoAgotado.SetActive(true);
-                TiempoAgotadoText.text = "�SE AGOTO EL TIEMPO!";
-
-                foreach (PlayerController p in activePlayers)
-                {
-                    if (p != null)
-                    {
-                        p.BloquearMovimiento = true;
-                    }
-                }
-
-                Time.timeScale = 0;
+                ManejarEmpate();
             }
         }
 
-        else if (infoLobbyPlayers.Count == 4)
+        else if (nJugadores == 4)
         {
-            if (team1Count > team2Count)
+            deadEnemy = true;
+            DestruirEnemigosActivos();
+
+            if (!equipo1Ganado && team1Count > team2Count)
             {
-                panelVictoria.SetActive(true);
-                playerWinText.text = "Team: 1";
-
-                foreach (PlayerController p in activePlayers)
-                {
-                    if (p != null)
-                    {
-                        p.BloquearMovimiento = true;
-                    }
-                }
-
-                Time.timeScale = 0;
+                equipo1Ganado = true;
+                ProcesarVictoriaEquipo(1);
             }
-            else if (team2Count > team1Count)
+            else if (!equipo2Ganado && team2Count > team1Count)
             {
-                panelVictoria.SetActive(true);
-                playerWinText.text = "Team: 2";
-
-                foreach (PlayerController p in activePlayers)
-                {
-                    if (p != null)
-                    {
-                        p.BloquearMovimiento = true;
-                    }
-                }
-
-                Time.timeScale = 0;
+                equipo1Ganado = true;
+                ProcesarVictoriaEquipo(2);
             }
-            else if (team1Count == 0 || team2Count == 0)
+            else if (team1Count == 0 || team2Count == 0 || team1Count == team2Count)
             {
-                panelTiempoAgotado.SetActive(true);
-                TiempoAgotadoText.text = "�SE AGOTO EL TIEMPO!";
-
-                foreach (PlayerController p in activePlayers)
-                {
-                    if (p != null)
-                    {
-                        p.BloquearMovimiento = true;
-                    }
-                }
-
-                Time.timeScale = 0;
+                ManejarEmpate();
             }
         }
+    }
+
+    private void ManejarEmpate()
+    {
+        panelTiempoAgotado.SetActive(true);
+        TiempoAgotadoText.text = "¡EMPATE!";
+
+        DeshabilitarMovimientoJugadores();
+        Invoke("IniciarCorutinaTransicion", 0.7f);
+        Invoke("RegresarAMenuTiempoAgotado", 1.4f);
+    }
+
+    void RegresarAMenuTiempoAgotado()
+    {
+        SceneManager.LoadScene("ANDYMENUTEST");
     }
     #endregion MODO DUELO DE SALSAS
 
@@ -1383,7 +1523,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject mago1;
     [SerializeField] private GameObject mago2;
 
-    [Header("C�mara Stats MH")]
+    [Header("Camara Stats MH")]
     [SerializeField] private Transform posicionCinematica;
     [SerializeField] private float velocidadMovCamara = 2f;
     private Animator camaraPrincipalAnimator;
@@ -1504,27 +1644,27 @@ public class GameManager : MonoBehaviour
             {
                 if (nJugadores == 2)
                 {
-                    if (player.equipo == 1 && isRunning)
+                    if (player.equipo == 1)
                     {
-                        isRunning = false;
                         deadEnemy = true;
                         DestruirEnemigosActivos();
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
                         DeshabilitarMovimientoJugadores();
+                        DeshabilitarDisparo();
                         Invoke("Mago2", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
-                    else if (player.equipo == 2 && isRunning)
+                    else if (player.equipo == 2)
                     {
-                        isRunning = false;
                         deadEnemy = true;
                         DestruirEnemigosActivos();
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
                         DeshabilitarMovimientoJugadores();
+                        DeshabilitarDisparo();
                         Invoke("Mago1", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1532,45 +1672,27 @@ public class GameManager : MonoBehaviour
 
                 else if (nJugadores == 4)
                 {
-                    if (player.equipo == 1 && isRunning)
+                    if (player.equipo == 1)
                     {
-                        isRunning = false;
                         deadEnemy = true;
                         DestruirEnemigosActivos();
                         puntosAGanarTeam2++;
                         puntajeTeam2MHS.text = puntosAGanarTeam2.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
-                        p1.BloquearMovimiento = true;
-                        p2.BloquearMovimiento = true;
-                        p3.BloquearMovimiento = true;
-                        p4.BloquearMovimiento = true;
-                        p1.BloquearRotacion = true;
-                        p2.BloquearRotacion = true;
-                        p3.BloquearRotacion = true;
-                        p4.BloquearRotacion = true;
+                        DeshabilitarMovimientoJugadores();
+                        DeshabilitarDisparo();
                         Invoke("Mago2", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
-                    else if (player.equipo == 2 && isRunning)
+                    else if (player.equipo == 2)
                     {
-                        isRunning = false;
                         deadEnemy = true;
                         DestruirEnemigosActivos();
                         puntosAGanarTeam1++;
                         puntajeTeam1MHS.text = puntosAGanarTeam1.ToString();
                         camaraPrincipalAnimator.SetTrigger("move");
-                        p1.muerto = true;
-                        p2.muerto = true;
-                        p3.muerto = true;
-                        p4.muerto = true;
-                        p1.enabled = false;
-                        p2.enabled = false;
-                        p3.enabled = false;
-                        p4.enabled = false;
-                        p1.BloquearMovimiento = true;
-                        p2.BloquearMovimiento = true;
-                        p3.BloquearMovimiento = true;
-                        p4.BloquearMovimiento = true;
+                        DeshabilitarMovimientoJugadores();
+                        DeshabilitarDisparo();
                         Invoke("Mago1", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1584,16 +1706,10 @@ public class GameManager : MonoBehaviour
             }
 
         }
-        else if (modoDS) //Si no funciona este metodo, regresarlo a if(por equipos), if(player == p1), etc.
+        else if (modoDS)
         {
-            if (infoLobbyPlayers.Count == 2)
-            {
-                StartCoroutine(RespawnearJugadorMDS(player));
-            }
-            else if (infoLobbyPlayers.Count == 4)
-            {
-                StartCoroutine(RespawnearJugadorMDS(player));
-            }
+            player.DeshabilitarMovimiento();
+            StartCoroutine(RespawnearJugadorMDS(player));
 
         }
         else
@@ -1610,38 +1726,54 @@ public class GameManager : MonoBehaviour
         numeroDeRonda++;
         rondaText.text = numeroDeRonda.ToString();
 
-        if (activePlayers.Count == 2)
-        {
-            Debug.Log("CAMBIO DE RONDA");
-            // Desactivamos los prefabs de los jugadores
-            p1.transform.GetChild(0).gameObject.SetActive(false);
-            p2.transform.GetChild(0).gameObject.SetActive(false);
+        // Mantener un índice para los jugadores en cada equipo
+        int indexEquipo1 = 0, indexEquipo2 = 0;
 
-            foreach(PlayerController player in activePlayers)
+        Debug.Log("CAMBIO DE RONDA: Iniciando reubicación de jugadores");
+
+        if (nJugadores == 2)
+        {
+            Debug.Log("Modo 1v1: Reubicando jugadores");
+            // Posicionar a los jugadores en los respawns correspondientes
+            foreach (PlayerController player in activePlayers)
             {
-                player.transform.GetChild(0).gameObject.SetActive(false);
+                player.transform.GetChild(0).gameObject.SetActive(false); // Desactivar el cuerpo
+
+                if (player.equipo == 1)
+                    player.transform.position = respawnJ1.position; // Respawn del equipo 1
+                else if (player.equipo == 2)
+                    player.transform.position = respawnJ2.position; // Respawn del equipo 2
             }
-
-            // Los movemos a sus posicionesWin iniciales
-            p1.transform.position = respawnJ1.position;
-            p2.transform.position = respawnJ2.position;
         }
-        else
+        else if (nJugadores == 4)
         {
-            p1.transform.GetChild(0).gameObject.SetActive(false);
-            p2.transform.GetChild(0).gameObject.SetActive(false);
-            p3.transform.GetChild(0).gameObject.SetActive(false);
-            p4.transform.GetChild(0).gameObject.SetActive(false);
+            Debug.Log("Modo 2v2: Reubicando jugadores");
 
-            // Los movemos a sus posicionesWin iniciales
-            //p1.transform.position = modo2v2spawnTeam1_1.position;
-            //p2.transform.position = modo2v2spawnTeam1_2.position;
-            //p3.transform.position = modo2v2spawnTeam2_1.position;
-            //p4.transform.position = modo2v2spawnTeam2_2.position;
-            equipo1[0].transform.position = respawnJ1.position;
-            equipo1[1].transform.position = respawnJ2.position;
-            equipo2[0].transform.position = respawnJ3.position;
-            equipo2[1].transform.position = respawnJ4.position;
+
+            foreach (PlayerController player in activePlayers)
+            {
+                player.transform.GetChild(0).gameObject.SetActive(false); // Desactivar el cuerpo
+
+                // Asignar los respawns en base al equipo y su índice
+                if (player.equipo == 1)
+                {
+                    if (indexEquipo1 == 0)
+                        player.transform.position = respawnJ1.position;
+                    else if (indexEquipo1 == 1)
+                        player.transform.position = respawnJ2.position;
+
+                    indexEquipo1++; // Incrementar índice del equipo 1
+                }
+                else if (player.equipo == 2)
+                {
+                    if (indexEquipo2 == 0)
+                        player.transform.position = respawnJ3.position;
+                    else if (indexEquipo2 == 1)
+                        player.transform.position = respawnJ4.position;
+
+                    indexEquipo2++; // Incrementar índice del equipo 2
+                }
+            }
         }
 
 
@@ -1651,48 +1783,19 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ReactivacionMHS(float time)
     {
-        if (infoLobbyPlayers.Count == 2)
+        Debug.Log("Reactivando jugadores después del cambio de ronda");
+        yield return new WaitForSeconds(2.25f);
+
+        foreach (PlayerController player in activePlayers)
         {
-            Debug.Log("Se reactivaron los jugadores");
-            yield return new WaitForSeconds(2.25f);
-
-            p1.Revivir();
-            p2.Revivir();
-            p1.transform.GetChild(0).gameObject.SetActive(true);
-            p2.transform.GetChild(0).gameObject.SetActive(true);
-
+            player.transform.GetChild(0).gameObject.SetActive(true); // Activar el cuerpo
+            player.Revivir(); // Llamar al método de revivir
         }
 
-        else if (infoLobbyPlayers.Count == 4)
-        {
-            Debug.Log("Se reactivaron los jugadores");
-            yield return new WaitForSeconds(2.25f);
-            p1.gameObject.SetActive(true);
-            p2.gameObject.SetActive(true);
-            p3.gameObject.SetActive(true);
-            p4.gameObject.SetActive(true);
-            p1.enabled = true;
-            p2.enabled = true;
-            p3.enabled = true;
-            p4.enabled = true;
-            p1.Vida = 100;
-            p2.Vida = 100;
-            p3.Vida = 100;
-            p4.Vida = 100;
-            p1.BloquearMovimiento = false;
-            p2.BloquearMovimiento = false;
-            p3.BloquearMovimiento = false;
-            p4.BloquearMovimiento = false;
-            p1.muerto = false;
-            p2.muerto = false;
-            p3.muerto = false;
-            p4.muerto = false;
-        }
-
-        yield return new WaitForSeconds(3f);
-        isRunning = true;
-        remainingTime = totalTime;
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(1.5f);
+        HabilitarMovimientoJugadores();
+        HabilitarDisparo();
+        yield return new WaitForSeconds(5f);
         InicializarEnemySpawn();
     }
 
@@ -1702,66 +1805,48 @@ public class GameManager : MonoBehaviour
         player.transform.GetChild(0).gameObject.SetActive(false);
         yield return new WaitForSeconds(1.5f);
 
-        if (infoLobbyPlayers.Count == 2)
+        if (nJugadores == 2)
         {
-            if (player == p1)
+            // Para dos jugadores, asignar el respawn según el equipo
+            if (player.equipo == 1)
             {
-                p1.transform.position = respawnJ1.position;
-                yield return new WaitForSeconds(3f);
-                p1.Revivir();
-                p1.HabilitarMovimiento();
-                p1.transform.GetChild(0).gameObject.SetActive(true);
-
+                player.transform.position = respawnJ1.position;
             }
-            else if (player == p2)
+            else if (player.equipo == 2)
             {
-                p2.transform.position = respawnJ2.position;
-                yield return new WaitForSeconds(3f);
-                p2.Revivir();
-                p2.transform.GetChild(0).gameObject.SetActive(true);
+                player.transform.position = respawnJ2.position;
             }
-
         }
-        else if (infoLobbyPlayers.Count == 4)
+        else if (nJugadores == 4)
         {
-            if (player == p1)
+            // Para cuatro jugadores, usar respawns definidos al inicio
+            if (player == activePlayers[0])
             {
-                p1.gameObject.SetActive(true);
-                p1.Vida = 100;
-                p1.habilidadProgreso = 0;
-                p1.enabled = true;
-                p1.transform.position = modo2v2spawnTeam1_1.localPosition;
+                player.transform.position = respawnJ1.position;
             }
-
-            else if (player == p2)
+            else if (player == activePlayers[1])
             {
-                p2.gameObject.SetActive(true);
-                p2.Vida = 100;
-                p2.habilidadProgreso = 0;
-                p2.enabled = true;
-                p2.transform.position = modo2v2spawnTeam1_2.localPosition;
+                player.transform.position = respawnJ2.position;
             }
-
-            else if (player == p3)
+            else if (player == activePlayers[2])
             {
-                p3.gameObject.SetActive(true);
-                p3.Vida = 100;
-                p3.habilidadProgreso = 0;
-                p3.enabled = true;
-                p3.transform.position = modo2v2spawnTeam2_1.localPosition;
+                player.transform.position = respawnJ3.position;
             }
-
-            else if (player == p4)
+            else if (player == activePlayers[3])
             {
-                p4.gameObject.SetActive(true);
-                p4.Vida = 100;
-                p4.habilidadProgreso = 0;
-                p4.enabled = true;
-                p4.transform.position = modo2v2spawnTeam2_2.localPosition;
+                player.transform.position = respawnJ4.position;
             }
         }
 
-        yield return new WaitForSeconds(6.0f);
+        yield return new WaitForSeconds(2f);
+
+        // Reactivar al jugador
+        player.Revivir();
+        player.transform.GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        player.HabilitarMovimiento();
+
+        Debug.Log($"Jugador {player.name} revivido y posicionado en su respawn.");
     }
     #endregion DEAD EVENT PLAYER
 
@@ -1785,8 +1870,7 @@ public class GameManager : MonoBehaviour
         {
             //Debug.Log("Se inicio el Spawn de Enemigos");
             //print(deadEnemy);
-
-            if (isRunning)
+            if (modoHS)
             {
                 for (int i = 0; i < enemigosMaximosActivos; i++)
                 {
@@ -1794,6 +1878,18 @@ public class GameManager : MonoBehaviour
                 }
 
                 InvokeRepeating(nameof(SpawnEnemyContinuously), Random.Range(minSpawnTime, maxSpawnTime), Random.Range(minSpawnTime, maxSpawnTime));
+            }
+            else if (modoDS)
+            {
+                if (isRunning)
+                {
+                    for (int i = 0; i < enemigosMaximosActivos; i++)
+                    {
+                        SpawnEnemy();
+                    }
+
+                    InvokeRepeating(nameof(SpawnEnemyContinuously), Random.Range(minSpawnTime, maxSpawnTime), Random.Range(minSpawnTime, maxSpawnTime));
+                }
             }
         }
         else

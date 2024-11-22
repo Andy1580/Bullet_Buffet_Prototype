@@ -3,6 +3,12 @@ using UnityEngine;
 public class DañoBalaJugador : MonoBehaviour
 {
     [SerializeField] private int daño;
+    private PlayerController propietario;
+
+    public void IniciarBala(PlayerController player)
+    {
+        propietario = player;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -12,12 +18,19 @@ public class DañoBalaJugador : MonoBehaviour
         {
             PlayerController jugador = other.GetComponent<PlayerController>();
 
-            if (!jugador.isInvulnerable || jugador.muerto)
+            if (jugador.equipo == propietario.equipo)
             {
-                jugador.Vida -= daño;
-                jugador.animator.SetTrigger("daño");
-                //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                
+            }
+            else
+            {
+                if (!jugador.isInvulnerable || !jugador.muerto)
+                {
+                    jugador.Vida -= daño;
+                    jugador.animator.SetTrigger("daño");
+                    //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                    //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                }
             }
 
         }
@@ -39,10 +52,11 @@ public class DañoBalaJugador : MonoBehaviour
             }
         }
 
-        //else if (other.gameObject.layer == 0)
-        //{
-        //    Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-        //    //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
-        //}
+        else if (other.gameObject.layer == 0 || other.gameObject.layer == 10) //layer 10 de obstaculo
+        {
+            Destroy(this.gameObject);
+        }
+        //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+        ////Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
     }
 }

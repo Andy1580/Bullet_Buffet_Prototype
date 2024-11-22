@@ -13,15 +13,21 @@ public class HabilidadEscopeta : MonoBehaviour
 
     public bool cantShoot;
 
+    private PlayerController propietario;
+
+    private void Awake()
+    {
+        propietario = transform.parent.GetComponent<PlayerController>();
+    }
+
     private void Start()
     {
-        cantShoot = true;
         objetoDaño.SetActive(false);
     }
 
     public void ActivarHabilidad()
     {
-        if(cantShoot)
+        if(cantShoot && !propietario.muerto)
         {
             Fire();
         }

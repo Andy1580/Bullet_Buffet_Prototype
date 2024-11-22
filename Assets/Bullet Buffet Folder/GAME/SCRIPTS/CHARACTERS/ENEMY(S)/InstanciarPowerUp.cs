@@ -16,8 +16,8 @@ public class InstanciarPowerUp : MonoBehaviour
 
             objetoInstanciado.name = objetoSeleccionado.name.Replace("(Clone)", "").Replace("(UnityEngine.GameObject)", "").Trim();
 
-            // Simplemente imprime el nombre
-            Debug.Log("Objeto instanciado: " + objetoInstanciado.name);
+            //// Simplemente imprime el nombre
+            //Debug.Log("Objeto instanciado: " + objetoInstanciado.name);
 
         }
 

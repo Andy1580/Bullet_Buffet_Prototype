@@ -8,6 +8,7 @@ public class Jugador
     public int gamepadId;
     public string personaje;
     public int equipo;
+    public PlayerController controlador;
 
     public Jugador(int indice,int gamepadId, string personaje, int equipo)
     {

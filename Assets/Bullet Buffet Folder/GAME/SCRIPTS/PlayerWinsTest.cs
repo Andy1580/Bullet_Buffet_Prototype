@@ -2,19 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerWinsTest : MonoBehaviour
 {
     public Transform[] posicionesWin;  // Posiciones para ganadores
     public Transform[] posicionesLose; // Posiciones para perdedores
 
+    public Transform[] posicioneesTrasformsWins;
+    public Transform[] posicioneesTrasformsLose;
+
     public GameObject pfCRIM;
     public GameObject pfKAI;
     public GameObject pfNOVA;
     public GameObject pfSKYIE;
 
+    int totalPlayers;
+
+    private void Awake()
+    {
+        //Iniciar musica escena victoria
+        totalPlayers = GameManager.Instance.nJugadores;
+
+        if(totalPlayers == 2)
+        {
+            posicionesWin[0].position = posicioneesTrasformsWins[0].position;
+            posicionesLose[0].position = posicioneesTrasformsLose[0].position;
+        }
+        else
+        {
+            posicionesWin[0].position = posicioneesTrasformsWins[1].position;
+            posicionesWin[1].position = posicioneesTrasformsWins[2].position;
+            posicionesLose[0].position = posicioneesTrasformsLose[1].position;
+            posicionesLose[1].position = posicioneesTrasformsLose[2].position;
+        }
+    }
+
     private void Start()
     {
+        AudioManager.instance.StopSound("hechizos");
+        AudioManager.instance.StopSound("duelo");
         InstanciarJugadores();
     }
 
@@ -42,6 +69,8 @@ public class PlayerWinsTest : MonoBehaviour
         // Instanciar ganadores en posicionesWin y perdedores en posicionesLose
         InstanciarListaEnPosiciones(ganadores, posicionesWin, "ganador");
         InstanciarListaEnPosiciones(perdedores, posicionesLose, "perdedor");
+
+        StartCoroutine(CargarMenuPrincipal());
     }
 
     private GameObject SeleccionarPrefab(string personaje)
@@ -70,5 +99,14 @@ public class PlayerWinsTest : MonoBehaviour
                 animator.SetTrigger(trigger);
             }
         }
+    }
+
+    IEnumerator CargarMenuPrincipal()
+    {
+        yield return new WaitForSeconds(6f);
+        Debug.Log("Se ejecuto la transicion de escena en la escena de Victoria");
+        GameManager.Instance.IniciarCorutinaTransicion();
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("ANDYMENUTEST");
     }
 }

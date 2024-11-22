@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -32,6 +33,8 @@ public class ControlSystem : MonoBehaviour
     // Agregar una lista de TMP_Text para los textos de los slots
     [SerializeField] private List<TMP_Text> textosEquipo1; // Textos para el equipo 1
     [SerializeField] private List<TMP_Text> textosEquipo2; // Textos para el equipo 2
+
+    private bool equipoRechazado = false;
 
     private void Awake()
     {
@@ -247,11 +250,11 @@ public class ControlSystem : MonoBehaviour
                 }
                 else
                 {
-                    AudioManager.instance.PlaySound("seleccionpersonaje");
                     selectedCharacter = col.gameObject.name;
                     spritePersonaje.sprite = CheckSprite(selectedCharacter);
                     Gamepad currentGamepad = context.control.device as Gamepad;
                     loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
+                    AudioManager.instance.PlaySound("seleccionpersonaje");
                     Debug.Log($"El {this.gameObject.name} a escogido al personaje {selectedCharacter}");
                 }
             }
@@ -261,10 +264,19 @@ public class ControlSystem : MonoBehaviour
 
     public void Input_RechazarEquipo(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !equipoRechazado)
         {
+            equipoRechazado = true; // Bloquea más llamadas
+            Debug.Log("Se rechazó equipo");
             LobbyManager.RechazarEquipo();
+            StartCoroutine(ResetEquipoRechazado());
         }
+    }
+
+    private IEnumerator ResetEquipoRechazado()
+    {
+        yield return new WaitForSeconds(0.1f); // Pequeño retardo para evitar múltiples pulsaciones rápidas
+        equipoRechazado = false;
     }
 
     public void ResetearVariables()
@@ -274,7 +286,17 @@ public class ControlSystem : MonoBehaviour
         selectTm = true;
         selectCh = false;
         puntero.gameObject.SetActive(false);
-        selectedCharacter = null;
+        selectedCharacter = "";
+
+        if (spritePersonaje != null)
+        {
+            spritePersonaje.sprite = null; // Limpiar el sprite si ya hay uno asignado
+        }
+        else
+        {
+            Debug.LogWarning($"El 'spritePersonaje' en {gameObject.name} no está asignado todavía.");
+        }
+
         c_Animator.SetInteger("Posicion", 0);
         controlImg.color = new Color(1, 1, 1, 0.6f);
     }
@@ -312,11 +334,29 @@ public class ControlSystem : MonoBehaviour
     public Vector2 canvasTamaño;
     void Update_Puntero()
     {
-        //if (puntero.localPosition.x > -928f)//Falto terminar...
-        puntero.localPosition += axis * (Time.deltaTime * velocidadPuntero);
-        limon = puntero.localPosition;
-        aguacate = puntero.anchoredPosition;
-        canvasTamaño = LobbyManager.Canvas.GetComponent<RectTransform>().sizeDelta;
+        // Calcular los límites del Canvas
+        RectTransform canvasRect = LobbyManager.Canvas.GetComponent<RectTransform>();
+        Vector2 canvasSize = canvasRect.sizeDelta;
+
+        // Definir un margen adicional para limitar el área de movimiento
+        float margenX = 50f; // Margen horizontal (en unidades del Canvas)
+        float margenY = 50f; // Margen vertical
+
+        // Calcular los límites del puntero considerando el margen
+        float minX = -canvasSize.x / 2f + margenX;
+        float maxX = canvasSize.x / 2f - margenX;
+        float minY = -canvasSize.y / 2f + margenY;
+        float maxY = canvasSize.y / 2f - margenY;
+
+        // Mover el puntero
+        Vector3 nuevaPosicion = puntero.localPosition + axis * (Time.deltaTime * velocidadPuntero);
+
+        // Limitar la posición dentro del área visible del Canvas
+        nuevaPosicion.x = Mathf.Clamp(nuevaPosicion.x, minX, maxX);
+        nuevaPosicion.y = Mathf.Clamp(nuevaPosicion.y, minY, maxY);
+
+        // Asignar la posición clamped al puntero
+        puntero.localPosition = nuevaPosicion;
     }
 
     #endregion PUNTERO

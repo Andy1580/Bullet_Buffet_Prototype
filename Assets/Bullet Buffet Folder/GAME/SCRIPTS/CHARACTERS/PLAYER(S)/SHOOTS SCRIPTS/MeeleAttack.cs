@@ -6,16 +6,17 @@ public class MeeleAttack : MonoBehaviour
 {
     public bool cantShoot;
     public GameObject objetoDaño;
-
+    private PlayerController propietario;
     private void Start()
     {
         cantShoot = true;
         objetoDaño.SetActive(false);
+        propietario = GetComponent<PlayerController>();
     }
 
     public void Input_Disparo(InputAction.CallbackContext context)
     {
-        if (cantShoot)
+        if (cantShoot && !propietario.muerto)
         {
             Attack();
             cantShoot = false;

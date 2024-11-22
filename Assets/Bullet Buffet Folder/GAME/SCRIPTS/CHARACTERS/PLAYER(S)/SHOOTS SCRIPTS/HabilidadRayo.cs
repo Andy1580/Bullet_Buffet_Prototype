@@ -15,8 +15,17 @@ public class HabilidadRayo : MonoBehaviour
 
     private bool habilidadActiva = false;
 
-    public void ActivarHabilidad()
+    private PlayerController propietario;
+
+    //private void Awake()
+    //{
+    //    propietario = transform.parent.GetComponent<PlayerController>();
+    //}
+
+    public void ActivarHabilidad(PlayerController player)
     {
+        propietario = player;
+
         if (!habilidadActiva)
         {
             StartCoroutine(DispararRayContinuamente());
@@ -27,7 +36,6 @@ public class HabilidadRayo : MonoBehaviour
     {
         lineRenderer = origenRayCast.GetComponentInChildren<LineRenderer>();
         rayVFX = GetComponent<ParticleSystem>();
-
         lineRenderer.enabled = false;
         //lineRenderer.positionCount = 2; // puntos (origen y final)
         //lineRenderer.SetPosition(0, origenRayCast.position);
@@ -99,10 +107,19 @@ public class HabilidadRayo : MonoBehaviour
 
             if (player != null)
             {
-                if (!player.muerto)
+                if (player.equipo == propietario.equipo)
                 {
-                    player.Vida -= daño;
+
                 }
+                else
+                {
+                    if (!player.muerto && !player.isInvulnerable)
+                    {
+                        player.Vida -= daño;
+                    }
+                    else return;
+                }
+
             }
 
             if (eF != null)

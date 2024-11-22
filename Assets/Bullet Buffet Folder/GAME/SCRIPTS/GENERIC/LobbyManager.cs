@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -47,7 +48,7 @@ public class LobbyManager : MonoBehaviour
 
     [SerializeField] private List<TMP_Text> textosEquipo1;
     [SerializeField] private List<TMP_Text> textosEquipo2;
-
+    [SerializeField] private Sprite defaultSprite;
     // Nuevas variables para im�genes
     //[SerializeField] private Image[] teamImages;
     //[SerializeField] private Image[] characterImages;
@@ -62,6 +63,20 @@ public class LobbyManager : MonoBehaviour
         InputSystem.onDeviceChange += CambiosEnControl;
 
         Awake_AcomodarSlots();
+    }
+
+    private void OnEnable()
+    {
+        listaCsEquipo1.Clear();
+        listaCsEquipo2.Clear();
+
+        enProgreso = false;
+    }
+
+    private IEnumerator CargarMenuConRetraso(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("ANDYMENUTEST");
     }
 
     private void Start()
@@ -222,6 +237,24 @@ public class LobbyManager : MonoBehaviour
 
     private static void AsignarPunterosYActivarPanel()
     {
+        foreach (var slot in self.slotsEquipo1)
+        {
+            if (slot == null)
+            {
+                Debug.LogWarning("Uno de los slots de equipo 1 es null y no se puede asignar el puntero.");
+                continue;
+            }
+        }
+
+        foreach (var slot in self.slotsEquipo2)
+        {
+            if (slot == null)
+            {
+                Debug.LogWarning("Uno de los slots de equipo 2 es null y no se puede asignar el puntero.");
+                continue;
+            }
+        }
+
         // Activar slots según la cantidad de GamePads conectados
         int gamepadCount = Gamepad.all.Count;
 
@@ -280,43 +313,126 @@ public class LobbyManager : MonoBehaviour
 
     private void MoverPuntero(ControlSystem cs, RectTransform slot, TMP_Text textoSlot)
     {
+        // Comprobar que `cs` y `slot` no son null antes de continuar
+        if (cs == null || slot == null)
+        {
+            Debug.LogWarning("El ControlSystem o el slot es null y no se puede mover el puntero.");
+            return;
+        }
+
         cs.puntero.gameObject.SetActive(true);
         cs.puntero.position = slot.position;
 
-        textoSlot.text = cs.jugadorNickName;
-        cs.spritePersonaje = slot.GetChild(1).GetComponent<Image>();
+        // Comprobar que `textoSlot` y `cs.spritePersonaje` no son null antes de usarlos
+        if (textoSlot != null)
+        {
+            textoSlot.text = cs.jugadorNickName;
+        }
 
-        Debug.Log($"Puntero del jugador {cs.jugadorNickName} se movió al slot {slot.name}");
+        if (slot.childCount > 1)
+        {
+            cs.spritePersonaje = slot.GetChild(1).GetComponent<Image>();
+            if (cs.spritePersonaje != null)
+            {
+                Debug.Log($"Puntero del jugador {cs.jugadorNickName} se movió al slot {slot.name}");
+            }
+            else
+            {
+                Debug.LogWarning("El componente Image para el sprite del personaje es null.");
+            }
+        }
     }
+
+    private static bool enProgreso = false;
 
     public static void RechazarEquipo()
     {
-        // Limpia el arreglo equipoControles, establece todos los elementos en 0
-        Array.Clear(equipoControles, 0, equipoControles.Length);
-        print(equipoControles.Length);
+        if (enProgreso) return; // Si ya estamos procesando, ignoramos nuevas llamadas
+        enProgreso = true;
 
-        equipo1 = 0;
-        equipo2 = 0;
-
-        listaCsEquipo1.Clear();
-        listaCsEquipo2.Clear();
-
-        // Limpiar el diccionario de equipo y personaje si es necesario
-        equipo.Clear();
-        personaje.Clear();
-
-        // Ciclar a través de todos los `ControlSystem` y resetear variables
-        foreach (var par in dicControles)
+        try
         {
-            ControlSystem cs = par.Value.GetComponent<ControlSystem>();
-            if (cs != null)
+            if (self.panelSelectTeam.activeSelf)
             {
-                cs.ResetearVariables();
-            }
-        }
+                // Validar si todos los jugadores están en equipo 0
+                bool todosEquipo0 = true;
 
-        escogiendoEquipo = true;
-        ActivarPanelSeleccionarEquipo();
+                foreach (var par in dicControles)
+                {
+                    ControlSystem cs = par.Value.GetComponent<ControlSystem>();
+                    if (cs != null && cs.equipoJugador != 0)
+                    {
+                        todosEquipo0 = false;
+                        break;
+                    }
+                }
+
+                if (todosEquipo0) // Si todos los jugadores tienen equipo 0
+                {
+                    Debug.Log("Todos los jugadores están en equipo 0. Cargando el menú...");
+                    self.StartCoroutine(self.CargarMenuConRetraso(0.8f)); // Llama la corrutina
+                    return; // Detenemos aquí para evitar ejecutar el resto del método
+                }
+            }
+
+            // Si al menos un jugador tiene equipo diferente de 0, ejecutamos el resto del código
+            Debug.Log("Se resetearon los equipos");
+
+            // Limpia el arreglo equipoControles, establece todos los elementos en 0
+            Array.Clear(equipoControles, 0, equipoControles.Length);
+            equipo1 = 0;
+            equipo2 = 0;
+
+            listaCsEquipo1.Clear();
+            listaCsEquipo2.Clear();
+
+            // Limpiar el diccionario de equipo y personaje
+            equipo.Clear();
+            personaje.Clear();
+
+            // Ciclar a través de todos los `ControlSystem` y resetear variables
+            foreach (var par in dicControles)
+            {
+                ControlSystem cs = par.Value.GetComponent<ControlSystem>();
+                if (cs != null)
+                {
+                    cs.ResetearVariables();
+                }
+            }
+
+            // Limpiar los sprites de los slots
+            foreach (var slot in self.slotsEquipo1)
+            {
+                if (slot.childCount > 1)
+                {
+                    Image personajeImage = slot.GetChild(1).GetComponent<Image>();
+                    if (personajeImage != null)
+                    {
+                        personajeImage.sprite = self.defaultSprite;
+                    }
+                }
+            }
+
+            foreach (var slot in self.slotsEquipo2)
+            {
+                if (slot.childCount > 1)
+                {
+                    Image personajeImage = slot.GetChild(1).GetComponent<Image>();
+                    if (personajeImage != null)
+                    {
+                        personajeImage.sprite = self.defaultSprite;
+                    }
+                }
+            }
+
+            self.botonJugar.gameObject.SetActive(false);
+            escogiendoEquipo = true;
+            ActivarPanelSeleccionarEquipo();
+        }
+        finally
+        {
+            enProgreso = false; // Resetear bandera
+        }
     }
 
     public void SeleccionarPersonaje(Gamepad gamepad, string personajeSeleccionado)
@@ -368,6 +484,7 @@ public class LobbyManager : MonoBehaviour
     {
         self.panelSelectTeam.SetActive(true);
         self.panelSelectCh.SetActive(false);
+        self.tiras.SetActive(false);
     }
 
     [HideInInspector] public static Dictionary<int, Gamepad> idToGamepad = new Dictionary<int, Gamepad>();
@@ -520,6 +637,12 @@ public class LobbyManager : MonoBehaviour
 
         PlayerPrefs.Save();
         GameManager.Instance.CargarEscenaProfe();
+
+
+
+
+
+        RechazarEquipo();
     }
 
     private void GuardarJugador(int playerIndex, ControlSystem controlSystem)

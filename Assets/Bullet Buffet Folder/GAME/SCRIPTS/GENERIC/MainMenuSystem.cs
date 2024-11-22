@@ -1,20 +1,22 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuSystem : MonoBehaviour
 {
+    public static MainMenuSystem instance;
+
     [Header("Main Menu Core")]
     [SerializeField] private GameObject panelInicio;
     [SerializeField] private GameObject panelMenuPrincipal;
     [SerializeField] private GameObject panelModos;
     [SerializeField] private GameObject panelMapasMHS;
     [SerializeField] private GameObject panelMapasMDS;
-    [SerializeField] private GameObject panelSetings;
+    [SerializeField] private GameObject panelSettings;
     [SerializeField] private GameObject panelSchemeControl;
+    [SerializeField] private GameObject panelCreditos;
     [SerializeField] private GameObject panelConfimarSalir;
 
     [Header("Imagenes de Mapas")]
@@ -35,23 +37,21 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private Button botonJugarMenu;
     [SerializeField] private Button botonInicio;
     [SerializeField] private Button botonModos;
-    [SerializeField] private Button botonPantallaCompleta;
+    [SerializeField] private Toggle togglePantallaCompleta;
     [SerializeField] private Button botonMHSCalle;
     [SerializeField] private Button botonMDSCalle;
 
-    //[SerializeField] private GameObject eventSystem;
-    //private EventSystem eventS;
-
     private bool play;
 
-    private static bool panelInicioActivado = false;
+    private static GameObject ultimoBotonSeleccionadoStatic;
+    private GameObject ultimoBotonSeleccionado;
 
-    private DefaultInputActions inputActions;
+    private static bool panelInicioActivado = false;
 
     private void Awake()
     {
         panelMenuPrincipal.SetActive(true);
-        inputActions = new DefaultInputActions();
+        instance = this;
     }
 
     private void Start()
@@ -59,19 +59,57 @@ public class MainMenuSystem : MonoBehaviour
         if (panelInicioActivado)
         {
             panelInicio.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
+            ultimoBotonSeleccionadoStatic = botonJugarMenu.gameObject;
         }
         else
         {
             panelInicio.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(botonInicio.gameObject);
+            ultimoBotonSeleccionadoStatic = botonInicio.gameObject;
         }
 
+        ultimoBotonSeleccionado = ultimoBotonSeleccionadoStatic;
         play = false;
+        ResetAllPanels();
+        SetMenuNavigation();
+    }
+
+    private void OnEnable()
+    {
+        SetMenuNavigation();
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            // Recuperar el último botón seleccionado en el menú
+            if (!GameManager.Instance.inGame && ultimoBotonSeleccionadoStatic != null)
+            {
+                EventSystem.current.SetSelectedGameObject(ultimoBotonSeleccionadoStatic);
+            }
+        }
+    }
+
+    private void SetMenuNavigation()
+    {
+        // Conectar OnSubmit y OnCancel del InputManager a la función de retroceso
+        InputManager.Instance.SetActivePanel(null, Back);
+    }
+
+    private void ResetAllPanels()
+    {
         panelModos.SetActive(false);
-        panelSetings.SetActive(false);
+        panelSettings.SetActive(false);
         panelMapasMHS.SetActive(false);
         panelMapasMDS.SetActive(false);
         panelSchemeControl.SetActive(false);
         panelConfimarSalir.SetActive(false);
+        panelCreditos.SetActive(false);
 
         cafeMHS.SetActive(false);
         ciudadMHS.SetActive(false);
@@ -85,9 +123,13 @@ public class MainMenuSystem : MonoBehaviour
         tiempoActualMHSText.text = "1:00";
     }
 
+    public void ResetearInput()
+    {
+        InputManager.Instance.SetActivePanel(null, Back);
+    }
+
     public void GoToMenu()
     {
-        //pequeña animacion de cargado
         Invoke("DesactivarPanelInicio", 0.25f);
     }
 
@@ -96,105 +138,148 @@ public class MainMenuSystem : MonoBehaviour
         panelInicio.SetActive(false);
         panelInicioActivado = true;
         EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
+        ultimoBotonSeleccionadoStatic = botonJugarMenu.gameObject;
     }
 
     public void GoToModos()
     {
+        ResetAllPanels();
         panelModos.SetActive(true);
-        panelSetings.SetActive(false);
-        panelMenuPrincipal.SetActive(false);
-        panelConfimarSalir.SetActive(false);
-        panelSchemeControl.SetActive(false);
-        panelMapasMHS.SetActive(false);
         EventSystem.current.SetSelectedGameObject(botonModos.gameObject);
         AudioManager.instance.PlaySound("botonmenu");
+        ultimoBotonSeleccionadoStatic = botonModos.gameObject; 
     }
 
     public void Back()
     {
-        panelMenuPrincipal.SetActive(true);
-        panelModos.SetActive(false);
-        panelSetings.SetActive(false);
-        panelConfimarSalir.SetActive(false);
-        panelSchemeControl.SetActive(false);
-        panelMapasMHS.SetActive(false);
-        panelMapasMDS.SetActive(false);
+
+        if (panelModos.activeSelf)
+        {
+            panelMenuPrincipal.SetActive(true);
+            panelModos.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
+            ultimoBotonSeleccionadoStatic = botonJugarMenu.gameObject;
+            // Restaura el comportamiento normal de Submit en el menú principal
+            InputManager.Instance.SetActivePanel(null, Back);
+        }
+        else if (panelMapasMHS.activeSelf)
+        {
+            panelModos.SetActive(true);
+            panelMapasMHS.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(botonModos.gameObject);
+            ultimoBotonSeleccionadoStatic = botonModos.gameObject;
+        }
+        else if (panelMapasMDS.activeSelf)
+        {
+            panelModos.SetActive(true);
+            panelMapasMDS.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(botonModos.gameObject);
+            ultimoBotonSeleccionadoStatic = botonModos.gameObject;
+        }
+        else if (panelSchemeControl.activeSelf)
+        {
+            panelMenuPrincipal.SetActive(true);
+            panelSchemeControl.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
+            ultimoBotonSeleccionadoStatic = botonJugarMenu.gameObject;
+            // Restaura el comportamiento normal de Submit en el menú principal
+            InputManager.Instance.SetActivePanel(null, Back);
+        }
+        else if (panelConfimarSalir.activeSelf)
+        {
+            // Cierra el panel de confirmación y vuelve al menú principal
+            panelConfimarSalir.SetActive(false);
+            panelMenuPrincipal.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
+            ultimoBotonSeleccionadoStatic = botonJugarMenu.gameObject;
+            // Restaura el comportamiento normal de Submit en el menú principal
+            InputManager.Instance.SetActivePanel(null, Back);
+        }
+        else if (panelCreditos.activeSelf)
+        {
+            panelCreditos.SetActive(false);
+            panelMenuPrincipal.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
+            ultimoBotonSeleccionadoStatic = botonJugarMenu.gameObject;
+        }
+
         play = false;
 
         GameManager.Instance.ResetiarVariables();
-
-        rondaActualText.text = "1";
-        tiempoActualMDSText.text = "1:00";
-        tiempoActualMHSText.text = "1:00";
-
         AudioManager.instance.PlaySound("botonmenu");
-
-        cafeMHS.SetActive(false);
-        ciudadMHS.SetActive(false);
-        dungeonMHS.SetActive(false);
-        cafeMDS.SetActive(false);
-        ciudadMDS.SetActive(false);
-        dungeonMDS.SetActive(false);
-
-        EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
     }
 
     public void GoToSettings()
     {
-        panelSetings.SetActive(true);
-        panelModos.SetActive(false);
-        panelConfimarSalir.SetActive(false);
-        panelSchemeControl.SetActive(false);
-        panelMapasMHS.SetActive(false);
-
+        ResetAllPanels();
+        InputManager.Instance.SetActivePanel(null, null);
+        panelSettings.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(togglePantallaCompleta.gameObject);
+        ultimoBotonSeleccionadoStatic = togglePantallaCompleta.gameObject;
         AudioManager.instance.PlaySound("botonmenu");
-
-        EventSystem.current.SetSelectedGameObject(botonPantallaCompleta.gameObject);
     }
 
     public void GoToSchemeControl()
     {
+        ResetAllPanels();
         panelSchemeControl.SetActive(true);
-        panelModos.SetActive(false);
-        panelSetings.SetActive(false);
-        panelConfimarSalir.SetActive(false);
-        panelMapasMHS.SetActive(false);
-
         AudioManager.instance.PlaySound("botonmenu");
 
-        //Preguntar como darle a entender al EventSystem que este panel esta activo para mandar a llamarlo solo presionando el boton de Cancel del ActionAsset Default.
+    }
+
+    public void GoToCreditos()
+    {
+        ResetAllPanels();
+        panelCreditos.SetActive(true);
+        AudioManager.instance.PlaySound("botonmenu");
+
+        // Restaura el comportamiento normal de Submit en el menú principal
+        InputManager.Instance.SetActivePanel(null, Back);
     }
 
     public void ModoHechizosSazonados()
     {
         GameManager.modoHS = true;
         GameManager.modoDS = false;
+        ResetAllPanels();
         panelMapasMHS.SetActive(true);
-        panelModos.SetActive(false);
-        panelSetings.SetActive(false);
-        panelMenuPrincipal.SetActive(false);
-        panelConfimarSalir.SetActive(false);
-        panelSchemeControl.SetActive(false);
 
         AudioManager.instance.PlaySound("botonmenu");
 
         EventSystem.current.SetSelectedGameObject(botonMHSCalle.gameObject);
+        ultimoBotonSeleccionadoStatic = botonMHSCalle.gameObject;
     }
 
     public void ModoDueloDeSalsas()
     {
         GameManager.modoDS = true;
         GameManager.modoHS = false;
+        ResetAllPanels();
         panelMapasMDS.SetActive(true);
-        panelModos.SetActive(false);
-        panelSetings.SetActive(false);
-        panelMenuPrincipal.SetActive(false);
-        panelConfimarSalir.SetActive(false);
-        panelSchemeControl.SetActive(false);
 
         AudioManager.instance.PlaySound("botonmenu");
 
         EventSystem.current.SetSelectedGameObject(botonMDSCalle.gameObject);
+        ultimoBotonSeleccionadoStatic = botonMDSCalle.gameObject;
+    }
+
+    public void ConfirmacionSalir()
+    {
+        ResetAllPanels();
+        panelConfimarSalir.SetActive(true);
+        AudioManager.instance.PlaySound("botonmenu");
+
+        // Restaura el comportamiento normal de Submit en el menú principal
+        InputManager.Instance.SetActivePanel(Salir, Back);
+
+        EventSystem.current.SetSelectedGameObject(botonJugarMenu.gameObject);
+        ultimoBotonSeleccionadoStatic = botonJugarMenu.gameObject;
+    }
+
+    public void Salir()
+    {
+        Debug.Log("Se cerro la aplicacion");
+        Application.Quit();
     }
 
     public void MapaStreetMHS()
@@ -529,20 +614,4 @@ public class MainMenuSystem : MonoBehaviour
         SceneManager.LoadScene("LOBBY");
     }
 
-    public void ConfirmacionSalir()
-    {
-        panelConfimarSalir.SetActive(true);
-        panelModos.SetActive(false);
-        panelSetings.SetActive(false);
-        panelMenuPrincipal.SetActive(false);
-        panelSchemeControl.SetActive(false);
-        panelMapasMHS.SetActive(false);
-
-        AudioManager.instance.PlaySound("botonmenu");
-    }
-
-    public void Salir()
-    {
-        Application.Quit();
-    }
 }

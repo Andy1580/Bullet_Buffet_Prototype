@@ -14,6 +14,12 @@ public class Shotgun : MonoBehaviour
     public float vidaVfx = 1f;
 
     public bool cantShoot;
+    private PlayerController propietario;
+
+    private void Awake()
+    {
+        propietario = transform.parent.GetComponent<PlayerController>();
+    }
 
     private void Start()
     {
@@ -23,7 +29,7 @@ public class Shotgun : MonoBehaviour
 
     public void Input_Disparo(InputAction.CallbackContext context)
     {
-        if (cantShoot)
+        if (cantShoot && !propietario.muerto)
         {
             Fire();
             cantShoot = false;

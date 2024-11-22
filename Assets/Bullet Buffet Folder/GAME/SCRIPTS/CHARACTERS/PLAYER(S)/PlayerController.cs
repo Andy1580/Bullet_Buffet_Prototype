@@ -747,11 +747,11 @@ public class PlayerController : MonoBehaviour
 
     void HabilidadNOVA()
     {
-        habilidadRayo.ActivarHabilidad();
+        habilidadRayo.ActivarHabilidad(this);
         BloquearMovimiento = true;
         BloquearRotacion = true;
 
-        Invoke("HabilitarMovimiento", 1.45f);
+        Invoke("HabilitarMovimiento", 2f);
     }
 
     void HabilidadCRIM()

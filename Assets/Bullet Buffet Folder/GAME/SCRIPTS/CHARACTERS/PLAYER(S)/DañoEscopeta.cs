@@ -53,7 +53,7 @@ public class DañoEscopeta : MonoBehaviour
             }
         }
 
-        else if (other.gameObject.layer == 0)
+        else if (other.gameObject.layer == 0 || other.gameObject.layer == 10) //layer 10 = obstaculo
         {
             return;
             //Vector3 puntoImpacto = other.ClosestPoint(transform.position);

@@ -15,18 +15,29 @@ public class WeaponBase : MonoBehaviour
     public float vidaBala = 2f;
 
     protected float siguienteDisparo = 0f;
+    private PlayerController propietario;
+
+    //private void Awake()
+    //{
+    //    propietario = transform.parent.GetComponent<PlayerController>();
+    //}
 
     private void Start()
     {
         cantShoot = true;
+        propietario = GetComponent<PlayerController>();
     }
 
     public void Input_Disparo(InputAction.CallbackContext context)
     {
-        if (cantShoot)
+        if(context.performed)
         {
-            Disparar();
+            if (cantShoot && !propietario.muerto)
+            {
+                Disparar();
+            }
         }
+        
     }
 
     private void Disparar()
@@ -115,7 +126,8 @@ public class WeaponBase : MonoBehaviour
     void InstanciarProyectil(Vector3 objetivo)
     {
         GameObject proyectil = Instantiate(proyectilPrefab, bocaArma.position, Quaternion.identity);
-
+        DañoBalaJugador dañoBala = proyectil.GetComponent<DañoBalaJugador>();
+        dañoBala.IniciarBala(propietario);
         Vector3 direccion = (objetivo - bocaArma.position).normalized;
         proyectil.GetComponent<Rigidbody>().velocity = direccion * velocidadProyectil;
 

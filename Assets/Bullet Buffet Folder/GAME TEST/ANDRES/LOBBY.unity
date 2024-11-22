@@ -1023,7 +1023,7 @@ GameObject:
   m_Component:
   - component: {fileID: 462063507}
   - component: {fileID: 462063506}
-  - component: {fileID: 462063505}
+  - component: {fileID: 462063508}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1031,26 +1031,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &462063505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 462063504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &462063506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1081,6 +1061,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &462063508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462063504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_PointAction: {fileID: 0}
+  m_MoveAction: {fileID: 0}
+  m_SubmitAction: {fileID: 0}
+  m_CancelAction: {fileID: 0}
+  m_LeftClickAction: {fileID: 0}
+  m_MiddleClickAction: {fileID: 0}
+  m_RightClickAction: {fileID: 0}
+  m_ScrollWheelAction: {fileID: 0}
+  m_TrackedDevicePositionAction: {fileID: 0}
+  m_TrackedDeviceOrientationAction: {fileID: 0}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!1 &578597865
 GameObject:
   m_ObjectHideFlags: 0
@@ -3350,6 +3361,7 @@ MonoBehaviour:
   equipoJugador: 0
   selectedCharacter: 
   gamepadID: 0
+  originalID: 0
   puntero: {fileID: 788939525}
   spritePersonaje: {fileID: 0}
   controlImg: {fileID: 4899656244536100065}
@@ -3466,6 +3478,7 @@ MonoBehaviour:
   equipoJugador: 0
   selectedCharacter: 
   gamepadID: 0
+  originalID: 0
   puntero: {fileID: 388470389}
   spritePersonaje: {fileID: 0}
   controlImg: {fileID: 115983435130040303}
@@ -3582,6 +3595,7 @@ MonoBehaviour:
   equipoJugador: 0
   selectedCharacter: 
   gamepadID: 0
+  originalID: 0
   puntero: {fileID: 2070748978}
   spritePersonaje: {fileID: 0}
   controlImg: {fileID: 411210583318791201}
@@ -4086,10 +4100,6 @@ MonoBehaviour:
     m_ActionId: 6149a0e8-61f3-4fa7-ba02-7931634cadd3
     m_ActionName: Player/AxisUi[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2b8abe36-8a60-43af-b8d1-c1ac04d3c18e
-    m_ActionName: UI/Navigate
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 939898655510162321}
         m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
@@ -4159,7 +4169,7 @@ MonoBehaviour:
     m_ActionName: UI/Rechazar[/XInputControllerWindows/buttonEast,/XInputControllerWindows1/buttonEast]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
-  m_DefaultActionMap: UI
+  m_DefaultActionMap: UI Lobby
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!222 &2190798013174667257
@@ -4410,10 +4420,6 @@ MonoBehaviour:
     m_ActionId: 6149a0e8-61f3-4fa7-ba02-7931634cadd3
     m_ActionName: Player/AxisUi[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2b8abe36-8a60-43af-b8d1-c1ac04d3c18e
-    m_ActionName: UI/Navigate
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 530528254048209864}
         m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
@@ -4481,9 +4487,49 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d056a17e-051e-4712-aa04-dfe85e0c119d
     m_ActionName: UI/Rechazar[/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d9c4bf2f-a6fd-4b7f-8a96-72c0b0c5eaa0
+    m_ActionName: UI Pausa/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows1/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows1/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows1/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows1/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows1/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows1/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows1/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows1/rightStick/right,/XInputControllerWindows/dpad,/XInputControllerWindows1/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8407997f-5cfa-4254-b600-933ed30c4720
+    m_ActionName: UI Pausa/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 90e5d3dc-552a-437e-84ec-93ff454ffb26
+    m_ActionName: UI Pausa/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast,/XInputControllerWindows1/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9b59be85-ae8e-4e28-bd48-ff64dbab1969
+    m_ActionName: UI Pausa/Point[/Mouse/position,/Pen/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ad2b259a-685e-4c97-835f-1d3cae801091
+    m_ActionName: UI Pausa/Click[/Mouse/leftButton,/Pen/tip]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 86d17f25-8c84-48ab-a7f5-bff92397fd9c
+    m_ActionName: UI Pausa/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4b9b958e-d5c2-4f9c-8f4f-fb697a898452
+    m_ActionName: UI Pausa/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f35dd892-0bc3-42cb-8345-f78129f848b8
+    m_ActionName: UI Pausa/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2cda9306-aae4-458f-9ed5-9532dfd8525f
+    m_ActionName: UI Pausa/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a04336ba-03da-4ec9-8279-a151bd4eca49
+    m_ActionName: UI Pausa/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
-  m_DefaultActionMap: UI
+  m_DefaultActionMap: UI Lobby
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &3055834719372289227
@@ -4662,6 +4708,7 @@ MonoBehaviour:
   equipoJugador: 0
   selectedCharacter: 
   gamepadID: 0
+  originalID: 0
   puntero: {fileID: 1615673669}
   spritePersonaje: {fileID: 0}
   controlImg: {fileID: 7669937342617301367}
@@ -6157,10 +6204,6 @@ MonoBehaviour:
     m_ActionId: 6149a0e8-61f3-4fa7-ba02-7931634cadd3
     m_ActionName: Player/AxisUi[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2b8abe36-8a60-43af-b8d1-c1ac04d3c18e
-    m_ActionName: UI/Navigate
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3384139604735686111}
         m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
@@ -6230,7 +6273,7 @@ MonoBehaviour:
     m_ActionName: UI/Rechazar[/XInputControllerWindows/buttonEast,/XInputControllerWindows1/buttonEast]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
-  m_DefaultActionMap: UI
+  m_DefaultActionMap: UI Lobby
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &7348534377930447496
@@ -6268,6 +6311,7 @@ MonoBehaviour:
   textosEquipo2:
   - {fileID: 6518572271949818121}
   - {fileID: 1324657291233831472}
+  defaultSprite: {fileID: 21300000, guid: f6b0514f50efde643ac079c946bbaab0, type: 3}
 --- !u!1 &7450989736704797161
 GameObject:
   m_ObjectHideFlags: 0
@@ -6740,10 +6784,6 @@ MonoBehaviour:
     m_ActionId: 6149a0e8-61f3-4fa7-ba02-7931634cadd3
     m_ActionName: Player/AxisUi[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2b8abe36-8a60-43af-b8d1-c1ac04d3c18e
-    m_ActionName: UI/Navigate
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 291221393110019027}
         m_TargetAssemblyTypeName: ControlSystem, Assembly-CSharp
@@ -6813,7 +6853,7 @@ MonoBehaviour:
     m_ActionName: UI/Rechazar[/XInputControllerWindows/buttonSouth,/XInputControllerWindows1/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
-  m_DefaultActionMap: UI
+  m_DefaultActionMap: UI Lobby
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!224 &8778973998186601152
