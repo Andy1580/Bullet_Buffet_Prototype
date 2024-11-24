@@ -18,20 +18,22 @@ public class DañoBalaJugador : MonoBehaviour
         {
             PlayerController jugador = other.GetComponent<PlayerController>();
 
-            if (jugador.equipo == propietario.equipo)
+            if(jugador.equipo == propietario.equipo)
             {
-                
+                return;
             }
-            else
+
+            if (jugador.Vida > 0)
             {
                 if (!jugador.isInvulnerable || !jugador.muerto)
                 {
                     jugador.Vida -= daño;
-                    jugador.animator.SetTrigger("daño");
                     //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
                     //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
                 }
             }
+            else return;
+
 
         }
 
@@ -52,7 +54,7 @@ public class DañoBalaJugador : MonoBehaviour
             }
         }
 
-        else if (other.gameObject.layer == 0 || other.gameObject.layer == 10) //layer 10 de obstaculo
+        else if (other.gameObject.layer == 10) //layer 10 de obstaculo
         {
             Destroy(this.gameObject);
         }

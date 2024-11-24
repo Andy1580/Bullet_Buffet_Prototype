@@ -1,6 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class DañoEscopeta : MonoBehaviour
+public class DañoHabilidadEscopeta : MonoBehaviour
 {
     [SerializeField] private int daño;
     private PlayerController propietario;
@@ -61,10 +63,5 @@ public class DañoEscopeta : MonoBehaviour
             //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
             //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
         }
-    }
-
-    private void OnDestroy()
-    {
-        Debug.LogWarning("Se destruyo el Collider de la Escopeta");
     }
 }

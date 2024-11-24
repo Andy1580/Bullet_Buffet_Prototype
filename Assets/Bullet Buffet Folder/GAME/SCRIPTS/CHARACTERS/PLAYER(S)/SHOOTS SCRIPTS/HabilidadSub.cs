@@ -37,7 +37,7 @@ public class HabilidadSub : MonoBehaviour
 
                     if (player.equipo == jugadorInvocador.equipo) continue;
 
-                    if (player != null && !player.muerto)
+                    if (player != null && !player.muerto && player.equipo != jugadorInvocador.equipo)
                     {
                         if (!player.isInvulnerable)
                         {

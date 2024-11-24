@@ -43,7 +43,7 @@ public class EnemyAI_Flying : MonoBehaviour
         agente = GetComponent<NavMeshAgent>();
         agente.stoppingDistance = distanciaMinima;
         vida = maxVida;
-
+        animator = GetComponent<Animator>();
 
 
         GameObject clone = Instantiate(vfxRespawn, transform.position, transform.rotation);
@@ -91,13 +91,6 @@ public class EnemyAI_Flying : MonoBehaviour
         {
             BuscarJugadorCercano();
         }
-
-        //if (GameManager.remainingTime <= 0)
-        //{
-        //    agente.isStopped = true;
-        //    atacando = false;
-        //    Destroy(gameObject);
-        //}
 
         if (jugadorObjetivo.Vida <= 0)
         {
@@ -164,21 +157,53 @@ public class EnemyAI_Flying : MonoBehaviour
 
     private void JugadorMuerto()
     {
-        if (players.Count <= 1)
+        if (GameManager.Instance.nJugadores == 2)
         {
-            StopAllCoroutines();
-            return;
+            if (players.Count <= 1)
+            {
+                StopAllCoroutines();
+                return;
+            }
+
+            if (players[0].Vida > 0)
+            {
+                jugadorObjetivo = players[0];
+            }
+
+            if (players[1].Vida > 0)
+            {
+                jugadorObjetivo = players[1];
+            }
+        }
+        else
+        {
+            if (players.Count <= 1)
+            {
+                StopAllCoroutines();
+                return;
+            }
+
+            if (players[0].Vida > 0)
+            {
+                jugadorObjetivo = players[0];
+            }
+
+            if (players[1].Vida > 0)
+            {
+                jugadorObjetivo = players[1];
+            }
+
+            if (players[2].Vida > 0)
+            {
+                jugadorObjetivo = players[2];
+            }
+
+            if (players[3].Vida > 0)
+            {
+                jugadorObjetivo = players[3];
+            }
         }
 
-        if (players[0].Vida > 0)
-        {
-            jugadorObjetivo = players[0];
-        }
-
-        if (players[1].Vida > 0)
-        {
-            jugadorObjetivo = players[1];
-        }
     }
 
     public int VidaEnemigo

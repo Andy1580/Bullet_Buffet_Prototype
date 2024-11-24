@@ -545,6 +545,11 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DañoEmisivo()
     {
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
+        if (Vida > 0)
+        {
+            animator.SetTrigger("daño");
+
+        }
         yield return new WaitForSeconds(0.1f);
         renderer.material.SetColor("_EmissionColor", Color.black);
     }
@@ -576,9 +581,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Shield Stats")]
     [SerializeField] private float tiempoEscudo = 0.45f;
-    [SerializeField] private float cooldownEscudo = 5;
+    [SerializeField] private float cooldownEscudo = 7;
     [SerializeField] private Transform escudo;
-    [SerializeField] private int contadorEscudo = 5;
+    [SerializeField] private int contadorEscudo = 7;
     private Vector3 diferenciaEscudo;
     private Quaternion rotacionEscudo;
     private bool canEscudo = true;
@@ -587,7 +592,7 @@ public class PlayerController : MonoBehaviour
     {
         //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         playerHUD.shieldIcon.enabled = true;
-        contadorEscudo = 5;
+        contadorEscudo = 7;
         playerHUD.shieldCounter.text = contadorEscudo.ToString();
     }
 
@@ -716,18 +721,18 @@ public class PlayerController : MonoBehaviour
             case "SKYIE":
                 HabilidadSKYIE();
                 habilidadRayo = null;
-                habilidadEnArea = null;
+                habilidadEscopeta = null;
                 habilidadSub = null;
                 break;
             case "NOVA":
                 HabilidadNOVA();
                 habilidadEnArea = null;
                 habilidadEscopeta = null;
-                habilidadSub = null;
+                habilidadRayo = null;
                 break;
             case "KAI":
                 HabilidadKAI();
-                habilidadEscopeta = null;
+                habilidadSub = null;
                 habilidadRayo = null;
                 habilidadEnArea = null;
                 break;
@@ -742,14 +747,18 @@ public class PlayerController : MonoBehaviour
 
     void HabilidadSKYIE()
     {
-        habilidadEscopeta.ActivarHabilidad();
+        Debug.Log(this.gameObject.name + "Activo la habilidad");
+        habilidadEnArea.ActivarHabilidad(this);
+        DeshabilitarMovimiento();
+
+        Invoke("HabilitarMovimiento", 0.5f);
     }
 
     void HabilidadNOVA()
     {
-        habilidadRayo.ActivarHabilidad(this);
-        BloquearMovimiento = true;
-        BloquearRotacion = true;
+        Debug.Log(this.gameObject.name + "Activo la habilidad");
+        habilidadSub.ActivarHabilidad(this);
+        DeshabilitarMovimiento();
 
         Invoke("HabilitarMovimiento", 2f);
     }
@@ -757,15 +766,19 @@ public class PlayerController : MonoBehaviour
     void HabilidadCRIM()
     {
         Debug.Log(this.gameObject.name + "Activo la habilidad");
-        habilidadEnArea.ActivarHabilidad(this);
-        BloquearMovimiento = true;
+        habilidadRayo.ActivarHabilidad(this);
+        DeshabilitarMovimiento();
 
-        Invoke("HabilitarMovimiento", 1f);
+        Invoke("HabilitarMovimiento", 1.2f);
     }
 
     void HabilidadKAI()
     {
-        habilidadSub.ActivarHabilidad(this);
+        Debug.Log(this.gameObject.name + "Activo la habilidad");
+        habilidadEscopeta.ActivarHabilidad();
+        DeshabilitarMovimiento();
+
+        Invoke("HabilitarMovimiento", 0.3f);
     }
 
     public void HabilitarMovimiento()
@@ -832,19 +845,20 @@ public class PlayerController : MonoBehaviour
 
     #region SUPER SPEED
     [Header("Super Speed")]
-    [SerializeField] private float superSpeed;
+    [SerializeField] private float superSpeed = 10f;
+    [SerializeField] private float actualSpeed;
     [SerializeField] private float superSpeedTime = 5f;
     public bool inSuperSpeed = false;
 
     void InicializarSSD()
     {
-        superSpeed = playerSpeed;
+        actualSpeed = playerSpeed;
     }
 
     private void SuperSpeed()
     {
-        playerSpeed = 10f;
-        superSpeed = playerSpeed;
+        playerSpeed = superSpeed;
+        //superSpeed = playerSpeed;
         Invoke("DesactivarSSD", superSpeedTime);
     }
 
@@ -852,8 +866,7 @@ public class PlayerController : MonoBehaviour
     {
         hability = null;
         actualHability = hability;
-        playerSpeed = 5f;
-        superSpeed = playerSpeed;
+        playerSpeed = actualSpeed;
         inSuperSpeed = false;
         DesactivarSprite();
     }

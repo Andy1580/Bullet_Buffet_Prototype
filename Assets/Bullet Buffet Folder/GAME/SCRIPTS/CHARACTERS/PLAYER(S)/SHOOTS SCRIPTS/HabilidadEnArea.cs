@@ -29,9 +29,17 @@ public class HabilidadEnArea : MonoBehaviour
             if (collider.gameObject.layer == 8) //8 jugadores
             {
                 PlayerController player = collider.gameObject.GetComponent<PlayerController>();
+                
+                if(player.equipo == jugadorInvocador.equipo)
+                {
 
-                if (player.muerto) return;
-                player.Vida -= daño;
+                }
+                else
+                {
+                    if (player.muerto) return;
+                    player.Vida -= daño;
+                }
+
             }
 
             if (collider.gameObject.layer == 7) //7 enemigos

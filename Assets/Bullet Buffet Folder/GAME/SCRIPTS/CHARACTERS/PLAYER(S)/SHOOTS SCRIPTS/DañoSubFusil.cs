@@ -27,7 +27,6 @@ public class DañoSubFusil : MonoBehaviour
                 if (!jugador.isInvulnerable || !jugador.muerto)
                 {
                     jugador.Vida -= damage;
-                    jugador.animator.SetTrigger("daño");
                     //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
                     //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
                 }

@@ -275,7 +275,7 @@ public class ControlSystem : MonoBehaviour
 
     private IEnumerator ResetEquipoRechazado()
     {
-        yield return new WaitForSeconds(0.1f); // Pequeño retardo para evitar múltiples pulsaciones rápidas
+        yield return new WaitForSeconds(0.1f);
         equipoRechazado = false;
     }
 
@@ -290,7 +290,7 @@ public class ControlSystem : MonoBehaviour
 
         if (spritePersonaje != null)
         {
-            spritePersonaje.sprite = null; // Limpiar el sprite si ya hay uno asignado
+            spritePersonaje.sprite = null;
         }
         else
         {

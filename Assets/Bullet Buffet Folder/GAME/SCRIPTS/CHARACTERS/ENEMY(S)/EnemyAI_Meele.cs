@@ -199,6 +199,16 @@ public class EnemyAI_Meele : MonoBehaviour
         {
             jugadorObjetivo = players[1];
         }
+
+        if (players[2].Vida > 0)
+        {
+            jugadorObjetivo = players[2];
+        }
+
+        if (players[3].Vida > 0)
+        {
+            jugadorObjetivo = players[3];
+        }
     }
 
     private void DeadEvent()
@@ -227,7 +237,6 @@ public class EnemyAI_Meele : MonoBehaviour
         {
             animator.SetBool("ataque", true);
             animator.SetBool("perseguir", false);
-            Ataque();
         }
         else
         {
@@ -239,8 +248,13 @@ public class EnemyAI_Meele : MonoBehaviour
         goto Inicio;
     }
 
-    void Ataque()
+    public void Ataque()
     {
         attackCollider.SetActive(true);
+    }
+
+    public void DejarDeAtacar()
+    {
+        attackCollider.SetActive(false);
     }
 }

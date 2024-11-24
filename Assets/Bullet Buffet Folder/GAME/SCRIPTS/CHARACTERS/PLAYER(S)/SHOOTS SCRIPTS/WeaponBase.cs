@@ -32,7 +32,7 @@ public class WeaponBase : MonoBehaviour
     {
         if(context.performed)
         {
-            if (cantShoot && !propietario.muerto)
+            if (cantShoot && !propietario.muerto && !propietario.BloquearMovimiento)
             {
                 Disparar();
             }
@@ -125,9 +125,12 @@ public class WeaponBase : MonoBehaviour
     */
     void InstanciarProyectil(Vector3 objetivo)
     {
+        Debug.Log("Se instancio la bala: " + proyectilPrefab.name);
         GameObject proyectil = Instantiate(proyectilPrefab, bocaArma.position, Quaternion.identity);
+
         DañoBalaJugador dañoBala = proyectil.GetComponent<DañoBalaJugador>();
         dañoBala.IniciarBala(propietario);
+
         Vector3 direccion = (objetivo - bocaArma.position).normalized;
         proyectil.GetComponent<Rigidbody>().velocity = direccion * velocidadProyectil;
 

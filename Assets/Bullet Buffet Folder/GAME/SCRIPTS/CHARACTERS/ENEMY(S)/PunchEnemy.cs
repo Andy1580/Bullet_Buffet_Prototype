@@ -19,7 +19,7 @@ public class PunchEnemy : MonoBehaviour
                 }
             }
         }
-        else if(other.gameObject.layer == 0)
+        else if(other.gameObject.layer == 10)
         {
             return;
         }

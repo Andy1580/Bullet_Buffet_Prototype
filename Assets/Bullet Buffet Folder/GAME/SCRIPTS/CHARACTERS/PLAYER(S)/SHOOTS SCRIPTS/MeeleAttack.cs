@@ -16,7 +16,7 @@ public class MeeleAttack : MonoBehaviour
 
     public void Input_Disparo(InputAction.CallbackContext context)
     {
-        if (cantShoot && !propietario.muerto)
+        if (cantShoot && !propietario.muerto && !propietario.BloquearMovimiento)
         {
             Attack();
             cantShoot = false;
