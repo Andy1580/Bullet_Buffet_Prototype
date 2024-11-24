@@ -75,7 +75,6 @@ public class PlayerController : MonoBehaviour
     {
         if (canEscudo)
         {
-            animator.SetTrigger("escudo");
             ActivarEscudo();
         }
     }
@@ -230,12 +229,22 @@ public class PlayerController : MonoBehaviour
                 circuloEquipo.transform.position = rotation;
             }
 
-            Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
-            movement.x = moveXZ.x;
-            movement.z = moveXZ.z;
+            if (!canEscudo)
+            {
+                animator.SetFloat("xescudo", movement.x);
+                animator.SetFloat("zescudo", movement.z);
+            }
+            else
+            {
+                Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
+                movement.x = moveXZ.x;
+                movement.z = moveXZ.z;
 
-            animator.SetFloat("xmov", movement.x);
-            animator.SetFloat("zmov", movement.z);
+                animator.SetFloat("xmov", movement.x);
+                animator.SetFloat("zmov", movement.z);
+
+            }
+
 
         }
         else
@@ -545,11 +554,11 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DañoEmisivo()
     {
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
-        if (Vida > 0)
-        {
-            animator.SetTrigger("daño");
+        //if (Vida > 0)
+        //{
+        //    animator.SetTrigger("daño");
 
-        }
+        //}
         yield return new WaitForSeconds(0.1f);
         renderer.material.SetColor("_EmissionColor", Color.black);
     }
@@ -599,7 +608,7 @@ public class PlayerController : MonoBehaviour
     void ActivarEscudo()
     {
         canEscudo = false;
-        //canShoot = false;
+        animator.SetBool("enEscudo", true);
         escudo.gameObject.SetActive(true);
         playerHUD.shieldIcon.enabled = false;
         diferenciaEscudo = transform.forward * 2;
@@ -613,6 +622,7 @@ public class PlayerController : MonoBehaviour
     {
         //canShoot = true;
         escudo.gameObject.SetActive(false);
+        animator.SetBool("enEscudo", false);
         StartCoroutine(CooldawnEscudo());
     }
 
@@ -628,7 +638,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(cooldownEscudo);
         //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         canEscudo = true;
-        contadorEscudo = 5;
+        contadorEscudo = 7;
         playerHUD.shieldCounter.text = contadorEscudo.ToString();
         playerHUD.shieldIcon.enabled = true;
     }

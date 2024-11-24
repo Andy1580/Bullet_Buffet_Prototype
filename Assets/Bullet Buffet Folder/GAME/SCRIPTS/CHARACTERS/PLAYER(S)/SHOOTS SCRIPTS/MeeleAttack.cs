@@ -26,6 +26,7 @@ public class MeeleAttack : MonoBehaviour
     void Attack()
     {
         objetoDaño.SetActive(true);
+        propietario.animator.SetTrigger("ataque");
         StartCoroutine(DesactivarObjetoDeDaño());
     }
 
