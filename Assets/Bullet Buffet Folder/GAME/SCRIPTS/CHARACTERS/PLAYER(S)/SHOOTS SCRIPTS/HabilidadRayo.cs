@@ -11,6 +11,7 @@ public class HabilidadRayo : MonoBehaviour
     [SerializeField] private LayerMask capas;
     [SerializeField] private ParticleSystem rayVFX;
     [SerializeField] private float duracionHabilidad = 3f;
+    [SerializeField] private ParticleSystem vfxRayo;
     //[SerializeField] private float velocidadVFX = 5f;
 
     private bool habilidadActiva = false;
@@ -44,6 +45,7 @@ public class HabilidadRayo : MonoBehaviour
 
     void FireRay()
     {
+        propietario.animator.SetTrigger("habilidad");
 
         Ray ray = new Ray(origenRayCast.position, origenRayCast.forward);
         RaycastHit[] hit = Physics.RaycastAll(ray, distanciaMaxima, capas);
@@ -53,6 +55,7 @@ public class HabilidadRayo : MonoBehaviour
             AplicarDaño(i.collider);
         }
 
+        vfxRayo.Play();
     }
 
     IEnumerator DispararRayContinuamente()

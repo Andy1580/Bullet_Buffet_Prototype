@@ -224,6 +224,8 @@ public class GameManager : MonoBehaviour
             ////Resetear Diccionario de Gamepads
             //if(idDeGamepad == null) idDeGamepad = new Dictionary<int, Gamepad>();
 
+            faltan15Seg = false;
+
             equipo1Ganado = false;
             equipo2Ganado = false;
 
@@ -242,18 +244,18 @@ public class GameManager : MonoBehaviour
             remainingTime = totalTime;
             isRunning = false;
 
-            if(panelTiempoAgotado != null)
-            panelTiempoAgotado.SetActive(false);
+            if (panelTiempoAgotado != null)
+                panelTiempoAgotado.SetActive(false);
 
-            if(panelTemporizador != null)
-            panelTemporizador.SetActive(false);
+            if (panelTemporizador != null)
+                panelTemporizador.SetActive(false);
 
             //Puntaje
             puntosParaGanar = 1;
 
             //Paneles de condicion de Victoria
-            if(panelFinish != null)
-            panelFinish.SetActive(false);
+            if (panelFinish != null)
+                panelFinish.SetActive(false);
 
             //Mapas
             //mapaStreetMHS.SetActive(false);
@@ -265,35 +267,35 @@ public class GameManager : MonoBehaviour
 
 
             //Modo Hechizos Sazonados
-            if(magosPrincipales != null)
-            magosPrincipales.SetActive(false);
+            if (magosPrincipales != null)
+                magosPrincipales.SetActive(false);
 
-            if(panelMarcadorMHS != null)
-            panelMarcadorMHS.SetActive(false);
+            if (panelMarcadorMHS != null)
+                panelMarcadorMHS.SetActive(false);
 
-            if(camaraObjeto != null)
-            camaraObjeto.SetActive(false);
+            if (camaraObjeto != null)
+                camaraObjeto.SetActive(false);
 
             puntosAGanarTeam1 = puntajeInicial;
             puntosAGanarTeam2 = puntajeInicial;
 
             //Modo Duelo De Salsas
             //pistaPintable.SetActive(false);
-            if(panelMarcadorMDS != null)
-            panelMarcadorMDS.SetActive(false);
+            if (panelMarcadorMDS != null)
+                panelMarcadorMDS.SetActive(false);
 
             //Pausa
-            if(panelPausa != null)
-            panelPausa.SetActive(false);
+            if (panelPausa != null)
+                panelPausa.SetActive(false);
 
-            if(panelControles != null)
-            panelControles.SetActive(false);
+            if (panelControles != null)
+                panelControles.SetActive(false);
 
-            if(panelConfiguracion != null)
-            panelConfiguracion.SetActive(false);
+            if (panelConfiguracion != null)
+                panelConfiguracion.SetActive(false);
 
-            if(panelConfirmacionSalida != null)
-            panelConfirmacionSalida.SetActive(false);
+            if (panelConfirmacionSalida != null)
+                panelConfirmacionSalida.SetActive(false);
 
             //Jugadores
             activePlayers = new List<PlayerController>();
@@ -304,8 +306,8 @@ public class GameManager : MonoBehaviour
             DestruirEnemigosActivos();
 
             //Cerrar el HUD
-            if(panelHUDs != null)
-            panelHUDs.SetActive(false);
+            if (panelHUDs != null)
+                panelHUDs.SetActive(false);
 
             //Booleano para juego
             inGame = false;
@@ -884,6 +886,7 @@ public class GameManager : MonoBehaviour
         deadEnemy = true;
         DestruirEnemigosActivos();
         DeshabilitarMovimientoJugadores();
+        DetenerMusica();
 
         // Realizar acciones específicas para el equipo ganador
         Invoke("AbrirPanelFinish", 4f);
@@ -996,6 +999,8 @@ public class GameManager : MonoBehaviour
         panelMarcadorMHS.SetActive(true);
         numeroDeRonda = rondaInicial;
         rondaText.text = numeroDeRonda.ToString();
+
+        AudioManager.instance.PlaySound("introHS");
     }
 
     void Update_Marcador_MHS()
@@ -1008,11 +1013,13 @@ public class GameManager : MonoBehaviour
                 {
                     equipo1Ganado = true; // Aseguramos que esta condición se ejecute una sola vez
                     ProcesarVictoriaEquipo(1);
+                    AudioManager.instance.PlaySound("finishHS");
                 }
                 else if (!equipo2Ganado && puntosAGanarTeam2 >= puntosParaGanar)
                 {
                     equipo2Ganado = true; // Aseguramos que esta condición se ejecute una sola vez
                     ProcesarVictoriaEquipo(2);
+                    AudioManager.instance.PlaySound("finishHS");
                 }
             }
             else
@@ -1021,11 +1028,13 @@ public class GameManager : MonoBehaviour
                 {
                     equipo1Ganado = true;
                     ProcesarVictoriaEquipo(1);
+                    AudioManager.instance.PlaySound("finishHS");
                 }
                 else if (!equipo2Ganado && puntosAGanarTeam2 >= puntosParaGanar)
                 {
                     equipo2Ganado = true;
                     ProcesarVictoriaEquipo(2);
+                    AudioManager.instance.PlaySound("finishHS");
                 }
             }
         }
@@ -1074,6 +1083,7 @@ public class GameManager : MonoBehaviour
 
     public float remainingTime;
     private bool isRunning = false;
+    private bool faltan15Seg = false;
 
     private void InicializarTemporizador()
     {
@@ -1084,6 +1094,8 @@ public class GameManager : MonoBehaviour
         InicializarTimerText();
 
         isRunning = true;
+
+        AudioManager.instance.PlaySound("introDS");
     }
 
     private void FixUpdate_Temporizador()
@@ -1100,6 +1112,13 @@ public class GameManager : MonoBehaviour
                 isRunning = false;
                 TimerEnded();
                 TiempoAgotadoMDS();
+                AudioManager.instance.PlaySound("finishDS");
+            }
+
+            if (remainingTime == 15f && !faltan15Seg)
+            {
+                faltan15Seg = true;
+                AudioManager.instance.PlaySound("15segundos");
             }
 
         }
@@ -1922,10 +1941,10 @@ public class GameManager : MonoBehaviour
             GameObject enemy = enemigosInstanciados[i];
             if (enemy != null && enemy.activeSelf)
             {
-                Destroy(enemy);
-                enemigosInstanciados.RemoveAt(i);
                 GameObject cloneVFX = Instantiate(vfxDisappearEnemy, enemy.transform);
                 Destroy(cloneVFX, 3);
+                Destroy(enemy);
+                enemigosInstanciados.RemoveAt(i);
             }
         }
     }

@@ -1,11 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HabilidadEnArea : MonoBehaviour
 {
     [SerializeField] private float areaDaño = 3f;
     [SerializeField] private int daño = 50;
+    [SerializeField] private GameObject vfxHabilidadArea;
     private PlayerController jugadorInvocador;
 
+    private void Start()
+    {
+        vfxHabilidadArea.SetActive(false);
+    }
 
     public void ActivarHabilidad(PlayerController jugador)
     {
@@ -15,6 +22,10 @@ public class HabilidadEnArea : MonoBehaviour
 
     void ActivarExplosion()
     {
+        jugadorInvocador.animator.SetTrigger("habilidad");
+
+        StartCoroutine(ActivarVfxHabilidad());
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, areaDaño);
 
         foreach (Collider collider in colliders)
@@ -59,6 +70,16 @@ public class HabilidadEnArea : MonoBehaviour
             }
 
         }
+
+
+       
+    }
+
+    IEnumerator ActivarVfxHabilidad()
+    {
+        vfxHabilidadArea.SetActive(true);
+        yield return new WaitForSeconds(0.8f);
+        vfxHabilidadArea.SetActive(false);
     }
 
     private void OnDrawGizmos()

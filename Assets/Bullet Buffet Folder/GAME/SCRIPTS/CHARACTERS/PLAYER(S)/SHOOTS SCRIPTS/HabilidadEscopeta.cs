@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class HabilidadEscopeta : MonoBehaviour
 {
-    public GameObject vfxPrefab;
-    public Transform bocaDeArma;
-    public GameObject objetoDaño;
-    public int numVFX = 6;
-    public float dispersion = 0.8f;
-    public float velocidadVfx = 20f;
-    public float vidaVfx = 1f;
+    //[SerializeField] private GameObject vfxPrefab;
+    //[SerializeField] private Transform bocaDeArma;
+    //[SerializeField] private int numVFX = 6;
+    //[SerializeField] private float dispersion = 0.8f;
+    //[SerializeField] private float velocidadVfx = 20f;
+    //[SerializeField] private float vidaVfx = 1f;
+
+    [SerializeField] private GameObject objetoDaño;
+    [SerializeField] private ParticleSystem vfxSuperShootShotgun;
 
     public bool cantShoot;
 
@@ -37,8 +39,9 @@ public class HabilidadEscopeta : MonoBehaviour
     {
         cantShoot = false;
         objetoDaño.SetActive(true);
+        vfxSuperShootShotgun.Play();
         StartCoroutine(DesactivarObjetoDeDaño());
-        InstanciarVFX();
+        //InstanciarVFX();
     }
 
     IEnumerator DesactivarObjetoDeDaño()
@@ -48,8 +51,10 @@ public class HabilidadEscopeta : MonoBehaviour
         objetoDaño.SetActive(false);
 
         cantShoot = true;
-    }
 
+        vfxSuperShootShotgun.Stop();
+    }
+    /*
     void InstanciarVFX()
     {
         for (int i = 0; i < numVFX; i++)
@@ -69,4 +74,5 @@ public class HabilidadEscopeta : MonoBehaviour
     {
         return originalDirection + new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), Random.Range(-spread, spread)).normalized;
     }
+    */
 }

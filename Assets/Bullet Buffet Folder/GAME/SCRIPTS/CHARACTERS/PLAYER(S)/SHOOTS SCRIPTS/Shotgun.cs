@@ -4,17 +4,19 @@ using UnityEngine.InputSystem;
 
 public class Shotgun : MonoBehaviour
 {
-    public GameObject vfxPrefab;
-    public Transform bocaArma;
-    public GameObject objetoDaño;
+    [SerializeField] private GameObject objetoDaño;
 
-    public int numVFX = 6;
-    public float dispersion = 0.8f;
-    public float velocidadVfx = 20f;
-    public float vidaVfx = 1f;
+    [SerializeField] private ParticleSystem vfxShotun;
 
     public bool cantShoot;
     private PlayerController propietario;
+    
+    //[SerializeField] private Transform bocaArma;
+    //[SerializeField] private float vidaVfx = 1f;
+    //[SerializeField] private float dispersion = 0.8f;
+    //[SerializeField] private int numVFX = 6;
+    //[SerializeField] private GameObject vfxPrefab;
+    //[SerializeField] private float velocidadVfx = 20f;
 
     private void Awake()
     {
@@ -39,9 +41,10 @@ public class Shotgun : MonoBehaviour
     void Fire()
     {
         objetoDaño.SetActive(true);
+        vfxShotun.Play();
         StartCoroutine(DesactivarObjetoDeDaño());
 
-        FireVFX();
+        //FireVFX();
     }
 
     IEnumerator DesactivarObjetoDeDaño()
@@ -52,7 +55,7 @@ public class Shotgun : MonoBehaviour
 
         cantShoot = true;
     }
-
+    /*
     void FireVFX()
     {
         for (int i = 0; i < numVFX; i++)
@@ -74,4 +77,5 @@ public class Shotgun : MonoBehaviour
     {
         return originalDirection + new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), Random.Range(-spread, spread)).normalized;
     }
+    */
 }

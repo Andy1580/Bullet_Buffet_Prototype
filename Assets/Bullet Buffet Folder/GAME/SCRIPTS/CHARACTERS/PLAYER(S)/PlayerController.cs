@@ -788,7 +788,7 @@ public class PlayerController : MonoBehaviour
         habilidadEscopeta.ActivarHabilidad();
         DeshabilitarMovimiento();
 
-        Invoke("HabilitarMovimiento", 0.3f);
+        Invoke("HabilitarMovimiento", 1f);
     }
 
     public void HabilitarMovimiento()

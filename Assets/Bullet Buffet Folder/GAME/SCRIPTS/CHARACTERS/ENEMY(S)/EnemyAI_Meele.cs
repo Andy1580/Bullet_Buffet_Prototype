@@ -14,6 +14,7 @@ public class EnemyAI_Meele : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer renderer;
     [SerializeField] public Animator animator;
     [SerializeField] public GameObject vfxRespawn;
+    [SerializeField] public GameObject vfxMuerte;
     [SerializeField] private Image barraVida;
 
     List<PlayerController> players;
@@ -213,6 +214,7 @@ public class EnemyAI_Meele : MonoBehaviour
 
     private void DeadEvent()
     {
+        Instantiate(vfxMuerte, transform);
         Destroy(gameObject);
     }
 

@@ -15,6 +15,7 @@ public class EnemyAI_Flying : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer renderer;
     [SerializeField] public Animator animator;
     [SerializeField] public GameObject vfxRespawn;
+    [SerializeField] public GameObject vfxMuerte;
     [SerializeField] private Image barraVida;
     [SerializeField] private GameObject[] objetosParaInstanciar;
     private string nombre;
@@ -247,9 +248,11 @@ public class EnemyAI_Flying : MonoBehaviour
         switch (nombre)
         {
             case "Medusa Alfa":
+                Instantiate(vfxMuerte, transform);
                 powerUp.InstanciarObjetoAleatorio();
                 break;
             case "Medusa":
+                Instantiate(vfxMuerte, transform);
                 Destroy(gameObject); break;
         }
     }
