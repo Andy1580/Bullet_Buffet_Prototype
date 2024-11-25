@@ -9,9 +9,9 @@ public class HabilidadRayo : MonoBehaviour
     [SerializeField] private int daño = 50;
     [SerializeField] private Transform origenRayCast; //Boca del arma
     [SerializeField] private LayerMask capas;
-    [SerializeField] private ParticleSystem rayVFX;
     [SerializeField] private float duracionHabilidad = 3f;
     [SerializeField] private ParticleSystem vfxRayo;
+    //[SerializeField] private ParticleSystem rayVFX;
     //[SerializeField] private float velocidadVFX = 5f;
 
     private bool habilidadActiva = false;
@@ -29,14 +29,15 @@ public class HabilidadRayo : MonoBehaviour
 
         if (!habilidadActiva)
         {
-            StartCoroutine(DispararRayContinuamente());
+            //StartCoroutine(DispararRayContinuamente());
+            StartCoroutine(ActivarRayo());
         }
     }
 
     void Start()
     {
         lineRenderer = origenRayCast.GetComponentInChildren<LineRenderer>();
-        rayVFX = GetComponent<ParticleSystem>();
+        //vfxRayo = GetComponent<ParticleSystem>();
         lineRenderer.enabled = false;
         //lineRenderer.positionCount = 2; // puntos (origen y final)
         //lineRenderer.SetPosition(0, origenRayCast.position);
@@ -46,16 +47,19 @@ public class HabilidadRayo : MonoBehaviour
     void FireRay()
     {
         propietario.animator.SetTrigger("habilidad");
+        habilidadActiva = true;
 
         Ray ray = new Ray(origenRayCast.position, origenRayCast.forward);
         RaycastHit[] hit = Physics.RaycastAll(ray, distanciaMaxima, capas);
 
-        foreach (RaycastHit i in hit)
+        if(habilidadActiva)
         {
-            AplicarDaño(i.collider);
+            foreach (RaycastHit i in hit)
+            {
+                AplicarDaño(i.collider);
+            }
         }
-
-        vfxRayo.Play();
+        
     }
 
     IEnumerator DispararRayContinuamente()
@@ -73,7 +77,7 @@ public class HabilidadRayo : MonoBehaviour
 
             yield return null;
         }
-
+        vfxRayo.Stop();
         lineRenderer.enabled = false;
         habilidadActiva = false;
     }
@@ -99,6 +103,20 @@ public class HabilidadRayo : MonoBehaviour
         rayVFX.Stop();
     }
     */
+
+    IEnumerator ActivarRayo()
+    {
+        lineRenderer.enabled = true;
+        yield return new WaitForSeconds(1f);
+        FireRay();
+        vfxRayo.Play();
+        yield return new WaitForSeconds(0.7f);
+        habilidadActiva = false;
+        yield return new WaitForSeconds(1f);
+        lineRenderer.enabled = false;
+        vfxRayo.Stop();
+    }
+
     void AplicarDaño(Collider target)
     {
         if (target.gameObject.layer == 7 || target.gameObject.layer == 8)

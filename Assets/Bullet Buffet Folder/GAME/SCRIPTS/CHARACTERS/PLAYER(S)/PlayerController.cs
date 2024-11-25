@@ -216,6 +216,14 @@ public class PlayerController : MonoBehaviour
 
         if (!enDash)
         {
+
+            Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
+            movement.x = moveXZ.x;
+            movement.z = moveXZ.z;
+
+            animator.SetFloat("xmov", movement.x);
+            animator.SetFloat("zmov", movement.z);
+
             if (!BloquearRotacion)
             {
                 if (axis2 != Vector3.zero)
@@ -229,20 +237,10 @@ public class PlayerController : MonoBehaviour
                 circuloEquipo.transform.position = rotation;
             }
 
-            if (!canEscudo)
+            if (escudo.gameObject.activeSelf)
             {
                 animator.SetFloat("xescudo", movement.x);
                 animator.SetFloat("zescudo", movement.z);
-            }
-            else
-            {
-                Vector3 moveXZ = !enDash ? axis1 * playerSpeed : axis1 * fuerzaDash;
-                movement.x = moveXZ.x;
-                movement.z = moveXZ.z;
-
-                animator.SetFloat("xmov", movement.x);
-                animator.SetFloat("zmov", movement.z);
-
             }
 
 
@@ -566,7 +564,7 @@ public class PlayerController : MonoBehaviour
     public void Revivir()
     {
         //Verificar se la vida vuelve a 100(visualmente), sino agregar: playerHUD.BarraDeVida = (float)salud / maxSalud;
-        Vida = 100;
+        Vida = maxSalud;
         animator.SetTrigger("spawn");
         muerto = false;
         isInvulnerable = false;
@@ -608,7 +606,7 @@ public class PlayerController : MonoBehaviour
     void ActivarEscudo()
     {
         canEscudo = false;
-        animator.SetBool("enEscudo", true);
+        animator.SetTrigger("escudo");
         escudo.gameObject.SetActive(true);
         playerHUD.shieldIcon.enabled = false;
         diferenciaEscudo = transform.forward * 2;
@@ -621,8 +619,8 @@ public class PlayerController : MonoBehaviour
     void DesactivarEscudo()
     {
         //canShoot = true;
+        animator.SetTrigger("mov");
         escudo.gameObject.SetActive(false);
-        animator.SetBool("enEscudo", false);
         StartCoroutine(CooldawnEscudo());
     }
 
@@ -749,7 +747,7 @@ public class PlayerController : MonoBehaviour
             case "CRIM":
                 HabilidadCRIM();
                 habilidadEscopeta = null;
-                habilidadRayo = null;
+                habilidadEnArea = null;
                 habilidadSub = null;
                 break;
         }
@@ -779,7 +777,7 @@ public class PlayerController : MonoBehaviour
         habilidadRayo.ActivarHabilidad(this);
         DeshabilitarMovimiento();
 
-        Invoke("HabilitarMovimiento", 1.2f);
+        Invoke("HabilitarMovimiento", 1.8f);
     }
 
     void HabilidadKAI()

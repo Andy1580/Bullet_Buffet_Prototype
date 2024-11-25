@@ -20,7 +20,7 @@ public class Shotgun : MonoBehaviour
 
     private void Awake()
     {
-        propietario = transform.parent.GetComponent<PlayerController>();
+        propietario = GetComponent<PlayerController>();
     }
 
     private void Start()

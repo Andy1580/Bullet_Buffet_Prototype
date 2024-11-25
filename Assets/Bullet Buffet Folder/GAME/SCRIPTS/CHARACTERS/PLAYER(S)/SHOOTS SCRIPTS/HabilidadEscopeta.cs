@@ -19,7 +19,7 @@ public class HabilidadEscopeta : MonoBehaviour
 
     private void Awake()
     {
-        propietario = transform.parent.GetComponent<PlayerController>();
+        propietario = GetComponent<PlayerController>();
     }
 
     private void Start()
@@ -40,6 +40,7 @@ public class HabilidadEscopeta : MonoBehaviour
         cantShoot = false;
         objetoDaño.SetActive(true);
         vfxSuperShootShotgun.Play();
+        propietario.animator.SetTrigger("habilidad");
         StartCoroutine(DesactivarObjetoDeDaño());
         //InstanciarVFX();
     }

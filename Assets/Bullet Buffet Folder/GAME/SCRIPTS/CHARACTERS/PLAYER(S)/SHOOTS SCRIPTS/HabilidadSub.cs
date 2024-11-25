@@ -13,6 +13,7 @@ public class HabilidadSub : MonoBehaviour
     public void ActivarHabilidad(PlayerController jugador)
     {
         jugadorInvocador = jugador;
+        jugadorInvocador.animator.SetTrigger("habilidad");
         StartCoroutine(DañoConstanteEnArea());
     }
 
@@ -68,6 +69,7 @@ public class HabilidadSub : MonoBehaviour
             tiempoRestante -= intervaloDaño;  // Reducir el tiempo restante de la habilidad
         }
 
+        jugadorInvocador.animator.SetTrigger("mov");
     }
 
     void OnDrawGizmos()
