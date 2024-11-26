@@ -65,6 +65,9 @@ public class PlayerController : MonoBehaviour
             enDash = true;
             canDash = false;
             playerHUD.dashIcon.enabled = false;
+
+            AudioManager.instance.PlaySound("dash");
+
             Invoke("FinalizarDash", 0.1f);
             StartCoroutine(HabilitarDash());
         }
@@ -613,6 +616,8 @@ public class PlayerController : MonoBehaviour
         escudo.position = transform.position + diferenciaEscudo;
         rotacionEscudo = transform.rotation;
 
+        AudioManager.instance.PlaySound("escudo");
+
         Invoke("DesactivarEscudo", tiempoEscudo);
     }
 
@@ -759,6 +764,8 @@ public class PlayerController : MonoBehaviour
         habilidadEnArea.ActivarHabilidad(this);
         DeshabilitarMovimiento();
 
+        AudioManager.instance.PlaySound("habilidadSKYIE");
+
         Invoke("HabilitarMovimiento", 0.5f);
     }
 
@@ -767,6 +774,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log(this.gameObject.name + "Activo la habilidad");
         habilidadSub.ActivarHabilidad(this);
         DeshabilitarMovimiento();
+
+        AudioManager.instance.PlaySound("habilidadNOVA");
 
         Invoke("HabilitarMovimiento", 2f);
     }
@@ -777,6 +786,8 @@ public class PlayerController : MonoBehaviour
         habilidadRayo.ActivarHabilidad(this);
         DeshabilitarMovimiento();
 
+        AudioManager.instance.PlaySound("habilidadCRIM");
+
         Invoke("HabilitarMovimiento", 1.8f);
     }
 
@@ -785,6 +796,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log(this.gameObject.name + "Activo la habilidad");
         habilidadEscopeta.ActivarHabilidad();
         DeshabilitarMovimiento();
+
+        AudioManager.instance.PlaySound("habilidadKAI");
 
         Invoke("HabilitarMovimiento", 1f);
     }

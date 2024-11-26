@@ -52,10 +52,25 @@ public class WeaponBase : MonoBehaviour
         {
             Vector3 finalPoint = bocaArma.position + spreadDirection;
             InstanciarProyectil(finalPoint);
+            ChecarPersonaje();
         }
 
         siguienteDisparo = Time.time + cadencia;
     }
+    
+    //Si se escucha mal, agregar delay con corrutina
+    void ChecarPersonaje()
+    {
+        if(propietario.gameObject.name == "CRIM")
+        {
+            AudioManager.instance.PlaySound("disparoCRIM");
+        }
+        else
+        {
+            AudioManager.instance.PlaySound("disparoNOVA");
+        }
+    }
+
     /*
     private void OnDrawGizmos()
     {

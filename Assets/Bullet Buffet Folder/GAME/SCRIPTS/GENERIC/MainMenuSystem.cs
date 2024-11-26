@@ -32,7 +32,6 @@ public class MainMenuSystem : MonoBehaviour
 
     [Header("Tiempo MDS")]   //minutos
     [SerializeField] private TMP_Text tiempoActualMDSText;
-    [SerializeField] private TMP_Text tiempoActualMHSText;
 
     [SerializeField] private Button botonJugarMenu;
     [SerializeField] private Button botonInicio;
@@ -120,7 +119,6 @@ public class MainMenuSystem : MonoBehaviour
 
         rondaActualText.text = "1";
         tiempoActualMDSText.text = "1:00";
-        tiempoActualMHSText.text = "1:00";
     }
 
     public void ResetearInput()
@@ -206,7 +204,7 @@ public class MainMenuSystem : MonoBehaviour
         play = false;
 
         GameManager.Instance.ResetiarVariables();
-        AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("botonBack");
     }
 
     public void GoToSettings()
@@ -495,49 +493,41 @@ public class MainMenuSystem : MonoBehaviour
         {
             GameManager.Instance.totalTime = 90f;
             tiempoActualMDSText.text = "1:30";
-            tiempoActualMHSText.text = "1:30";
         }
         else if (tiempo == 90f)
         {
             GameManager.Instance.totalTime = 120f;
             tiempoActualMDSText.text = "2:00";
-            tiempoActualMHSText.text = "2:00";
         }
         else if (tiempo == 120f)
         {
             GameManager.Instance.totalTime = 150f;
             tiempoActualMDSText.text = "2:30";
-            tiempoActualMHSText.text = "2:30";
         }
         else if (tiempo == 150f)
         {
             GameManager.Instance.totalTime = 180f;
             tiempoActualMDSText.text = "3:00";
-            tiempoActualMHSText.text = "3:00";
         }
         else if (tiempo == 180f)
         {
             GameManager.Instance.totalTime = 210f;
             tiempoActualMDSText.text = "3:30";
-            tiempoActualMHSText.text = "3:30";
         }
         else if (tiempo == 210f)
         {
             GameManager.Instance.totalTime = 240f;
             tiempoActualMDSText.text = "4:00";
-            tiempoActualMHSText.text = "4:00";
         }
         else if (tiempo == 240f)
         {
             GameManager.Instance.totalTime = 270f;
             tiempoActualMDSText.text = "4:30";
-            tiempoActualMHSText.text = "4:30";
         }
         else if (tiempo == 270f)
         {
             GameManager.Instance.totalTime = 300f;
             tiempoActualMDSText.text = "5:00";
-            tiempoActualMHSText.text = "5:00";
         }
         else if (tiempo == 300f)
         {
@@ -555,49 +545,41 @@ public class MainMenuSystem : MonoBehaviour
         {
             GameManager.Instance.totalTime = 270f;
             tiempoActualMDSText.text = "4:30";
-            tiempoActualMHSText.text = "4:30";
         }
         else if (tiempo == 270f)
         {
             GameManager.Instance.totalTime = 240f;
             tiempoActualMDSText.text = "4:00";
-            tiempoActualMHSText.text = "4:00";
         }
         else if (tiempo == 240f)
         {
             GameManager.Instance.totalTime = 210f;
             tiempoActualMDSText.text = "3:30";
-            tiempoActualMHSText.text = "3:30";
         }
         else if (tiempo == 210f)
         {
             GameManager.Instance.totalTime = 180f;
             tiempoActualMDSText.text = "3:00";
-            tiempoActualMHSText.text = "3:00";
         }
         else if (tiempo == 180f)
         {
             GameManager.Instance.totalTime = 150f;
             tiempoActualMDSText.text = "2:30";
-            tiempoActualMHSText.text = "2:30";
         }
         else if (tiempo == 150f)
         {
             GameManager.Instance.totalTime = 120f;
             tiempoActualMDSText.text = "2:00";
-            tiempoActualMHSText.text = "2:00";
         }
         else if (tiempo == 120f)
         {
             GameManager.Instance.totalTime = 90f;
             tiempoActualMDSText.text = "1:30";
-            tiempoActualMHSText.text = "1:30";
         }
         else if (tiempo == 90f)
         {
             GameManager.Instance.totalTime = 60f;
             tiempoActualMDSText.text = "1:00";
-            tiempoActualMHSText.text = "1:00";
         }
         else if (tiempo == 60f)
         {
@@ -610,7 +592,7 @@ public class MainMenuSystem : MonoBehaviour
     public void CargarLobby()
     {
         if (!play) return;
-        AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("botonJugar");
         SceneManager.LoadScene("LOBBY");
     }
 

@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.PlaySound("menu");
             AudioManager.instance.StopSound("hechizos");
             AudioManager.instance.StopSound("duelo");
+            AudioManager.instance.StopSound("audiencia");
         }
         else if ((SceneManager.GetActiveScene().name != "ANDYMENUTEST" && inGame))
         {
@@ -199,12 +200,16 @@ public class GameManager : MonoBehaviour
         InicializarPausa();
         Invoke("InicializarEnemySpawn", 5);
 
+        AudioManager.instance.PlaySound("audiencia");
+
         if (modoHS)
         {
             //Aqui ira todo lo que necesita el MHS
             InicializarMHS();
             InicializarMarcadorMHS();
             magosPrincipales.SetActive(true);
+
+            AudioManager.instance.PlaySound("opHS");
         }
         else if (modoDS)
         {
@@ -212,6 +217,8 @@ public class GameManager : MonoBehaviour
             InicializarMDS();
             InicializarMarcadorMDS();
             InicializarTemporizador();
+
+            AudioManager.instance.PlaySound("opDS");
             //pistaPintable.SetActive(true);
         }
     }
@@ -743,6 +750,8 @@ public class GameManager : MonoBehaviour
         //if (enPausa && activePlayerController != player)
         //    return;
 
+        AudioManager.instance.PlaySound("botonmenu");
+
         enPausa = !enPausa;
 
         if (enPausa)
@@ -862,7 +871,7 @@ public class GameManager : MonoBehaviour
             Resumir();
         }
 
-        AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("botonBack");
     }
 
     public void ResetearInputGM()
@@ -876,17 +885,21 @@ public class GameManager : MonoBehaviour
     private bool equipo1Ganado = false;
     private bool equipo2Ganado = false;
 
-    void InicializarVictoria()
-    {
-
-    }
-
     void ProcesarVictoriaEquipo(int equipoGanador)
     {
         deadEnemy = true;
         DestruirEnemigosActivos();
         DeshabilitarMovimientoJugadores();
         DetenerMusica();
+
+        if (modoHS)
+        {
+            AudioManager.instance.PlaySound("edHS");
+        }
+        else
+        {
+            AudioManager.instance.PlaySound("edDS");
+        }
 
         // Realizar acciones específicas para el equipo ganador
         Invoke("AbrirPanelFinish", 4f);
@@ -1115,10 +1128,11 @@ public class GameManager : MonoBehaviour
                 AudioManager.instance.PlaySound("finishDS");
             }
 
-            if (remainingTime == 15f && !faltan15Seg)
+            if (remainingTime <= 15f && !faltan15Seg)
             {
+                AudioManager.instance.PlaySound("midDS");
+                Debug.Log("¡Quedan 15 segundos!");
                 faltan15Seg = true;
-                AudioManager.instance.PlaySound("15segundos");
             }
 
         }
@@ -1567,6 +1581,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Si se intancio el hechizo del mago 1");
         GameObject hechizo = Instantiate(hechizoPrefab, spawnHechizo1.transform.position, Quaternion.identity);
         StartCoroutine(MoverHechizo1(hechizo));
+
+        AudioManager.instance.PlaySound("hechizoMago");
     }
 
     void Mago2()
@@ -1574,6 +1590,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Si se intancio el hechizo del mago 2");
         GameObject hechizo = Instantiate(hechizoPrefab, spawnHechizo2.transform.position, Quaternion.identity);
         StartCoroutine(MoverHechizo2(hechizo));
+
+        AudioManager.instance.PlaySound("hechizoMago");
     }
 
     IEnumerator MoverHechizo1(GameObject hechizo)
@@ -1585,6 +1603,7 @@ public class GameManager : MonoBehaviour
             if (Vector3.Distance(hechizo.transform.position, mago2.transform.position) < 0.1f)
             {
                 Destroy(hechizo);
+                AudioManager.instance.StopSound("hechizoMago");
                 yield break;
             }
 
@@ -1601,6 +1620,7 @@ public class GameManager : MonoBehaviour
             if (Vector3.Distance(hechizo.transform.position, mago1.transform.position) < 0.1f)
             {
                 Destroy(hechizo);
+                AudioManager.instance.StopSound("hechizoMago");
                 yield break;
             }
 

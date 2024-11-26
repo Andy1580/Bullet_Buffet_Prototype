@@ -27,6 +27,9 @@ public class MeeleAttack : MonoBehaviour
     {
         objetoDaño.SetActive(true);
         propietario.animator.SetTrigger("ataque");
+
+        AudioManager.instance.PlaySound("disparoSKYIE");
+
         StartCoroutine(DesactivarObjetoDeDaño());
     }
 

@@ -36,6 +36,8 @@ public class PlayerWinsTest : MonoBehaviour
             posicionesLose[0].position = posicioneesTrasformsLose[1].position;
             posicionesLose[1].position = posicioneesTrasformsLose[2].position;
         }
+
+        AudioManager.instance.StopSound("audiencia");
     }
 
     private void Start()
