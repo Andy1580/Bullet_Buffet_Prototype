@@ -69,6 +69,7 @@ public class LobbyManager : MonoBehaviour
     {
         listaCsEquipo1.Clear();
         listaCsEquipo2.Clear();
+        listaCS.Clear();
 
         enProgreso = false;
     }
@@ -385,6 +386,7 @@ public class LobbyManager : MonoBehaviour
 
             listaCsEquipo1.Clear();
             listaCsEquipo2.Clear();
+            listaCS.Clear();
 
             // Limpiar el diccionario de equipo y personaje
             equipo.Clear();
@@ -559,6 +561,8 @@ public class LobbyManager : MonoBehaviour
 
     public void IniciarPartida()
     {
+        BorrarPlayersPrefs();
+
         //Obtenemos el numero de jugadores
         int nJugadores = listaCsEquipo1.Count + listaCsEquipo2.Count;
 
@@ -611,7 +615,33 @@ public class LobbyManager : MonoBehaviour
 
         PlayerPrefs.Save();
 
+        foreach (var c in listaCS)
+        {
+            print(c);
+        }
+
         GameManager.Instance.CargarEscenaProfe();
+    }
+
+    void BorrarPlayersPrefs()
+    {
+        PlayerPrefs.DeleteKey("nJugadores");
+
+        PlayerPrefs.DeleteKey("P1_GID");
+        PlayerPrefs.DeleteKey("P1_Personaje");
+        PlayerPrefs.DeleteKey("P1_Equipo");
+
+        PlayerPrefs.DeleteKey("P2_GID");
+        PlayerPrefs.DeleteKey("P2_Personaje");
+        PlayerPrefs.DeleteKey("P2_Equipo");
+
+        PlayerPrefs.DeleteKey("P3_GID");
+        PlayerPrefs.DeleteKey("P3_Personaje");
+        PlayerPrefs.DeleteKey("P3_Equipo");
+
+        PlayerPrefs.DeleteKey("P4_GID");
+        PlayerPrefs.DeleteKey("P4_Personaje");
+        PlayerPrefs.DeleteKey("P4_Equipo");
     }
 
     public void GuardarInformacionJugadores()

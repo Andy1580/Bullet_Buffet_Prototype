@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     #region RECIBIR INFORMACION
 
     private static List<InfoLobby.PlayerInfo> infoLobbyPlayers;
+    private bool cargarJuego = false;
 
     public void RecibirInformacionLobby(string json)
     {
@@ -29,8 +30,12 @@ public class GameManager : MonoBehaviour
 
     public void CargarEscenaProfe()
     {
-        StartCoroutine(Transicion());
-        Invoke("CargarEscena", 1f);
+        if (!cargarJuego)
+        {
+            cargarJuego = true;
+            StartCoroutine(Transicion());
+            Invoke("CargarEscena", 1f);
+        }
     }
 
     #endregion RECIBIR INFORMACION
@@ -223,6 +228,11 @@ public class GameManager : MonoBehaviour
 
             ////Resetear Diccionario de Gamepads
             //if(idDeGamepad == null) idDeGamepad = new Dictionary<int, Gamepad>();
+
+            jugadoresEquipo1 = new List<Jugador>();
+            jugadoresEquipo2 = new List<Jugador>();
+
+            cargarJuego = false;
 
             faltan15Seg = false;
 
