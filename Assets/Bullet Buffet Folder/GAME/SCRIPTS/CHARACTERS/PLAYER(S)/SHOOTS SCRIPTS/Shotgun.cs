@@ -42,6 +42,9 @@ public class Shotgun : MonoBehaviour
     {
         objetoDaño.SetActive(true);
         vfxShotun.Play();
+
+        AudioManager.instance.PlaySound("disparoKAI");
+
         StartCoroutine(DesactivarObjetoDeDaño());
 
         //FireVFX();

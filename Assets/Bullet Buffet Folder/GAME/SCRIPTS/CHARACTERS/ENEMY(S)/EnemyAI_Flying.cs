@@ -255,6 +255,8 @@ public class EnemyAI_Flying : MonoBehaviour
                 Instantiate(vfxMuerte, transform);
                 Destroy(gameObject); break;
         }
+
+        AudioManager.instance.PlaySound("muerteMedusa");
     }
 
     IEnumerator PerseguirJugador()

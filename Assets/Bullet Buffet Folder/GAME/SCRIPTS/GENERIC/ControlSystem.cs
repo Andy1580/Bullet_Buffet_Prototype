@@ -222,6 +222,8 @@ public class ControlSystem : MonoBehaviour
                     // Asignar al equipo y actualizar contadores
                     LobbyManager.SeleccionarEquipo(currentGamepad, equipoJugador);
                     Debug.Log($"El jugador {this.name} seleccionó el equipo {equipoJugador}");
+
+                    AudioManager.instance.PlaySound("botonmenu");
                 }
                 else
                 {
@@ -254,7 +256,7 @@ public class ControlSystem : MonoBehaviour
                     spritePersonaje.sprite = CheckSprite(selectedCharacter);
                     Gamepad currentGamepad = context.control.device as Gamepad;
                     loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
-                    AudioManager.instance.PlaySound("seleccionpersonaje");
+                    AudioManager.instance.PlaySound("botonmenu");
                     Debug.Log($"El {this.gameObject.name} a escogido al personaje {selectedCharacter}");
                 }
             }
@@ -270,6 +272,8 @@ public class ControlSystem : MonoBehaviour
             Debug.Log("Se rechazó equipo");
             LobbyManager.RechazarEquipo();
             StartCoroutine(ResetEquipoRechazado());
+
+            AudioManager.instance.PlaySound("botonBack");
         }
     }
 

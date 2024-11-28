@@ -529,7 +529,7 @@ public class LobbyManager : MonoBehaviour
             return;
         }
 
-
+        AudioManager.instance.PlaySound("botonJugar");
 
 
         return;

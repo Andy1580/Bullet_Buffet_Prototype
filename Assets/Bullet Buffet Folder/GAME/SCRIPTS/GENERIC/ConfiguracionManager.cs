@@ -171,6 +171,8 @@ public class ConfiguracionManager : MonoBehaviour
         cambiosAudioRealizados = cambiosPantallaRealizados = cambiosFPSRealizados = false;
         //CerrarConfiguracion();
         StartCoroutine(CerrarConfiguracionConDelay());
+
+        AudioManager.instance.PlaySound("botonmenu");
     }
 
     private void CancelarCambios()
@@ -178,6 +180,8 @@ public class ConfiguracionManager : MonoBehaviour
         ConfirmarCancelarCambiosDeAudio(false);
         ConfirmarCancelarCambiosDePantalla(false);
         ConfirmarCancelarCambiosDeFPS(false);
+
+        AudioManager.instance.PlaySound("botonBack");
     }
 
     private IEnumerator CerrarConfiguracionConDelay()
