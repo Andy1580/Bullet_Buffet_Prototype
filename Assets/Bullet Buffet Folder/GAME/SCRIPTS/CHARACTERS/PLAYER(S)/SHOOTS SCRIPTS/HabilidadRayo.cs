@@ -17,17 +17,21 @@ public class HabilidadRayo : MonoBehaviour
     private bool habilidadActiva = false;
 
     private PlayerController propietario;
+    private bool muertoJugador = false;
 
     //private void Awake()
     //{
     //    propietario = transform.parent.GetComponent<PlayerController>();
     //}
 
-    public void ActivarHabilidad(PlayerController player)
+    private void Awake()
     {
-        propietario = player;
+        propietario = GetComponent<PlayerController>();
+    }
 
-        if (!habilidadActiva)
+    public void ActivarHabilidad()
+    {
+        if (!habilidadActiva && !propietario.muerto && propietario.canShoot)
         {
             //StartCoroutine(DispararRayContinuamente());
             StartCoroutine(ActivarRayo());
@@ -42,6 +46,23 @@ public class HabilidadRayo : MonoBehaviour
         //lineRenderer.positionCount = 2; // puntos (origen y final)
         //lineRenderer.SetPosition(0, origenRayCast.position);
         //lineRenderer.SetPosition(1, origenRayCast.position);
+    }
+
+    private void FixedUpdate()
+    {
+        if (propietario.muerto && !muertoJugador)
+        {
+            StopAllCoroutines();
+            muertoJugador = true;
+            lineRenderer.enabled = false;
+            Invoke("DesactivarMuerte", 5f);
+            return;
+        }
+    }
+
+    void DesactivarMuerte()
+    {
+        muertoJugador = false;
     }
 
     void FireRay()

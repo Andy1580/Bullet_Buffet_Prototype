@@ -3,18 +3,43 @@ using UnityEngine;
 
 public class HabilidadSub : MonoBehaviour
 {
-    private PlayerController jugadorInvocador;
+    private PlayerController propietario;
     [SerializeField] private float areaDaño = 5f;
     [SerializeField] private int daño = 10;
     [SerializeField] private float duracionHabilidad = 3f;
     [SerializeField] private float intervaloDaño = 0.5f;
     [SerializeField] private LayerMask capas;
 
-    public void ActivarHabilidad(PlayerController jugador)
+    private bool muertoJugador = false;
+
+    private void Awake()
     {
-        jugadorInvocador = jugador;
-        jugadorInvocador.animator.SetTrigger("habilidad");
-        StartCoroutine(DañoConstanteEnArea());
+        propietario = GetComponent<PlayerController>();
+    }
+
+    public void ActivarHabilidad()
+    {
+        if(!propietario.muerto && propietario.canShoot)
+        {
+            propietario.animator.SetTrigger("habilidad");
+            StartCoroutine(DañoConstanteEnArea());
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if(propietario.muerto && !muertoJugador)
+        {
+            StopAllCoroutines();
+            muertoJugador = true;
+            Invoke("DesactivarMuerte", 5f);
+            return;
+        }
+    }
+
+    void DesactivarMuerte()
+    {
+        muertoJugador = false;
     }
 
     IEnumerator DañoConstanteEnArea()
@@ -27,7 +52,7 @@ public class HabilidadSub : MonoBehaviour
 
             foreach (Collider collider in colliders)
             {
-                if (collider.gameObject == jugadorInvocador.gameObject)
+                if (collider.gameObject == propietario.gameObject)
                 {
                     continue;  // Saltar al siguiente collider
                 }
@@ -36,9 +61,9 @@ public class HabilidadSub : MonoBehaviour
                 {
                     PlayerController player = collider.gameObject.GetComponent<PlayerController>();
 
-                    if (player.equipo == jugadorInvocador.equipo) continue;
+                    if (player.equipo == propietario.equipo) continue;
 
-                    if (player != null && !player.muerto && player.equipo != jugadorInvocador.equipo)
+                    if (player != null && !player.muerto && player.equipo != propietario.equipo)
                     {
                         if (!player.isInvulnerable)
                         {
@@ -69,7 +94,7 @@ public class HabilidadSub : MonoBehaviour
             tiempoRestante -= intervaloDaño;  // Reducir el tiempo restante de la habilidad
         }
 
-        jugadorInvocador.animator.SetTrigger("mov");
+        propietario.animator.SetTrigger("mov");
     }
 
     void OnDrawGizmos()

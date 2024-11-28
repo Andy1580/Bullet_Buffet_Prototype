@@ -13,7 +13,14 @@ public class DañoEscopeta : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.layer == 8) //Layer Player = 8
+        if (other.gameObject.layer == 10) //layer 10 = obstaculo
+        {
+            return;
+            //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+            //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
+        }
+
+        else if (other.gameObject.layer == 8) //Layer Player = 8
         {
             PlayerController jugador = other.GetComponent<PlayerController>();
 
@@ -55,12 +62,7 @@ public class DañoEscopeta : MonoBehaviour
             }
         }
 
-        else if (other.gameObject.layer == 10) //layer 10 = obstaculo
-        {
-            return;
-            //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-            //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
-        }
+
     }
 
     private void OnDestroy()

@@ -22,18 +22,19 @@ public class DañoBalaJugador : MonoBehaviour
             {
                 return;
             }
-
-            if (jugador.Vida > 0)
+            else
             {
-                if (!jugador.isInvulnerable || !jugador.muerto)
+                if (jugador.Vida > 0)
                 {
-                    jugador.Vida -= daño;
-                    //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                    //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                    if (!jugador.isInvulnerable || !jugador.muerto)
+                    {
+                        jugador.Vida -= daño;
+                        //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                        //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                    }
                 }
+                else return;
             }
-            else return;
-
 
         }
 

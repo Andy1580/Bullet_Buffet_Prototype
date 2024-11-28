@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
 
         GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
         Destroy(clone, 1.5f);
+
+        canShoot = true;
     }
 
     private void Update()
@@ -514,8 +516,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Murio: " + this.gameObject.name);
         muerto = true;
-        BloquearMovimiento = true;
-        BloquearRotacion = true;
+        DeshabilitarMovimiento();
         animator.SetTrigger("muerto");
         AudioManager.instance.PlaySound("muertejugador");
         GameManager.Instance.DeadPlayerEventMHS(this);
@@ -772,7 +773,7 @@ public class PlayerController : MonoBehaviour
     void HabilidadNOVA()
     {
         Debug.Log(this.gameObject.name + "Activo la habilidad");
-        habilidadSub.ActivarHabilidad(this);
+        habilidadSub.ActivarHabilidad();
         DeshabilitarMovimiento();
 
         AudioManager.instance.PlaySound("habilidadNOVA");
@@ -783,7 +784,7 @@ public class PlayerController : MonoBehaviour
     void HabilidadCRIM()
     {
         Debug.Log(this.gameObject.name + "Activo la habilidad");
-        habilidadRayo.ActivarHabilidad(this);
+        habilidadRayo.ActivarHabilidad();
         DeshabilitarMovimiento();
 
         AudioManager.instance.PlaySound("habilidadCRIM");
@@ -947,6 +948,8 @@ public class PlayerController : MonoBehaviour
     }
     #endregion EXTRAS
 
+    internal bool canShoot = true;
+
     private Jugador _jugador;
 
     public Jugador Jugador
@@ -961,6 +964,43 @@ public class PlayerController : MonoBehaviour
 
             // Llama a AsignarGamepad y fuerza el emparejamiento aislado
             AsignarGamepad(_jugador.gamepadId);
+        }
+    }
+    /*
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == 10) //10 = layer escudo
+        {
+            canShoot = false;
+            print(canShoot);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.layer == 10)
+        {
+            canShoot = true;
+            print(canShoot);
+        }
+    }
+    */
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 10) //10 = layer escudo
+        {
+            canShoot = false;
+            print(canShoot);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 10)
+        {
+            canShoot = true;
+            print(canShoot);
         }
     }
 }

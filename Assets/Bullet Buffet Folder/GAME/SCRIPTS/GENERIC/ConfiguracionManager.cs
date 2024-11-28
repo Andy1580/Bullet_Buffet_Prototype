@@ -31,36 +31,60 @@ public class ConfiguracionManager : MonoBehaviour
 
     private void Awake()
     {
+        //string escena = SceneManager.GetActiveScene().name;
+
+        //if (escena == "ANDYMENUTEST" && gameObject.name.Contains("PANEL CONFIGURACION"))
+        //{
+        //    Debug.Log("ConfiguracionManager del GameManager desactivado en el menú principal.");
+        //    enabled = false;
+        //}
+        //else if(escena != "ANDYMENUTEST" && gameObject.name.Contains("PANEL CONFIGURACION"))
+        //{
+        //    Debug.Log("ConfiguracionManager del Canvas del menú principal desactivado en el juego.");
+        //    enabled = false;
+        //}
+
         if (panelFPS == null)
         {
             panelFPS = GameObject.FindWithTag("PanelFPS");
         }
 
-        CargarValoresIniciales();
+        ConfigurarResolucionesLimitadas();
+    }
+
+    private void Start()
+    {
+
     }
 
     private void OnEnable()
     {
         // Configurar valores iniciales y listeners para eventos de UI
-        ConfigurarResolucionesLimitadas();
-        CargarValoresIniciales();
+        
+        //CargarValoresIniciales();
 
         // Activar el manejo de input para este panel
-        InputManager.Instance.SetActivePanel(OnSubmitConfiguracion, OnCancelConfiguracion);
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.SetActivePanel(OnSubmitConfiguracion, OnCancelConfiguracion);
+        }
     }
 
     private void OnDisable()
     {
         // Limpiar las acciones de Submit y Cancel cuando el panel se desactiva
-        InputManager.Instance.SetActivePanel(null, null);
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.SetActivePanel(null, null);
+        }
     }
 
     private void CargarValoresIniciales()
     {
-        CargarValoresDeAudio();
         CargarValoresDePantalla();
         CargarValoresDeFPS();
         CargarVsync();
+        CargarValoresDeAudio();
     }
 
     private void RecetearInput()
@@ -209,9 +233,27 @@ public class ConfiguracionManager : MonoBehaviour
 
     private void CargarValoresDeAudio()
     {
+        if (sliderGeneral == null)
+        {
+            Debug.LogError("sliderGeneral no está asignado.");
+            return;
+        }
         sliderGeneral.value = PlayerPrefs.GetFloat("volumenGeneral", 1f);
+
+        if (sliderMusica == null)
+        {
+            Debug.LogError("sliderMusica no está asignado.");
+            return;
+        }
         sliderMusica.value = PlayerPrefs.GetFloat("volumenMusica", 1f);
+
+        if (sliderSFX == null)
+        {
+            Debug.LogError("sliderSFX no está asignado.");
+            return;
+        }
         sliderSFX.value = PlayerPrefs.GetFloat("volumenSFX", 1f);
+
         cambiosAudioRealizados = false;
     }
 

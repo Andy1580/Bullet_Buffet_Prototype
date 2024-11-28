@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DañoHabilidadEscopeta : MonoBehaviour
@@ -14,8 +12,14 @@ public class DañoHabilidadEscopeta : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer == 10) //layer 10 = obstaculo
+        {
+            return;
+            //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+            //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
+        }
 
-        if (other.gameObject.layer == 8) //Layer Player = 8
+        else if (other.gameObject.layer == 8) //Layer Player = 8
         {
             PlayerController jugador = other.GetComponent<PlayerController>();
 
@@ -57,11 +61,6 @@ public class DañoHabilidadEscopeta : MonoBehaviour
             }
         }
 
-        else if (other.gameObject.layer == 10) //layer 10 = obstaculo
-        {
-            return;
-            //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-            //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
-        }
+
     }
 }
