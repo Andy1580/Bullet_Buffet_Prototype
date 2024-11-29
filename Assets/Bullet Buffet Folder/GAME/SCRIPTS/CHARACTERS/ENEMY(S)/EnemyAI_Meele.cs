@@ -215,7 +215,7 @@ public class EnemyAI_Meele : MonoBehaviour
     private void DeadEvent()
     {
         AudioManager.instance.PlaySound("muerteCuernito");
-        Instantiate(vfxMuerte, transform);
+        Instantiate(vfxMuerte, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 

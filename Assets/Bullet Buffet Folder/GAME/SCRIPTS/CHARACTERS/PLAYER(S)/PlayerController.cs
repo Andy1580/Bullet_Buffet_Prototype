@@ -948,7 +948,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion EXTRAS
 
-    internal bool canShoot = true;
+    [SerializeField] internal bool canShoot = true;
 
     private Jugador _jugador;
 
@@ -991,6 +991,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.layer == 10) //10 = layer escudo
         {
             canShoot = false;
+            Invoke("DesactivarBoolTrigger", 4.5f);
             print(canShoot);
         }
     }
@@ -1002,5 +1003,10 @@ public class PlayerController : MonoBehaviour
             canShoot = true;
             print(canShoot);
         }
+    }
+
+    void DesactivarBoolTrigger()
+    {
+        canShoot = true;
     }
 }

@@ -248,11 +248,11 @@ public class EnemyAI_Flying : MonoBehaviour
         switch (nombre)
         {
             case "Medusa Alfa":
-                Instantiate(vfxMuerte, transform);
+                Instantiate(vfxMuerte, transform.position, Quaternion.identity.normalized);
                 powerUp.InstanciarObjetoAleatorio();
                 break;
             case "Medusa":
-                Instantiate(vfxMuerte, transform);
+                Instantiate(vfxMuerte, transform.position, Quaternion.identity.normalized);
                 Destroy(gameObject); break;
         }
 

@@ -50,6 +50,7 @@ public class ConfiguracionManager : MonoBehaviour
         }
 
         ConfigurarResolucionesLimitadas();
+        CargarValoresIniciales();
     }
 
     private void Start()
@@ -61,7 +62,7 @@ public class ConfiguracionManager : MonoBehaviour
     {
         // Configurar valores iniciales y listeners para eventos de UI
         
-        //CargarValoresIniciales();
+        CargarValoresIniciales();
 
         // Activar el manejo de input para este panel
         if (InputManager.Instance != null)
@@ -245,6 +246,9 @@ public class ConfiguracionManager : MonoBehaviour
             Debug.LogError("sliderMusica no está asignado.");
             return;
         }
+
+        print(sliderMusica);
+        print(PlayerPrefs.GetFloat("volumenMusica", 1f));
         sliderMusica.value = PlayerPrefs.GetFloat("volumenMusica", 1f);
 
         if (sliderSFX == null)
