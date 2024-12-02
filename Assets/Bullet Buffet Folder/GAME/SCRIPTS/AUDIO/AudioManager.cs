@@ -25,6 +25,15 @@ public class AudioManager : MonoBehaviour
 
         InicializarSonidos(musica, volumenMusica);
         InicializarSonidos(sfx, volumenSFX);
+
+        //StartCoroutine(EsperarYInicializarSonidos());
+    }
+
+    private IEnumerator EsperarYInicializarSonidos()
+    {
+        yield return new WaitForEndOfFrame(); // Espera hasta que la escena esté completamente cargada.
+        InicializarSonidos(musica, volumenMusica);
+        InicializarSonidos(sfx, volumenSFX);
     }
 
     private void InicializarSonidos(Sound[] soundsArray, float volumeGroup)

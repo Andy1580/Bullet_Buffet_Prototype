@@ -8,11 +8,12 @@ using UnityEngine.UI;
 
 public class ConfiguracionManager : MonoBehaviour
 {
+    public static ConfiguracionManager Instance;
+
     [Header("Canvas Core")]
     public GameObject panelConfirmar;
     public GameObject panelConfiguracion;
     public GameObject panelFPS;
-    public Button botonConfiguracion;
 
     [Header("Sliders y Toggles")]
     public Slider sliderGeneral;
@@ -44,31 +45,55 @@ public class ConfiguracionManager : MonoBehaviour
         //    enabled = false;
         //}
 
-        if (panelFPS == null)
-        {
-            panelFPS = GameObject.FindWithTag("PanelFPS");
-        }
+        Instance = this;
+
+        
 
         ConfigurarResolucionesLimitadas();
-        CargarValoresIniciales();
+        //CargarValoresIniciales();
     }
 
     private void Start()
     {
+        
+    }
 
+    private IEnumerator EsperarYBuscarPanelFPS()
+    {
+        yield return new WaitForEndOfFrame(); // Espera hasta que la escena esté completamente cargada.
+        panelFPS = GameManager.PanelFPS;
+        CargarValoresIniciales();
+
+        if (panelFPS == null)
+        {
+            Debug.LogError("panelFPS aún no encontrado después de esperar.");
+        }
+    }
+
+    public void PrenderConfiguracion()
+    {
+        panelConfiguracion.SetActive(true);
+        panelConfirmar.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(pantallaCompletaToggle.gameObject);
     }
 
     private void OnEnable()
     {
         // Configurar valores iniciales y listeners para eventos de UI
-        
-        CargarValoresIniciales();
 
-        // Activar el manejo de input para este panel
-        if (InputManager.Instance != null)
+        if (panelFPS == null)
         {
-            InputManager.Instance.SetActivePanel(OnSubmitConfiguracion, OnCancelConfiguracion);
+            StartCoroutine(EsperarYBuscarPanelFPS());
         }
+
+        //CargarValoresIniciales();
+
+        //// Activar el manejo de input para este panel
+        //if (InputManager.Instance != null)
+        //{
+        //    InputManager.Instance.SetActivePanel(OnSubmitConfiguracion, OnCancelConfiguracion);
+        //    Debug.Log("Se activo configuracion manager y se designo el Input");
+        //}
     }
 
     private void OnDisable()
@@ -80,12 +105,21 @@ public class ConfiguracionManager : MonoBehaviour
         }
     }
 
-    private void CargarValoresIniciales()
+    public void CargarValoresIniciales()
     {
         CargarValoresDePantalla();
         CargarValoresDeFPS();
         CargarVsync();
         CargarValoresDeAudio();
+    }
+
+    public void ResetarInputCM()
+    {
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.SetActivePanel(OnSubmitConfiguracion, OnCancelConfiguracion);
+            Debug.Log("Se activo configuracion manager y se designo el Input");
+        }
     }
 
     private void RecetearInput()
@@ -146,6 +180,7 @@ public class ConfiguracionManager : MonoBehaviour
         {
             // Si el panel de confirmación está activo, manejar Cancel como cancelación de los cambios
             ConfirmarCancelarCambios(false); // Cancelar los cambios
+            AudioManager.instance.PlaySound("botonBack");
         }
         else if (cambiosAudioRealizados || cambiosPantallaRealizados || cambiosFPSRealizados)
         {
@@ -156,7 +191,8 @@ public class ConfiguracionManager : MonoBehaviour
         else
         {
             // Si no hay cambios pendientes, cerrar el panel de configuración
-            //CerrarConfiguracion();
+            Debug.Log("Se pulso la B");
+            AudioManager.instance.PlaySound("botonBack");
             StartCoroutine(CerrarConfiguracionConDelay());
         }
 
@@ -174,7 +210,6 @@ public class ConfiguracionManager : MonoBehaviour
         }
 
         // Cerrar ambos paneles después de confirmar o cancelar
-        //CerrarConfiguracion();
         StartCoroutine(CerrarConfiguracionConDelay());
     }
 
@@ -215,7 +250,19 @@ public class ConfiguracionManager : MonoBehaviour
         Debug.Log("Se cerro Configuracion");
         panelConfiguracion.SetActive(false);
         panelConfirmar.SetActive(false);
-        EventSystem.current.SetSelectedGameObject(botonConfiguracion.gameObject);
+
+        if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
+        {
+            GameObject objetoSeleccionado = MainMenuSystem.ultimoBotonSeleccionadoStatic;
+            EventSystem.current.SetSelectedGameObject(objetoSeleccionado);
+            print(objetoSeleccionado);
+        }
+        else
+        {
+            GameObject objetoSeleccionado = GameManager.ultimoBotonSeleccionadoStatic;
+            EventSystem.current.SetSelectedGameObject(objetoSeleccionado);
+            print(objetoSeleccionado);
+        }
         RecetearInput();
     }
 

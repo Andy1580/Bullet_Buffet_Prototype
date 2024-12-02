@@ -122,6 +122,13 @@ public class GameManager : MonoBehaviour
     #region GAME MANAGER
     public static GameManager Instance;
 
+    [SerializeField] private GameObject panelFPS;
+
+    private GameObject lastSelectedUI;
+    private bool isInitialFocus = true; //Para ignorar el foco inicial
+
+    public static GameObject PanelFPS => Instance.panelFPS;
+
     private void Awake()
     {
         MakeSingleton();
@@ -130,6 +137,8 @@ public class GameManager : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+
     }
 
     private void Start()
@@ -143,6 +152,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         Update_Marcador_MHS();
+        //DetectarNavegacionUI();
     }
 
     private void FixedUpdate()
@@ -177,6 +187,34 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    /*
+    private void DetectarNavegacionUI()
+    {
+        // Verificar si hay un EventSystem activo
+        if (EventSystem.current == null) return;
+
+        // Obtener el objeto actualmente seleccionado
+        GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
+
+        // Si el objeto seleccionado cambió
+        if (currentSelected != null && currentSelected != lastSelectedUI)
+        {
+            if (!isInitialFocus) // Ignorar el primer cambio de foco
+            {
+                Debug.Log("Navegación detectada en la UI: " + currentSelected.name);
+
+                AudioManager.instance.PlaySound("navegar");
+            }
+
+            // Actualizar el último seleccionado
+            lastSelectedUI = currentSelected;
+
+            // Ignorar el foco inicial después del primer cambio
+            isInitialFocus = false;
+        }
+    }
+    */
     #endregion GAME MANAGER
 
     #region ESCENA JUEGO
@@ -228,6 +266,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ResetarBooleanosImportantesGM()
+    {
+        //Booleanos Partida
+        modoHS = false;
+        modoDS = false;
+    }
+
     public void ResetiarVariables()
     {
         if (SceneManager.GetActiveScene().name == "ANDYMENUTEST" || SceneManager.GetActiveScene().name == "TESTVICTORY2")
@@ -235,6 +280,8 @@ public class GameManager : MonoBehaviour
 
             ////Resetear Diccionario de Gamepads
             //if(idDeGamepad == null) idDeGamepad = new Dictionary<int, Gamepad>();
+
+            enPausa = false;
 
             jugadoresEquipo1 = new List<Jugador>();
             jugadoresEquipo2 = new List<Jugador>();
@@ -246,9 +293,6 @@ public class GameManager : MonoBehaviour
             equipo1Ganado = false;
             equipo2Ganado = false;
 
-            //Booleanos Partida
-            modoHS = false;
-            modoDS = false;
             boolMapaStreetMHS = false;
             boolMapaDungeonMHS = false;
             boolMapaRestaurantMHS = false;
@@ -273,14 +317,6 @@ public class GameManager : MonoBehaviour
             //Paneles de condicion de Victoria
             if (panelFinish != null)
                 panelFinish.SetActive(false);
-
-            //Mapas
-            //mapaStreetMHS.SetActive(false);
-            //mapaRestaurantMHS.SetActive(false);
-            //mapaDungeonMHS.SetActive(false);
-            //mapaStreetMDS.SetActive(false);
-            //mapaRestaurantMDS.SetActive(false);
-            //mapaDungeonMDS.SetActive(false);
 
 
             //Modo Hechizos Sazonados
@@ -307,9 +343,6 @@ public class GameManager : MonoBehaviour
 
             if (panelControles != null)
                 panelControles.SetActive(false);
-
-            if (panelConfiguracion != null)
-                panelConfiguracion.SetActive(false);
 
             if (panelConfirmacionSalida != null)
                 panelConfirmacionSalida.SetActive(false);
@@ -670,14 +703,7 @@ public class GameManager : MonoBehaviour
         infoLobbyPlayers = new List<InfoLobby.PlayerInfo>();
     }
 
-    public void GoToMenuVictory()
-    {
-        Time.timeScale = 1;
-        deadEnemy = true;
-        DestruirEnemigosActivos();
-
-        SceneManager.LoadScene("ANDYMENUTEST");
-    }
+    
     #endregion PARTIDA
 
     #region MAPAS
@@ -728,15 +754,15 @@ public class GameManager : MonoBehaviour
     [Header("Panel Pausa")]
     [SerializeField] private GameObject panelPausa;
     [SerializeField] private GameObject panelControles;
-    [SerializeField] private GameObject panelConfiguracion;
     [SerializeField] private GameObject panelConfirmacionSalida;
     [SerializeField] private Button botonContinuar;
     [SerializeField] private Button botonConfiguracion;
-    [SerializeField] private Toggle togglePantallaCompleta;
+    [SerializeField] private Button botonControles;
+    [SerializeField] private Button botonSalir;
     [SerializeField] private static Button botonContinuarStatic;
     [SerializeField] private static GameObject panelStaticPausa;
 
-    private static GameObject ultimoBotonSeleccionadoStatic;
+    public static GameObject ultimoBotonSeleccionadoStatic;
     private GameObject ultimoBotonSeleccionado;
 
     private static bool enPausa;
@@ -749,7 +775,6 @@ public class GameManager : MonoBehaviour
         ultimoBotonSeleccionadoStatic = botonContinuarStatic.gameObject;
         panelPausa.SetActive(false);
         panelControles.SetActive(false);
-        panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
         InputManager.Instance.SetActivePanel(null, Back);
     }
@@ -786,6 +811,7 @@ public class GameManager : MonoBehaviour
                 //j.GetComponent<PlayerInput>().SwitchCurrentActionMap("UI Pausa");
                 //Debug.Log("Switched to UI Pausa for player: " + j.name);
             }
+
         }
         else
         {
@@ -812,11 +838,10 @@ public class GameManager : MonoBehaviour
     {
         panelPausa.SetActive(false);
         panelControles.SetActive(false);
-        panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
         AudioManager.instance.PlaySound("botonmenu");
         //Pausa(null);
-
+        //enPausa = false;
         // Llamamos a Pausa con la referencia al controlador original
         Pausa(null);
     }
@@ -825,27 +850,42 @@ public class GameManager : MonoBehaviour
     public void Controles()
     {
         panelControles.SetActive(true);
-        panelConfiguracion.SetActive(false);
         panelConfirmacionSalida.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(botonControles.gameObject);
+        ultimoBotonSeleccionadoStatic = botonControles.gameObject;
         AudioManager.instance.PlaySound("botonmenu");
     }
 
     public void Configuracion()
     {
-        InputManager.Instance.SetActivePanel(null, null);
-        panelConfiguracion.SetActive(true);
-        panelControles.SetActive(false);
-        panelConfirmacionSalida.SetActive(false);
+        if (ConfiguracionManager.Instance != null)
+        {
+            InputManager.Instance.SetActivePanel(null, null);
+            ConfiguracionManager.Instance.PrenderConfiguracion();
+            ConfiguracionManager.Instance.ResetarInputCM();
+            panelControles.SetActive(false);
+            panelConfirmacionSalida.SetActive(false);
+            AudioManager.instance.PlaySound("botonmenu");
+            ultimoBotonSeleccionadoStatic = botonConfiguracion.gameObject;
+        }
+    }
+
+    public void GoToMenuVictory()
+    {
+        Time.timeScale = 1;
+        deadEnemy = true;
+        DestruirEnemigosActivos();
+        MainMenuSystem.instance.ResetarBooleanosImportantesMS();
+        ResetarBooleanosImportantesGM();
         AudioManager.instance.PlaySound("botonmenu");
-        EventSystem.current.SetSelectedGameObject(togglePantallaCompleta.gameObject);
-        ultimoBotonSeleccionadoStatic = togglePantallaCompleta.gameObject;
+
+        SceneManager.LoadScene("ANDYMENUTEST");
     }
 
     public void ConfirmarSalida()
     {
         panelConfirmacionSalida.SetActive(true);
         panelControles.SetActive(false);
-        panelConfiguracion.SetActive(false);
 
         InputManager.Instance.SetActivePanel(Salir, Back);
     }
@@ -853,6 +893,7 @@ public class GameManager : MonoBehaviour
     public void Salir()
     {
         Debug.Log("QUIT");
+        AudioListener.volume = 0f;
         Application.Quit();
     }
 
@@ -861,32 +902,38 @@ public class GameManager : MonoBehaviour
         if (panelConfirmacionSalida.activeSelf)
         {
             panelConfirmacionSalida.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(botonContinuar.gameObject);
-            ultimoBotonSeleccionadoStatic = botonContinuar.gameObject;
+            EventSystem.current.SetSelectedGameObject(ultimoBotonSeleccionadoStatic);
+            AudioManager.instance.PlaySound("botonBack");
         }
         else if (panelControles.activeSelf)
         {
             panelControles.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(botonContinuar.gameObject);
-            ultimoBotonSeleccionadoStatic = botonContinuar.gameObject;
+            EventSystem.current.SetSelectedGameObject(ultimoBotonSeleccionadoStatic);
+            AudioManager.instance.PlaySound("botonBack");
         }
-        else if (panelConfiguracion.activeSelf)
-        {
-            panelConfiguracion.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(botonContinuar.gameObject);
-            ultimoBotonSeleccionadoStatic = botonContinuar.gameObject;
-        }
-        else
+        else if (panelStaticPausa.activeSelf)
         {
             Resumir();
         }
+    }
 
-        AudioManager.instance.PlaySound("botonBack");
+    public void Aceptar()
+    {
+        GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
+
+        if (currentSelected == botonContinuar)
+        {
+            botonContinuar.onClick.Invoke();
+        }
+        else if (currentSelected == botonConfiguracion)
+        {
+            botonConfiguracion.onClick.Invoke();
+        }
     }
 
     public void ResetearInputGM()
     {
-        InputManager.Instance.SetActivePanel(null, Back);
+        InputManager.Instance.SetActivePanel(Aceptar, Back);
     }
     #endregion PAUSA
 

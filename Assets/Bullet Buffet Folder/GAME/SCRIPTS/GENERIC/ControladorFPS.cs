@@ -10,6 +10,11 @@ public class ControladorFPS : MonoBehaviour
     private float deltaTime = 0.0f;
     private float tiempoTranscurrido = 0.0f;  // Lleva cuenta del tiempo entre actualizaciones
 
+    private void Awake()
+    {
+        //GameManager.RegistrarPanelFPS(this.gameObject);
+    }
+
     private void Update()
     {
         // Calcular el tiempo transcurrido para calcular FPS

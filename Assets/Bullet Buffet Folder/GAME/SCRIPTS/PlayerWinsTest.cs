@@ -108,6 +108,8 @@ public class PlayerWinsTest : MonoBehaviour
         yield return new WaitForSeconds(6f);
         Debug.Log("Se ejecuto la transicion de escena en la escena de Victoria");
         GameManager.Instance.IniciarCorutinaTransicion();
+        MainMenuSystem.instance.ResetarBooleanosImportantesMS();
+        GameManager.Instance.ResetarBooleanosImportantesGM();
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("ANDYMENUTEST");
     }
