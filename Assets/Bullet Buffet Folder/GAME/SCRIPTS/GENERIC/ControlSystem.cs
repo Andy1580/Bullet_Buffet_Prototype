@@ -16,6 +16,7 @@ public class ControlSystem : MonoBehaviour
 
     [SerializeField] public RectTransform puntero;
     [SerializeField] public Image spritePersonaje;
+    [SerializeField] public Sprite spritePersonajeDefault;
     [SerializeField] private Image controlImg;
     private bool equipoBloqueado = false;
 
@@ -35,31 +36,12 @@ public class ControlSystem : MonoBehaviour
     [SerializeField] private List<TMP_Text> textosEquipo2; // Textos para el equipo 2
 
     private bool equipoRechazado = false;
+    private bool escogiendoEquipoCS = true;
+    private bool escogiendoPersonaje = false;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        /*
-        foreach (RectTransform slot in slotsEquipo1)
-        {
-            slot.gameObject.SetActive(false);
-        }
-
-        foreach (RectTransform slot in slotsEquipo2)
-        {
-            slot.gameObject.SetActive(false);
-        }
-
-        foreach (RectTransform slot in posisionesSlotsEquipo1)
-        {
-            slot.gameObject.SetActive(false);
-        }
-
-        foreach (RectTransform slot in posisionesSlotsEquipo2)
-        {
-            slot.gameObject.SetActive(false);
-        }
-        */
     }
 
     private void Start()
@@ -77,6 +59,9 @@ public class ControlSystem : MonoBehaviour
         equipoJugador = 0;
         //spritePersonaje.sprite = spritePersonaje.sprite;
 
+        equipoRechazado = false;
+        escogiendoEquipoCS = true;
+        escogiendoPersonaje = false;
     }
 
     private void Update()
@@ -88,90 +73,7 @@ public class ControlSystem : MonoBehaviour
     {
         //spritePersonaje.sprite = CheckSprite(selectedCharacter);
     }
-    /*
-    public void AsignarEquipo(int gamepadId, int equipo)
-    {
-        equipoJugador = equipo;
 
-        int equipo1Index = 0;
-        int equipo2Index = 0;
-
-        int gamepadCount = Gamepad.all.Count;
-
-        if (gamepadCount == 2)
-        {
-            slotsEquipo1[0].gameObject.SetActive(true);
-            slotsEquipo2[0].gameObject.SetActive(true);
-            AcomodarSlots();
-        }
-        else
-        {
-            foreach (RectTransform slot in slotsEquipo1)
-            {
-                slot.gameObject.SetActive(true);
-            }
-
-            foreach (RectTransform slot in slotsEquipo2)
-            {
-                slot.gameObject.SetActive(true);
-            }
-            AcomodarSlots();
-        }
-
-        // Mover el puntero a la posici�n del slot correspondiente
-        if (equipoJugador == 1 && equipo1Index < slotsEquipo1.Count)
-        {
-            //RectTransform posicionSlot = slotsEquipo1[equipo1Index].GetChild(2).GetComponent<RectTransform>();
-            MoverPuntero(slotsEquipo1[equipo1Index], textosEquipo1[equipo1Index], jugadorNickName);
-            equipo1Index++;
-            spritePersonaje = slotsEquipo1[equipo1Index].GetChild(1).GetComponent<Image>();
-            
-        }
-        else if (equipoJugador == 2 && equipo2Index < slotsEquipo2.Count)
-        {
-            MoverPuntero(slotsEquipo2[equipo2Index], textosEquipo2[equipo2Index], jugadorNickName);
-            equipo2Index++;
-            spritePersonaje = slotsEquipo2[equipo2Index].GetChild(1).GetComponent<Image>();
-            
-        }
-    }
-
-    void AcomodarSlots()
-    {
-        int gamepadsCount = Gamepad.all.Count;
-
-        if (gamepadsCount == 2)
-        {
-            posisionesSlotsEquipo1[1].gameObject.SetActive(true);
-            posisionesSlotsEquipo2[0].gameObject.SetActive(true);
-
-            slotsEquipo1[0].position = posisionesSlotsEquipo1[1].position;
-            slotsEquipo2[0].position = posisionesSlotsEquipo2[0].position;
-        }
-        else
-        {
-            posisionesSlotsEquipo1[0].gameObject.SetActive(true);
-            posisionesSlotsEquipo1[1].gameObject.SetActive(true);
-            posisionesSlotsEquipo2[0].gameObject.SetActive(true);
-            posisionesSlotsEquipo2[1].gameObject.SetActive(true);
-
-            slotsEquipo1[0].position = posisionesSlotsEquipo1[0].position;
-            slotsEquipo1[1].position = posisionesSlotsEquipo1[1].position;
-
-            slotsEquipo2[0].position = posisionesSlotsEquipo2[0].position;
-            slotsEquipo2[1].position = posisionesSlotsEquipo2[1].position;
-        }
-    }
-
-    private void MoverPuntero(RectTransform slot, TMP_Text textoSlot, string nombreJugador)
-    {
-        puntero.gameObject.SetActive(true);
-        puntero.gameObject.transform.position = slot.position;
-
-        textoSlot.text = nombreJugador;
-        Debug.Log($"Puntero {puntero.name} se movio a la posici�n del slot {slot.name}");
-    }
-    */
     #region INPUT
     public void Input_ControlMovimiento(InputAction.CallbackContext context)
     {
@@ -196,9 +98,25 @@ public class ControlSystem : MonoBehaviour
 
     public void Input_PunteroMovimiento(InputAction.CallbackContext context)
     {
-        if (!selectCh) return;
+        if (!selectCh || LobbyManager.escogiendoEquipo) return;
         Vector2 v2 = context.ReadValue<Vector2>();
         axis = new Vector3(v2.x, v2.y, 0);
+    }
+
+    public void Input_Continuar(InputAction.CallbackContext context)
+    {
+        if (LobbyManager.self.continuar.activeSelf && LobbyManager.self.panelSelectTeam.activeSelf && escogiendoEquipoCS)
+        {
+            escogiendoEquipoCS = false;
+            escogiendoPersonaje = true;
+            LobbyManager.self.ActivarPanelPersonajesConDelay();
+            AudioManager.instance.PlaySound("botonJugar");
+        }
+        else if (LobbyManager.self.continuar.activeSelf && LobbyManager.self.panelSelectCh.activeSelf && !LobbyManager.partidaComenzada)
+        {
+            LobbyManager.self.RecopilarInformacion();
+            AudioManager.instance.PlaySound("botonJugar");
+        }
     }
 
     public void Input_AceptarEquipo(InputAction.CallbackContext context)
@@ -241,24 +159,14 @@ public class ControlSystem : MonoBehaviour
 
                 if (!col) return;
 
-                if (col.CompareTag("BotonJugar"))
-                {
-                    var boton = col.GetComponent<Button>();
-
-                    if (boton != null)
-                    {
-                        boton.onClick.Invoke();
-                    }
-                }
-                else
-                {
-                    selectedCharacter = col.gameObject.name;
-                    spritePersonaje.sprite = CheckSprite(selectedCharacter);
-                    Gamepad currentGamepad = context.control.device as Gamepad;
-                    loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
-                    AudioManager.instance.PlaySound("botonmenu");
-                    Debug.Log($"El {this.gameObject.name} a escogido al personaje {selectedCharacter}");
-                }
+                selectedCharacter = col.gameObject.name;
+                spritePersonaje.sprite = CheckSprite(selectedCharacter);
+                Gamepad currentGamepad = context.control.device as Gamepad;
+                loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
+                selectCh = false;
+                axis = Vector2.zero;
+                AudioManager.instance.PlaySound("botonmenu");
+                Debug.Log($"El {this.gameObject.name} a escogido al personaje {selectedCharacter}");
             }
 
         }
@@ -269,40 +177,85 @@ public class ControlSystem : MonoBehaviour
         if (context.performed && !equipoRechazado)
         {
             equipoRechazado = true; // Bloquea más llamadas
-            Debug.Log("Se rechazó equipo");
-            LobbyManager.RechazarEquipo();
+
+            if (LobbyManager.self.panelSelectTeam.activeSelf)
+            {
+                Debug.Log("Se rechazó equipo");
+                LobbyManager.RechazarEquipo(equipoJugador);
+                ResetearVariables();
+
+                AudioManager.instance.PlaySound("botonBack");
+            }
+            else if (LobbyManager.self.panelSelectCh.activeSelf)
+            {
+                Debug.Log("Se rechazó el personaje");
+                Gamepad currentGamepad = context.control.device as Gamepad;
+                LobbyManager.RechazarPersonaje(currentGamepad);
+                ResetearVariables();
+
+                AudioManager.instance.PlaySound("botonBack");
+            }
+
             StartCoroutine(ResetEquipoRechazado());
 
-            AudioManager.instance.PlaySound("botonBack");
         }
     }
 
     private IEnumerator ResetEquipoRechazado()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         equipoRechazado = false;
     }
 
     public void ResetearVariables()
     {
-        equipoJugador = 0;
-        equipoBloqueado = false;
-        selectTm = true;
-        selectCh = false;
-        puntero.gameObject.SetActive(false);
-        selectedCharacter = "";
-
-        if (spritePersonaje != null)
+        if (LobbyManager.self.panelSelectTeam.activeSelf)
         {
-            spritePersonaje.sprite = null;
+            equipoJugador = 0;
+            equipoBloqueado = false;
+            selectTm = true;
+            c_Animator.SetInteger("Posicion", 0);
+            controlImg.color = new Color(1, 1, 1, 0.6f);
+            selectCh = false;
+
         }
-        else
+        else if (LobbyManager.self.panelSelectCh)
         {
-            Debug.LogWarning($"El 'spritePersonaje' en {gameObject.name} no está asignado todavía.");
+            if (selectedCharacter == null || selectedCharacter == "")
+            {
+                //Regresar al panel de seleccion de equipo
+                LobbyManager.ActivarPanelSeleccionarEquipo();
+                LobbyManager.RecetearVariablesLobby();
+                puntero.gameObject.SetActive(false);
+                selectCh = false;
+
+                //Equipo
+                equipoJugador = 0;
+                equipoBloqueado = false;
+                selectTm = true;
+                c_Animator.SetInteger("Posicion", 0);
+                controlImg.color = new Color(1, 1, 1, 0.6f);
+                selectCh = false;
+                LobbyManager.RechazarEquipo(equipoJugador);
+
+                if (spritePersonaje != null)
+                {
+                    spritePersonaje.sprite = null;
+                }
+                else
+                {
+                    Debug.LogWarning($"El 'spritePersonaje' en {gameObject.name} no está asignado todavía.");
+                }
+            }
+            else
+            {
+                selectedCharacter = "";
+                spritePersonaje.sprite = spritePersonajeDefault;
+                selectCh = true;
+
+            }
         }
 
-        c_Animator.SetInteger("Posicion", 0);
-        controlImg.color = new Color(1, 1, 1, 0.6f);
     }
 
     private Sprite CheckSprite(string personaje)

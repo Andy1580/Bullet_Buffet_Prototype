@@ -287,6 +287,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Continuar",
+                    "type": "Button",
+                    "id": "1e763add-e4a6-433b-a937-20808905c3b5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Axis_Control",
                     "type": "Value",
                     "id": "533bedef-0f64-45ee-84b5-d9e1815a5657",
@@ -347,6 +356,17 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Rechazar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e11bfbd-1cc7-434b-b580-4d825cbcff9c",
+                    "path": "<Gamepad>/start",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Continuar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

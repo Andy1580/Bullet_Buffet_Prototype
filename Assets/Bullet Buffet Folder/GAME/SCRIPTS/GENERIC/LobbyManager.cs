@@ -28,10 +28,11 @@ public class LobbyManager : MonoBehaviour
     [HideInInspector] public static Dictionary<int, int> equipo = new Dictionary<int, int>(); // gamepadId -> equipoJugador
     [HideInInspector] public static Dictionary<int, string> personaje = new Dictionary<int, string>(); // gamepadId -> personaje
 
-    [SerializeField] private GameObject panelSelectTeam;
-    [SerializeField] private GameObject panelSelectCh;
+    [SerializeField] public GameObject panelSelectTeam;
+    [SerializeField] public GameObject panelSelectCh;
     [SerializeField] private GameObject botonJugar;
     [SerializeField] private GameObject tiras;
+    [SerializeField] public GameObject continuar;
 
     public static bool escogiendoEquipo = true;
 
@@ -72,6 +73,8 @@ public class LobbyManager : MonoBehaviour
         listaCS.Clear();
 
         enProgreso = false;
+
+        partidaComenzada = false;
     }
 
     private IEnumerator CargarMenuConRetraso(float delay)
@@ -82,12 +85,13 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
-        if(SceneManager.GetActiveScene().name == "LOBBY")
+        if (SceneManager.GetActiveScene().name == "LOBBY")
         {
             panelSelectTeam.SetActive(true);
             panelSelectCh.SetActive(false);
             botonJugar.SetActive(false);
             tiras.SetActive(false);
+            continuar.SetActive(false);
 
             escogiendoEquipo = true;
             equipoControles = new int[equipoControles.Length];
@@ -105,7 +109,7 @@ public class LobbyManager : MonoBehaviour
             botonJugar.SetActive(false);
             tiras.SetActive(false);
         }
-        
+
     }
 
     private void MakeSingleton()
@@ -221,23 +225,34 @@ public class LobbyManager : MonoBehaviour
         {
             if (suma == 2)
             {
-                AsignarPunterosYActivarPanel();
-                escogiendoEquipo = false;
+                self.continuar.SetActive(true);
             }
         }
         else if (Gamepad.all.Count == 4)
         {
             if (suma == 4)
             {
-                AsignarPunterosYActivarPanel();
-                escogiendoEquipo = false;
+                self.continuar.SetActive(true);
             }
         }
 
     }
 
-    private static void AsignarPunterosYActivarPanel()
+    public void ActivarPanelPersonajesConDelay()
     {
+        StartCoroutine(ActivarPanelPersonajeDelay());
+    }
+
+    IEnumerator ActivarPanelPersonajeDelay()
+    {
+        yield return new WaitForSeconds(0.8f);
+        AsignarPunterosYActivarPanel();
+    }
+
+    public static void AsignarPunterosYActivarPanel()
+    {
+        escogiendoEquipo = false;
+
         foreach (var slot in self.slotsEquipo1)
         {
             if (slot == null)
@@ -288,7 +303,7 @@ public class LobbyManager : MonoBehaviour
             cs.gamepadID = par.Key.deviceId;
             cs.originalID = i++;
 
-            listaCS.Add(cs);  
+            listaCS.Add(cs);
 
             if (cs.equipoJugador == 1) listaCsEquipo1.Add(cs);
             else listaCsEquipo2.Add(cs);
@@ -297,6 +312,7 @@ public class LobbyManager : MonoBehaviour
         // Posicionar y activar los punteros de los jugadores en sus slots respectivos
         self.PosicionarYActivarPunteros();
         ActivarPanelSeleccionarPersonajes();
+        self.continuar.SetActive(false);
     }
 
     private void PosicionarYActivarPunteros()
@@ -346,8 +362,38 @@ public class LobbyManager : MonoBehaviour
 
     private static bool enProgreso = false;
 
-    public static void RechazarEquipo()
+    public static void RecetearVariablesLobby()
     {
+        equipo1 = 0;
+        equipo2 = 0;
+
+        listaCsEquipo1.Clear();
+        listaCsEquipo2.Clear();
+        listaCS.Clear();
+
+        // Limpiar el diccionario de equipo y personaje
+        equipo.Clear();
+        personaje.Clear();
+    }
+
+    public static void RechazarEquipo(int equipoRechazado)
+    {
+        equipoControles[equipoRechazado - 1]--;
+
+        int resta = equipoControles[0] - equipoControles[1] - equipoControles[2] - equipoControles[3];
+
+        if (Gamepad.all.Count == 2 || Gamepad.all.Count == 4)
+        {
+            if (resta == 1)
+            {
+                if (self.continuar.activeSelf)
+                {
+                    self.continuar.SetActive(false);
+                }
+            }
+        }
+
+        /*
         if (enProgreso) return; // Si ya estamos procesando, ignoramos nuevas llamadas
         enProgreso = true;
 
@@ -435,6 +481,49 @@ public class LobbyManager : MonoBehaviour
         {
             enProgreso = false; // Resetear bandera
         }
+        */
+    }
+
+    public static void RechazarPersonaje(Gamepad gamepad)
+    {
+        if (dicControles.ContainsKey(gamepad))
+        {
+            int gamepadId = gamepad.deviceId;
+
+            if (personaje.ContainsKey(gamepadId))
+            {
+                personaje.Remove(gamepadId); // Eliminar el personaje seleccionado
+                Debug.Log($"Gamepad {gamepadId} rechazó el personaje");
+            }
+        }
+
+        // Actualizar el estado de "continuar" y "tiras" basado en la cantidad de personajes seleccionados
+        if (Gamepad.all.Count == 2)
+        {
+            if (personaje.Count == 2)
+            {
+                self.continuar.SetActive(true);
+                self.tiras.SetActive(true);
+            }
+            else
+            {
+                self.continuar.SetActive(false);
+                self.tiras.SetActive(false);
+            }
+        }
+        else if (Gamepad.all.Count == 4)
+        {
+            if (personaje.Count == 4)
+            {
+                self.continuar.SetActive(true);
+                self.tiras.SetActive(true);
+            }
+            else
+            {
+                self.continuar.SetActive(false);
+                self.tiras.SetActive(false);
+            }
+        }
     }
 
     public void SeleccionarPersonaje(Gamepad gamepad, string personajeSeleccionado)
@@ -450,12 +539,12 @@ public class LobbyManager : MonoBehaviour
         {
             if (personaje.Count == 2)
             {
-                botonJugar.SetActive(true);
+                continuar.SetActive(true);
                 tiras.SetActive(true);
             }
             else
             {
-                botonJugar.SetActive(false);
+                continuar.SetActive(false);
                 tiras.SetActive(false);
             }
         }
@@ -463,12 +552,12 @@ public class LobbyManager : MonoBehaviour
         {
             if (personaje.Count == 4)
             {
-                botonJugar.SetActive(true);
+                continuar.SetActive(true);
                 tiras.SetActive(true);
             }
             else
             {
-                botonJugar.SetActive(false);
+                continuar.SetActive(false);
                 tiras.SetActive(false);
             }
         }
@@ -517,13 +606,18 @@ public class LobbyManager : MonoBehaviour
         return null;
     }
 
+    public static bool partidaComenzada = false;
+
     public void RecopilarInformacion()
     {
+        if (partidaComenzada) return;
+        partidaComenzada = true;
+
         IniciarPartida();
         //GuardarInformacionJugadores();
         //Debug.Log("Iniciando recopilaci�n de informaci�n...");
 
-        if (equipo.Count < 2 && personaje.Count < 2)
+        if (equipoControles.Length < 2 && personaje.Count < 2)
         {
             Debug.LogWarning("No hay suficientes datos para iniciar la partida.");
             return;
@@ -672,7 +766,7 @@ public class LobbyManager : MonoBehaviour
 
 
 
-        RechazarEquipo();
+        //RechazarEquipo();
     }
 
     private void GuardarJugador(int playerIndex, ControlSystem controlSystem)
