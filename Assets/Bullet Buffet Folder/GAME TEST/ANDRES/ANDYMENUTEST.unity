@@ -4665,6 +4665,12 @@ MonoBehaviour:
     volume: 0.7
     pitch: 1
     source: {fileID: 0}
+  - nombre: hechizoImpacto
+    clip: {fileID: 8300000, guid: 3bf87b8155c84e14fa98fbe8b14a5a60, type: 3}
+    loop: 0
+    volume: 0.3
+    pitch: 1
+    source: {fileID: 0}
   - nombre: opHS
     clip: {fileID: 8300000, guid: 486ee6ddf988dbe45b881360d549f2c3, type: 3}
     loop: 0
@@ -14564,9 +14570,21 @@ PrefabInstance:
       objectReference: {fileID: 799171648}
     - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
         type: 3}
+      propertyPath: hechizoPrefab
+      value: 
+      objectReference: {fileID: 4272596682643824501, guid: c57874c3dfc50f848a1780fb207b63b6,
+        type: 3}
+    - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
+        type: 3}
       propertyPath: botonControles
       value: 
       objectReference: {fileID: 2102921827}
+    - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
+        type: 3}
+      propertyPath: vfxImpactoHechizo
+      value: 
+      objectReference: {fileID: 5137420494086734323, guid: 1826471f674d34b43bad1c2a67cd54ad,
+        type: 3}
     - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
         type: 3}
       propertyPath: enemigosMaximosActivos

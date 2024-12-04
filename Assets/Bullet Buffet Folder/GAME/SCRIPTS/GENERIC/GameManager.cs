@@ -1608,6 +1608,9 @@ public class GameManager : MonoBehaviour
     #region MODO HECHIZOS SAZONADOS
     [Header("Modo Hechizos Sazonados")]
     [SerializeField] private GameObject magosPrincipales;
+    [SerializeField] private GameObject vfxImpactoHechizo;
+    [SerializeField] private ParticleSystem vfxCargaMago1;
+    [SerializeField] private ParticleSystem vfxCargaMago2;
 
     [Header("Magos")]
     [SerializeField] private GameObject mago1;
@@ -1630,6 +1633,8 @@ public class GameManager : MonoBehaviour
     {
         panelMarcadorMHS.SetActive(true);
         camaraPrincipalAnimator = camaraPrincipal.GetComponent<Animator>();
+        vfxCargaMago1.Stop();
+        vfxCargaMago2.Stop();
     }
 
     //Parte de los Magos
@@ -1638,7 +1643,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Si se intancio el hechizo del mago 1");
         GameObject hechizo = Instantiate(hechizoPrefab, spawnHechizo1.transform.position, Quaternion.identity);
         StartCoroutine(MoverHechizo1(hechizo));
-
+        vfxCargaMago1.Stop();
         AudioManager.instance.PlaySound("hechizoMago");
     }
 
@@ -1647,7 +1652,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Si se intancio el hechizo del mago 2");
         GameObject hechizo = Instantiate(hechizoPrefab, spawnHechizo2.transform.position, Quaternion.identity);
         StartCoroutine(MoverHechizo2(hechizo));
-
+        vfxCargaMago2.Stop();
         AudioManager.instance.PlaySound("hechizoMago");
     }
 
@@ -1659,8 +1664,11 @@ public class GameManager : MonoBehaviour
 
             if (Vector3.Distance(hechizo.transform.position, mago2.transform.position) < 0.1f)
             {
+                GameObject cloneVFX = Instantiate(vfxImpactoHechizo, hechizo.transform.position, Quaternion.identity);
                 Destroy(hechizo);
+                Destroy(cloneVFX, 1.8f);
                 AudioManager.instance.StopSound("hechizoMago");
+                AudioManager.instance.PlaySound("hechizoImpacto");
                 yield break;
             }
 
@@ -1676,8 +1684,11 @@ public class GameManager : MonoBehaviour
 
             if (Vector3.Distance(hechizo.transform.position, mago1.transform.position) < 0.1f)
             {
+                GameObject cloneVFX = Instantiate(vfxImpactoHechizo, hechizo.transform.position, Quaternion.identity);
                 Destroy(hechizo);
+                Destroy(cloneVFX, 1.8f);
                 AudioManager.instance.StopSound("hechizoMago");
+                AudioManager.instance.PlaySound("hechizoImpacto");
                 yield break;
             }
 
@@ -1749,6 +1760,7 @@ public class GameManager : MonoBehaviour
                         camaraPrincipalAnimator.SetTrigger("move");
                         DeshabilitarMovimientoJugadores();
                         DeshabilitarDisparo();
+                        vfxCargaMago2.Play();
                         Invoke("Mago2", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1761,6 +1773,7 @@ public class GameManager : MonoBehaviour
                         camaraPrincipalAnimator.SetTrigger("move");
                         DeshabilitarMovimientoJugadores();
                         DeshabilitarDisparo();
+                        vfxCargaMago1.Play();
                         Invoke("Mago1", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1777,6 +1790,7 @@ public class GameManager : MonoBehaviour
                         camaraPrincipalAnimator.SetTrigger("move");
                         DeshabilitarMovimientoJugadores();
                         DeshabilitarDisparo();
+                        vfxCargaMago2.Play();
                         Invoke("Mago2", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }
@@ -1789,6 +1803,7 @@ public class GameManager : MonoBehaviour
                         camaraPrincipalAnimator.SetTrigger("move");
                         DeshabilitarMovimientoJugadores();
                         DeshabilitarDisparo();
+                        vfxCargaMago1.Play();
                         Invoke("Mago1", 2f);
                         Invoke("CambioDeRondaMHS", 2f);
                     }

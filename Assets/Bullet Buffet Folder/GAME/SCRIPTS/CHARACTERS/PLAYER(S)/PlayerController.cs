@@ -495,6 +495,7 @@ public class PlayerController : MonoBehaviour
     [Header("Life Stats")]
     [SerializeField] private int maxSalud = 100;
     [SerializeField] private SkinnedMeshRenderer renderer;
+    [SerializeField] private ParticleSystem vfxMuerte;
     internal int salud;
     internal bool muerto = false;
 
@@ -518,7 +519,7 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("muerto");
         AudioManager.instance.PlaySound("muertejugador");
         GameManager.Instance.DeadPlayerEventMHS(this);
-
+        vfxMuerte.Play();
         if(escudo.gameObject.activeSelf)
         {
             escudo.gameObject.SetActive(false);
@@ -963,23 +964,4 @@ public class PlayerController : MonoBehaviour
             AsignarGamepad(_jugador.gamepadId);
         }
     }
-    /*
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == 10) //10 = layer escudo
-        {
-            canShoot = false;
-            print(canShoot);
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.layer == 10)
-        {
-            canShoot = true;
-            print(canShoot);
-        }
-    }
-    */
 }
