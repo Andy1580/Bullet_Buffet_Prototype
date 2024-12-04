@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ControlSystem : MonoBehaviour
 {
-    [SerializeField] private Animator c_Animator;
+    [SerializeField] public Animator c_Animator;
     [SerializeField] private LobbyManager loby;
     public int equipoJugador = 0;
     public string selectedCharacter;
@@ -17,8 +17,11 @@ public class ControlSystem : MonoBehaviour
     [SerializeField] public RectTransform puntero;
     [SerializeField] public Image spritePersonaje;
     [SerializeField] public Sprite spritePersonajeDefault;
-    [SerializeField] private Image controlImg;
-    private bool equipoBloqueado = false;
+    [SerializeField] public Image controlImg;
+    [SerializeField] public Sprite centro;
+    [SerializeField] public Sprite izquierda;
+    [SerializeField] public Sprite derecha;
+    public bool equipoBloqueado = false;
 
     public bool selectTm;
     public bool selectCh;
@@ -36,12 +39,15 @@ public class ControlSystem : MonoBehaviour
     [SerializeField] private List<TMP_Text> textosEquipo2; // Textos para el equipo 2
 
     private bool equipoRechazado = false;
-    private bool escogiendoEquipoCS = true;
+    public bool escogiendoEquipoCS = true;
     private bool escogiendoPersonaje = false;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        c_Animator.SetInteger("Posicion", 0);
+        controlImg.sprite = centro;
+        Debug.Log("Ya se ejecuto el Awake de: " + gameObject.name);
     }
 
     private void Start()
@@ -52,7 +58,7 @@ public class ControlSystem : MonoBehaviour
         //puntero.gameObject.SetActive(false);
         //puntero.gameObject.transform.position = slot.position;
 
-        c_Animator.SetInteger("Posicion", 0);
+        
 
         controlImg.color = new Color(1, 1, 1, 0.6f);
         equipoBloqueado = false;
@@ -85,12 +91,14 @@ public class ControlSystem : MonoBehaviour
             {
                 c_Animator.SetInteger("Posicion", -1);
                 equipoJugador = 1; //Equipo Rojo;
+                controlImg.sprite = izquierda;
 
             }
             else if (v2.x > 0.5f) //Der
             {
                 c_Animator.SetInteger("Posicion", 1);
                 equipoJugador = 2; //Equipo Azul
+                controlImg.sprite = derecha;
 
             }
         }
@@ -110,12 +118,12 @@ public class ControlSystem : MonoBehaviour
             escogiendoEquipoCS = false;
             escogiendoPersonaje = true;
             LobbyManager.self.ActivarPanelPersonajesConDelay();
-            AudioManager.instance.PlaySound("botonJugar");
+            //AudioManager.instance.PlaySound("botonJugar");
         }
         else if (LobbyManager.self.continuar.activeSelf && LobbyManager.self.panelSelectCh.activeSelf && !LobbyManager.partidaComenzada)
         {
             LobbyManager.self.RecopilarInformacion();
-            AudioManager.instance.PlaySound("botonJugar");
+            //AudioManager.instance.PlaySound("botonJugar");
         }
     }
 
@@ -141,7 +149,7 @@ public class ControlSystem : MonoBehaviour
                     LobbyManager.SeleccionarEquipo(currentGamepad, equipoJugador);
                     Debug.Log($"El jugador {this.name} seleccionó el equipo {equipoJugador}");
 
-                    AudioManager.instance.PlaySound("botonmenu");
+                    //AudioManager.instance.PlaySound("botonmenu");
                 }
                 else
                 {
@@ -165,7 +173,7 @@ public class ControlSystem : MonoBehaviour
                 loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
                 selectCh = false;
                 axis = Vector2.zero;
-                AudioManager.instance.PlaySound("botonmenu");
+                //AudioManager.instance.PlaySound("botonmenu");
                 Debug.Log($"El {this.gameObject.name} a escogido al personaje {selectedCharacter}");
             }
 
@@ -174,31 +182,19 @@ public class ControlSystem : MonoBehaviour
 
     public void Input_RechazarEquipo(InputAction.CallbackContext context)
     {
-        if (context.performed && !equipoRechazado)
+        if (!context.performed || equipoRechazado) return;
+
+        equipoRechazado = true; // Bloqueo para evitar múltiples llamadas simultáneas
+
+        if (LobbyManager.self.panelSelectTeam.activeSelf || LobbyManager.self.panelSelectCh.activeSelf)
         {
-            equipoRechazado = true; // Bloquea más llamadas
-
-            if (LobbyManager.self.panelSelectTeam.activeSelf)
-            {
-                Debug.Log("Se rechazó equipo");
-                LobbyManager.RechazarEquipo(equipoJugador);
-                ResetearVariables();
-
-                AudioManager.instance.PlaySound("botonBack");
-            }
-            else if (LobbyManager.self.panelSelectCh.activeSelf)
-            {
-                Debug.Log("Se rechazó el personaje");
-                Gamepad currentGamepad = context.control.device as Gamepad;
-                LobbyManager.RechazarPersonaje(currentGamepad);
-                ResetearVariables();
-
-                AudioManager.instance.PlaySound("botonBack");
-            }
-
-            StartCoroutine(ResetEquipoRechazado());
-
+            // Pasar el control al LobbyManager según el panel activo
+            LobbyManager.RechazarEquipo(equipoJugador, this);
+            Gamepad currentGamepad = context.control.device as Gamepad;
+            LobbyManager.RechazarPersonaje(currentGamepad);
         }
+
+        StartCoroutine(ResetEquipoRechazado());
     }
 
     private IEnumerator ResetEquipoRechazado()
@@ -211,48 +207,36 @@ public class ControlSystem : MonoBehaviour
     {
         if (LobbyManager.self.panelSelectTeam.activeSelf)
         {
+            // Solo resetear el estado interno de este ControlSystem
             equipoJugador = 0;
             equipoBloqueado = false;
             selectTm = true;
             c_Animator.SetInteger("Posicion", 0);
             controlImg.color = new Color(1, 1, 1, 0.6f);
-            selectCh = false;
-
+            Debug.Log($"ControlSystem {gameObject.name} reseteó sus variables en selección de equipo.");
         }
-        else if (LobbyManager.self.panelSelectCh)
+        else if (LobbyManager.self.panelSelectCh.activeSelf)
         {
+            // Solo resetear el estado de personaje si aplica
             if (selectedCharacter == null || selectedCharacter == "")
             {
-                //Regresar al panel de seleccion de equipo
-                LobbyManager.ActivarPanelSeleccionarEquipo();
+                // Si no tiene personaje seleccionado, regresar al panel de selección de equipo
                 LobbyManager.RecetearVariablesLobby();
                 puntero.gameObject.SetActive(false);
-                selectCh = false;
-
-                //Equipo
                 equipoJugador = 0;
                 equipoBloqueado = false;
                 selectTm = true;
                 c_Animator.SetInteger("Posicion", 0);
                 controlImg.color = new Color(1, 1, 1, 0.6f);
-                selectCh = false;
-                LobbyManager.RechazarEquipo(equipoJugador);
-
-                if (spritePersonaje != null)
-                {
-                    spritePersonaje.sprite = null;
-                }
-                else
-                {
-                    Debug.LogWarning($"El 'spritePersonaje' en {gameObject.name} no está asignado todavía.");
-                }
+                Debug.Log($"ControlSystem {gameObject.name} reseteó al volver a selección de equipo.");
             }
             else
             {
+                // Si ya tiene personaje seleccionado, resetear solo eso
                 selectedCharacter = "";
                 spritePersonaje.sprite = spritePersonajeDefault;
                 selectCh = true;
-
+                Debug.Log($"ControlSystem {gameObject.name} reseteó solo el personaje.");
             }
         }
 
@@ -260,8 +244,6 @@ public class ControlSystem : MonoBehaviour
 
     private Sprite CheckSprite(string personaje)
     {
-
-
         switch (personaje)
         {
             case "CRIM":
@@ -317,6 +299,8 @@ public class ControlSystem : MonoBehaviour
     }
 
     #endregion PUNTERO
+
+    
 
     private void OnEnable()
     {

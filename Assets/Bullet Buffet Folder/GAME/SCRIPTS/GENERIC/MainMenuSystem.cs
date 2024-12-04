@@ -18,6 +18,8 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private GameObject panelSchemeControl;
     [SerializeField] private GameObject panelCreditos;
     [SerializeField] private GameObject panelConfimarSalir;
+    [SerializeField] private GameObject panelComoJugarHS;
+    [SerializeField] private GameObject panelComoJugarDS;
 
     [Header("Imagenes de Mapas")]
     [SerializeField] private GameObject cafeMHS;
@@ -47,6 +49,8 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private Button botonMDS;
     [SerializeField] private Button botonMHSCalle;
     [SerializeField] private Button botonMDSCalle;
+    [SerializeField] private Button botonComoJugarHS;
+    [SerializeField] private Button botonComoJugarDS;
 
     private bool play;
 
@@ -152,6 +156,8 @@ public class MainMenuSystem : MonoBehaviour
         panelSchemeControl.SetActive(false);
         panelConfimarSalir.SetActive(false);
         panelCreditos.SetActive(false);
+        panelComoJugarHS.SetActive(false);
+        panelComoJugarDS.SetActive(false);
 
         cafeMHS.SetActive(false);
         ciudadMHS.SetActive(false);
@@ -205,22 +211,22 @@ public class MainMenuSystem : MonoBehaviour
         }
         else if (panelMapasMHS.activeSelf)
         {
-            panelModos.SetActive(true);
+            panelComoJugarHS.SetActive(true);
             panelMapasMHS.SetActive(false);
             panelMapasMHSStatic = false;
             print(panelMapasMHSStatic);
-            EventSystem.current.SetSelectedGameObject(botonMHS.gameObject);
-            ultimoBotonSeleccionadoStatic = botonMHS.gameObject;
+            EventSystem.current.SetSelectedGameObject(botonComoJugarHS.gameObject);
+            ultimoBotonSeleccionadoStatic = botonComoJugarHS.gameObject;
             GameManager.Instance.ResetarBooleanosImportantesGM();
         }
         else if (panelMapasMDS.activeSelf)
         {
-            panelModos.SetActive(true);
+            panelComoJugarDS.SetActive(true);
             panelMapasMDS.SetActive(false);
             panelMapasMDSStatic = false;
             print(panelMapasMDSStatic);
-            EventSystem.current.SetSelectedGameObject(botonMDS.gameObject);
-            ultimoBotonSeleccionadoStatic = botonMDS.gameObject;
+            EventSystem.current.SetSelectedGameObject(botonComoJugarDS.gameObject);
+            ultimoBotonSeleccionadoStatic = botonComoJugarDS.gameObject;
             GameManager.Instance.ResetarBooleanosImportantesGM();
         }
         else if (panelSchemeControl.activeSelf)
@@ -245,6 +251,20 @@ public class MainMenuSystem : MonoBehaviour
             panelCreditos.SetActive(false);
             panelMenuPrincipal.SetActive(true);
             EventSystem.current.SetSelectedGameObject(ultimoBotonSeleccionadoStatic);
+        }
+        else if(panelComoJugarHS.activeSelf)
+        {
+            panelComoJugarHS.SetActive(false);
+            panelModos.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(botonMHS.gameObject);
+            ultimoBotonSeleccionadoStatic = botonMHS.gameObject;
+        }
+        else if(panelComoJugarDS.activeSelf)
+        {
+            panelComoJugarDS.SetActive(false);
+            panelModos.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(botonMDS.gameObject);
+            ultimoBotonSeleccionadoStatic = botonMDS.gameObject;
         }
 
         play = false;
@@ -311,6 +331,24 @@ public class MainMenuSystem : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(botonMDSCalle.gameObject);
         ultimoBotonSeleccionadoStatic = botonMDS.gameObject;
+    }
+
+    public void ComoJugarHS()
+    {
+        panelComoJugarHS.SetActive(true);
+        panelModos.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(botonComoJugarHS.gameObject);
+        AudioManager.instance.PlaySound("botonmenu");
+        ultimoBotonSeleccionadoStatic = botonComoJugarHS.gameObject;
+    }
+
+    public void ComoJugarDS()
+    {
+        panelComoJugarDS.SetActive(true);
+        panelModos.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(botonComoJugarDS.gameObject);
+        AudioManager.instance.PlaySound("botonmenu");
+        ultimoBotonSeleccionadoStatic = botonComoJugarDS.gameObject;
     }
 
     public void ConfirmacionSalir()

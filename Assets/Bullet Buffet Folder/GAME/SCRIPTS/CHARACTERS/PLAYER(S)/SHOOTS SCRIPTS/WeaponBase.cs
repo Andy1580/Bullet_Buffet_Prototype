@@ -32,7 +32,7 @@ public class WeaponBase : MonoBehaviour
     {
         if(context.performed)
         {
-            if (cantShoot && !propietario.muerto && !propietario.BloquearMovimiento)
+            if (cantShoot && !propietario.muerto && !propietario.BloquearMovimiento && !propietario.escudo.gameObject.activeSelf)
             {
                 Disparar();
             }

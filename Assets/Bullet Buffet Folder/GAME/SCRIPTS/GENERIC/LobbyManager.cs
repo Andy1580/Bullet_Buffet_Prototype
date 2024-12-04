@@ -75,6 +75,8 @@ public class LobbyManager : MonoBehaviour
         enProgreso = false;
 
         partidaComenzada = false;
+
+        escogiendoEquipo = true;
     }
 
     private IEnumerator CargarMenuConRetraso(float delay)
@@ -241,6 +243,14 @@ public class LobbyManager : MonoBehaviour
     public void ActivarPanelPersonajesConDelay()
     {
         StartCoroutine(ActivarPanelPersonajeDelay());
+        ControlSystem[] controlSystems = FindObjectsOfType<ControlSystem>();
+
+        // Iterar sobre ellos y actualizar la propiedad escogiendoEquipoCS
+        foreach (ControlSystem c in controlSystems)
+        {
+            c.escogiendoEquipoCS = false;
+            Debug.Log($"Se reestableció escogiendoEquipoCS para {c.name}");
+        }
     }
 
     IEnumerator ActivarPanelPersonajeDelay()
@@ -376,112 +386,102 @@ public class LobbyManager : MonoBehaviour
         personaje.Clear();
     }
 
-    public static void RechazarEquipo(int equipoRechazado)
+    public static void RechazarEquipo(int equipoRechazado, ControlSystem cs)
     {
-        equipoControles[equipoRechazado - 1]--;
-
-        int resta = equipoControles[0] - equipoControles[1] - equipoControles[2] - equipoControles[3];
-
-        if (Gamepad.all.Count == 2 || Gamepad.all.Count == 4)
-        {
-            if (resta == 1)
-            {
-                if (self.continuar.activeSelf)
-                {
-                    self.continuar.SetActive(false);
-                }
-            }
-        }
-
-        /*
-        if (enProgreso) return; // Si ya estamos procesando, ignoramos nuevas llamadas
+        if (enProgreso) return; // Evitar múltiples llamadas simultáneas
         enProgreso = true;
 
         try
         {
+            // Si estamos en el panel de selección de equipo
             if (self.panelSelectTeam.activeSelf)
             {
-                // Validar si todos los jugadores están en equipo 0
-                bool todosEquipo0 = true;
-
-                foreach (var par in dicControles)
+                if (cs.equipoJugador == 0)
                 {
-                    ControlSystem cs = par.Value.GetComponent<ControlSystem>();
-                    if (cs != null && cs.equipoJugador != 0)
-                    {
-                        todosEquipo0 = false;
-                        break;
-                    }
+                    // Si el equipo del jugador que presionó rechazar es 0, cargamos el menú
+                    Debug.Log($"Jugador {cs.name} rechazó el equipo y está en equipo 0. Cargando menú...");
+                    self.StartCoroutine(self.CargarMenuConRetraso(0.8f));
+                    return;
                 }
 
-                if (todosEquipo0) // Si todos los jugadores tienen equipo 0
+                // Si no, restamos su equipo del contador y reseteamos solo su ícono
+                equipoControles[equipoRechazado - 1]--;
+                //cs.ResetearVariables();
+                self.continuar.SetActive(false);
+                cs.selectCh = false;
+                cs.selectTm = true;
+                cs.equipoBloqueado = false;
+
+                ControlSystem[] controlSystems = FindObjectsOfType<ControlSystem>();
+
+                // Iterar sobre ellos y actualizar la propiedad escogiendoEquipoCS
+                foreach (ControlSystem c in controlSystems)
                 {
-                    Debug.Log("Todos los jugadores están en equipo 0. Cargando el menú...");
-                    self.StartCoroutine(self.CargarMenuConRetraso(0.8f)); // Llama la corrutina
-                    return; // Detenemos aquí para evitar ejecutar el resto del método
+                    c.escogiendoEquipoCS = true;
+                    Debug.Log($"Se reestableció escogiendoEquipoCS para {c.name}");
                 }
+
+                cs.escogiendoEquipoCS = true;
+                cs.equipoJugador = 0;
+                // Mover ícono del control al centro
+                cs.c_Animator.SetInteger("Posicion", 0);
+                cs.controlImg.color = new Color(1, 1, 1, 0.6f);
+                cs.controlImg.sprite = cs.centro;
+
+                Debug.Log($"Jugador {cs.name} rechazó el equipo y regresó al centro.");
             }
 
-            // Si al menos un jugador tiene equipo diferente de 0, ejecutamos el resto del código
-            Debug.Log("Se resetearon los equipos");
-
-            // Limpia el arreglo equipoControles, establece todos los elementos en 0
-            Array.Clear(equipoControles, 0, equipoControles.Length);
-            equipo1 = 0;
-            equipo2 = 0;
-
-            listaCsEquipo1.Clear();
-            listaCsEquipo2.Clear();
-            listaCS.Clear();
-
-            // Limpiar el diccionario de equipo y personaje
-            equipo.Clear();
-            personaje.Clear();
-
-            // Ciclar a través de todos los `ControlSystem` y resetear variables
-            foreach (var par in dicControles)
+            // Si estamos en el panel de selección de personaje
+            else if (self.panelSelectCh.activeSelf)
             {
-                ControlSystem cs = par.Value.GetComponent<ControlSystem>();
-                if (cs != null)
+                if (cs.selectedCharacter == null || cs.selectedCharacter == "")
                 {
-                    cs.ResetearVariables();
-                }
-            }
+                    // Si no seleccionó personaje, volver a la selección de equipo
+                    Debug.Log($"Jugador {cs.name} rechazó el personaje y vuelve a seleccionar equipo.");
+                    RecetearVariablesLobby();
+                    cs.selectCh = false;
+                    cs.selectTm = true;
+                    cs.equipoBloqueado = false;
+                    //cs.ResetearVariables();
+                    cs.c_Animator.SetInteger("Posicion", 0);
+                    cs.controlImg.color = new Color(1, 1, 1, 0.6f);
+                    cs.controlImg.sprite = cs.centro;
+                    escogiendoEquipo = true;
+                    cs.escogiendoEquipoCS = true;
+                    equipoControles[equipoRechazado - 1]--;
 
-            // Limpiar los sprites de los slots
-            foreach (var slot in self.slotsEquipo1)
-            {
-                if (slot.childCount > 1)
-                {
-                    Image personajeImage = slot.GetChild(1).GetComponent<Image>();
-                    if (personajeImage != null)
+                    ControlSystem[] controlSystems = FindObjectsOfType<ControlSystem>();
+
+                    // Iterar sobre ellos y actualizar la propiedad escogiendoEquipoCS
+                    foreach (ControlSystem c in controlSystems)
                     {
-                        personajeImage.sprite = self.defaultSprite;
+                        c.escogiendoEquipoCS = true;
+                        Debug.Log($"Se reestableció escogiendoEquipoCS para {c.name}");
                     }
-                }
-            }
 
-            foreach (var slot in self.slotsEquipo2)
-            {
-                if (slot.childCount > 1)
+                    self.StartCoroutine(ActivarPanelEquipoConDelay());
+                }
+                else
                 {
-                    Image personajeImage = slot.GetChild(1).GetComponent<Image>();
-                    if (personajeImage != null)
-                    {
-                        personajeImage.sprite = self.defaultSprite;
-                    }
+                    // Si ya tenía seleccionado personaje, lo reseteamos
+                    Debug.Log($"Jugador {cs.name} rechazó su personaje y lo reseteó.");
+                    cs.selectedCharacter = "";
+                    cs.spritePersonaje.sprite = cs.spritePersonajeDefault;
+                    cs.selectCh = true;
                 }
             }
-
-            self.botonJugar.gameObject.SetActive(false);
-            escogiendoEquipo = true;
-            ActivarPanelSeleccionarEquipo();
         }
         finally
         {
             enProgreso = false; // Resetear bandera
+            print(enProgreso);
         }
-        */
+    }
+
+    static IEnumerator ActivarPanelEquipoConDelay()
+    {
+        yield return null;
+        ActivarPanelSeleccionarEquipo();
     }
 
     public static void RechazarPersonaje(Gamepad gamepad)

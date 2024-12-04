@@ -4,6 +4,7 @@ public class DañoBalaJugador : MonoBehaviour
 {
     [SerializeField] private int daño;
     private PlayerController propietario;
+    public GameObject vfxImpacto;
 
     public void IniciarBala(PlayerController player)
     {
@@ -29,8 +30,9 @@ public class DañoBalaJugador : MonoBehaviour
                     if (!jugador.isInvulnerable || !jugador.muerto)
                     {
                         jugador.Vida -= daño;
-                        //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                        //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                        Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                        Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
+                        Destroy(this.gameObject);
                     }
                 }
                 else return;
@@ -57,6 +59,8 @@ public class DañoBalaJugador : MonoBehaviour
 
         else if (other.gameObject.layer == 10) //layer 10 de obstaculo
         {
+            Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+            Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
             Destroy(this.gameObject);
         }
         //Vector3 puntoImpacto = other.ClosestPoint(transform.position);

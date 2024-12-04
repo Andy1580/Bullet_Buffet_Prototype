@@ -29,7 +29,7 @@ public class HabilidadEscopeta : MonoBehaviour
 
     public void ActivarHabilidad()
     {
-        if(cantShoot && !propietario.muerto && propietario.canShoot)
+        if(cantShoot && !propietario.muerto)
         {
             Fire();
         }

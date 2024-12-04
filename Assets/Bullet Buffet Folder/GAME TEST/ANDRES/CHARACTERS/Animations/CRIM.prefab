@@ -1430,8 +1430,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.3884902, y: 2.079272, z: 0.36282226}
-  m_Center: {x: -0.04926942, y: 0.052075204, z: 0.318589}
+  m_Size: {x: 3.67, y: 2.079272, z: 1.2921814}
+  m_Center: {x: -0.04926942, y: 0.052075204, z: -0.17750116}
 --- !u!65 &2962731747974840994
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3255,6 +3255,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d056a17e-051e-4712-aa04-dfe85e0c119d
     m_ActionName: UI/Rechazar[/DualShock4GamepadHID/buttonEast,/XInputControllerWindows/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1e763add-e4a6-433b-a937-20808905c3b5
+    m_ActionName: UI Lobby/Continuar[/XInputControllerWindows/start,/XInputControllerWindows1/start]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: Player
@@ -3306,7 +3310,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 1.94, z: 0}
+  m_Center: {x: 0, y: 1.94, z: -0.33}
 --- !u!114 &5974958088561416036
 MonoBehaviour:
   m_ObjectHideFlags: 0

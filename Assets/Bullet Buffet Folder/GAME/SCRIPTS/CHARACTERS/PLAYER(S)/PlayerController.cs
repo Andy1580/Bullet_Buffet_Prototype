@@ -25,8 +25,6 @@ public class PlayerController : MonoBehaviour
 
         GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
         Destroy(clone, 1.5f);
-
-        canShoot = true;
     }
 
     private void Update()
@@ -57,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     public void Input_Dash(InputAction.CallbackContext context)
     {
-        if (!enDash && canDash)
+        if (!enDash && canDash && !escudo.gameObject.activeSelf && !muerto)
         {
             vfxDash.Play();
             direccionDash = axis1.normalized;
@@ -78,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     public void Input_Escudo(InputAction.CallbackContext context)
     {
-        if (canEscudo)
+        if (canEscudo && !muerto)
         {
             ActivarEscudo();
         }
@@ -103,7 +101,7 @@ public class PlayerController : MonoBehaviour
 
     public void Input_PowerUp(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !muerto)
         {
             if (actualHability == "Invulnerability")
             {
@@ -131,7 +129,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            if (habilidadDisponible)
+            if (habilidadDisponible && !escudo.gameObject.activeSelf && !muerto)
             {
                 //ExplosiveBullet();
                 ActivarHabilidad();
@@ -520,6 +518,11 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("muerto");
         AudioManager.instance.PlaySound("muertejugador");
         GameManager.Instance.DeadPlayerEventMHS(this);
+
+        if(escudo.gameObject.activeSelf)
+        {
+            escudo.gameObject.SetActive(false);
+        }
     }
 
     public int Vida
@@ -556,7 +559,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DañoEmisivo()
     {
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
-        //if (Vida > 0)
+        //if (Vida! <= 0)
         //{
         //    animator.SetTrigger("daño");
 
@@ -593,7 +596,7 @@ public class PlayerController : MonoBehaviour
     [Header("Shield Stats")]
     [SerializeField] private float tiempoEscudo = 0.45f;
     [SerializeField] private float cooldownEscudo = 7;
-    [SerializeField] private Transform escudo;
+    [SerializeField] public Transform escudo;
     [SerializeField] private int contadorEscudo = 7;
     private Vector3 diferenciaEscudo;
     private Quaternion rotacionEscudo;
@@ -777,8 +780,6 @@ public class PlayerController : MonoBehaviour
         DeshabilitarMovimiento();
 
         AudioManager.instance.PlaySound("habilidadNOVA");
-
-        Invoke("HabilitarMovimiento", 2f);
     }
 
     void HabilidadCRIM()
@@ -788,8 +789,6 @@ public class PlayerController : MonoBehaviour
         DeshabilitarMovimiento();
 
         AudioManager.instance.PlaySound("habilidadCRIM");
-
-        Invoke("HabilitarMovimiento", 1.8f);
     }
 
     void HabilidadKAI()
@@ -948,8 +947,6 @@ public class PlayerController : MonoBehaviour
     }
     #endregion EXTRAS
 
-    [SerializeField] internal bool canShoot = true;
-
     private Jugador _jugador;
 
     public Jugador Jugador
@@ -985,28 +982,4 @@ public class PlayerController : MonoBehaviour
         }
     }
     */
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == 10) //10 = layer escudo
-        {
-            canShoot = false;
-            Invoke("DesactivarBoolTrigger", 4.5f);
-            print(canShoot);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == 10)
-        {
-            canShoot = true;
-            print(canShoot);
-        }
-    }
-
-    void DesactivarBoolTrigger()
-    {
-        canShoot = true;
-    }
 }

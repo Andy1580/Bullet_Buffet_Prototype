@@ -1583,7 +1583,7 @@ Transform:
   m_GameObject: {fileID: 3505622741838267773}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.11, z: 4.05}
+  m_LocalPosition: {x: 0, y: 2.11, z: 3.63}
   m_LocalScale: {x: 1, y: 4.2490997, z: 1.7356219}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1673,6 +1673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   "da\xF1o": 15
+  escudoBloqueado: 0
 --- !u!54 &2032956005787892459
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3047,6 +3048,7 @@ GameObject:
   - component: {fileID: 8788677273556833120}
   - component: {fileID: 1432092549349625839}
   - component: {fileID: 8316864770998471679}
+  - component: {fileID: 1111736757889415127}
   m_Layer: 8
   m_Name: KAI
   m_TagString: Player
@@ -3140,7 +3142,6 @@ MonoBehaviour:
   inSuperSpeed: 0
   vfxRespanPlayer: {fileID: 3671800839134847171, guid: 7e7a15f5efdc2c94fb8f3445b3694a6c,
     type: 3}
-  canShoot: 1
 --- !u!114 &6587386509906615597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3319,6 +3320,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d056a17e-051e-4712-aa04-dfe85e0c119d
     m_ActionName: UI/Rechazar[/DualShock4GamepadHID/buttonEast,/XInputControllerWindows/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1e763add-e4a6-433b-a937-20808905c3b5
+    m_ActionName: UI Lobby/Continuar[/XInputControllerWindows/start,/XInputControllerWindows1/start]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: Player
@@ -3370,7 +3375,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 1.94, z: 0}
+  m_Center: {x: 0, y: 1.94, z: -0.33}
 --- !u!114 &1432092549349625839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3401,6 +3406,22 @@ MonoBehaviour:
   "objetoDa\xF1o": {fileID: 8354709244157410171}
   vfxSuperShootShotgun: {fileID: 4918354076293617053}
   cantShoot: 1
+--- !u!114 &1111736757889415127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6514194934300768095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a6da85ef6e3d4389b7be5e30718a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  "layerObjetosDeDa\xF1o":
+    serializedVersion: 2
+    m_Bits: 1
+  tiempoBloqueoEscudo: 0.5
 --- !u!1 &6924257278319064910
 GameObject:
   m_ObjectHideFlags: 0
@@ -3910,7 +3931,7 @@ Transform:
   m_GameObject: {fileID: 8354709244157410171}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.11, z: 5.91}
+  m_LocalPosition: {x: 0, y: 2.11, z: 5.49}
   m_LocalScale: {x: 1.81207, y: 4.2490997, z: 2.8822453}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4254,13 +4275,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1912280239775656328, guid: effe664b458d2684aa9a456f3348bf29,
         type: 3}
+      propertyPath: m_Size.x
+      value: 3.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912280239775656328, guid: effe664b458d2684aa9a456f3348bf29,
+        type: 3}
       propertyPath: m_Size.z
-      value: 1.4714942
+      value: 1.2921814
       objectReference: {fileID: 0}
     - target: {fileID: 1912280239775656328, guid: effe664b458d2684aa9a456f3348bf29,
         type: 3}
       propertyPath: m_Center.z
-      value: 0.872925
+      value: -0.17750116
       objectReference: {fileID: 0}
     - target: {fileID: 6534137483485354097, guid: effe664b458d2684aa9a456f3348bf29,
         type: 3}
@@ -4326,7 +4352,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.03, y: 1.96, z: 0.17}
+  m_Size: {x: 3.67, y: 2.079272, z: 0.3}
   m_Center: {x: -0.04926942, y: 0.052075204, z: 0.318589}
 --- !u!54 &8533098846464328804
 Rigidbody:

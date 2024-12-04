@@ -31,7 +31,7 @@ public class HabilidadRayo : MonoBehaviour
 
     public void ActivarHabilidad()
     {
-        if (!habilidadActiva && !propietario.muerto && propietario.canShoot)
+        if (!habilidadActiva && !propietario.muerto && !propietario.escudo.gameObject.activeSelf)
         {
             //StartCoroutine(DispararRayContinuamente());
             StartCoroutine(ActivarRayo());
@@ -135,6 +135,7 @@ public class HabilidadRayo : MonoBehaviour
         habilidadActiva = false;
         yield return new WaitForSeconds(1f);
         lineRenderer.enabled = false;
+        propietario.HabilitarMovimiento();
         vfxRayo.Stop();
     }
 

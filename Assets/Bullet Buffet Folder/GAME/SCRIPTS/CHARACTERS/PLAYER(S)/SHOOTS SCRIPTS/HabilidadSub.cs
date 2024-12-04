@@ -9,6 +9,7 @@ public class HabilidadSub : MonoBehaviour
     [SerializeField] private float duracionHabilidad = 3f;
     [SerializeField] private float intervaloDaño = 0.5f;
     [SerializeField] private LayerMask capas;
+    [SerializeField] private ParticleSystem vfxHabilidadSub;
 
     private bool muertoJugador = false;
 
@@ -19,7 +20,7 @@ public class HabilidadSub : MonoBehaviour
 
     public void ActivarHabilidad()
     {
-        if(!propietario.muerto && propietario.canShoot)
+        if(!propietario.muerto && !propietario.escudo.gameObject.activeSelf)
         {
             propietario.animator.SetTrigger("habilidad");
             StartCoroutine(DañoConstanteEnArea());
@@ -44,6 +45,8 @@ public class HabilidadSub : MonoBehaviour
 
     IEnumerator DañoConstanteEnArea()
     {
+        vfxHabilidadSub.Play();
+
         float tiempoRestante = duracionHabilidad;
 
         while (tiempoRestante > 0f)
@@ -93,7 +96,7 @@ public class HabilidadSub : MonoBehaviour
 
             tiempoRestante -= intervaloDaño;  // Reducir el tiempo restante de la habilidad
         }
-
+        propietario.HabilitarMovimiento();
         propietario.animator.SetTrigger("mov");
     }
 

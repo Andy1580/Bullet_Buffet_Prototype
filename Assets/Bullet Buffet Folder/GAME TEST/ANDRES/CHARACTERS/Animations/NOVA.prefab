@@ -2927,6 +2927,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d056a17e-051e-4712-aa04-dfe85e0c119d
     m_ActionName: UI/Rechazar[/DualShock4GamepadHID/buttonEast,/XInputControllerWindows/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1e763add-e4a6-433b-a937-20808905c3b5
+    m_ActionName: UI Lobby/Continuar[/XInputControllerWindows/start,/XInputControllerWindows1/start]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Controller
   m_DefaultActionMap: Player
@@ -2978,7 +2982,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 1.94, z: 0}
+  m_Center: {x: 0, y: 1.94, z: -0.33}
 --- !u!114 &4462021074415601158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4162,6 +4166,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912280239775656328, guid: effe664b458d2684aa9a456f3348bf29,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 3.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912280239775656328, guid: effe664b458d2684aa9a456f3348bf29,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1.2921814
+      objectReference: {fileID: 0}
+    - target: {fileID: 1912280239775656328, guid: effe664b458d2684aa9a456f3348bf29,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0.17750116
       objectReference: {fileID: 0}
     - target: {fileID: 6534137483485354097, guid: effe664b458d2684aa9a456f3348bf29,
         type: 3}

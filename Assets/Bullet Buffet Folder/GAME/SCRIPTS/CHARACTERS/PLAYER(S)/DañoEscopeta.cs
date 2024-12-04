@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class DañoEscopeta : MonoBehaviour
 {
     [SerializeField] private int daño;
     private PlayerController propietario;
+    public bool escudoBloqueado = false;
 
     private void Awake()
     {
@@ -13,36 +15,44 @@ public class DañoEscopeta : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.layer == 10) //layer 10 = obstaculo
+        // Si el escudo ya bloqueó, ignoramos el resto
+        if (escudoBloqueado) return;
+
+        // Verificar si colisionó con el escudo (Layer 10)
+        if (other.gameObject.layer == 10)
         {
-            return;
-            //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-            //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
+            escudoBloqueado = true; // Marcar que el escudo bloqueó
+            Debug.Log("El escudo bloqueó el daño");
+            return; // Detener el procesamiento
         }
 
-        else if (other.gameObject.layer == 8) //Layer Player = 8
+        //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+        //Instantiate(vfxImpactoObjeto, puntoImpacto,Quaternion.identity);
+
+
+        // Procesar colisión con jugadores
+        if (other.gameObject.layer == 8) // Layer Player = 8
         {
             PlayerController jugador = other.GetComponent<PlayerController>();
 
+            if (jugador == null)
+                return;
+
             if (jugador.equipo == propietario.equipo)
             {
-                Debug.Log("Es del mismo equipoJugador, no puedes hacerle daño");
+                Debug.Log("Es del mismo equipo, no puedes hacerle daño");
                 return;
             }
             else
             {
-                if (jugador.Vida > 0)
-                {
-                    if (!jugador.isInvulnerable || !jugador.muerto)
-                    {
-                        jugador.Vida -= daño;
-                        //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                        //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
-                    }
-                }
-                else return;
-            }
+                if (escudoBloqueado) return;
 
+                if (jugador.Vida > 0 && !jugador.isInvulnerable && !jugador.muerto)
+                {
+                    jugador.Vida -= daño;
+                    Debug.Log($"Jugador {jugador.name} recibió daño: {daño}");
+                }
+            }
         }
 
         else if (other.gameObject.layer == 7) //Layer Enemy = 7
@@ -62,7 +72,17 @@ public class DañoEscopeta : MonoBehaviour
             }
         }
 
+        else if (other.gameObject.layer == 10) // Layer Obstáculos/Escudo
+        {
+            Debug.Log("El daño fue bloqueado por un obstáculo.");
+            return; // Salir inmediatamente
+        }
 
+    }
+
+    private void OnDisable()
+    {
+        escudoBloqueado = false;
     }
 
     private void OnDestroy()
