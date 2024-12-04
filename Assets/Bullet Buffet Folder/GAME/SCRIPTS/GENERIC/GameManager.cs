@@ -1611,6 +1611,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject vfxImpactoHechizo;
     [SerializeField] private ParticleSystem vfxCargaMago1;
     [SerializeField] private ParticleSystem vfxCargaMago2;
+    [SerializeField] private ParticleSystem vfxImactoRocaMago1;
+    [SerializeField] private ParticleSystem vfxImactoRocaMago2;
 
     [Header("Magos")]
     [SerializeField] private GameObject mago1;
@@ -1635,6 +1637,8 @@ public class GameManager : MonoBehaviour
         camaraPrincipalAnimator = camaraPrincipal.GetComponent<Animator>();
         vfxCargaMago1.Stop();
         vfxCargaMago2.Stop();
+        vfxImactoRocaMago1.Stop();
+        vfxImactoRocaMago2.Stop();
     }
 
     //Parte de los Magos
@@ -1667,8 +1671,10 @@ public class GameManager : MonoBehaviour
                 GameObject cloneVFX = Instantiate(vfxImpactoHechizo, hechizo.transform.position, Quaternion.identity);
                 Destroy(hechizo);
                 Destroy(cloneVFX, 1.8f);
+                vfxImactoRocaMago2.Play();
                 AudioManager.instance.StopSound("hechizoMago");
                 AudioManager.instance.PlaySound("hechizoImpacto");
+                AudioManager.instance.PlaySound("magoRoca");
                 yield break;
             }
 
@@ -1687,8 +1693,10 @@ public class GameManager : MonoBehaviour
                 GameObject cloneVFX = Instantiate(vfxImpactoHechizo, hechizo.transform.position, Quaternion.identity);
                 Destroy(hechizo);
                 Destroy(cloneVFX, 1.8f);
+                vfxImactoRocaMago1.Play();
                 AudioManager.instance.StopSound("hechizoMago");
                 AudioManager.instance.PlaySound("hechizoImpacto");
+                AudioManager.instance.PlaySound("magoRoca");
                 yield break;
             }
 

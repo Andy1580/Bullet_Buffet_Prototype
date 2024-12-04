@@ -4563,19 +4563,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musica:
   - nombre: menu
-    clip: {fileID: 8300000, guid: b8db9cb25e021ad44a6472a9bf45ba9f, type: 3}
+    clip: {fileID: 8300000, guid: 4e2fa29b61bbcf64cb810c958d7c03c8, type: 3}
     loop: 1
     volume: 0.5
     pitch: 1
     source: {fileID: 0}
   - nombre: hechizos
-    clip: {fileID: 8300000, guid: 487fb6e42576b794984af1dd7cbaf184, type: 3}
+    clip: {fileID: 8300000, guid: a3a924fddb97ace45b005b3b71b926ca, type: 3}
     loop: 1
     volume: 0.25
     pitch: 1
     source: {fileID: 0}
   - nombre: duelo
-    clip: {fileID: 8300000, guid: b9d119221e9b2fc4291882f890017fb7, type: 3}
+    clip: {fileID: 8300000, guid: 6a8f30b48447b6a4896483e60de97e92, type: 3}
     loop: 1
     volume: 0.25
     pitch: 1
@@ -4615,6 +4615,12 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: de9a1e74f02fa5e4fbfbe8f10cc6757f, type: 3}
     loop: 0
     volume: 0.7
+    pitch: 1
+    source: {fileID: 0}
+  - nombre: magoRoca
+    clip: {fileID: 8300000, guid: 1a4f5f3c146e7954baa0a58be9def654, type: 3}
+    loop: 0
+    volume: 0.3
     pitch: 1
     source: {fileID: 0}
   - nombre: disparomedusa
@@ -14576,6 +14582,16 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
         type: 3}
+      propertyPath: vfxCargaMago1
+      value: 
+      objectReference: {fileID: 8226544034150402801}
+    - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
+        type: 3}
+      propertyPath: vfxCargaMago2
+      value: 
+      objectReference: {fileID: 8226544034150402798}
+    - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
+        type: 3}
       propertyPath: botonControles
       value: 
       objectReference: {fileID: 2102921827}
@@ -14585,6 +14601,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5137420494086734323, guid: 1826471f674d34b43bad1c2a67cd54ad,
         type: 3}
+    - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
+        type: 3}
+      propertyPath: vfxImactoRocaMago1
+      value: 
+      objectReference: {fileID: 8226544034150402800}
+    - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
+        type: 3}
+      propertyPath: vfxImactoRocaMago2
+      value: 
+      objectReference: {fileID: 8226544034150402799}
     - target: {fileID: 4197108785192995241, guid: 86d3465a98c9511469858da6d49c0499,
         type: 3}
       propertyPath: enemigosMaximosActivos
@@ -14735,6 +14761,30 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86d3465a98c9511469858da6d49c0499, type: 3}
+--- !u!198 &8226544034150402798 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4869624492980962460, guid: 86d3465a98c9511469858da6d49c0499,
+    type: 3}
+  m_PrefabInstance: {fileID: 8226544034150402797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8226544034150402799 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6494628625838623657, guid: 86d3465a98c9511469858da6d49c0499,
+    type: 3}
+  m_PrefabInstance: {fileID: 8226544034150402797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8226544034150402800 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5529672265993601483, guid: 86d3465a98c9511469858da6d49c0499,
+    type: 3}
+  m_PrefabInstance: {fileID: 8226544034150402797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8226544034150402801 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8465439342067421993, guid: 86d3465a98c9511469858da6d49c0499,
+    type: 3}
+  m_PrefabInstance: {fileID: 8226544034150402797}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

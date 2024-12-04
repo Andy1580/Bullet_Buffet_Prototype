@@ -3048,7 +3048,6 @@ GameObject:
   - component: {fileID: 8788677273556833120}
   - component: {fileID: 1432092549349625839}
   - component: {fileID: 8316864770998471679}
-  - component: {fileID: 1111736757889415127}
   m_Layer: 8
   m_Name: KAI
   m_TagString: Player
@@ -3103,7 +3102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipo: 0
   circuloEquipo: {fileID: 1288321935782519873}
-  playerSpeed: 4.5
+  playerSpeed: 6
   smoothRotacion: 5
   BloquearMovimiento: 0
   BloquearRotacion: 0
@@ -3138,7 +3137,7 @@ MonoBehaviour:
   actualHability: None
   isInvunerableTime: 5
   isInvulnerable: 0
-  superSpeed: 10
+  superSpeed: 9
   actualSpeed: 0
   superSpeedTime: 3
   inSuperSpeed: 0
@@ -3408,22 +3407,6 @@ MonoBehaviour:
   "objetoDa\xF1o": {fileID: 8354709244157410171}
   vfxSuperShootShotgun: {fileID: 4918354076293617053}
   cantShoot: 1
---- !u!114 &1111736757889415127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6514194934300768095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 744a6da85ef6e3d4389b7be5e30718a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  "layerObjetosDeDa\xF1o":
-    serializedVersion: 2
-    m_Bits: 1
-  tiempoBloqueoEscudo: 0.5
 --- !u!1 &6924257278319064910
 GameObject:
   m_ObjectHideFlags: 0
@@ -4509,12 +4492,12 @@ PrefabInstance:
     - target: {fileID: 6193920093727339765, guid: c9208c9b562416f439536a594507f9ca,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6193920093727339765, guid: c9208c9b562416f439536a594507f9ca,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6193920093727339765, guid: c9208c9b562416f439536a594507f9ca,
         type: 3}
@@ -4529,7 +4512,7 @@ PrefabInstance:
     - target: {fileID: 6193920093727339765, guid: c9208c9b562416f439536a594507f9ca,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6193920093727339765, guid: c9208c9b562416f439536a594507f9ca,
         type: 3}
