@@ -7,6 +7,7 @@ public class HabilidadEnArea : MonoBehaviour
     [SerializeField] private float areaDaño = 3f;
     [SerializeField] private int daño = 50;
     [SerializeField] private GameObject vfxHabilidadArea;
+    [SerializeField] private GameObject vfxImpacto;
     private PlayerController jugadorInvocador;
 
     private void Start()
@@ -49,6 +50,8 @@ public class HabilidadEnArea : MonoBehaviour
                 {
                     if (player.muerto) return;
                     player.Vida -= daño;
+                    Vector3 puntoImpacto = collider.ClosestPoint(transform.position);
+                    Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
                 }
 
             }

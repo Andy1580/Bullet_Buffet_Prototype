@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 388470390}
   - component: {fileID: 388470392}
   - component: {fileID: 388470393}
+  - component: {fileID: 388470394}
   m_Layer: 12
   m_Name: PunteroJ1
   m_TagString: Untagged
@@ -837,7 +838,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -5.096939, y: 6.7163086}
+  m_Offset: {x: 3.468933, y: 0.456604}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -848,7 +849,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 146.51389, y: 123.67261}
+  m_Size: {x: 95.11853, y: 86.11438}
   m_EdgeRadius: 0
 --- !u!114 &388470393
 MonoBehaviour:
@@ -862,6 +863,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5925e005d1222f149ac5945866113370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &388470394
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388470388}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &418612604
 GameObject:
   m_ObjectHideFlags: 0
@@ -1736,6 +1764,7 @@ GameObject:
   - component: {fileID: 788939526}
   - component: {fileID: 788939528}
   - component: {fileID: 788939529}
+  - component: {fileID: 788939530}
   m_Layer: 12
   m_Name: PunteroJ2
   m_TagString: Untagged
@@ -1812,7 +1841,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 544
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1832,7 +1861,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 3.468933, y: 0.456604}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1843,7 +1872,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 95.11853, y: 86.11438}
   m_EdgeRadius: 0
 --- !u!114 &788939529
 MonoBehaviour:
@@ -1857,6 +1886,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5925e005d1222f149ac5945866113370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &788939530
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788939524}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &789314389
 GameObject:
   m_ObjectHideFlags: 0
@@ -2757,6 +2813,7 @@ GameObject:
   - component: {fileID: 1615673670}
   - component: {fileID: 1615673672}
   - component: {fileID: 1615673673}
+  - component: {fileID: 1615673674}
   m_Layer: 12
   m_Name: PunteroJ4
   m_TagString: Untagged
@@ -2833,7 +2890,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 544
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2853,7 +2910,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 3.468933, y: 0.456604}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2864,7 +2921,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 95.11853, y: 86.11438}
   m_EdgeRadius: 0
 --- !u!114 &1615673673
 MonoBehaviour:
@@ -2878,6 +2935,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5925e005d1222f149ac5945866113370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &1615673674
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615673668}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1635745172
 GameObject:
   m_ObjectHideFlags: 0
@@ -3123,6 +3207,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1854540312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1854540314}
+  - component: {fileID: 1854540313}
+  m_Layer: 0
+  m_Name: GestionarPuntero
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1854540313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854540312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af079ab308cec05499902def7f890bc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1854540314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854540312}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1009.3114, y: 620.3195, z: -0.628825}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1895713082
 GameObject:
   m_ObjectHideFlags: 0
@@ -3254,6 +3382,7 @@ GameObject:
   - component: {fileID: 2070748979}
   - component: {fileID: 2070748981}
   - component: {fileID: 2070748982}
+  - component: {fileID: 2070748983}
   m_Layer: 12
   m_Name: PunteroJ3
   m_TagString: Untagged
@@ -3330,7 +3459,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 544
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3350,7 +3479,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 3.468933, y: 0.456604}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3361,7 +3490,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 95.11853, y: 86.11438}
   m_EdgeRadius: 0
 --- !u!114 &2070748982
 MonoBehaviour:
@@ -3375,6 +3504,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5925e005d1222f149ac5945866113370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &2070748983
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070748977}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &2083474204
 GameObject:
   m_ObjectHideFlags: 0
@@ -7224,3 +7380,4 @@ SceneRoots:
   - {fileID: 4066242012797877217}
   - {fileID: 4463932578065784150}
   - {fileID: 462063507}
+  - {fileID: 1854540314}

@@ -177,7 +177,7 @@ public class EnemyAI_Meele : MonoBehaviour
 
     private IEnumerator DañoEmisivo()
     {
-        animator.SetTrigger("daño");
+        //animator.SetTrigger("daño");
         renderer.material.SetColor("_EmissionColor", Color.white * 2);
         yield return new WaitForSeconds(0.1f);
         renderer.material.SetColor("_EmissionColor", Color.black);

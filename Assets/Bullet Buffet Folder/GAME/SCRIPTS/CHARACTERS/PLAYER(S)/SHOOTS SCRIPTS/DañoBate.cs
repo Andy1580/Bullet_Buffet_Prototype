@@ -1,7 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class DañoEscopeta : MonoBehaviour
+public class DañoBate : MonoBehaviour
 {
     [SerializeField] private int daño;
     private PlayerController propietario;
@@ -94,6 +95,6 @@ public class DañoEscopeta : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.LogWarning("Se destruyo el Collider de la Escopeta");
+        Debug.LogWarning("Se destruyo el Collider del Bate");
     }
 }

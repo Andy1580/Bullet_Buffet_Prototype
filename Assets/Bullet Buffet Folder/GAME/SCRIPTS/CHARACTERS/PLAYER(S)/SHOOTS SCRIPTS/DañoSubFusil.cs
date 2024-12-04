@@ -42,12 +42,12 @@ public class DañoSubFusil : MonoBehaviour
             if (eM != null)
             {
                 eM.VidaEnemigo -= damage;
-                eM.animator.SetTrigger("daño");
+                //eM.animator.SetTrigger("daño");
             }
             else if (eF != null)
             {
                 eF.VidaEnemigo -= damage;
-                eF.animator.SetTrigger("daño");
+                //eF.animator.SetTrigger("daño");
             }
         }
     }

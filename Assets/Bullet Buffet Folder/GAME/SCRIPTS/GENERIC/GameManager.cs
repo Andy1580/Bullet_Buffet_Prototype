@@ -248,9 +248,9 @@ public class GameManager : MonoBehaviour
         if (modoHS)
         {
             //Aqui ira todo lo que necesita el MHS
+            magosPrincipales.SetActive(true);
             InicializarMHS();
             InicializarMarcadorMHS();
-            magosPrincipales.SetActive(true);
 
             AudioManager.instance.PlaySound("opHS");
         }

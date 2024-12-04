@@ -24,9 +24,16 @@ public class BulletEnemy : MonoBehaviour
         if (other.gameObject.layer == 8) //Layer Player = 8
         {
             PlayerController pC = other.GetComponent<PlayerController>();
-            if (!pC.isInvulnerable || !pC.muerto)
+            if (!pC.isInvulnerable && !pC.muerto)
             {
                 pC.Vida -= damage;
+                Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                Destroy(this.gameObject);
+            }
+
+            if (pC.isInvulnerable)
+            {
                 Vector3 puntoImpacto = other.ClosestPoint(transform.position);
                 Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
                 Destroy(this.gameObject);

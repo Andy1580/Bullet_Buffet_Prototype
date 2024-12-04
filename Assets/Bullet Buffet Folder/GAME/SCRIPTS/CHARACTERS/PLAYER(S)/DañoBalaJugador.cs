@@ -48,12 +48,12 @@ public class DañoBalaJugador : MonoBehaviour
             if (eM != null)
             {
                 eM.VidaEnemigo -= daño;
-                eM.animator.SetTrigger("daño");
+                //eM.animator.SetTrigger("daño");
             }
             else if (eF != null)
             {
                 eF.VidaEnemigo -= daño;
-                eF.animator.SetTrigger("daño");
+                //eF.animator.SetTrigger("daño");
             }
         }
 

@@ -10,6 +10,7 @@ public class HabilidadSub : MonoBehaviour
     [SerializeField] private float intervaloDaño = 0.5f;
     [SerializeField] private LayerMask capas;
     [SerializeField] private ParticleSystem vfxHabilidadSub;
+    [SerializeField] private GameObject vfxImpacto;
 
     private bool muertoJugador = false;
 
@@ -71,6 +72,8 @@ public class HabilidadSub : MonoBehaviour
                         if (!player.isInvulnerable)
                         {
                             player.Vida -= daño;
+                            Vector3 puntoImpacto = collider.ClosestPoint(transform.position);
+                            Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
                         }
                     }
                 }

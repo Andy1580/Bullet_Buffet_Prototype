@@ -1,8 +1,10 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class DañoHabilidadEscopeta : MonoBehaviour
 {
     [SerializeField] private int daño;
+    [SerializeField] private GameObject vfxImpacto;
     private PlayerController propietario;
 
     private void Awake()
@@ -35,8 +37,8 @@ public class DañoHabilidadEscopeta : MonoBehaviour
                     if (!jugador.isInvulnerable || !jugador.muerto)
                     {
                         jugador.Vida -= daño;
-                        //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                        //Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
+                        Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                        Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
                     }
                 }
                 else return;

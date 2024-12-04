@@ -1415,6 +1415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "da\xF1o": 0
   escudoBloqueado: 0
+  vfxImpacto: {fileID: 0}
 --- !u!1 &3199622592372877160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2334,8 +2335,8 @@ GameObject:
   - component: {fileID: 5528682475156274673}
   - component: {fileID: 888496466251276924}
   - component: {fileID: 2105512539543194716}
-  - component: {fileID: 7345552453487796425}
   - component: {fileID: 7099780374902875138}
+  - component: {fileID: 4591982356513050238}
   m_Layer: 0
   m_Name: bate-meshcoll
   m_TagString: Untagged
@@ -2430,20 +2431,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5076798556035486163, guid: 09a68d0c919cd3f4cb41bc5d49cc2b17, type: 3}
---- !u!114 &7345552453487796425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4642274300774090989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb697c84a465844196bce13e83e3f2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  "da\xF1o": 25
-  escudoBloqueado: 0
 --- !u!54 &7099780374902875138
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2471,6 +2458,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &4591982356513050238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4642274300774090989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be5a15e15c5ca0d4e94c46f259205c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  "da\xF1o": 25
+  escudoBloqueado: 0
+  vfxImpacto: {fileID: 7300250961706575493, guid: 338057cd28ef69349849125177dc40e3,
+    type: 3}
 --- !u!1 &4650892144971803797
 GameObject:
   m_ObjectHideFlags: 0
@@ -3447,6 +3450,8 @@ MonoBehaviour:
   "areaDa\xF1o": 5
   "da\xF1o": 25
   vfxHabilidadArea: {fileID: 2683713035133540096}
+  vfxImpacto: {fileID: 7300250961706575493, guid: 338057cd28ef69349849125177dc40e3,
+    type: 3}
 --- !u!1 &6651247071585035954
 GameObject:
   m_ObjectHideFlags: 0

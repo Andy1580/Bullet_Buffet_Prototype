@@ -11,6 +11,7 @@ public class HabilidadRayo : MonoBehaviour
     [SerializeField] private LayerMask capas;
     [SerializeField] private float duracionHabilidad = 3f;
     [SerializeField] private ParticleSystem vfxRayo;
+    [SerializeField] private GameObject vfxImpacto;
     //[SerializeField] private ParticleSystem rayVFX;
     //[SerializeField] private float velocidadVFX = 5f;
 
@@ -159,6 +160,8 @@ public class HabilidadRayo : MonoBehaviour
                     if (!player.muerto && !player.isInvulnerable)
                     {
                         player.Vida -= daño;
+                        Vector3 puntoImpacto = target.ClosestPoint(transform.position);
+                        Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
                     }
                     else return;
                 }

@@ -520,6 +520,8 @@ public class PlayerController : MonoBehaviour
         AudioManager.instance.PlaySound("muertejugador");
         GameManager.Instance.DeadPlayerEventMHS(this);
         vfxMuerte.Play();
+        DesactivarSprite();
+
         if(escudo.gameObject.activeSelf)
         {
             escudo.gameObject.SetActive(false);
