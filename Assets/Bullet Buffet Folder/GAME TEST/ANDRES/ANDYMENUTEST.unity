@@ -2155,7 +2155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -3562,50 +3562,56 @@ MonoBehaviour:
   - nombre: menu
     clip: {fileID: 8300000, guid: 4e2fa29b61bbcf64cb810c958d7c03c8, type: 3}
     loop: 1
-    volume: 0.5
+    volume: 0.13
     pitch: 1
     source: {fileID: 0}
   - nombre: hechizos
     clip: {fileID: 8300000, guid: a3a924fddb97ace45b005b3b71b926ca, type: 3}
     loop: 1
-    volume: 0.25
+    volume: 0.13
     pitch: 1
     source: {fileID: 0}
   - nombre: duelo
     clip: {fileID: 8300000, guid: 6a8f30b48447b6a4896483e60de97e92, type: 3}
     loop: 1
-    volume: 0.25
+    volume: 0.13
+    pitch: 1
+    source: {fileID: 0}
+  - nombre: victoria
+    clip: {fileID: 8300000, guid: 6229b06d6f43254479f4693673ff4fe6, type: 3}
+    loop: 1
+    volume: 0.13
     pitch: 1
     source: {fileID: 0}
   sfx:
   - nombre: botonmenu
     clip: {fileID: 8300000, guid: 3b76ac3dc5a9d8745bca20030d07e378, type: 3}
     loop: 0
-    volume: 0.5
+    volume: 0.11
     pitch: 1
     source: {fileID: 0}
   - nombre: navegar
     clip: {fileID: 8300000, guid: dc7ef1b62b36cd044a5387ac01a5652a, type: 3}
     loop: 0
-    volume: 0.5
+    volume: 0.11
     pitch: 1
     source: {fileID: 0}
   - nombre: botonBack
-    clip: {fileID: 8300000, guid: 704d87ca8400b1b48be1a6798202d808, type: 3}
+    clip: {fileID: 8300000, guid: c93148481a69e0249959e2ca180035d8, type: 3}
     loop: 0
-    volume: 0.5
+    volume: 0.17
     pitch: 1
     source: {fileID: 0}
   - nombre: botonJugar
-    clip: {fileID: 8300000, guid: 282f446538bdddb479afb6227a728015, type: 3}
+    clip: {fileID: 8300000, guid: b0e77ae533226a744a6919d889e79788, type: 3}
     loop: 0
-    volume: 0.5
+    volume: 0.2
     pitch: 1
     source: {fileID: 0}
   - nombre: seleccionpersonaje
     clip: {fileID: 8300000, guid: 49ac56c046ffe294cbca1d27ad4d8e19, type: 3}
     loop: 0
-    volume: 0.5
+    volume: 0.11
     pitch: 1
     source: {fileID: 0}
   - nombre: powerup
@@ -3674,6 +3680,24 @@ MonoBehaviour:
     volume: 0.3
     pitch: 1
     source: {fileID: 0}
+  - nombre: citymap
+    clip: {fileID: 8300000, guid: 81432c666ae28a9429a16b5e073468b5, type: 3}
+    loop: 0
+    volume: 0.37
+    pitch: 1
+    source: {fileID: 0}
+  - nombre: clubmap
+    clip: {fileID: 8300000, guid: 99a4f693a690c7d4880f2a02dbb06935, type: 3}
+    loop: 0
+    volume: 0.3
+    pitch: 1
+    source: {fileID: 0}
+  - nombre: dungeonmap
+    clip: {fileID: 8300000, guid: 418e9eb229402a942b42e0a8fd45de8c, type: 3}
+    loop: 0
+    volume: 0.3
+    pitch: 1
+    source: {fileID: 0}
   - nombre: opHS
     clip: {fileID: 8300000, guid: 486ee6ddf988dbe45b881360d549f2c3, type: 3}
     loop: 0
@@ -3707,7 +3731,7 @@ MonoBehaviour:
   - nombre: disparoCRIM
     clip: {fileID: 8300000, guid: 35ad0ca714da79446a1ae21282f24f12, type: 3}
     loop: 0
-    volume: 0.3
+    volume: 0.18
     pitch: 1
     source: {fileID: 0}
   - nombre: disparoKAI
@@ -10586,8 +10610,8 @@ MonoBehaviour:
   togglePantallaCompleta: {fileID: 211490193}
   botonMHS: {fileID: 692806643}
   botonMDS: {fileID: 779260448}
-  botonMHSCalle: {fileID: 2105990793}
-  botonMDSCalle: {fileID: 159379940}
+  botonMHSDungeon: {fileID: 922579045}
+  botonMDSDungeon: {fileID: 1920970564}
   botonComoJugarHS: {fileID: 2018823767}
   botonComoJugarDS: {fileID: 441625760}
 --- !u!1 &1697964235

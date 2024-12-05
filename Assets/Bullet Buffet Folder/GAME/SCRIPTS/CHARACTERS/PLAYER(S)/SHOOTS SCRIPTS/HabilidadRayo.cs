@@ -132,6 +132,7 @@ public class HabilidadRayo : MonoBehaviour
         yield return new WaitForSeconds(1f);
         FireRay();
         vfxRayo.Play();
+        propietario.animator.SetTrigger("habilidad");
         yield return new WaitForSeconds(0.7f);
         habilidadActiva = false;
         yield return new WaitForSeconds(1f);

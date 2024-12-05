@@ -15,6 +15,11 @@ public class HabilidadEnArea : MonoBehaviour
         vfxHabilidadArea.SetActive(false);
     }
 
+    private void FixedUpdate()
+    {
+        
+    }
+
     public void ActivarHabilidad(PlayerController jugador)
     {
         jugadorInvocador = jugador;

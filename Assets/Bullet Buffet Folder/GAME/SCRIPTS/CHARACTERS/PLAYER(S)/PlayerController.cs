@@ -174,11 +174,11 @@ public class PlayerController : MonoBehaviour
     {
         if (equipo == 1)
         {
-            circuloEquipo.color = Color.red;
+            circuloEquipo.color = Color.magenta;
         }
         else if (equipo == 2)
         {
-            circuloEquipo.color = Color.blue;
+            circuloEquipo.color = Color.green;
         }
     }
 

@@ -44,6 +44,7 @@ public class PlayerWinsTest : MonoBehaviour
     {
         AudioManager.instance.StopSound("hechizos");
         AudioManager.instance.StopSound("duelo");
+        AudioManager.instance.PlaySound("victoria");
         InstanciarJugadores();
     }
 

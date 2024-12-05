@@ -52,7 +52,7 @@ public class Shotgun : MonoBehaviour
 
     IEnumerator DesactivarObjetoDeDaño()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         objetoDaño.SetActive(false);
 

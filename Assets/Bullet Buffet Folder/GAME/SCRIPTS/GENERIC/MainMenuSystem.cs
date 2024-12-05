@@ -47,8 +47,8 @@ public class MainMenuSystem : MonoBehaviour
     [SerializeField] private Toggle togglePantallaCompleta;
     [SerializeField] private Button botonMHS;
     [SerializeField] private Button botonMDS;
-    [SerializeField] private Button botonMHSCalle;
-    [SerializeField] private Button botonMDSCalle;
+    [SerializeField] private Button botonMHSDungeon;
+    [SerializeField] private Button botonMDSDungeon;
     [SerializeField] private Button botonComoJugarHS;
     [SerializeField] private Button botonComoJugarDS;
 
@@ -88,8 +88,8 @@ public class MainMenuSystem : MonoBehaviour
             panelMapasMDS.SetActive(false);
             GameManager.modoHS = true;
             GameManager.modoDS = false;
-            EventSystem.current.SetSelectedGameObject(botonMHSCalle.gameObject);
-            ultimoBotonSeleccionadoStatic = botonMHSCalle.gameObject;
+            EventSystem.current.SetSelectedGameObject(botonMHSDungeon.gameObject);
+            ultimoBotonSeleccionadoStatic = botonMHSDungeon.gameObject;
         }
         else if (panelMapasMDSStatic)
         {
@@ -97,8 +97,8 @@ public class MainMenuSystem : MonoBehaviour
             panelMapasMHS.SetActive(false);
             GameManager.modoDS = true;
             GameManager.modoHS = false;
-            EventSystem.current.SetSelectedGameObject(botonMDSCalle.gameObject);
-            ultimoBotonSeleccionadoStatic = botonMDSCalle.gameObject;
+            EventSystem.current.SetSelectedGameObject(botonMDSDungeon.gameObject);
+            ultimoBotonSeleccionadoStatic = botonMDSDungeon.gameObject;
         }
         //else
         //{
@@ -314,7 +314,7 @@ public class MainMenuSystem : MonoBehaviour
         print(panelMapasMHSStatic);
         AudioManager.instance.PlaySound("botonmenu");
 
-        EventSystem.current.SetSelectedGameObject(botonMHSCalle.gameObject);
+        EventSystem.current.SetSelectedGameObject(botonMHSDungeon.gameObject);
         ultimoBotonSeleccionadoStatic = botonMHS.gameObject;
     }
 
@@ -329,7 +329,7 @@ public class MainMenuSystem : MonoBehaviour
         print(panelMapasMDSStatic);
         AudioManager.instance.PlaySound("botonmenu");
 
-        EventSystem.current.SetSelectedGameObject(botonMDSCalle.gameObject);
+        EventSystem.current.SetSelectedGameObject(botonMDSDungeon.gameObject);
         ultimoBotonSeleccionadoStatic = botonMDS.gameObject;
     }
 
@@ -378,6 +378,9 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("citymap");
+        AudioManager.instance.StopSound("dungeonmap");
+        AudioManager.instance.StopSound("clubmap");
 
         ciudadMHS.SetActive(true);
         cafeMHS.SetActive(false);
@@ -392,6 +395,9 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("dungeonmap");
+        AudioManager.instance.StopSound("citymap");
+        AudioManager.instance.StopSound("clubmap");
 
         dungeonMHS.SetActive(true);
         cafeMHS.SetActive(false);
@@ -406,6 +412,9 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("clubmap");
+        AudioManager.instance.StopSound("dungeonmap");
+        AudioManager.instance.StopSound("citymap");
 
         cafeMHS.SetActive(true);
         ciudadMHS.SetActive(false);
@@ -420,6 +429,9 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("citymap");
+        AudioManager.instance.StopSound("dungeonmap");
+        AudioManager.instance.StopSound("clubmap");
 
         ciudadMDS.SetActive(true);
         cafeMDS.SetActive(false);
@@ -434,6 +446,9 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("dungeonmap");
+        AudioManager.instance.StopSound("citymap");
+        AudioManager.instance.StopSound("clubmap");
 
         dungeonMDS.SetActive(true);
         cafeMDS.SetActive(false);
@@ -448,6 +463,9 @@ public class MainMenuSystem : MonoBehaviour
         play = true;
 
         AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("clubmap");
+        AudioManager.instance.StopSound("dungeonmap");
+        AudioManager.instance.StopSound("citymap");
 
         cafeMDS.SetActive(true);
         ciudadMDS.SetActive(false);

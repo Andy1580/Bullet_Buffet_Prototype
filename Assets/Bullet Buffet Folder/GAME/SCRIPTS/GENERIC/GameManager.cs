@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.StopSound("hechizos");
             AudioManager.instance.StopSound("duelo");
             AudioManager.instance.StopSound("audiencia");
+            AudioManager.instance.StopSound("victoria");
         }
         else if ((SceneManager.GetActiveScene().name != "ANDYMENUTEST" && inGame))
         {
@@ -108,11 +109,13 @@ public class GameManager : MonoBehaviour
                 Debug.LogWarning("Se detuvo la musica del menu");
                 AudioManager.instance.StopSound("menu");
                 AudioManager.instance.PlaySound("hechizos");
+                AudioManager.instance.StopSound("victoria");
             }
             else if (modoDS)
             {
                 AudioManager.instance.StopSound("menu");
                 AudioManager.instance.PlaySound("duelo");
+                AudioManager.instance.StopSound("victoria");
             }
         }
     }
