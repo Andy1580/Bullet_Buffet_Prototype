@@ -41,6 +41,8 @@ public class BulletEnemy : MonoBehaviour
         }
         else if(other.gameObject.layer == 10)
         {
+            Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+            Instantiate(vfxImpactoJugador, puntoImpacto, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }

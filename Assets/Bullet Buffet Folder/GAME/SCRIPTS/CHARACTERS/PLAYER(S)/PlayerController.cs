@@ -645,7 +645,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
 
-        yield return new WaitForSeconds(cooldownEscudo);
+        //yield return new WaitForSeconds(cooldownEscudo);
         //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         canEscudo = true;
         contadorEscudo = 7;
@@ -768,7 +768,7 @@ public class PlayerController : MonoBehaviour
     void HabilidadSKYIE()
     {
         Debug.Log(this.gameObject.name + "Activo la habilidad");
-        habilidadEnArea.ActivarHabilidad(this);
+        habilidadEnArea.ActivarHabilidad();
         DeshabilitarMovimiento();
 
         AudioManager.instance.PlaySound("habilidadSKYIE");
@@ -843,16 +843,29 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void ResetearVariablesCambioRonda()
+    {
+        hability = null;
+        actualHability = hability;
+        playerSpeed = actualSpeed;
+        isInvulnerable = false;
+        inSuperSpeed = false;
+        DesactivarSprite();
+    }
 
     #region INVULNERABILIDAD
     [Header("Invulnerabilidad")]
     [SerializeField] private float isInvunerableTime = 5f;
     [SerializeField] internal bool isInvulnerable = false;
+    [SerializeField] private GameObject vfxInmune;
+    [SerializeField] private GameObject vfxVelocidad;
     //[SerializeField] private bool invulnerable;
 
     private void ActivarInvulnerabilidad()
     {
         isInvulnerable = true;
+        vfxInmune.SetActive(true);
+        AudioManager.instance.PlaySound("powerUpActive");
         Debug.Log("Se activo la invulnerabilidad");
         Invoke("DesactivarInvulnerabilidad", isInvunerableTime);
     }
@@ -860,6 +873,7 @@ public class PlayerController : MonoBehaviour
     private void DesactivarInvulnerabilidad()
     {
         Debug.Log("Si se desactivo Invulnerabilidad");
+        vfxInmune.SetActive(false);
         hability = null;
         actualHability = hability;
         isInvulnerable = false;
@@ -882,12 +896,15 @@ public class PlayerController : MonoBehaviour
     private void SuperSpeed()
     {
         playerSpeed = superSpeed;
+        vfxVelocidad.SetActive(true);
+        AudioManager.instance.PlaySound("powerUpActive");
         //superSpeed = playerSpeed;
         Invoke("DesactivarSSD", superSpeedTime);
     }
 
     private void DesactivarSSD()
     {
+        vfxVelocidad.SetActive(false);
         hability = null;
         actualHability = hability;
         playerSpeed = actualSpeed;

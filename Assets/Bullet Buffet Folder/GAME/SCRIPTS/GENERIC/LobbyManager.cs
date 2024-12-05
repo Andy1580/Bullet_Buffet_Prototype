@@ -425,7 +425,6 @@ public class LobbyManager : MonoBehaviour
                 cs.equipoJugador = 0;
                 // Mover ícono del control al centro
                 cs.c_Animator.SetInteger("Posicion", 0);
-                cs.controlImg.color = new Color(1, 1, 1, 0.6f);
                 cs.controlImg.sprite = cs.centro;
 
                 Debug.Log($"Jugador {cs.name} rechazó el equipo y regresó al centro.");
@@ -444,7 +443,7 @@ public class LobbyManager : MonoBehaviour
                     cs.equipoBloqueado = false;
                     //cs.ResetearVariables();
                     cs.c_Animator.SetInteger("Posicion", 0);
-                    cs.controlImg.color = new Color(1, 1, 1, 0.6f);
+                    //cs.controlImg.color = new Color(1, 1, 1, 0.6f);
                     cs.controlImg.sprite = cs.centro;
                     escogiendoEquipo = true;
                     cs.escogiendoEquipoCS = true;

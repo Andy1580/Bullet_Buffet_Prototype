@@ -22,6 +22,7 @@ public class PowerUp : MonoBehaviour
             {
                 player.SetHability(gameObject.name);
                 Instantiate(vfx,this.transform);
+                AudioManager.instance.PlaySound("powerUpPick");
                 Destroy(this.gameObject, 0.25f);
             }
             else

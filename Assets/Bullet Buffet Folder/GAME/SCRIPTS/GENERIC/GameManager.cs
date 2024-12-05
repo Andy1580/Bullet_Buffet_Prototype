@@ -1898,6 +1898,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        foreach(PlayerController player in activePlayers)
+        {
+            player.ResetearVariablesCambioRonda();
+        }
 
         // Los reactivamos
         StartCoroutine(ReactivacionMHS(2.5f));
@@ -2044,7 +2048,7 @@ public class GameManager : MonoBehaviour
             GameObject enemy = enemigosInstanciados[i];
             if (enemy != null && enemy.activeSelf)
             {
-                GameObject cloneVFX = Instantiate(vfxDisappearEnemy, enemy.transform);
+                GameObject cloneVFX = Instantiate(vfxDisappearEnemy, enemy.transform.position, Quaternion.identity);
                 Destroy(cloneVFX, 3);
                 Destroy(enemy);
                 enemigosInstanciados.RemoveAt(i);

@@ -21,6 +21,7 @@ public class ControlSystem : MonoBehaviour
     [SerializeField] public Sprite centro;
     [SerializeField] public Sprite izquierda;
     [SerializeField] public Sprite derecha;
+    [SerializeField] public Sprite aceptar;
     public bool equipoBloqueado = false;
 
     public bool selectTm;
@@ -58,9 +59,6 @@ public class ControlSystem : MonoBehaviour
         //puntero.gameObject.SetActive(false);
         //puntero.gameObject.transform.position = slot.position;
 
-        
-
-        controlImg.color = new Color(1, 1, 1, 0.6f);
         equipoBloqueado = false;
         equipoJugador = 0;
         //spritePersonaje.sprite = spritePersonaje.sprite;
@@ -143,7 +141,7 @@ public class ControlSystem : MonoBehaviour
 
                     Gamepad currentGamepad = context.control.device as Gamepad;
                     puntero.gameObject.SetActive(true);
-                    controlImg.color = Color.white;
+                    //controlImg.sprite = aceptar;
 
                     // Asignar al equipo y actualizar contadores
                     LobbyManager.SeleccionarEquipo(currentGamepad, equipoJugador);

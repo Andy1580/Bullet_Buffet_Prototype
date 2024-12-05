@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HabilidadEnArea : MonoBehaviour
@@ -8,7 +7,13 @@ public class HabilidadEnArea : MonoBehaviour
     [SerializeField] private int daño = 50;
     [SerializeField] private GameObject vfxHabilidadArea;
     [SerializeField] private GameObject vfxImpacto;
-    private PlayerController jugadorInvocador;
+    private PlayerController propietario;
+    public bool propietarioMuerto = false;
+
+    private void Awake()
+    {
+        propietario = GetComponent<PlayerController>();
+    }
 
     private void Start()
     {
@@ -17,18 +22,28 @@ public class HabilidadEnArea : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        if (propietario.muerto && !propietarioMuerto)
+        {
+            propietarioMuerto = true;
+            propietario.DeshabilitarMovimiento();
+            Invoke("ResetearBool", 5f);
+            return;
+        }
     }
 
-    public void ActivarHabilidad(PlayerController jugador)
+    void ResetearBool()
     {
-        jugadorInvocador = jugador;
+        propietarioMuerto = false;
+    }
+
+    public void ActivarHabilidad()
+    {
         ActivarExplosion();
     }
 
     void ActivarExplosion()
     {
-        jugadorInvocador.animator.SetTrigger("habilidad");
+        propietario.animator.SetTrigger("habilidad");
 
         StartCoroutine(ActivarVfxHabilidad());
 
@@ -38,7 +53,7 @@ public class HabilidadEnArea : MonoBehaviour
         {
             print(collider.gameObject);
 
-            if (collider.gameObject == jugadorInvocador.gameObject)
+            if (collider.gameObject == propietario.gameObject)
             {
                 continue;
             }
@@ -46,8 +61,8 @@ public class HabilidadEnArea : MonoBehaviour
             if (collider.gameObject.layer == 8) //8 jugadores
             {
                 PlayerController player = collider.gameObject.GetComponent<PlayerController>();
-                
-                if(player.equipo == jugadorInvocador.equipo)
+
+                if (player.equipo == propietario.equipo)
                 {
 
                 }
@@ -80,7 +95,7 @@ public class HabilidadEnArea : MonoBehaviour
         }
 
 
-       
+
     }
 
     IEnumerator ActivarVfxHabilidad()
