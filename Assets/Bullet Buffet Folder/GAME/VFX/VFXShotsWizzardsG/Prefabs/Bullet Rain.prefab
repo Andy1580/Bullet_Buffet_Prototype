@@ -48,7 +48,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -4936,7 +4936,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -9824,7 +9824,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -14718,7 +14718,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -19606,7 +19606,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -24492,7 +24492,7 @@ PrefabInstance:
     - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
         type: 3}
       propertyPath: looping
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
         type: 3}
@@ -24553,6 +24553,16 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startRotation.scalar
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.2951705
+      objectReference: {fileID: 0}
+    - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.20784312
       objectReference: {fileID: 0}
     - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
         type: 3}
@@ -24821,7 +24831,7 @@ PrefabInstance:
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
       propertyPath: looping
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
@@ -24871,7 +24881,7 @@ PrefabInstance:
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
@@ -24886,7 +24896,7 @@ PrefabInstance:
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.2
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
