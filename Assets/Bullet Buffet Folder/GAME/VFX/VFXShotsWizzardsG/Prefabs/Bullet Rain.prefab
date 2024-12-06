@@ -48,7 +48,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -4868,7 +4868,7 @@ ParticleSystemRenderer:
   m_NormalDirection: 1
   m_ShadowBias: 0
   m_RenderAlignment: 2
-  m_Pivot: {x: 0, y: 0, z: 1.1}
+  m_Pivot: {x: 0, y: 0, z: 2.5}
   m_Flip: {x: 0, y: 0, z: 0}
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
@@ -4936,7 +4936,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -9756,7 +9756,7 @@ ParticleSystemRenderer:
   m_NormalDirection: 1
   m_ShadowBias: 0
   m_RenderAlignment: 2
-  m_Pivot: {x: 0, y: 0, z: 1.1}
+  m_Pivot: {x: 0, y: 0, z: 2.5}
   m_Flip: {x: 0, y: 0, z: 0}
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
@@ -9824,7 +9824,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -14644,7 +14644,7 @@ ParticleSystemRenderer:
   m_NormalDirection: 1
   m_ShadowBias: 0
   m_RenderAlignment: 2
-  m_Pivot: {x: 0, y: 0, z: 1.1}
+  m_Pivot: {x: 0, y: 0, z: 2.5}
   m_Flip: {x: 0, y: 0, z: 0}
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
@@ -14718,7 +14718,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -14957,7 +14957,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 7
+      scalar: 20
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -19526,7 +19526,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_RenderMode: 0
+  m_RenderMode: 4
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -19549,7 +19549,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 00010304
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -19606,7 +19606,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -24426,7 +24426,7 @@ ParticleSystemRenderer:
   m_NormalDirection: 1
   m_ShadowBias: 0
   m_RenderAlignment: 2
-  m_Pivot: {x: 0, y: 0, z: 1.1}
+  m_Pivot: {x: 0, y: 0, z: 2.5}
   m_Flip: {x: 0, y: 0, z: 0}
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
@@ -24492,7 +24492,7 @@ PrefabInstance:
     - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
         type: 3}
       propertyPath: looping
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
         type: 3}
@@ -24537,7 +24537,7 @@ PrefabInstance:
     - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 7.5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4280331916298770305, guid: f6b596cfe041cfe43b2f9c891f4fafc3,
         type: 3}
@@ -24821,7 +24821,7 @@ PrefabInstance:
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
       propertyPath: looping
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
@@ -24871,7 +24871,7 @@ PrefabInstance:
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
@@ -24886,7 +24886,7 @@ PrefabInstance:
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.06
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
@@ -24901,7 +24901,7 @@ PrefabInstance:
     - target: {fileID: 7620713838270584531, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
       propertyPath: InitialModule.startLifetime.minMaxState
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7717810340799724292, guid: cbcf987046dd9fe48a547cec9fdec22a,
         type: 3}
