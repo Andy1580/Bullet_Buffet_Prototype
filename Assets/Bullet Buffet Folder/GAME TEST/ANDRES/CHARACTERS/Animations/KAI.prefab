@@ -4482,20 +4482,56 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1677393798165004884}
     m_Modifications:
+    - target: {fileID: 399409081785359251, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 3680687292192122401, guid: 4a3e6129f21c3a44aa09035aa073517f,
+        type: 3}
+    - target: {fileID: 399409081785359251, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: m_RenderAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326456657941570932, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326456657941570932, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1326456657941570932, guid: 7454380c0b96a5f428c6913cd9f34b72,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 3
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326456657941570932, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 50.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326456657941570932, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1326456657941570932, guid: 7454380c0b96a5f428c6913cd9f34b72,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1326456657941570932, guid: 7454380c0b96a5f428c6913cd9f34b72,
         type: 3}
       propertyPath: InitialModule.startLifetime.minMaxState
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169941112554256077, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4702429
       objectReference: {fileID: 0}
     - target: {fileID: 2169941112554256077, guid: 7454380c0b96a5f428c6913cd9f34b72,
         type: 3}
@@ -4547,10 +4583,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 3815640428756383804, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4118768494687403457, guid: 7454380c0b96a5f428c6913cd9f34b72,
         type: 3}
       propertyPath: m_Name
       value: ShotGunProjectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 7762029572482981226, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7776638193022274521, guid: 7454380c0b96a5f428c6913cd9f34b72,
+        type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
