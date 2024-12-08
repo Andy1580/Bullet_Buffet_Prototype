@@ -47,7 +47,16 @@ public class ConfiguracionManager : MonoBehaviour
 
         Instance = this;
 
-        
+        if (!PlayerPrefs.HasKey("FPSLimite"))
+        {
+            PlayerPrefs.SetInt("FPSLimite", 60);
+            PlayerPrefs.Save();
+        }
+
+        // Asegúrate de sincronizar el valor del Dropdown con los FPS guardados
+        int limiteFPS = PlayerPrefs.GetInt("FPSLimite");
+        dropdownFPS.value = limiteFPS == 60 ? 1 : (limiteFPS == 90 ? 2 : (limiteFPS == 120 ? 3 : 0));
+
 
         ConfigurarResolucionesLimitadas();
         CargarValoresIniciales();
@@ -440,23 +449,41 @@ public class ConfiguracionManager : MonoBehaviour
 
     private void CargarValoresDeFPS()
     {
-        // Cargar el límite de FPS desde PlayerPrefs y establecer el valor del dropdown
+        // Obtener el límite de FPS desde PlayerPrefs o establecer un valor predeterminado
         int limiteFPS = PlayerPrefs.GetInt("FPSLimite", 60);
-        dropdownFPS.value = limiteFPS == 0 ? 0 : (limiteFPS == 60 ? 1 : (limiteFPS == 90 ? 2 : (limiteFPS == 120 ? 3 : 4)));
+        Debug.Log($"FPS cargados desde PlayerPrefs: {limiteFPS}");
+
+        // Validar el límite cargado
+        if (limiteFPS != 60 && limiteFPS != 90 && limiteFPS != 120 && limiteFPS != 0)
+        {
+            Debug.LogWarning($"FPS inválidos en PlayerPrefs: {limiteFPS}, configurando a 60 por defecto.");
+            limiteFPS = 60;
+            PlayerPrefs.SetInt("FPSLimite", limiteFPS);
+            PlayerPrefs.Save();
+        }
+
+        // Configurar el Dropdown en base al límite de FPS
+        dropdownFPS.value = limiteFPS == 0 ? 0 : (limiteFPS == 60 ? 1 : (limiteFPS == 90 ? 2 : 3));
+        Debug.Log($"Dropdown configurado en: {dropdownFPS.value}");
+
+        // Aplicar el límite de FPS
         Application.targetFrameRate = limiteFPS;
-
-        // Cargar el estado del toggleFPS desde PlayerPrefs y activar/desactivar panelFPS
-        bool isFPSEnabled = PlayerPrefs.GetInt("FPSPanelActivo", 0) == 1;
-        toggleFPS.isOn = isFPSEnabled;
-        panelFPS.SetActive(isFPSEnabled);
-
-        cambiosFPSRealizados = false;
+        Debug.Log($"Application.targetFrameRate configurado en: {Application.targetFrameRate}");
     }
 
     public void CambiarLimiteFPS(int indiceLimite)
     {
-        // Cambiar el límite de FPS según el índice del dropdown (índice 1 = 60 FPS, índice 0 = 30 FPS)
-        Application.targetFrameRate = (indiceLimite == 1) ? 60 : 30;
+        // Cambiar el límite de FPS según el índice del dropdown
+        // Índice 0 = 60 FPS, Índice 1 = 90 FPS, Índice 2 = 120 FPS
+        Application.targetFrameRate =
+            (indiceLimite == 0) ? 60 :
+            (indiceLimite == 1) ? 90 :
+            120; // Si no es 0 o 1, se asume 120
+
+        PlayerPrefs.SetInt("FPSLimite", indiceLimite);
+        PlayerPrefs.Save();
+
+        Debug.Log($"FPS configurados a: {Application.targetFrameRate}");
         cambiosFPSRealizados = true;
     }
 
