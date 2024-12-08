@@ -125,12 +125,12 @@ public class GameManager : MonoBehaviour
     #region GAME MANAGER
     public static GameManager Instance;
 
-    [SerializeField] private GameObject panelFPS;
+    //[SerializeField] private GameObject panelFPS;
 
     private GameObject lastSelectedUI;
     private bool isInitialFocus = true; //Para ignorar el foco inicial
 
-    public static GameObject PanelFPS => Instance.panelFPS;
+    //public static GameObject PanelFPS => Instance.panelFPS;
 
     private void Awake()
     {

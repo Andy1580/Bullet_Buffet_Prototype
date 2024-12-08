@@ -50,7 +50,7 @@ public class ConfiguracionManager : MonoBehaviour
         
 
         ConfigurarResolucionesLimitadas();
-        //CargarValoresIniciales();
+        CargarValoresIniciales();
     }
 
     private void Start()
@@ -61,7 +61,7 @@ public class ConfiguracionManager : MonoBehaviour
     private IEnumerator EsperarYBuscarPanelFPS()
     {
         yield return new WaitForEndOfFrame(); // Espera hasta que la escena esté completamente cargada.
-        panelFPS = GameManager.PanelFPS;
+        //panelFPS = GameManager.PanelFPS;
         CargarValoresIniciales();
 
         if (panelFPS == null)
@@ -81,10 +81,10 @@ public class ConfiguracionManager : MonoBehaviour
     {
         // Configurar valores iniciales y listeners para eventos de UI
 
-        if (panelFPS == null)
-        {
-            StartCoroutine(EsperarYBuscarPanelFPS());
-        }
+        //if (panelFPS == null)
+        //{
+        //    StartCoroutine(EsperarYBuscarPanelFPS());
+        //}
 
         //CargarValoresIniciales();
 
@@ -184,6 +184,23 @@ public class ConfiguracionManager : MonoBehaviour
         }
         else if (cambiosAudioRealizados || cambiosPantallaRealizados || cambiosFPSRealizados)
         {
+            // Desactivar todos los Dropdowns dinámicos (Dropdown List instanciados)
+            GameObject dropdownList = GameObject.Find("Dropdown List");
+            if (dropdownList != null)
+            {
+                dropdownList.SetActive(false); // Desactivamos si está activo
+            }
+
+            // Desactivar cualquier Template activo en los Dropdowns
+            Dropdown[] dropdowns = GetComponentsInChildren<Dropdown>(true);
+            foreach (Dropdown dropdown in dropdowns)
+            {
+                if (dropdown.template.gameObject.activeSelf)
+                {
+                    dropdown.template.gameObject.SetActive(false);
+                }
+            }
+
             // Si hay cambios pendientes, activar el panel de confirmación
             panelConfirmar.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null); // Desactivar selección de UI
