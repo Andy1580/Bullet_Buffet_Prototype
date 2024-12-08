@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -102,21 +103,10 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.StopSound("audiencia");
             AudioManager.instance.StopSound("victoria");
         }
-        else if ((SceneManager.GetActiveScene().name != "ANDYMENUTEST" && inGame))
+        else if ((SceneManager.GetActiveScene().name != "ANDYMENUTEST"))
         {
-            if (modoHS)
-            {
-                Debug.LogWarning("Se detuvo la musica del menu");
-                AudioManager.instance.StopSound("menu");
-                AudioManager.instance.PlaySound("hechizos");
-                AudioManager.instance.StopSound("victoria");
-            }
-            else if (modoDS)
-            {
-                AudioManager.instance.StopSound("menu");
-                AudioManager.instance.PlaySound("duelo");
-                AudioManager.instance.StopSound("victoria");
-            }
+            AudioManager.instance.StopSound("duelo");
+            AudioManager.instance.StopSound("hechizos");
         }
     }
 
@@ -237,12 +227,6 @@ public class GameManager : MonoBehaviour
 
     void EscenaDeJuego()
     {
-        StartCoroutine(TransicionInicioPartida());
-    }
-
-    void PrepararEscenaDeJuego()
-    {
-        inGame = true;
         InicializarCamara();
         InicializarMusica();
         InicializarHUD();
@@ -254,9 +238,8 @@ public class GameManager : MonoBehaviour
         InicializarPuntaje();
         //InicializarComponentesJugadores();
         InicializarPausa();
-        Invoke("InicializarEnemySpawn", 5);
-
         AudioManager.instance.PlaySound("audiencia");
+        AudioManager.instance.StopSound("menu");
 
         if (modoHS)
         {
@@ -264,8 +247,7 @@ public class GameManager : MonoBehaviour
             magosPrincipales.SetActive(true);
             InicializarMHS();
             InicializarMarcadorMHS();
-
-            AudioManager.instance.PlaySound("opHS");
+            AudioManager.instance.PlaySound("hechizos");
         }
         else if (modoDS)
         {
@@ -273,7 +255,24 @@ public class GameManager : MonoBehaviour
             InicializarMDS();
             InicializarMarcadorMDS();
             InicializarTemporizador();
+            AudioManager.instance.PlaySound("duelo");
+        }
 
+        StartCoroutine(TransicionInicioPartida());
+    }
+
+    void PrepararEscenaDeJuego()
+    {
+        inGame = true;
+        Invoke("InicializarEnemySpawn", 5);
+
+        if (modoHS)
+        {
+            AudioManager.instance.PlaySound("opHS");
+        }
+        else if (modoDS)
+        {
+            isRunning = true;
             AudioManager.instance.PlaySound("opDS");
             //pistaPintable.SetActive(true);
         }
@@ -448,8 +447,6 @@ public class GameManager : MonoBehaviour
 
             DeshabilitarMovimientoJugadores();
             DeshabilitarDisparo();
-            Invoke("HabilitarMovimientoJugadores", 1f);
-            Invoke("HabilitarDisparo", 1f);
         }
         else if (nJugadores == 4)
         {
@@ -468,8 +465,6 @@ public class GameManager : MonoBehaviour
 
             DeshabilitarMovimientoJugadores();
             DeshabilitarDisparo();
-            Invoke("HabilitarMovimientoJugadores", 1f);
-            Invoke("HabilitarDisparo", 1f);
         }
     }
 
@@ -716,7 +711,7 @@ public class GameManager : MonoBehaviour
         infoLobbyPlayers = new List<InfoLobby.PlayerInfo>();
     }
 
-    
+
     #endregion PARTIDA
 
     #region MAPAS
@@ -954,7 +949,7 @@ public class GameManager : MonoBehaviour
 
     private bool equipo1Ganado = false;
     private bool equipo2Ganado = false;
-
+    
     void ProcesarVictoriaEquipo(int equipoGanador)
     {
         deadEnemy = true;
@@ -1032,10 +1027,16 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator TransicionInicioPartida()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(3f);
         animTransitionInicioPartida.SetTrigger("ready");
+        //Audio Ready
         yield return new WaitForSeconds(timeTransition);
         animTransitionInicioPartida.SetTrigger("go");
+        //Adio Go
+        yield return new WaitForSeconds(1f);
+        PrepararEscenaDeJuego();
+        HabilitarMovimientoJugadores();
+        HabilitarDisparo();
     }
 
     #endregion TRANSICION INICIO PARTIDA
@@ -1105,7 +1106,7 @@ public class GameManager : MonoBehaviour
         numeroDeRonda = rondaInicial;
         rondaText.text = numeroDeRonda.ToString();
 
-        AudioManager.instance.PlaySound("introHS");
+        //AudioManager.instance.PlaySound("introHS");
     }
 
     void Update_Marcador_MHS()
@@ -1149,6 +1150,8 @@ public class GameManager : MonoBehaviour
     void AbrirPanelFinish()
     {
         panelFinish.SetActive(true);
+        DeshabilitarMovimientoJugadores();
+        DeshabilitarDisparo();
     }
 
     public void IniciarCorutinaTransicion()
@@ -1198,7 +1201,6 @@ public class GameManager : MonoBehaviour
         remainingTime = totalTime;
         InicializarTimerText();
 
-        isRunning = true;
 
         AudioManager.instance.PlaySound("introDS");
     }
@@ -1498,11 +1500,59 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Camera camaraPrincipal;
     [SerializeField] private GameObject camaraObjeto;
 
+    [Header("Shake Settings")]
+    [SerializeField] private Transform shakePivot; // Objeto hijo para el efecto de "shake"
+    [SerializeField] private float shakeDuration = 0.5f;
+    [SerializeField] private float shakeMagnitude = 0.2f;
+    private Vector3 originalShakePosition;
+
     void InicializarCamara()
     {
         camaraObjeto = camaraPrincipal.gameObject;
         camaraObjeto.SetActive(true);
-        //originalCameraPosition = camaraPrincipal.transform.position;
+
+        if (shakePivot != null)
+        {
+            originalShakePosition = shakePivot.localPosition;
+        }
+    }
+
+    private void IniciarShake()
+    {
+        if (shakePivot != null)
+        {
+            StartCoroutine(ShakeCoroutine(shakeDuration, shakeMagnitude));
+        }
+        else
+        {
+            Debug.LogWarning("ShakePivot no está asignado.");
+        }
+    }
+
+    private IEnumerator ShakeCoroutine(float duration, float magnitude)
+    {
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            float offsetX = Random.Range(-1f, 1f) * magnitude;
+            float offsetY = Random.Range(-1f, 1f) * magnitude;
+
+            // Aplicar el desplazamiento al ShakePivot
+            shakePivot.localPosition = new Vector3(
+                originalShakePosition.x + offsetX,
+                originalShakePosition.y + offsetY,
+                originalShakePosition.z
+            );
+
+            elapsed += Time.deltaTime;
+
+            Debug.Log("Se agitó la cámara");
+            yield return null;
+        }
+
+        // Restaurar la posición original
+        shakePivot.localPosition = originalShakePosition;
     }
     #endregion CAMARA
 
@@ -1658,7 +1708,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float velocidadMovCamara = 2f;
     private Animator camaraPrincipalAnimator;
 
-    private Vector3 originalCameraPosition; // Posici�n original de la c�mara
 
     [Header("Hechizo")]
     [SerializeField] private GameObject hechizoPrefab;
@@ -1707,6 +1756,7 @@ public class GameManager : MonoBehaviour
                 Destroy(hechizo);
                 Destroy(cloneVFX, 1.8f);
                 vfxImactoRocaMago2.Play();
+                IniciarShake();
                 AudioManager.instance.StopSound("hechizoMago");
                 AudioManager.instance.PlaySound("hechizoImpacto");
                 AudioManager.instance.PlaySound("magoRoca");
@@ -1729,6 +1779,7 @@ public class GameManager : MonoBehaviour
                 Destroy(hechizo);
                 Destroy(cloneVFX, 1.8f);
                 vfxImactoRocaMago1.Play();
+                IniciarShake();
                 AudioManager.instance.StopSound("hechizoMago");
                 AudioManager.instance.PlaySound("hechizoImpacto");
                 AudioManager.instance.PlaySound("magoRoca");
@@ -1930,7 +1981,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        foreach(PlayerController player in activePlayers)
+        foreach (PlayerController player in activePlayers)
         {
             player.ResetearVariablesCambioRonda();
         }
@@ -1951,6 +2002,7 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1.5f);
+        if (puntosAGanarTeam1 == puntosParaGanar || puntosAGanarTeam2 == puntosParaGanar) yield return null;
         HabilitarMovimientoJugadores();
         HabilitarDisparo();
         yield return new WaitForSeconds(5f);

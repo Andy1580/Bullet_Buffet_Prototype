@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -61,10 +62,16 @@ public class MainMenuSystem : MonoBehaviour
     private static bool panelMapasMHSStatic = false;
     private static bool panelMapasMDSStatic = false;
 
+    [SerializeField] private EventSystem eventSystem;
+    private Gamepad firstGamepad;
+
     private void Awake()
     {
         panelMenuPrincipal.SetActive(true);
         instance = this;
+
+        if (eventSystem == null)
+            eventSystem = EventSystem.current;
     }
 
     private void Start()
@@ -121,6 +128,43 @@ public class MainMenuSystem : MonoBehaviour
     private void OnEnable()
     {
         SetMenuNavigation();
+
+        RegisterFirstGamepad();
+        InputSystem.onDeviceChange += OnDeviceChange;
+    }
+
+    private void OnDisable()
+    {
+        InputSystem.onDeviceChange -= OnDeviceChange;
+    }
+
+    private void RegisterFirstGamepad()
+    {
+        // Encuentra el primer Gamepad conectado
+        firstGamepad = Gamepad.all.Count > 0 ? Gamepad.all[0] : null;
+
+        if (firstGamepad != null)
+        {
+            Debug.Log($"Navegación asignada al primer Gamepad: {firstGamepad.displayName}");
+
+            // Cambiar esquema de control en todos los PlayerInput
+            foreach (var input in PlayerInput.all)
+            {
+                input.SwitchCurrentControlScheme("UI", firstGamepad);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No se detectaron Gamepads. Navegación no restringida.");
+        }
+    }
+
+    private void OnDeviceChange(InputDevice device, InputDeviceChange change)
+    {
+        if (device is Gamepad && change == InputDeviceChange.Added && firstGamepad == null)
+        {
+            RegisterFirstGamepad(); // Actualizar al primer Gamepad si se conecta uno nuevo
+        }
     }
 
     public void ResetarBooleanosImportantesMS()
