@@ -150,6 +150,7 @@ public class GameManager : MonoBehaviour
         //InicializarMusica();
         //InicializarJugadores();
         InicializarTransicion();
+        InicializarTransicioninicioPartida();
     }
 
     private void Update()
@@ -229,9 +230,18 @@ public class GameManager : MonoBehaviour
         InicializarMusica();
     }
 
+    void ResetearParaVolverAJugar()
+    {
+
+    }
+
     void EscenaDeJuego()
     {
-        //AudioManager.instance.PlaySound("");
+        StartCoroutine(TransicionInicioPartida());
+    }
+
+    void PrepararEscenaDeJuego()
+    {
         inGame = true;
         InicializarCamara();
         InicializarMusica();
@@ -1007,6 +1017,28 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("TESTVICTORY2");
     }
     #endregion VICTORIA
+
+    #region TRANSICION INICIO PARTIDA
+
+    [Header("Transicion Inicio Partida Core")]
+    [SerializeField] public GameObject panelTransicionInicioPartida;
+    [SerializeField] private float timeTransitionInicioPartida = 0.5f;
+    private Animator animTransitionInicioPartida;
+
+    void InicializarTransicioninicioPartida()
+    {
+        animTransitionInicioPartida = panelTransicionInicioPartida.GetComponent<Animator>();
+    }
+
+    public IEnumerator TransicionInicioPartida()
+    {
+        yield return new WaitForSeconds(0.5f);
+        animTransitionInicioPartida.SetTrigger("ready");
+        yield return new WaitForSeconds(timeTransition);
+        animTransitionInicioPartida.SetTrigger("go");
+    }
+
+    #endregion TRANSICION INICIO PARTIDA
 
     #region TRANSICION ESCENA
     [Header("Transicion Core")]
