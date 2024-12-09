@@ -427,6 +427,7 @@ public class LobbyManager : MonoBehaviour
                 // Mover ícono del control al centro
                 cs.c_Animator.SetInteger("Posicion", 0);
                 cs.controlImg.sprite = cs.centro;
+                cs.controlImg.color = Color.white;
 
                 Debug.Log($"Jugador {cs.name} rechazó el equipo y regresó al centro.");
             }
@@ -446,6 +447,7 @@ public class LobbyManager : MonoBehaviour
                     cs.c_Animator.SetInteger("Posicion", 0);
                     //cs.controlImg.color = new Color(1, 1, 1, 0.6f);
                     cs.controlImg.sprite = cs.centro;
+                    cs.controlImg.color = Color.white;
                     escogiendoEquipo = true;
                     cs.escogiendoEquipoCS = true;
                     equipoControles[equipoRechazado - 1]--;
@@ -623,8 +625,6 @@ public class LobbyManager : MonoBehaviour
             Debug.LogWarning("No hay suficientes datos para iniciar la partida.");
             return;
         }
-
-        AudioManager.instance.PlaySound("botonJugar");
 
 
         return;

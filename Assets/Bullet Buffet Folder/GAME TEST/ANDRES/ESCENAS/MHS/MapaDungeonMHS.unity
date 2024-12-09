@@ -42763,7 +42763,8 @@ GameObject:
   - component: {fileID: 2123984276114920903}
   - component: {fileID: 4212317335227780910}
   - component: {fileID: 3566193170552099970}
-  m_Layer: 0
+  - component: {fileID: 4212317335227780911}
+  m_Layer: 10
   m_Name: obs-dungeon (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48774,7 +48775,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4544336698613275173}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53341,12 +53342,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!4 &3348400929178253777
 Transform:
   m_ObjectHideFlags: 0
@@ -56451,12 +56452,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!4 &3567368212354299197
 Transform:
   m_ObjectHideFlags: 0
@@ -67142,6 +67143,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4212317335227780911
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2635231589476359077}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4212392148919403449
 GameObject:
   m_ObjectHideFlags: 0
@@ -68146,13 +68168,35 @@ GameObject:
   - component: {fileID: 176242334629039992}
   - component: {fileID: 2701846717410809233}
   - component: {fileID: 3347971955684134461}
-  m_Layer: 0
+  - component: {fileID: 4294729943424368923}
+  m_Layer: 10
   m_Name: obs-dungeon (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &4294729943424368923
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4294729943424368922}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4296252592903133856
 GameObject:
   m_ObjectHideFlags: 0
@@ -84103,12 +84147,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!1 &5331581291715239995
 GameObject:
   m_ObjectHideFlags: 0
@@ -108369,7 +108413,8 @@ GameObject:
   - component: {fileID: 7347401199007458766}
   - component: {fileID: 4826722215430913831}
   - component: {fileID: 5328734515259548811}
-  m_Layer: 0
+  - component: {fileID: 7663325548075868095}
+  m_Layer: 10
   m_Name: obs-dungeon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124556,6 +124601,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4544336698613275173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7663325548075868095
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6637434141512461228}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7663441438988316525
 GameObject:
   m_ObjectHideFlags: 0

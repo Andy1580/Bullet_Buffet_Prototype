@@ -88,17 +88,19 @@ public class ControlSystem : MonoBehaviour
         {
             if (v2.x < -0.5f) //Izq
             {
+                AudioManager.instance.PlaySound("controles");
                 c_Animator.SetInteger("Posicion", -1);
                 equipoJugador = 1; //Equipo Rojo;
                 controlImg.sprite = izquierda;
-                controlImg.color = Color.blue;
+                //controlImg.color = Color.blue;
             }
             else if (v2.x > 0.5f) //Der
             {
+                AudioManager.instance.PlaySound("controles");
                 c_Animator.SetInteger("Posicion", 1);
                 equipoJugador = 2; //Equipo Azul
                 controlImg.sprite = derecha;
-                controlImg.color= Color.yellow;
+                //controlImg.color= Color.yellow;
             }
         }
     }
@@ -117,12 +119,12 @@ public class ControlSystem : MonoBehaviour
             escogiendoEquipoCS = false;
             escogiendoPersonaje = true;
             LobbyManager.self.ActivarPanelPersonajesConDelay();
-            //AudioManager.instance.PlaySound("botonJugar");
+            AudioManager.instance.PlaySound("botonJugar");
         }
-        else if (LobbyManager.self.continuar.activeSelf && LobbyManager.self.panelSelectCh.activeSelf && !LobbyManager.partidaComenzada)
+        else if (LobbyManager.self.continuar2.activeSelf && LobbyManager.self.panelSelectCh.activeSelf && !LobbyManager.partidaComenzada)
         {
             LobbyManager.self.RecopilarInformacion();
-            //AudioManager.instance.PlaySound("botonJugar");
+            AudioManager.instance.PlaySound("botonJugar");
         }
     }
 
@@ -159,7 +161,7 @@ public class ControlSystem : MonoBehaviour
                     LobbyManager.SeleccionarEquipo(currentGamepad, equipoJugador);
                     Debug.Log($"El jugador {this.name} seleccionó el equipo {equipoJugador}");
 
-                    //AudioManager.instance.PlaySound("botonmenu");
+                    AudioManager.instance.PlaySound("botonmenu");
                 }
                 else
                 {
@@ -183,7 +185,7 @@ public class ControlSystem : MonoBehaviour
                 loby.SeleccionarPersonaje(currentGamepad, selectedCharacter);
                 selectCh = false;
                 axis = Vector2.zero;
-                //AudioManager.instance.PlaySound("botonmenu");
+                AudioManager.instance.PlaySound("botonmenu");
                 Debug.Log($"El {this.gameObject.name} a escogido al personaje {selectedCharacter}");
             }
 
@@ -203,7 +205,7 @@ public class ControlSystem : MonoBehaviour
             Gamepad currentGamepad = context.control.device as Gamepad;
             LobbyManager.RechazarPersonaje(currentGamepad);
         }
-
+        AudioManager.instance.PlaySound("botonBack");
         StartCoroutine(ResetEquipoRechazado());
     }
 

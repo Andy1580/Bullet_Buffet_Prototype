@@ -8356,7 +8356,8 @@ GameObject:
   - component: {fileID: 2922953843348584155}
   - component: {fileID: 5270993699268027108}
   - component: {fileID: 5189686791661568577}
-  m_Layer: 0
+  - component: {fileID: 5452903395563062547}
+  m_Layer: 10
   m_Name: obs-dungeon (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15048,7 +15049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9036528858987411320}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Obstaculos (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15557,7 +15558,8 @@ GameObject:
   - component: {fileID: 5231980254505514484}
   - component: {fileID: 8867089448369184777}
   - component: {fileID: 6711347928449165940}
-  m_Layer: 0
+  - component: {fileID: 8867089448369184778}
+  m_Layer: 10
   m_Name: obs-dungeon (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16395,12 +16397,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!23 &892319172375518308
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -37407,7 +37409,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2472991613006989126}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Obstaculos (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40608,12 +40610,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!114 &2599713339615771747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48898,7 +48900,8 @@ GameObject:
   - component: {fileID: 4613480141395006035}
   - component: {fileID: 2232925376022945577}
   - component: {fileID: 2599479567540576239}
-  m_Layer: 0
+  - component: {fileID: 4613480141395006036}
+  m_Layer: 10
   m_Name: obs-dungeon (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64083,7 +64086,8 @@ GameObject:
   - component: {fileID: 3349668355594282736}
   - component: {fileID: 4339729540814511102}
   - component: {fileID: 6426317147560004358}
-  m_Layer: 0
+  - component: {fileID: 7194923717027630881}
+  m_Layer: 10
   m_Name: obs-dungeon (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64366,13 +64370,35 @@ GameObject:
   - component: {fileID: 2551816412892339665}
   - component: {fileID: 1412916691405640215}
   - component: {fileID: 890491626560055925}
-  m_Layer: 0
+  - component: {fileID: 4212627260124735973}
+  m_Layer: 10
   m_Name: obs-dungeon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &4212627260124735973
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4212627260124735972}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &4213577774503817647
 Transform:
   m_ObjectHideFlags: 0
@@ -69872,6 +69898,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3189042921813805277}
   m_Mesh: {fileID: 3608389292281489697, guid: 2e86c03b7a1de774e8b7da5c8c600486, type: 3}
+--- !u!65 &4613480141395006036
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3189042921813805277}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4614455695869952937
 GameObject:
   m_ObjectHideFlags: 0
@@ -78356,12 +78403,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!23 &5190322761551471083
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -78940,7 +78987,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2117158913519389668}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Obstaculos (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80020,7 +80067,8 @@ GameObject:
   - component: {fileID: 5107061707842198867}
   - component: {fileID: 1776418080392607330}
   - component: {fileID: 7366981304099018295}
-  m_Layer: 0
+  - component: {fileID: 7366981304099018296}
+  m_Layer: 10
   m_Name: obs-dungeon (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82176,6 +82224,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2472991613006989126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5452903395563062547
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361551840603655783}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &5453411686907575905
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -89645,7 +89714,8 @@ GameObject:
   - component: {fileID: 5228100038098008646}
   - component: {fileID: 6231346985717023235}
   - component: {fileID: 8478602050162198669}
-  m_Layer: 0
+  - component: {fileID: 9003211322373217681}
+  m_Layer: 10
   m_Name: obs-dungeon (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98235,7 +98305,8 @@ GameObject:
   - component: {fileID: 6508638777121727171}
   - component: {fileID: 2249065011635515276}
   - component: {fileID: 6245635850854757003}
-  m_Layer: 0
+  - component: {fileID: 6508638777121727172}
+  m_Layer: 10
   m_Name: obs-dungeon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98575,12 +98646,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!95 &6245690697401818488
 Animator:
   serializedVersion: 5
@@ -101454,12 +101525,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!4 &6429355471146203660
 Transform:
   m_ObjectHideFlags: 0
@@ -102787,6 +102858,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6213039118643458021}
   m_Mesh: {fileID: 3608389292281489697, guid: 2e86c03b7a1de774e8b7da5c8c600486, type: 3}
+--- !u!65 &6508638777121727172
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6213039118643458021}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &6508710440101555527
 Transform:
   m_ObjectHideFlags: 0
@@ -105905,12 +105997,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!4 &6712035120082275336
 Transform:
   m_ObjectHideFlags: 0
@@ -110822,7 +110914,8 @@ GameObject:
   - component: {fileID: 2821990378757515503}
   - component: {fileID: 4529079281840141834}
   - component: {fileID: 7131283499407836798}
-  m_Layer: 0
+  - component: {fileID: 8623193441367453228}
+  m_Layer: 10
   m_Name: obs-dungeon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112037,12 +112130,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!23 &7132101524988647170
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -113005,6 +113098,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2472991613006989126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7194923717027630881
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191377150800948476}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7195999989162831560
 GameObject:
   m_ObjectHideFlags: 0
@@ -115266,11 +115380,32 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
+--- !u!65 &7366981304099018296
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5292785069479394781}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7367747558817508572
 GameObject:
@@ -132472,12 +132607,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9570469, y: 1.9570456, z: 3.0196004}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9570469, y: 2.3333025, z: 3.0196004}
+  m_Center: {x: 0, y: 0.18812847, z: 0}
 --- !u!1 &8479040786752915758
 GameObject:
   m_ObjectHideFlags: 0
@@ -134724,6 +134859,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2472991613006989126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8623193441367453228
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7055768833778735607}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &8623994389071970942
 Transform:
   m_ObjectHideFlags: 0
@@ -138418,6 +138574,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8867089448369184778
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833673614610783779}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &8870730366580557830
 Transform:
   m_ObjectHideFlags: 0
@@ -140364,6 +140541,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2117158913519389668}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &9003211322373217681
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5957438998767889842}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.95, y: 1.71, z: 2.75}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &9003865631028506739
 Transform:
   m_ObjectHideFlags: 0

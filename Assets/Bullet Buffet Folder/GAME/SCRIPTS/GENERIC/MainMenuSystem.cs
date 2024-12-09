@@ -222,6 +222,7 @@ public class MainMenuSystem : MonoBehaviour
     public void GoToMenu()
     {
         Invoke("DesactivarPanelInicio", 0.25f);
+        AudioManager.instance.PlaySound("botonJugar");
     }
 
     void DesactivarPanelInicio()
@@ -520,7 +521,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void AumentarRondas()
     {
-        AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("aumento");
 
         int ronda = GameManager.Instance.puntosParaGanar;
 
@@ -577,7 +578,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void DisminuirRonda()
     {
-        AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("aumento");
 
         int ronda = GameManager.Instance.puntosParaGanar;
 
@@ -637,7 +638,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void AumentarTiempo()
     {
-        AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("aumento");
 
         float tiempo = GameManager.Instance.totalTime;
 
@@ -689,7 +690,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void DisminuirTiempo()
     {
-        AudioManager.instance.PlaySound("botonmenu");
+        AudioManager.instance.PlaySound("aumento");
 
         float tiempo = GameManager.Instance.totalTime;
 

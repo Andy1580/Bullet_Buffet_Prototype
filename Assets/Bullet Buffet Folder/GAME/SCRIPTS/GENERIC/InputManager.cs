@@ -71,9 +71,10 @@ public class InputManager : MonoBehaviour
 
     private bool CanPlayNavigateSound()
     {
-        // Verificar si estamos en el Menú Principal o el juego está en pausa
+        // Verificar si estamos en el Menú Principal, en la ESCENA2 o el juego está en pausa
         string activeScene = SceneManager.GetActiveScene().name;
-        return activeScene == "ANDYMENUTEST" || (GameManager.Instance != null && GameManager.EnPausa);
+        return activeScene == "ANDYMENUTEST" || activeScene == "TESTVICTORY2" ||
+               (GameManager.Instance != null && GameManager.EnPausa);
     }
 
     private void HandleSubmit(InputAction.CallbackContext context)

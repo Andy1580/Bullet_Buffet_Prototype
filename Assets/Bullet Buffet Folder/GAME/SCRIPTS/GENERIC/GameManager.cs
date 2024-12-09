@@ -549,22 +549,24 @@ public class GameManager : MonoBehaviour
                 jugadoresEquipo2.Add(jugador);
         }
 
+        // Inicializar contadores de slots para cada equipo
+        int slotEquipo1 = 0;
+        int slotEquipo2 = (nJugadores == 4) ? 2 : 1; // Ajustar inicio para equipo 2
+
         // Instanciar jugadores y asignarles los respawn adecuados
         if (nJugadores == 2)
         {
-            // Asignación de puntos de respawn según equipos (modos de 2v2)
+            // Asignación de puntos de respawn según equipos (modos de 1v1)
             respawnJ1 = modo1v1spawnTeam1;
             respawnJ2 = modo1v1spawnTeam2;
 
             slotsHUD[0].gameObject.SetActive(true);
             slotsHUD[1].gameObject.SetActive(true);
 
-            // Para 2 jugadores, un jugador por equipo
-            if (jugadoresEquipo1.Count > 0) InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1);
-            if (jugadoresEquipo2.Count > 0) InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ2);
-
-            DeshabilitarMovimientoJugadores();
-            DeshabilitarDisparo();
+            if (jugadoresEquipo1.Count > 0)
+                InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1, slotEquipo1++);
+            if (jugadoresEquipo2.Count > 0)
+                InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ2, slotEquipo2++);
         }
         else if (nJugadores == 4)
         {
@@ -579,16 +581,19 @@ public class GameManager : MonoBehaviour
             slotsHUD[2].gameObject.SetActive(true);
             slotsHUD[3].gameObject.SetActive(true);
 
-            // Para 4 jugadores, 2 jugadores por equipo
-            if (jugadoresEquipo1.Count > 0) InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1);
-            if (jugadoresEquipo1.Count > 1) InstanciarJugadorProfe(jugadoresEquipo1[1], respawnJ2);
+            if (jugadoresEquipo1.Count > 0)
+                InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1, slotEquipo1++);
+            if (jugadoresEquipo1.Count > 1)
+                InstanciarJugadorProfe(jugadoresEquipo1[1], respawnJ2, slotEquipo1++);
 
-            if (jugadoresEquipo2.Count > 0) InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ3);
-            if (jugadoresEquipo2.Count > 1) InstanciarJugadorProfe(jugadoresEquipo2[1], respawnJ4);
-
-            DeshabilitarMovimientoJugadores();
-            DeshabilitarDisparo();
+            if (jugadoresEquipo2.Count > 0)
+                InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ3, slotEquipo2++);
+            if (jugadoresEquipo2.Count > 1)
+                InstanciarJugadorProfe(jugadoresEquipo2[1], respawnJ4, slotEquipo2++);
         }
+
+        DeshabilitarMovimientoJugadores();
+        DeshabilitarDisparo();
     }
 
 
@@ -1478,15 +1483,15 @@ public class GameManager : MonoBehaviour
     #endregion JUGADORES
     */
 
-    public PlayerController InstanciarJugadorProfe(Jugador jugador, Transform spawnPoint)
+    public PlayerController InstanciarJugadorProfe(Jugador jugador, Transform spawnPoint, int slotIndex)
     {
         PlayerController prefabPersonaje = ObtenerPrefabPersonaje(jugador.personaje);
         PlayerController pc = Instantiate(prefabPersonaje, spawnPoint.position, spawnPoint.rotation);
         print("SE INSTANCIA: " + jugador.personaje);
 
         // Configurar HUD y equipo del jugador
-        pc.PlayerHUD = slotsHUD[jugador.indice];
-        pc.Jugador = jugador;  // Esto activa automáticamente la asignación del Gamepad
+        pc.PlayerHUD = slotsHUD[slotIndex]; // Asignar el slot según el índice calculado
+        pc.Jugador = jugador; // Esto activa automáticamente la asignación del Gamepad
         pc.equipo = jugador.equipo;
         pc.gameObject.name = jugador.personaje;
         jugador.controlador = pc;
