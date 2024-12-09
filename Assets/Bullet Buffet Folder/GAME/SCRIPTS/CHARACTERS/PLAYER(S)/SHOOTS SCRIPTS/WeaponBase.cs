@@ -140,7 +140,7 @@ public class WeaponBase : MonoBehaviour
     */
     void InstanciarProyectil(Vector3 objetivo)
     {
-        Debug.Log("Se instancio la bala: " + proyectilPrefab.name);
+        //Debug.Log("Se instancio la bala: " + proyectilPrefab.name);
         GameObject proyectil = Instantiate(proyectilPrefab, bocaArma.position, Quaternion.identity);
 
         DañoBalaJugador dañoBala = proyectil.GetComponent<DañoBalaJugador>();

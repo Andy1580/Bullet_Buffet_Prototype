@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerWinsTest : MonoBehaviour
 {
@@ -17,14 +18,22 @@ public class PlayerWinsTest : MonoBehaviour
     public GameObject pfNOVA;
     public GameObject pfSKYIE;
 
+    public Button botonMenu;
+    public Button botonMapas;
+    public Button botonLobby;
+
     int totalPlayers;
+
+    private bool opcionSeleccionada;
 
     private void Awake()
     {
         //Iniciar musica escena victoria
         totalPlayers = GameManager.Instance.nJugadores;
 
-        if(totalPlayers == 2)
+        GameManager.Instance.OcultarElementosImportantes();
+
+        if (totalPlayers == 2)
         {
             posicionesWin[0].position = posicioneesTrasformsWins[0].position;
             posicionesLose[0].position = posicioneesTrasformsLose[0].position;
@@ -46,6 +55,10 @@ public class PlayerWinsTest : MonoBehaviour
         AudioManager.instance.StopSound("duelo");
         AudioManager.instance.PlaySound("victoria");
         InstanciarJugadores();
+
+        opcionSeleccionada = false;
+
+        EventSystem.current.SetSelectedGameObject(botonMenu.gameObject);
     }
 
     private void InstanciarJugadores()
@@ -73,7 +86,7 @@ public class PlayerWinsTest : MonoBehaviour
         InstanciarListaEnPosiciones(ganadores, posicionesWin, "ganador");
         InstanciarListaEnPosiciones(perdedores, posicionesLose, "perdedor");
 
-        StartCoroutine(CargarMenuPrincipal());
+
     }
 
     private GameObject SeleccionarPrefab(string personaje)
@@ -104,14 +117,60 @@ public class PlayerWinsTest : MonoBehaviour
         }
     }
 
+    public void RegresarAlMenu()
+    {
+        if (!opcionSeleccionada)
+        {
+            opcionSeleccionada = true;
+            StartCoroutine(CargarMenuPrincipal());
+            AudioManager.instance.PlaySound("botonmenu");
+        }
+    }
+
+    public void RegresarAlLobby()
+    {
+        if (!opcionSeleccionada)
+        {
+            opcionSeleccionada = true;
+            StartCoroutine(CargarLobby());
+            AudioManager.instance.PlaySound("botonmenu");
+        }
+    }
+
+    public void RegresarSeleccionMapa()
+    {
+        if (!opcionSeleccionada)
+        {
+            opcionSeleccionada = true;
+            StartCoroutine(CargarSeleccionMapa());
+            AudioManager.instance.PlaySound("botonmenu");
+        }
+    }
+
     IEnumerator CargarMenuPrincipal()
     {
-        yield return new WaitForSeconds(6f);
-        Debug.Log("Se ejecuto la transicion de escena en la escena de Victoria");
+        Debug.Log("Se selecciono regresar al menu");
         GameManager.Instance.IniciarCorutinaTransicion();
         MainMenuSystem.instance.ResetarBooleanosImportantesMS();
         GameManager.Instance.ResetarBooleanosImportantesGM();
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("ANDYMENUTEST");
+    }
+
+    IEnumerator CargarSeleccionMapa()
+    {
+        Debug.Log("Se selecciono escoger mapa");
+        GameManager.Instance.IniciarCorutinaTransicion();
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("ANDYMENUTEST");
+    }
+
+    IEnumerator CargarLobby()
+    {
+        Debug.Log("Se selecciono Lobby");
+        GameManager.Instance.IniciarCorutinaTransicion();
+        GameManager.Instance.ResetearVariablesEnLobby();
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("LOBBY");
     }
 }

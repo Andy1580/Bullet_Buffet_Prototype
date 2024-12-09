@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -285,9 +284,120 @@ public class GameManager : MonoBehaviour
         modoDS = false;
     }
 
+    public void OcultarElementosImportantes()
+    {
+        if (panelTiempoAgotado != null)
+            panelTiempoAgotado.SetActive(false);
+
+        if (panelTemporizador != null)
+            panelTemporizador.SetActive(false);
+
+        if (panelFinish != null)
+            panelFinish.SetActive(false);
+
+        //Modo Hechizos Sazonados
+        if (magosPrincipales != null)
+            magosPrincipales.SetActive(false);
+
+        if (panelMarcadorMHS != null)
+            panelMarcadorMHS.SetActive(false);
+
+        if (camaraObjeto != null)
+            camaraObjeto.SetActive(false);
+
+        if (panelMarcadorMDS != null)
+            panelMarcadorMDS.SetActive(false);
+
+        if (panelPausa != null)
+            panelPausa.SetActive(false);
+
+        if (panelControles != null)
+            panelControles.SetActive(false);
+
+        if (panelConfirmacionSalida != null)
+            panelConfirmacionSalida.SetActive(false);
+
+        if (panelHUDs != null)
+            panelHUDs.SetActive(false);
+
+        inGame = false;
+        deadEnemy = true;
+    }
+
+    public void ResetearVariablesEnLobby()
+    {
+        enPausa = false;
+
+        jugadoresEquipo1 = new List<Jugador>();
+        jugadoresEquipo2 = new List<Jugador>();
+
+        cargarJuego = false;
+
+        faltan15Seg = false;
+
+        equipo1Ganado = false;
+        equipo2Ganado = false;
+
+        isRunning = false;
+
+        if (panelTiempoAgotado != null)
+            panelTiempoAgotado.SetActive(false);
+
+        if (panelTemporizador != null)
+            panelTemporizador.SetActive(false);
+
+        //Paneles de condicion de Victoria
+        if (panelFinish != null)
+            panelFinish.SetActive(false);
+
+
+        //Modo Hechizos Sazonados
+        if (magosPrincipales != null)
+            magosPrincipales.SetActive(false);
+
+        if (panelMarcadorMHS != null)
+            panelMarcadorMHS.SetActive(false);
+
+        if (camaraObjeto != null)
+            camaraObjeto.SetActive(false);
+
+        puntosAGanarTeam1 = puntajeInicial;
+        puntosAGanarTeam2 = puntajeInicial;
+
+        //Modo Duelo De Salsas
+        //pistaPintable.SetActive(false);
+        if (panelMarcadorMDS != null)
+            panelMarcadorMDS.SetActive(false);
+
+        //Pausa
+        if (panelPausa != null)
+            panelPausa.SetActive(false);
+
+        if (panelControles != null)
+            panelControles.SetActive(false);
+
+        if (panelConfirmacionSalida != null)
+            panelConfirmacionSalida.SetActive(false);
+
+        //Jugadores
+        activePlayers = new List<PlayerController>();
+
+        //Spawn de Enemigos
+        deadEnemy = true;
+        enemigosInstanciados = new List<GameObject>();
+        DestruirEnemigosActivos();
+
+        //Cerrar el HUD
+        if (panelHUDs != null)
+            panelHUDs.SetActive(false);
+
+        //Booleano para juego
+        inGame = false;
+    }
+
     public void ResetiarVariables()
     {
-        if (SceneManager.GetActiveScene().name == "ANDYMENUTEST" || SceneManager.GetActiveScene().name == "TESTVICTORY2")
+        if (SceneManager.GetActiveScene().name == "ANDYMENUTEST")
         {
 
             ////Resetear Diccionario de Gamepads
@@ -676,6 +786,8 @@ public class GameManager : MonoBehaviour
 
     void HabilitarMovimientoJugadores()
     {
+        if (puntosAGanarTeam1 == puntosParaGanar || puntosAGanarTeam2 == puntosParaGanar) return;
+
         foreach (PlayerController player in activePlayers)
         {
             player.HabilitarMovimiento();
@@ -692,6 +804,8 @@ public class GameManager : MonoBehaviour
 
     void HabilitarDisparo()
     {
+        if (puntosAGanarTeam1 == puntosParaGanar || puntosAGanarTeam2 == puntosParaGanar) return;
+
         foreach (PlayerController player in activePlayers)
         {
             player.muerto = false;
@@ -949,7 +1063,7 @@ public class GameManager : MonoBehaviour
 
     private bool equipo1Ganado = false;
     private bool equipo2Ganado = false;
-    
+
     void ProcesarVictoriaEquipo(int equipoGanador)
     {
         deadEnemy = true;
@@ -2002,7 +2116,6 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1.5f);
-        if (puntosAGanarTeam1 == puntosParaGanar || puntosAGanarTeam2 == puntosParaGanar) yield return null;
         HabilitarMovimientoJugadores();
         HabilitarDisparo();
         yield return new WaitForSeconds(5f);
