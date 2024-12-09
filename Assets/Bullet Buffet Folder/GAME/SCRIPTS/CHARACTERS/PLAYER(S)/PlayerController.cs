@@ -136,6 +136,7 @@ public class PlayerController : MonoBehaviour
                 habilidadDisponible = false;
                 habilidadProgreso = 0;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+                playerHUD.HabilidadVacia();
                 StartCoroutine(CargarHabilidad());
             }
             /*
@@ -174,11 +175,13 @@ public class PlayerController : MonoBehaviour
     {
         if (equipo == 1)
         {
-            circuloEquipo.color = Color.magenta;
+            circuloEquipo.color = Color.blue;
+            playerHUD.Equipo(equipo);
         }
         else if (equipo == 2)
         {
-            circuloEquipo.color = Color.green;
+            circuloEquipo.color = Color.yellow;
+            playerHUD.Equipo(equipo);
         }
     }
 
@@ -671,6 +674,7 @@ public class PlayerController : MonoBehaviour
     {
         habilidadProgreso = 0;
         playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+        playerHUD.HabilidadVacia();
         StartCoroutine(CargarHabilidad());
 
         habilidadDisponible = false;
@@ -725,6 +729,7 @@ public class PlayerController : MonoBehaviour
             {
                 habilidadProgreso = 1f;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
+                playerHUD.HabilidadCompleta();
                 habilidadDisponible = true;
             }
 
@@ -821,11 +826,17 @@ public class PlayerController : MonoBehaviour
     #region POWER UP
     [Header("Power Up Core")]
     [SerializeField] private string actualHability = null;
+    [SerializeField] private GameObject vfxActiveInmun;
+    [SerializeField] private GameObject vfxActiveSpeed;
     internal string hability;
 
     void InicializarPowerUps()
     {
         actualHability = hability;
+        contadorInmunity = 5;
+        playerHUD.inmunityCounter.text = contadorInmunity.ToString();
+        contadorSpeed = 5;
+        playerHUD.speedCounter.text = contadorSpeed.ToString();
         DesactivarSprite();
     }
 
@@ -851,6 +862,7 @@ public class PlayerController : MonoBehaviour
         isInvulnerable = false;
         inSuperSpeed = false;
         DesactivarSprite();
+        playerHUD.HabilidadVacia();
     }
 
     #region INVULNERABILIDAD
@@ -859,14 +871,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] internal bool isInvulnerable = false;
     [SerializeField] private GameObject vfxInmune;
     [SerializeField] private GameObject vfxVelocidad;
+    [SerializeField] private int contadorInmunity = 5;
     //[SerializeField] private bool invulnerable;
 
     private void ActivarInvulnerabilidad()
     {
         isInvulnerable = true;
         vfxInmune.SetActive(true);
-        AudioManager.instance.PlaySound("powerUpActive");
+        vfxActiveInmun.SetActive(true);
+        //AudioManager.instance.PlaySound("powerUpActive");
         Debug.Log("Se activo la invulnerabilidad");
+        StartCoroutine(CooldawnInmunity());
+        AudioManager.instance.PlaySound("inmunity");
         Invoke("DesactivarInvulnerabilidad", isInvunerableTime);
     }
 
@@ -874,11 +890,28 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Si se desactivo Invulnerabilidad");
         vfxInmune.SetActive(false);
+        vfxActiveInmun.SetActive(false);
         hability = null;
         actualHability = hability;
         isInvulnerable = false;
         DesactivarSprite();
     }
+
+    IEnumerator CooldawnInmunity()
+    {
+        while (contadorInmunity > 0)
+        {
+            contadorInmunity--;
+            playerHUD.inmunityCounter.text = contadorInmunity.ToString();
+            yield return new WaitForSeconds(1);
+        }
+
+        //yield return new WaitForSeconds(cooldownEscudo);
+        //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
+        contadorInmunity = 5;
+        playerHUD.inmunityCounter.text = contadorInmunity.ToString();
+    }
+
     #endregion INVULNERABILIDAD
 
     #region SUPER SPEED
@@ -886,6 +919,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float superSpeed = 10f;
     [SerializeField] private float actualSpeed;
     [SerializeField] private float superSpeedTime = 5f;
+    [SerializeField] private int contadorSpeed = 5;
     public bool inSuperSpeed = false;
 
     void InicializarSSD()
@@ -897,20 +931,40 @@ public class PlayerController : MonoBehaviour
     {
         playerSpeed = superSpeed;
         vfxVelocidad.SetActive(true);
-        AudioManager.instance.PlaySound("powerUpActive");
+        vfxActiveSpeed.SetActive(true);
+        //AudioManager.instance.PlaySound("powerUpActive");
         //superSpeed = playerSpeed;
+        StartCoroutine(CooldawnSpeed());
+        AudioManager.instance.PlaySound("speed");
         Invoke("DesactivarSSD", superSpeedTime);
     }
 
     private void DesactivarSSD()
     {
         vfxVelocidad.SetActive(false);
+        vfxActiveSpeed.SetActive(false);
         hability = null;
         actualHability = hability;
         playerSpeed = actualSpeed;
         inSuperSpeed = false;
         DesactivarSprite();
     }
+
+    IEnumerator CooldawnSpeed()
+    {
+        while (contadorSpeed > 0)
+        {
+            contadorSpeed--;
+            playerHUD.speedCounter.text = contadorSpeed.ToString();
+            yield return new WaitForSeconds(1);
+        }
+
+        //yield return new WaitForSeconds(cooldownEscudo);
+        //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
+        contadorSpeed = 5;
+        playerHUD.speedCounter.text = contadorSpeed.ToString();
+    }
+
     #endregion SUPER SPEED
 
     #endregion POWER UP

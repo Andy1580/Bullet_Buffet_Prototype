@@ -457,7 +457,7 @@ public class ConfiguracionManager : MonoBehaviour
         if (limiteFPS != 60 && limiteFPS != 90 && limiteFPS != 120 && limiteFPS != 0)
         {
             Debug.LogWarning($"FPS inválidos en PlayerPrefs: {limiteFPS}, configurando a 60 por defecto.");
-            limiteFPS = 60;
+            limiteFPS = 120;
             PlayerPrefs.SetInt("FPSLimite", limiteFPS);
             PlayerPrefs.Save();
         }

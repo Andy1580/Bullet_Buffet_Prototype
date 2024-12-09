@@ -532,6 +532,11 @@ public class GameManager : MonoBehaviour
     {
         nJugadores = PlayerPrefs.GetInt("nJugadores");
 
+        slotsHUD[0].gameObject.SetActive(false);
+        slotsHUD[1].gameObject.SetActive(false);
+        slotsHUD[2].gameObject.SetActive(false);
+        slotsHUD[3].gameObject.SetActive(false);
+
         // Cargar jugadores desde PlayerPrefs y dividirlos en equipos
         for (int i = 1; i <= nJugadores; i++)
         {
@@ -551,6 +556,9 @@ public class GameManager : MonoBehaviour
             respawnJ1 = modo1v1spawnTeam1;
             respawnJ2 = modo1v1spawnTeam2;
 
+            slotsHUD[0].gameObject.SetActive(true);
+            slotsHUD[1].gameObject.SetActive(true);
+
             // Para 2 jugadores, un jugador por equipo
             if (jugadoresEquipo1.Count > 0) InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1);
             if (jugadoresEquipo2.Count > 0) InstanciarJugadorProfe(jugadoresEquipo2[0], respawnJ2);
@@ -565,6 +573,11 @@ public class GameManager : MonoBehaviour
             respawnJ2 = modo2v2spawnTeam1_2;
             respawnJ3 = modo2v2spawnTeam2_1;
             respawnJ4 = modo2v2spawnTeam2_2;
+
+            slotsHUD[0].gameObject.SetActive(true);
+            slotsHUD[1].gameObject.SetActive(true);
+            slotsHUD[2].gameObject.SetActive(true);
+            slotsHUD[3].gameObject.SetActive(true);
 
             // Para 4 jugadores, 2 jugadores por equipo
             if (jugadoresEquipo1.Count > 0) InstanciarJugadorProfe(jugadoresEquipo1[0], respawnJ1);
@@ -1143,9 +1156,11 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         animTransitionInicioPartida.SetTrigger("ready");
+        AudioManager.instance.PlaySound("ready");
         //Audio Ready
         yield return new WaitForSeconds(timeTransition);
         animTransitionInicioPartida.SetTrigger("go");
+        AudioManager.instance.PlaySound("go");
         //Adio Go
         yield return new WaitForSeconds(1f);
         PrepararEscenaDeJuego();

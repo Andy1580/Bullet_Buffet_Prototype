@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -33,6 +32,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject botonJugar;
     [SerializeField] private GameObject tiras;
     [SerializeField] public GameObject continuar;
+    [SerializeField] public GameObject continuar2;
 
     public static bool escogiendoEquipo = true;
 
@@ -94,6 +94,7 @@ public class LobbyManager : MonoBehaviour
             botonJugar.SetActive(false);
             tiras.SetActive(false);
             continuar.SetActive(false);
+            continuar2.SetActive(false);
 
             escogiendoEquipo = true;
             equipoControles = new int[equipoControles.Length];
@@ -455,6 +456,7 @@ public class LobbyManager : MonoBehaviour
                     foreach (ControlSystem c in controlSystems)
                     {
                         c.escogiendoEquipoCS = true;
+                        c.ResetearVariables();
                         Debug.Log($"Se reestableció escogiendoEquipoCS para {c.name}");
                     }
 
@@ -499,14 +501,14 @@ public class LobbyManager : MonoBehaviour
         // Actualizar el estado de "continuar" y "tiras" basado en la cantidad de personajes seleccionados
         if (Gamepad.all.Count == 2)
         {
-            if (personaje.Count == 2)
+            if (personaje.Count > 2)
             {
-                self.continuar.SetActive(true);
+                self.continuar2.SetActive(true);
                 self.tiras.SetActive(true);
             }
             else
             {
-                self.continuar.SetActive(false);
+                self.continuar2.SetActive(false);
                 self.tiras.SetActive(false);
             }
         }
@@ -514,12 +516,12 @@ public class LobbyManager : MonoBehaviour
         {
             if (personaje.Count == 4)
             {
-                self.continuar.SetActive(true);
+                self.continuar2.SetActive(true);
                 self.tiras.SetActive(true);
             }
             else
             {
-                self.continuar.SetActive(false);
+                self.continuar2.SetActive(false);
                 self.tiras.SetActive(false);
             }
         }
@@ -538,12 +540,12 @@ public class LobbyManager : MonoBehaviour
         {
             if (personaje.Count == 2)
             {
-                continuar.SetActive(true);
+                continuar2.SetActive(true);
                 tiras.SetActive(true);
             }
             else
             {
-                continuar.SetActive(false);
+                continuar2.SetActive(false);
                 tiras.SetActive(false);
             }
         }
@@ -551,12 +553,12 @@ public class LobbyManager : MonoBehaviour
         {
             if (personaje.Count == 4)
             {
-                continuar.SetActive(true);
+                continuar2.SetActive(true);
                 tiras.SetActive(true);
             }
             else
             {
-                continuar.SetActive(false);
+                continuar2.SetActive(false);
                 tiras.SetActive(false);
             }
         }

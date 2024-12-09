@@ -21,13 +21,13 @@ public class PowerUp : MonoBehaviour
             if (player.hability == null)
             {
                 player.SetHability(gameObject.name);
-                Instantiate(vfx,this.transform);
+                Instantiate(vfx,transform.position,transform.rotation);
                 AudioManager.instance.PlaySound("powerUpPick");
                 Destroy(this.gameObject, 0.25f);
             }
             else
             {
-                Instantiate(vfx, this.transform);
+                Instantiate(vfx, transform.position, transform.rotation);
                 Destroy(this.gameObject, 0.25f);
             }
         }

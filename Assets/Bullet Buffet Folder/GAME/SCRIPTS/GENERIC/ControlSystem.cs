@@ -21,7 +21,8 @@ public class ControlSystem : MonoBehaviour
     [SerializeField] public Sprite centro;
     [SerializeField] public Sprite izquierda;
     [SerializeField] public Sprite derecha;
-    [SerializeField] public Sprite aceptar;
+    [SerializeField] public Sprite aceptarEquipo1;
+    [SerializeField] public Sprite aceptarEquipo2;
     public bool equipoBloqueado = false;
 
     public bool selectTm;
@@ -90,14 +91,14 @@ public class ControlSystem : MonoBehaviour
                 c_Animator.SetInteger("Posicion", -1);
                 equipoJugador = 1; //Equipo Rojo;
                 controlImg.sprite = izquierda;
-
+                controlImg.color = Color.blue;
             }
             else if (v2.x > 0.5f) //Der
             {
                 c_Animator.SetInteger("Posicion", 1);
                 equipoJugador = 2; //Equipo Azul
                 controlImg.sprite = derecha;
-
+                controlImg.color= Color.yellow;
             }
         }
     }
@@ -142,6 +143,17 @@ public class ControlSystem : MonoBehaviour
                     Gamepad currentGamepad = context.control.device as Gamepad;
                     puntero.gameObject.SetActive(true);
                     //controlImg.sprite = aceptar;
+
+                    if(equipoJugador == 1)
+                    {
+                        controlImg.sprite = aceptarEquipo1;
+                        controlImg.color = Color.white;   
+                    }
+                    else
+                    {
+                        controlImg.sprite = aceptarEquipo2;
+                        controlImg.color = Color.white;
+                    }
 
                     // Asignar al equipo y actualizar contadores
                     LobbyManager.SeleccionarEquipo(currentGamepad, equipoJugador);
@@ -203,40 +215,45 @@ public class ControlSystem : MonoBehaviour
 
     public void ResetearVariables()
     {
-        if (LobbyManager.self.panelSelectTeam.activeSelf)
-        {
-            // Solo resetear el estado interno de este ControlSystem
-            equipoJugador = 0;
-            equipoBloqueado = false;
-            selectTm = true;
-            c_Animator.SetInteger("Posicion", 0);
-            controlImg.color = new Color(1, 1, 1, 0.6f);
-            Debug.Log($"ControlSystem {gameObject.name} reseteó sus variables en selección de equipo.");
-        }
-        else if (LobbyManager.self.panelSelectCh.activeSelf)
-        {
-            // Solo resetear el estado de personaje si aplica
-            if (selectedCharacter == null || selectedCharacter == "")
-            {
-                // Si no tiene personaje seleccionado, regresar al panel de selección de equipo
-                LobbyManager.RecetearVariablesLobby();
-                puntero.gameObject.SetActive(false);
-                equipoJugador = 0;
-                equipoBloqueado = false;
-                selectTm = true;
-                c_Animator.SetInteger("Posicion", 0);
-                controlImg.color = new Color(1, 1, 1, 0.6f);
-                Debug.Log($"ControlSystem {gameObject.name} reseteó al volver a selección de equipo.");
-            }
-            else
-            {
-                // Si ya tiene personaje seleccionado, resetear solo eso
-                selectedCharacter = "";
-                spritePersonaje.sprite = spritePersonajeDefault;
-                selectCh = true;
-                Debug.Log($"ControlSystem {gameObject.name} reseteó solo el personaje.");
-            }
-        }
+        //if (LobbyManager.self.panelSelectTeam.activeSelf)
+        //{
+        //    // Solo resetear el estado interno de este ControlSystem
+        //    equipoJugador = 0;
+        //    equipoBloqueado = false;
+        //    selectTm = true;
+        //    c_Animator.SetInteger("Posicion", 0);
+        //    controlImg.color = new Color(1, 1, 1, 0.6f);
+        //    Debug.Log($"ControlSystem {gameObject.name} reseteó sus variables en selección de equipo.");
+        //}
+        //else if (LobbyManager.self.panelSelectCh.activeSelf)
+        //{
+        //    // Solo resetear el estado de personaje si aplica
+        //    if (selectedCharacter == null || selectedCharacter == "")
+        //    {
+        //        // Si no tiene personaje seleccionado, regresar al panel de selección de equipo
+        //        LobbyManager.RecetearVariablesLobby();
+        //        puntero.gameObject.SetActive(false);
+        //        equipoJugador = 0;
+        //        equipoBloqueado = false;
+        //        selectTm = true;
+        //        c_Animator.SetInteger("Posicion", 0);
+        //        controlImg.color = new Color(1, 1, 1, 0.6f);
+        //        Debug.Log($"ControlSystem {gameObject.name} reseteó al volver a selección de equipo.");
+        //    }
+        //    else
+        //    {
+        //        // Si ya tiene personaje seleccionado, resetear solo eso
+        //        selectedCharacter = "";
+        //        spritePersonaje.sprite = spritePersonajeDefault;
+        //        selectCh = true;
+        //        Debug.Log($"ControlSystem {gameObject.name} reseteó solo el personaje.");
+        //    }
+        //}
+
+        selectedCharacter = "";
+        spritePersonaje.sprite = spritePersonajeDefault;
+        selectCh = true;
+
 
     }
 

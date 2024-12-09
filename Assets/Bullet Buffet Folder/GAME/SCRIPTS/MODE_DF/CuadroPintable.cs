@@ -60,7 +60,7 @@ public class CuadroPintable : MonoBehaviour
                 equipoActual = player.equipo;
 
                 //Lo pintamos
-                meshRenderer.material.color = player.equipo == 1 ? Color.magenta : Color.green;
+                meshRenderer.material.color = player.equipo == 1 ? Color.blue : Color.yellow;
 
                 //Enviamos los cambios al GameManager
                 GameManager.CuadradoCambiado(this);

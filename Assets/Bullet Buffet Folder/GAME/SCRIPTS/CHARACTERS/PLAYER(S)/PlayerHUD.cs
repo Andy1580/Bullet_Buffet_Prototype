@@ -13,9 +13,16 @@ public class PlayerHUD : MonoBehaviour
     public Image coneShotIcon;
     public Image explosiveShotIcon;
     public Image characterIcon;
+    public Image pico;
+    public Image rb;
     public TMP_Text dashCounter;
     public TMP_Text shieldCounter;
+    public TMP_Text inmunityCounter;
+    public TMP_Text speedCounter;
     public string name;
+    public Sprite LEquipo1;
+    public Sprite LEquipo2;
+    public Image LDefault;
 
     //public void SetupHUD(InfoLobby.PlayerInfo playerInfo)
     //{
@@ -129,6 +136,30 @@ public class PlayerHUD : MonoBehaviour
     {
         speedIcon.enabled = false;
         invulnerabilityIcon.enabled = false;
+    }
+
+    public void HabilidadCompleta()
+    {
+        pico.enabled = true;
+        rb.enabled = true;
+    }
+
+    public void HabilidadVacia()
+    {
+        pico.enabled = false;
+        rb.enabled = false;
+    }
+
+    public void Equipo(int equipoSeleccionado)
+    {
+        if(equipoSeleccionado == 1)
+        {
+            LDefault.sprite = LEquipo1;
+        }
+        else
+        {
+            LDefault.sprite = LEquipo2;
+        }
     }
 
     private Sprite GetCharacterSprite(string characterName)
