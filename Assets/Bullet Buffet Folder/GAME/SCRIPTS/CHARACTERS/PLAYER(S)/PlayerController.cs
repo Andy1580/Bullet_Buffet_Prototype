@@ -525,7 +525,7 @@ public class PlayerController : MonoBehaviour
         vfxMuerte.Play();
         DesactivarSprite();
 
-        if(escudo.gameObject.activeSelf)
+        if (escudo.gameObject.activeSelf)
         {
             escudo.gameObject.SetActive(false);
         }
@@ -826,8 +826,8 @@ public class PlayerController : MonoBehaviour
     #region POWER UP
     [Header("Power Up Core")]
     [SerializeField] private string actualHability = null;
-    [SerializeField] private GameObject vfxActiveInmun;
-    [SerializeField] private GameObject vfxActiveSpeed;
+    [SerializeField] private ParticleSystem vfxActiveInmun;
+    [SerializeField] private ParticleSystem vfxActiveSpeed;
     internal string hability;
 
     void InicializarPowerUps()
@@ -838,10 +838,18 @@ public class PlayerController : MonoBehaviour
         contadorSpeed = 5;
         playerHUD.speedCounter.text = contadorSpeed.ToString();
         DesactivarSprite();
+
+        if (vfxActiveInmun != null)
+            vfxActiveInmun.Stop();
+
+        if (vfxActiveSpeed != null)
+            vfxActiveSpeed.Stop();
     }
 
     public void SetHability(string newHability)
     {
+        if (hability != null) return;
+
         hability = newHability;
         actualHability = hability;
 
@@ -851,7 +859,6 @@ public class PlayerController : MonoBehaviour
     void DesactivarSprite()
     {
         playerHUD.DisablePowerUpIcons();
-
     }
 
     public void ResetearVariablesCambioRonda()
@@ -878,23 +885,30 @@ public class PlayerController : MonoBehaviour
     {
         isInvulnerable = true;
         vfxInmune.SetActive(true);
-        vfxActiveInmun.SetActive(true);
+
+        if (vfxActiveInmun != null)
+            vfxActiveInmun.Play();
+
         //AudioManager.instance.PlaySound("powerUpActive");
         Debug.Log("Se activo la invulnerabilidad");
         StartCoroutine(CooldawnInmunity());
         AudioManager.instance.PlaySound("inmunity");
-        Invoke("DesactivarInvulnerabilidad", isInvunerableTime);
+        //Invoke("DesactivarInvulnerabilidad", isInvunerableTime);
     }
 
     private void DesactivarInvulnerabilidad()
     {
         Debug.Log("Si se desactivo Invulnerabilidad");
-        vfxInmune.SetActive(false);
-        vfxActiveInmun.SetActive(false);
         hability = null;
         actualHability = hability;
-        isInvulnerable = false;
+        print(hability);
         DesactivarSprite();
+        vfxInmune.SetActive(false);
+        isInvulnerable = false;
+        ResetearVariablesCambioRonda();
+
+        if (vfxActiveInmun != null)
+            vfxActiveInmun.Stop();
     }
 
     IEnumerator CooldawnInmunity()
@@ -910,6 +924,7 @@ public class PlayerController : MonoBehaviour
         //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         contadorInmunity = 5;
         playerHUD.inmunityCounter.text = contadorInmunity.ToString();
+        DesactivarInvulnerabilidad();
     }
 
     #endregion INVULNERABILIDAD
@@ -931,23 +946,29 @@ public class PlayerController : MonoBehaviour
     {
         playerSpeed = superSpeed;
         vfxVelocidad.SetActive(true);
-        vfxActiveSpeed.SetActive(true);
         //AudioManager.instance.PlaySound("powerUpActive");
-        //superSpeed = playerSpeed;
         StartCoroutine(CooldawnSpeed());
         AudioManager.instance.PlaySound("speed");
-        Invoke("DesactivarSSD", superSpeedTime);
+
+        if (vfxActiveSpeed != null)
+            vfxActiveSpeed.Play();
+        //Invoke("DesactivarSSD", superSpeedTime);
     }
 
     private void DesactivarSSD()
     {
-        vfxVelocidad.SetActive(false);
-        vfxActiveSpeed.SetActive(false);
+
         hability = null;
         actualHability = hability;
+        print(hability);
+        DesactivarSprite();
+        vfxVelocidad.SetActive(false);
         playerSpeed = actualSpeed;
         inSuperSpeed = false;
-        DesactivarSprite();
+        ResetearVariablesCambioRonda();
+
+        if (vfxActiveSpeed != null)
+            vfxActiveSpeed.Stop();
     }
 
     IEnumerator CooldawnSpeed()
@@ -963,6 +984,7 @@ public class PlayerController : MonoBehaviour
         //GameManager.Instance.UpdateShieldStatus(this, true, contadorEscudo);
         contadorSpeed = 5;
         playerHUD.speedCounter.text = contadorSpeed.ToString();
+        DesactivarSSD();
     }
 
     #endregion SUPER SPEED
