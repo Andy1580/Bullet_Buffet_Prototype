@@ -171,6 +171,8 @@ public class PlayerWinsTest : MonoBehaviour
         GameManager.Instance.IniciarCorutinaTransicion();
         GameManager.Instance.ResetearVariablesEnLobby();
         yield return new WaitForSeconds(2f);
+        AudioManager.instance.StopSound("victoria");
+        AudioManager.instance.PlaySound("menu");
         SceneManager.LoadScene("LOBBY");
     }
 }
