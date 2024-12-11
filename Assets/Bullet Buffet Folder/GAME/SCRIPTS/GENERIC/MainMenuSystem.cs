@@ -117,7 +117,7 @@ public class MainMenuSystem : MonoBehaviour
         //    ultimoBotonSeleccionadoStatic = botonJugarMenu.gameObject;
         //}
 
-        Debug.Log("Se ejecuto otra vez el Start del: " + this.gameObject.name);
+        //Debug.Log("Se ejecuto otra vez el Start del: " + this.gameObject.name);
 
         ultimoBotonSeleccionado = ultimoBotonSeleccionadoStatic;
         play = false;
@@ -145,7 +145,7 @@ public class MainMenuSystem : MonoBehaviour
 
         if (firstGamepad != null)
         {
-            Debug.Log($"Navegación asignada al primer Gamepad: {firstGamepad.displayName}");
+            //Debug.Log($"Navegación asignada al primer Gamepad: {firstGamepad.displayName}");
 
             // Cambiar esquema de control en todos los PlayerInput
             foreach (var input in PlayerInput.all)

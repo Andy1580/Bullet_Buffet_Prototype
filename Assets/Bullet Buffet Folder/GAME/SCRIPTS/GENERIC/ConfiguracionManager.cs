@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,15 +19,20 @@ public class ConfiguracionManager : MonoBehaviour
     public Slider sliderMusica;
     public Slider sliderSFX;
     public Toggle pantallaCompletaToggle;
-    public TMP_Dropdown resolucionDropdown;
-    public TMP_Dropdown dropdownFPS;
     public Toggle toggleFPS;
 
     public bool cambiosAudioRealizados;
     public bool cambiosPantallaRealizados;
     public bool cambiosFPSRealizados;
 
+    private int indiceResolucionActual = 0;
     private Resolution[] resolucionesDisponibles;
+
+    private int[] fpsOpciones = { 60, 90, 120 }; // Opciones de FPS disponibles
+    private int indiceFPSActual = 0; // Índice actual en el array de opciones
+
+    public TMP_Text ResolucionText;
+    public TMP_Text fpsText;
 
     private void Awake()
     {
@@ -47,15 +51,15 @@ public class ConfiguracionManager : MonoBehaviour
 
         Instance = this;
 
-        if (!PlayerPrefs.HasKey("FPSLimite"))
-        {
-            PlayerPrefs.SetInt("FPSLimite", 60);
-            PlayerPrefs.Save();
-        }
+        //if (!PlayerPrefs.HasKey("FPSLimite"))
+        //{
+        //    PlayerPrefs.SetInt("FPSLimite", 60);
+        //    PlayerPrefs.Save();
+        //}
 
-        // Asegúrate de sincronizar el valor del Dropdown con los FPS guardados
-        int limiteFPS = PlayerPrefs.GetInt("FPSLimite");
-        dropdownFPS.value = limiteFPS == 60 ? 1 : (limiteFPS == 90 ? 2 : (limiteFPS == 120 ? 3 : 0));
+        //// Asegúrate de sincronizar el valor del Dropdown con los FPS guardados
+        //int limiteFPS = PlayerPrefs.GetInt("FPSLimite");
+        //dropdownFPS.value = limiteFPS == 60 ? 1 : (limiteFPS == 90 ? 2 : (limiteFPS == 120 ? 3 : 0));
 
 
         ConfigurarResolucionesLimitadas();
@@ -64,7 +68,7 @@ public class ConfiguracionManager : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     private IEnumerator EsperarYBuscarPanelFPS()
@@ -127,7 +131,7 @@ public class ConfiguracionManager : MonoBehaviour
         if (InputManager.Instance != null)
         {
             InputManager.Instance.SetActivePanel(OnSubmitConfiguracion, OnCancelConfiguracion);
-            Debug.Log("Se activo configuracion manager y se designo el Input");
+            //Debug.Log("Se activo configuracion manager y se designo el Input");
         }
     }
 
@@ -168,18 +172,18 @@ public class ConfiguracionManager : MonoBehaviour
             {
                 ModificarVolumenSFX(sliderSFX.value);
             }
-            else if (currentSelected == pantallaCompletaToggle.gameObject)
-            {
-                CambiarPantallaCompleta(pantallaCompletaToggle.isOn);
-            }
-            else if (currentSelected == resolucionDropdown.gameObject)
-            {
-                CambiarResolucion(resolucionDropdown.value);
-            }
-            else if (currentSelected == dropdownFPS.gameObject)
-            {
-                CambiarLimiteFPS(dropdownFPS.value);
-            }
+            //else if (currentSelected == pantallaCompletaToggle.gameObject)
+            //{
+            //    CambiarPantallaCompleta(pantallaCompletaToggle.isOn);
+            //}
+            //else if (currentSelected == resolucionDropdown.gameObject)
+            //{
+            //    CambiarResolucion(resolucionDropdown.value);
+            //}
+            //else if (currentSelected == dropdownFPS.gameObject)
+            //{
+            //    CambiarLimiteFPS(dropdownFPS.value);
+            //}
         }
     }
 
@@ -320,8 +324,8 @@ public class ConfiguracionManager : MonoBehaviour
             return;
         }
 
-        print(sliderMusica);
-        print(PlayerPrefs.GetFloat("volumenMusica", 1f));
+        //print(sliderMusica);
+        //print(PlayerPrefs.GetFloat("volumenMusica", 1f));
         sliderMusica.value = PlayerPrefs.GetFloat("volumenMusica", 1f);
 
         if (sliderSFX == null)
@@ -382,40 +386,87 @@ public class ConfiguracionManager : MonoBehaviour
 
     private void CargarValoresDePantalla()
     {
-        pantallaCompletaToggle.isOn = PlayerPrefs.GetInt("PantallaCompleta", 1) == 1;
-        resolucionDropdown.value = PlayerPrefs.GetInt("Resolucion", 0);
+        // Cargar la configuración de PlayerPrefs
+        bool pantallaCompleta = PlayerPrefs.GetInt("PantallaCompleta", 1) == 1;
+        pantallaCompletaToggle.isOn = pantallaCompleta; // Sincroniza el toggle
+        Screen.fullScreen = pantallaCompleta; // Aplica el estado inicial
+        Debug.Log($"Estado inicial: Pantalla Completa = {pantallaCompleta}");
+        indiceResolucionActual = PlayerPrefs.GetInt("Resolucion", resolucionesDisponibles.Length - 1); // Última resolución por defecto
+
+        // Aplicar la configuración inicial
+        CambiarResolucion(indiceResolucionActual);
+        CambiarPantallaCompleta(pantallaCompletaToggle.isOn);
+
+        Debug.Log($"Cargados valores: Pantalla Completa = {pantallaCompletaToggle.isOn}, Resolución = {indiceResolucionActual}");
         cambiosPantallaRealizados = false;
     }
 
-    private void CambiarPantallaCompleta(bool pantallaCompleta)
+    public void CambiarPantallaCompleta(bool pantallaCompleta)
     {
         Screen.fullScreen = pantallaCompleta;
-        cambiosPantallaRealizados = true;
+        Debug.Log($"Pantalla Completa: {pantallaCompleta}");
+
+        // Guardar cambios en PlayerPrefs
+        PlayerPrefs.SetInt("PantallaCompleta", pantallaCompleta ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     private void CambiarResolucion(int indiceResolucion)
     {
-        if (resolucionesDisponibles == null || resolucionesDisponibles.Length == 0) return;
+        if (indiceResolucion < 0 || indiceResolucion >= resolucionesDisponibles.Length)
+        {
+            Debug.LogWarning("Índice de resolución inválido");
+            return;
+        }
 
-        Resolution resolucionSeleccionada = resolucionesDisponibles[indiceResolucion];
+        indiceResolucionActual = indiceResolucion;
+        Resolution resolucionSeleccionada = resolucionesDisponibles[indiceResolucionActual];
         Screen.SetResolution(resolucionSeleccionada.width, resolucionSeleccionada.height, Screen.fullScreen);
-        cambiosPantallaRealizados = true;
+
+        // Actualizar el texto de resolución
+        ResolucionText.text = $"{resolucionSeleccionada.width}x{resolucionSeleccionada.height}";
+        Debug.Log($"Resolución actualizada a: {ResolucionText.text}");
+        Debug.Log($"Resolución cambiada a: {resolucionSeleccionada.width}x{resolucionSeleccionada.height}");
+
+        // Guardar cambios en PlayerPrefs
+        PlayerPrefs.SetInt("Resolucion", indiceResolucionActual);
+        PlayerPrefs.Save();
     }
 
-    void AumentarResolucion()
+    public void AumentarResolucion()
     {
-
+        if (indiceResolucionActual < resolucionesDisponibles.Length - 1)
+        {
+            indiceResolucionActual++;
+            CambiarResolucion(indiceResolucionActual);
+            //AudioManager.instance.PlaySound("aumento");
+            cambiosPantallaRealizados = true;
+        }
+        else
+        {
+            Debug.Log("Ya está en la resolución máxima");
+        }
     }
 
-    void DisminuirResolucion()
+    public void DisminuirResolucion()
     {
-
+        if (indiceResolucionActual > 0)
+        {
+            indiceResolucionActual--;
+            CambiarResolucion(indiceResolucionActual);
+            //AudioManager.instance.PlaySound("disminucion");
+            cambiosPantallaRealizados = true;
+        }
+        else
+        {
+            Debug.Log("Ya está en la resolución mínima");
+        }
     }
 
     private void AceptarCambiosDePantalla()
     {
         PlayerPrefs.SetInt("PantallaCompleta", pantallaCompletaToggle.isOn ? 1 : 0);
-        PlayerPrefs.SetInt("Resolucion", resolucionDropdown.value);
+        PlayerPrefs.SetInt("Resolucion", indiceResolucionActual);
         PlayerPrefs.Save();
         cambiosPantallaRealizados = false;
     }
@@ -428,29 +479,27 @@ public class ConfiguracionManager : MonoBehaviour
         }
         else
         {
-            pantallaCompletaToggle.isOn = PlayerPrefs.GetInt("PantallaCompleta", 1) == 1;
-            resolucionDropdown.value = PlayerPrefs.GetInt("Resolucion", 0);
-            cambiosPantallaRealizados = false;
+            // Revertir a los valores guardados
+            CargarValoresDePantalla();
+            Debug.Log("Cambios de pantalla cancelados y revertidos");
         }
     }
 
     private void ConfigurarResolucionesLimitadas()
     {
         resolucionesDisponibles = new Resolution[]
-        {
-            new Resolution { width = 3840, height = 2160 }, //4k
-            new Resolution { width = 2560, height = 1440 }, //2k
-            new Resolution { width = 1920, height = 1080 }, //1080p
-            new Resolution { width = 1280, height = 720 } //720p
-        };
+    {
+        new Resolution { width = 3840, height = 2160 }, // 4K
+        new Resolution { width = 2560, height = 1440 }, // 2K
+        new Resolution { width = 1920, height = 1080 }, // 1080p
+        new Resolution { width = 1280, height = 720 }   // 720p
+    };
 
-        resolucionDropdown.ClearOptions();
-        var opcionesResoluciones = new List<string>();
+        Debug.Log("Resoluciones configuradas:");
         foreach (var resolucion in resolucionesDisponibles)
         {
-            opcionesResoluciones.Add($"{resolucion.width}x{resolucion.height}");
+            Debug.Log($"{resolucion.width}x{resolucion.height}");
         }
-        resolucionDropdown.AddOptions(opcionesResoluciones);
     }
 
     #endregion
@@ -463,25 +512,71 @@ public class ConfiguracionManager : MonoBehaviour
         int limiteFPS = PlayerPrefs.GetInt("FPSLimite", 60);
         Debug.Log($"FPS cargados desde PlayerPrefs: {limiteFPS}");
 
-        // Validar el límite cargado
-        if (limiteFPS != 60 && limiteFPS != 90 && limiteFPS != 120 && limiteFPS != 0)
+        bool fpsPanel = PlayerPrefs.GetInt("FPSPanelActivo", 1) == 1;
+        toggleFPS.isOn = fpsPanel; // Sincroniza el toggle
+
+        // Encontrar el índice correspondiente en el array de opciones
+        indiceFPSActual = System.Array.IndexOf(fpsOpciones, limiteFPS);
+        if (indiceFPSActual == -1) // Si el valor no es válido, configurar a 60 FPS
         {
             Debug.LogWarning($"FPS inválidos en PlayerPrefs: {limiteFPS}, configurando a 60 por defecto.");
-            limiteFPS = 120;
-            PlayerPrefs.SetInt("FPSLimite", limiteFPS);
+            indiceFPSActual = 3; // Por defecto, usar la primera opción (60 FPS)
+            PlayerPrefs.SetInt("FPSLimite", fpsOpciones[indiceFPSActual]);
             PlayerPrefs.Save();
         }
 
-        // Configurar el Dropdown en base al límite de FPS
-        dropdownFPS.value = limiteFPS == 0 ? 0 : (limiteFPS == 60 ? 1 : (limiteFPS == 90 ? 2 : 3));
-        Debug.Log($"Dropdown configurado en: {dropdownFPS.value}");
-
         // Aplicar el límite de FPS
-        Application.targetFrameRate = limiteFPS;
-        Debug.Log($"Application.targetFrameRate configurado en: {Application.targetFrameRate}");
+        Application.targetFrameRate = fpsOpciones[indiceFPSActual];
+        fpsText.text = $"{fpsOpciones[indiceFPSActual]}"; // Actualizar el texto
+        Debug.Log($"FPS configurados inicialmente a: {fpsText.text}");
+        Debug.Log($"FPS configurados inicialmente a: {Application.targetFrameRate}");
+        cambiosFPSRealizados = false;
     }
 
-    public void CambiarLimiteFPS(int indiceLimite)
+    public void AumentarFPS()
+    {
+        if (indiceFPSActual < fpsOpciones.Length - 1)
+        {
+            indiceFPSActual++;
+            CambiarFPS();
+            Debug.Log($"FPS aumentados a: {fpsOpciones[indiceFPSActual]}");
+        }
+        else
+        {
+            Debug.Log("Ya estás en el límite máximo de FPS.");
+        }
+    }
+
+    public void DisminuirFPS()
+    {
+        if (indiceFPSActual > 0)
+        {
+            indiceFPSActual--;
+            CambiarFPS();
+            Debug.Log($"FPS disminuidos a: {fpsOpciones[indiceFPSActual]}");
+        }
+        else
+        {
+            Debug.Log("Ya estás en el límite mínimo de FPS.");
+        }
+    }
+
+    private void CambiarFPS()
+    {
+        Application.targetFrameRate = fpsOpciones[indiceFPSActual];
+
+        fpsText.text = $"{fpsOpciones[indiceFPSActual]}"; // Actualizar el texto
+        Debug.Log($"FPS configurados inicialmente a: {fpsText.text}");
+
+        // Guardar el cambio en PlayerPrefs
+        PlayerPrefs.SetInt("FPSLimite", fpsOpciones[indiceFPSActual]);
+        PlayerPrefs.Save();
+
+        cambiosFPSRealizados = true;
+        Debug.Log($"FPS cambiados y guardados: {Application.targetFrameRate}");
+    }
+
+    void CambiarLimiteFPS(int indiceLimite)
     {
         // Cambiar el límite de FPS según el índice del dropdown
         // Índice 0 = 60 FPS, Índice 1 = 90 FPS, Índice 2 = 120 FPS
@@ -507,7 +602,7 @@ public class ConfiguracionManager : MonoBehaviour
 
     private void AceptarCambiosDeFPS()
     {
-        PlayerPrefs.SetInt("FPSLimite", dropdownFPS.value);
+        PlayerPrefs.SetInt("FPSLimite", fpsOpciones[indiceFPSActual]);
         PlayerPrefs.SetInt("FPSPanelActivo", toggleFPS.isOn ? 1 : 0);
         PlayerPrefs.Save();
 
@@ -522,16 +617,9 @@ public class ConfiguracionManager : MonoBehaviour
         }
         else
         {
-            // Restaurar el límite de FPS y el estado del toggleFPS a los valores guardados en PlayerPrefs
-            int fpsValue = PlayerPrefs.GetInt("FPSLimite", 60);
-            dropdownFPS.value = (fpsValue == 60) ? 1 : 0;
-            Application.targetFrameRate = fpsValue;
-
-            bool isFPSEnabled = PlayerPrefs.GetInt("FPSPanelActivo", 0) == 1;
-            toggleFPS.isOn = isFPSEnabled;
-            panelFPS.SetActive(isFPSEnabled);
-
-            cambiosFPSRealizados = false;
+            // Revertir los valores a lo guardado
+            CargarValoresDeFPS();
+            Debug.Log("Cambios de FPS cancelados y revertidos.");
         }
     }
 

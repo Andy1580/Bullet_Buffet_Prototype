@@ -51,7 +51,7 @@ public class InputManager : MonoBehaviour
         if (navigateInput.magnitude > 0.1f && !joystickInUse && CanPlayNavigateSound())
         {
             joystickInUse = true; // Bloqueamos hasta que el joystick regrese a neutral
-            Debug.Log("Joystick movido: " + navigateInput);
+            //Debug.Log("Joystick movido: " + navigateInput);
 
             AudioManager.instance.PlaySound("navegar");
         }
