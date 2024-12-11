@@ -402,6 +402,16 @@ public class ConfiguracionManager : MonoBehaviour
         cambiosPantallaRealizados = true;
     }
 
+    void AumentarResolucion()
+    {
+
+    }
+
+    void DisminuirResolucion()
+    {
+
+    }
+
     private void AceptarCambiosDePantalla()
     {
         PlayerPrefs.SetInt("PantallaCompleta", pantallaCompletaToggle.isOn ? 1 : 0);
