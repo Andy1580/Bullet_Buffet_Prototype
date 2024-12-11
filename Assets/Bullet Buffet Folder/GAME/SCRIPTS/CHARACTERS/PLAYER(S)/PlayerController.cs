@@ -524,6 +524,7 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.DeadPlayerEventMHS(this);
         vfxMuerte.Play();
         DesactivarSprite();
+        playerHUD.HabilidadVacia();
 
         if (escudo.gameObject.activeSelf)
         {
