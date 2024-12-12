@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
 
     public void Input_PowerUp(InputAction.CallbackContext context)
     {
-        if (context.performed && !muerto)
+        if (context.performed && !muerto && !habilidadActiva)
         {
             if (actualHability == "Invulnerability")
             {
@@ -129,11 +129,12 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            if (habilidadDisponible && !escudo.gameObject.activeSelf && !muerto)
+            if (habilidadDisponible && !escudo.gameObject.activeSelf && !muerto && !powerUpActivo)
             {
                 //ExplosiveBullet();
                 ActivarHabilidad();
                 habilidadDisponible = false;
+                habilidadActiva = true;
                 habilidadProgreso = 0;
                 playerHUD.BarraDeHabilidad = (float)habilidadProgreso;
                 playerHUD.HabilidadVacia();
@@ -590,8 +591,12 @@ public class PlayerController : MonoBehaviour
         hability = null;
         actualHability = hability;
         habilidadDisponible = false;
+        powerUpActivo = false;
+        habilidadActiva = false;
         Start_Dash();
         Start_Escudo();
+
+        ResetearVariablesCambioRonda();
 
         GameObject clone = Instantiate(vfxRespanPlayer, transform.position, transform.rotation);
         Destroy(clone, 1.5f);
@@ -666,6 +671,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float cargaHabilidad;
     public float habilidadProgreso;
     public bool habilidadDisponible;
+    public bool habilidadActiva = false;
     public HabilidadEnArea habilidadEnArea;
     public HabilidadRayo habilidadRayo;
     public HabilidadEscopeta habilidadEscopeta;
@@ -679,6 +685,7 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(CargarHabilidad());
 
         habilidadDisponible = false;
+        habilidadActiva = false;
     }
 
     void FixedUpdate_Habilidad()
@@ -786,7 +793,6 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log(this.gameObject.name + "Activo la habilidad");
         habilidadSub.ActivarHabilidad();
-        DeshabilitarMovimiento();
 
         AudioManager.instance.PlaySound("habilidadNOVA");
     }
@@ -829,6 +835,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private string actualHability = null;
     [SerializeField] private ParticleSystem vfxActiveInmun;
     [SerializeField] private ParticleSystem vfxActiveSpeed;
+    public bool powerUpActivo = false;
     internal string hability;
 
     void InicializarPowerUps()
@@ -869,6 +876,8 @@ public class PlayerController : MonoBehaviour
         playerSpeed = actualSpeed;
         isInvulnerable = false;
         inSuperSpeed = false;
+        powerUpActivo = false;
+        habilidadActiva = false;
         DesactivarSprite();
         playerHUD.HabilidadVacia();
     }
@@ -889,7 +898,7 @@ public class PlayerController : MonoBehaviour
 
         if (vfxActiveInmun != null)
             vfxActiveInmun.Play();
-
+        powerUpActivo = true;
         //AudioManager.instance.PlaySound("powerUpActive");
         Debug.Log("Se activo la invulnerabilidad");
         StartCoroutine(CooldawnInmunity());
@@ -906,6 +915,7 @@ public class PlayerController : MonoBehaviour
         DesactivarSprite();
         vfxInmune.SetActive(false);
         isInvulnerable = false;
+        powerUpActivo = false;
         ResetearVariablesCambioRonda();
 
         if (vfxActiveInmun != null)
@@ -933,7 +943,7 @@ public class PlayerController : MonoBehaviour
     #region SUPER SPEED
     [Header("Super Speed")]
     [SerializeField] private float superSpeed = 10f;
-    [SerializeField] private float actualSpeed;
+    [SerializeField] public float actualSpeed;
     [SerializeField] private float superSpeedTime = 5f;
     [SerializeField] private int contadorSpeed = 5;
     public bool inSuperSpeed = false;
@@ -953,6 +963,8 @@ public class PlayerController : MonoBehaviour
 
         if (vfxActiveSpeed != null)
             vfxActiveSpeed.Play();
+
+        powerUpActivo = true;
         //Invoke("DesactivarSSD", superSpeedTime);
     }
 
@@ -966,6 +978,7 @@ public class PlayerController : MonoBehaviour
         vfxVelocidad.SetActive(false);
         playerSpeed = actualSpeed;
         inSuperSpeed = false;
+        powerUpActivo = false;
         ResetearVariablesCambioRonda();
 
         if (vfxActiveSpeed != null)

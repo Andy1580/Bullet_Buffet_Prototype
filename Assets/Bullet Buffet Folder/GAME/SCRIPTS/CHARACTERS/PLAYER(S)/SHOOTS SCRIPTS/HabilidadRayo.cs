@@ -56,6 +56,7 @@ public class HabilidadRayo : MonoBehaviour
             StopAllCoroutines();
             muertoJugador = true;
             lineRenderer.enabled = false;
+            AudioManager.instance.StopSound("habilidadCRIM");
             Invoke("DesactivarMuerte", 5f);
             return;
         }
@@ -139,6 +140,7 @@ public class HabilidadRayo : MonoBehaviour
         lineRenderer.enabled = false;
         propietario.HabilitarMovimiento();
         vfxRayo.Stop();
+        propietario.habilidadActiva = false;
     }
 
     void AplicarDaño(Collider target)

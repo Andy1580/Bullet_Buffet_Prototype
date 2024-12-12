@@ -25,15 +25,12 @@ public class DañoBalaJugador : MonoBehaviour
             }
             else
             {
-                if (jugador.Vida > 0)
+                if (jugador.Vida > 0 && !jugador.isInvulnerable && !jugador.muerto)
                 {
-                    if (!jugador.isInvulnerable || !jugador.muerto)
-                    {
-                        jugador.Vida -= daño;
-                        Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                        Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
-                        Destroy(this.gameObject);
-                    }
+                    jugador.Vida -= daño;
+                    Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                    Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
+                    Destroy(this.gameObject);
                 }
                 else return;
             }

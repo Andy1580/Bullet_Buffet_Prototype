@@ -8,6 +8,7 @@ public class HabilidadSub : MonoBehaviour
     [SerializeField] private int daño = 10;
     [SerializeField] private float duracionHabilidad = 3f;
     [SerializeField] private float intervaloDaño = 0.5f;
+    [SerializeField] private float velicidadEnHabilidad = 5.5f;
     [SerializeField] private LayerMask capas;
     [SerializeField] private ParticleSystem vfxHabilidadSub;
     [SerializeField] private GameObject vfxImpacto;
@@ -24,6 +25,7 @@ public class HabilidadSub : MonoBehaviour
         if(!propietario.muerto && !propietario.escudo.gameObject.activeSelf)
         {
             propietario.animator.SetTrigger("habilidad");
+            propietario.playerSpeed = velicidadEnHabilidad;
             StartCoroutine(DañoConstanteEnArea());
         }
     }
@@ -33,6 +35,8 @@ public class HabilidadSub : MonoBehaviour
         if(propietario.muerto && !muertoJugador)
         {
             StopAllCoroutines();
+            vfxHabilidadSub.Stop();
+            AudioManager.instance.StopSound("habilidadNOVA");
             muertoJugador = true;
             Invoke("DesactivarMuerte", 5f);
             return;
@@ -99,8 +103,9 @@ public class HabilidadSub : MonoBehaviour
 
             tiempoRestante -= intervaloDaño;  // Reducir el tiempo restante de la habilidad
         }
-        propietario.HabilitarMovimiento();
+        propietario.playerSpeed = propietario.actualSpeed;
         propietario.animator.SetTrigger("mov");
+        propietario.habilidadActiva = false;
     }
 
     void OnDrawGizmos()

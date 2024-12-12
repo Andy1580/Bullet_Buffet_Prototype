@@ -103,6 +103,7 @@ public class HabilidadEnArea : MonoBehaviour
         vfxHabilidadArea.SetActive(true);
         yield return new WaitForSeconds(0.8f);
         vfxHabilidadArea.SetActive(false);
+        propietario.habilidadActiva = false;
     }
 
     private void OnDrawGizmos()

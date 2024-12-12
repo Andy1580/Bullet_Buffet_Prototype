@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DañoBate : MonoBehaviour
 {
     [SerializeField] private int daño;
+    [SerializeField] private int dañoConEscudoEnemioActivado;
     private PlayerController propietario;
-    public bool escudoBloqueado = false;
+    //public bool escudoBloqueado = false;
     public GameObject vfxImpacto;
 
     private void Awake()
@@ -17,17 +16,17 @@ public class DañoBate : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        // Si el escudo ya bloqueó, ignoramos el resto
-        if (escudoBloqueado) return;
+        //// Si el escudo ya bloqueó, ignoramos el resto
+        //if (escudoBloqueado) return;
 
         // Verificar si colisionó con el escudo (Layer 10)
         if (other.gameObject.layer == 10)
         {
-            escudoBloqueado = true; // Marcar que el escudo bloqueó
+            //escudoBloqueado = true; // Marcar que el escudo bloqueó
             Debug.Log("El escudo bloqueó el daño");
             Vector3 puntoImpacto = other.ClosestPoint(transform.position);
             Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
-            return; // Detener el procesamiento
+            //return; // Detener el procesamiento
         }
 
         //Vector3 puntoImpacto = other.ClosestPoint(transform.position);
@@ -49,15 +48,29 @@ public class DañoBate : MonoBehaviour
             }
             else
             {
-                if (escudoBloqueado) return;
+                //if (escudoBloqueado) return;
 
-                if (jugador.Vida > 0 && !jugador.isInvulnerable && !jugador.muerto)
+                if (jugador.escudo.gameObject.activeSelf)
                 {
-                    jugador.Vida -= daño;
-                    Vector3 puntoImpacto = other.ClosestPoint(transform.position);
-                    Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
-                    Debug.Log($"Jugador {jugador.name} recibió daño: {daño}");
+                    if (jugador.Vida > 0 && !jugador.isInvulnerable && !jugador.muerto)
+                    {
+                        jugador.Vida -= dañoConEscudoEnemioActivado;
+                        Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                        Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
+                        Debug.Log($"Jugador {jugador.name} recibió daño: {daño}");
+                    }
                 }
+                else
+                {
+                    if (jugador.Vida > 0 && !jugador.isInvulnerable && !jugador.muerto)
+                    {
+                        jugador.Vida -= daño;
+                        Vector3 puntoImpacto = other.ClosestPoint(transform.position);
+                        Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
+                        Debug.Log($"Jugador {jugador.name} recibió daño: {daño}");
+                    }
+                }
+
             }
         }
 
@@ -83,14 +96,14 @@ public class DañoBate : MonoBehaviour
             Debug.Log("El daño fue bloqueado por un obstáculo.");
             Vector3 puntoImpacto = other.ClosestPoint(transform.position);
             Instantiate(vfxImpacto, puntoImpacto, Quaternion.identity);
-            return; // Salir inmediatamente
+            //return; // Salir inmediatamente
         }
 
     }
 
     private void OnDisable()
     {
-        escudoBloqueado = false;
+        //escudoBloqueado = false;
     }
 
     private void OnDestroy()

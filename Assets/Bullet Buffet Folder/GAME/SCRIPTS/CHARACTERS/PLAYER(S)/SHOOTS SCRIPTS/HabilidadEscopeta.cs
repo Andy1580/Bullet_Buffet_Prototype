@@ -53,6 +53,8 @@ public class HabilidadEscopeta : MonoBehaviour
 
         cantShoot = true;
 
+        propietario.habilidadActiva = false;
+
         vfxSuperShootShotgun.Stop();
     }
     /*

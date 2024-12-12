@@ -6,6 +6,7 @@ public class MeeleAttack : MonoBehaviour
 {
     public bool cantShoot;
     public GameObject objetoDaño;
+    public float tiempoParaVolverAtacar = 1f;
     private PlayerController propietario;
 
     private void Start()
@@ -40,7 +41,7 @@ public class MeeleAttack : MonoBehaviour
 
         objetoDaño.SetActive(false);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(tiempoParaVolverAtacar);
 
         cantShoot = true;
     }

@@ -1308,6 +1308,7 @@ public class GameManager : MonoBehaviour
     #region MARCADOR MDS
     [Header("Marcador Modo DS")]
     [SerializeField] private GameObject panelMarcadorMDS;
+    [SerializeField] private Button botonMenuEmpate;
 
     void InicializarMarcadorMDS()
     {
@@ -1703,6 +1704,8 @@ public class GameManager : MonoBehaviour
     private static int _cuadrosEquipo1 = 0;
     private static int _cuadrosEquipo2 = 0;
 
+    private bool opcionSeleccionada;
+
     public static int CuadrosEquipo1
     {
         get => _cuadrosEquipo1;
@@ -1732,6 +1735,8 @@ public class GameManager : MonoBehaviour
         camaraObjeto = camaraPrincipal.gameObject;
         camaraObjeto.SetActive(true);
         panelMarcadorMDS.SetActive(true);
+
+        opcionSeleccionada = false;
         //cuadrosTeam1 = new List<CuadroPintable>();
         //cuadrosTeam2 = new List<CuadroPintable>();
     }
@@ -1811,15 +1816,28 @@ public class GameManager : MonoBehaviour
     private void ManejarEmpate()
     {
         panelTiempoAgotado.SetActive(true);
-        TiempoAgotadoText.text = "¡EMPATE!";
-
+        TiempoAgotadoText.text = "DRAW!";
+        EventSystem.current.SetSelectedGameObject(botonMenuEmpate.gameObject);
         DeshabilitarMovimientoJugadores();
-        Invoke("IniciarCorutinaTransicion", 0.7f);
-        Invoke("RegresarAMenuTiempoAgotado", 1.4f);
+        DeshabilitarDisparo();
+    }
+    public void RegresarAlMenuEmpate()
+    {
+        if (!opcionSeleccionada)
+        {
+            opcionSeleccionada = true;
+            StartCoroutine(CargarMenuPrincipal());
+            AudioManager.instance.PlaySound("botonmenu");
+        }
     }
 
-    void RegresarAMenuTiempoAgotado()
+    IEnumerator CargarMenuPrincipal()
     {
+        Debug.Log("Se selecciono regresar al menu");
+        IniciarCorutinaTransicion();
+        MainMenuSystem.instance.ResetarBooleanosImportantesMS();
+        ResetarBooleanosImportantesGM();
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("ANDYMENUTEST");
     }
     #endregion MODO DUELO DE SALSAS
