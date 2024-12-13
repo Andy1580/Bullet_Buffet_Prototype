@@ -2470,9 +2470,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5a15e15c5ca0d4e94c46f259205c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "da\xF1o": 20
-  "da\xF1oConEscudoEnemioActivado": 5
-  escudoBloqueado: 0
+  "da\xF1o": 25
+  "da\xF1oConEscudoEnemioActivado": 10
   vfxImpacto: {fileID: 7300250961706575493, guid: 338057cd28ef69349849125177dc40e3,
     type: 3}
 --- !u!1 &4650892144971803797
@@ -3170,7 +3169,7 @@ MonoBehaviour:
   tiempoEnDash: 0.25
   contadorDash: 5
   vfxDash: {fileID: 895963440508414423}
-  maxSalud: 110
+  maxSalud: 160
   renderer: {fileID: 3719626854748020964}
   vfxMuerte: {fileID: 7073781790119493639}
   tiempoEscudo: 5
@@ -3178,7 +3177,7 @@ MonoBehaviour:
   escudo: {fileID: 5086317114076493705}
   contadorEscudo: 7
   personaje: 
-  cargaHabilidad: 10
+  cargaHabilidad: 6
   habilidadProgreso: 0
   habilidadDisponible: 0
   habilidadActiva: 0
@@ -3450,6 +3449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cantShoot: 1
   "objetoDa\xF1o": {fileID: 4642274300774090989}
+  tiempoParaVolverAtacar: 0.8
 --- !u!114 &9173181786108669677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3463,7 +3463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   "areaDa\xF1o": 4.5
-  "da\xF1o": 35
+  "da\xF1o": 40
   vfxHabilidadArea: {fileID: 2683713035133540096}
   vfxImpacto: {fileID: 7300250961706575493, guid: 338057cd28ef69349849125177dc40e3,
     type: 3}

@@ -130,13 +130,13 @@ public class HabilidadRayo : MonoBehaviour
     IEnumerator ActivarRayo()
     {
         lineRenderer.enabled = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         FireRay();
         vfxRayo.Play();
         propietario.animator.SetTrigger("habilidad");
         yield return new WaitForSeconds(0.7f);
         habilidadActiva = false;
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
         lineRenderer.enabled = false;
         propietario.HabilitarMovimiento();
         vfxRayo.Stop();

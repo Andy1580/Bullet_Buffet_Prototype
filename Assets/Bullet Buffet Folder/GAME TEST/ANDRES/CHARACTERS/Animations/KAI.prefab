@@ -3125,7 +3125,7 @@ MonoBehaviour:
   tiempoEnDash: 0.25
   contadorDash: 5
   vfxDash: {fileID: 5556333630859945484}
-  maxSalud: 130
+  maxSalud: 140
   renderer: {fileID: 1633984951691468969}
   vfxMuerte: {fileID: 4165693337530321939}
   tiempoEscudo: 5
@@ -3133,9 +3133,10 @@ MonoBehaviour:
   escudo: {fileID: 8140589270472405130}
   contadorEscudo: 7
   personaje: 
-  cargaHabilidad: 10
+  cargaHabilidad: 11
   habilidadProgreso: 0
   habilidadDisponible: 0
+  habilidadActiva: 0
   habilidadEnArea: {fileID: 0}
   habilidadRayo: {fileID: 0}
   habilidadEscopeta: {fileID: 8316864770998471679}
@@ -3143,6 +3144,7 @@ MonoBehaviour:
   actualHability: None
   vfxActiveInmun: {fileID: 5409717213999558792}
   vfxActiveSpeed: {fileID: 3168913316673118777}
+  powerUpActivo: 0
   isInvunerableTime: 5
   isInvulnerable: 0
   vfxInmune: {fileID: 8051141818444955439}
@@ -4044,7 +4046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fcfa248c3e06c746b36a798b504c47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "da\xF1o": 35
+  "da\xF1o": 60
   vfxImpacto: {fileID: 600320427931572025, guid: 7a48010ca686da043854596b88fb71c9,
     type: 3}
 --- !u!1 &8398998411093644378

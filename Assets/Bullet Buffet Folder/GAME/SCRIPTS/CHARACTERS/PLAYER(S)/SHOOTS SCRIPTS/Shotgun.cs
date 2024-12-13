@@ -52,9 +52,18 @@ public class Shotgun : MonoBehaviour
 
     IEnumerator DesactivarObjetoDeDaño()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
 
         objetoDaño.SetActive(false);
+
+        StartCoroutine(SiguienteDisparo());
+    }
+
+    IEnumerator SiguienteDisparo()
+    {
+        yield return new WaitForSeconds(1f);
+
+        //objetoDaño.SetActive(false);
 
         cantShoot = true;
     }

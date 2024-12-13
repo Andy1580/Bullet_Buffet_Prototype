@@ -2711,7 +2711,7 @@ MonoBehaviour:
   tiempoEnDash: 0.25
   contadorDash: 5
   vfxDash: {fileID: 3326329158505360835}
-  maxSalud: 80
+  maxSalud: 110
   renderer: {fileID: 8220108230351276244}
   vfxMuerte: {fileID: 2042914509102217282}
   tiempoEscudo: 5
@@ -2719,9 +2719,10 @@ MonoBehaviour:
   escudo: {fileID: 2871123874064105235}
   contadorEscudo: 7
   personaje: 
-  cargaHabilidad: 10
+  cargaHabilidad: 9
   habilidadProgreso: 0
   habilidadDisponible: 0
+  habilidadActiva: 0
   habilidadEnArea: {fileID: 0}
   habilidadRayo: {fileID: 0}
   habilidadEscopeta: {fileID: 0}
@@ -2729,6 +2730,7 @@ MonoBehaviour:
   actualHability: None
   vfxActiveInmun: {fileID: 7542222482003088255}
   vfxActiveSpeed: {fileID: 4348697762521692219}
+  powerUpActivo: 0
   isInvunerableTime: 5
   isInvulnerable: 0
   vfxInmune: {fileID: 2395385020376950233}
@@ -2754,14 +2756,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cadencia: 0.05
-  cantidadDeDisparos: 3
-  dispersion: 0.3
+  cantidadDeDisparos: 4
+  dispersion: 0.2
   cantShoot: 1
   bocaArma: {fileID: 7768006098767679259}
   proyectilPrefab: {fileID: 3523335605187150095, guid: 3c46011d3962a0f4191d6667437eb83b,
     type: 3}
   velocidadProyectil: 50
-  vidaBala: 0.4
+  vidaBala: 0.5
 --- !u!114 &6587386509906615597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3012,6 +3014,7 @@ MonoBehaviour:
   "da\xF1o": 18
   duracionHabilidad: 2.5
   "intervaloDa\xF1o": 0.45
+  velicidadEnHabilidad: 5.5
   capas:
     serializedVersion: 2
     m_Bits: 384
